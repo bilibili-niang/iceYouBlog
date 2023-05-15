@@ -13,6 +13,10 @@
       admin
       密码:
       admin
+      <br>
+      关于项目:
+      https://github.com/bilibili-niang/iceYouBlog
+
     </el-drawer>
 
     <div class="card hvr-glow" style="width: 100%;" v-for="(item,index) in indexList"

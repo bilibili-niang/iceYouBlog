@@ -5,7 +5,7 @@
     <el-link href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</el-link>
     <div>
       powered by:
-      <el-link href="https://gitee.com/icestone9/iceYouBlog" target="_blank">iceYouBlog</el-link>
+      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">iceYouBlog</el-link>
     </div>
   </div>
 </template>
