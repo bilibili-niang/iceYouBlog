@@ -1,0 +1,493 @@
+const markdownFile = require('../schema/markdownFile')
+const {insertLog} = require('./log.service');
+const fileNameAndPath = __filename;
+const history = require('../schema/history')
+const {salt} = require('../config/default');
+const jwt = require('jsonwebtoken');
+const {Op} = require('sequelize');
+
+class MarkdownFileService {
+    /* @author icestone , 16:14
+     * @date 2023/5/8
+     * TODO 初始化 markdownFile 用的,用于返回第一条文章数据
+    */
+    async initMarkdownFile() {
+        return await markdownFile.findOne({
+            attributes: ['id'],
+            raw: true
+        })
+    }
+
+    //新建文章
+    async createMarkdownFile(userEmail, requestData) {
+        const {
+            title = ' ',
+            description = ' ',
+            tag1 = 'null',
+            tag2 = 'null',
+            tag3 = 'null',
+            audit = '1',
+            content = '暂无内容哦'
+        } = requestData;
+        // console.log('获取数据:  ' + filename, fileData, description, tag1, tag2, tag3)
+        return await markdownFile.create({
+            userEmail, title, description, tag1, tag2, tag3, audit, content
+        })
+    }
+
+    // 获取首页数据/分页数据
+    async getHomeIndexList(pageNum, pageSize) {
+        const offset = (pageNum - 1) * pageSize
+        // const {count, rows} = await markdownFile.findAndCountAll({offset: offset, limit: pageSize * 1});
+        return await markdownFile.findAndCountAll({
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3'],
+            offset: offset,
+            limit: pageSize * 1,
+            where: {
+                states: {
+                    [Op.gte]: 0
+                }
+            },
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ]
+        });
+    }
+
+    // 传入id,浏览量自增1
+    async viewIncreaseById(id) {
+        markdownFile.increment(['view'], {
+            where: {
+                id
+            }
+        })
+            .then(res => {
+                // console.log('成功')
+                // console.log(res)
+            })
+            .catch(e => {
+                // console.log('失败')
+                // console.log(e)
+                let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+                insertLog({
+                    time: date,
+                    ip: 'localhost',
+                    logType: '自增出了问题',
+                    detail: '文章根据id自增出错',
+                    userId: 'root',
+                    fileNameAndPath
+                });
+            })
+    }
+
+// 通过文章数据和token记录用户的浏览记录
+    async historyByToken(res, token) {
+        console.error('--------historyByToken--------')
+        let verifyToken = jwt.decode(token, salt)
+        console.log("Boolean(verifyToken):")
+        console.log(Boolean(verifyToken))
+        if (verifyToken) {
+            console.log('写入记录')
+            const email = verifyToken.email || null;
+            await history.create({
+                fileId: res[0].id, email, type: 'blog', fileName: res[0].title, description: res[0].description
+            })
+                .then(res => {
+                    // console.log(res)
+                    console.log('history 写入成功')
+                })
+                .catch(e => {
+                    console.log(e)
+                    console.log('history 写入失败')
+                })
+        } else {
+            console.log('不写入记录')
+
+        }
+
+    }
+
+// 通过用户邮箱返回用户的文章:
+    async getMarkdownByEmail(email) {
+        const res = await markdownFile.findAll({
+            attributes: ['id', 'email', 'description', 'view', 'praise', 'headImg'], where: {
+                email
+            }, raw: true
+        })
+            .then(res => {
+                console.log('成功')
+                // console.log(res)
+            })
+            .catch(e => {
+                console.log('失败')
+                // console.log(e)
+            })
+
+        return res
+    }
+
+    // 通过传入的id返回首页文章
+    async getHomeIndexListById(id, limit = 20) {
+        console.log('---getHomeIndexListById---')
+        console.log(`id:${id},limit:${limit}`)
+        return await markdownFile.findAll({
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3'],
+            where: {
+                states: {
+                    [Op.gte]: 0
+                }
+            },
+            raw: true,
+            limit,
+            offset: id,
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ]
+        })
+    }
+
+    // 通过email获取用户所有文章
+    async getAllUserArticle(email) {
+        const res = await markdownFile.findAll({
+            attributes: ['id', 'type', 'title', 'description', 'postTime', 'view'], where: {
+                email
+            }
+        })
+        console.log('res')
+        console.log(res)
+        return res
+    }
+
+    // 通过用户邮箱新建文章
+    async newMarkdown(email, form) {
+        form.email = email;
+        form.type = 'blog';
+        const date = new Date();
+        // form.postTime = date;
+        // 默认审核状态为1
+        form.audit = '1';
+        const res = await markdownFile.create(form)
+            .then(res => {
+                console.log('成功')
+                return true
+            })
+            .catch(e => {
+                console.log('失败')
+                console.log(e)
+                return false
+            })
+    }
+
+    // 通过email获取用户文章总体数据
+    async getUserMarkdownData(email) {
+
+        const res = await markdownFile.findAll({
+            attributes: ['view', 'diggCount'],
+            where: {
+                email
+            },
+            raw: true
+        })
+
+        // 点赞数量
+        let diggCounts = 0;
+        let count = 0;
+        res.forEach((i, index) => {
+            count += parseInt(i.view)
+            if (i.diggCount) {
+                diggCounts += parseInt(i.diggCount)
+            }
+        })
+        return {
+            allView: count,
+            allNums: res.length,
+            diggCounts: diggCounts
+        }
+    }
+
+    // 通过用户email和
+    async updateMarkdownByEmail(data) {
+        return await markdownFile.update({
+            title: data.title,
+            content: data.content,
+            description: data.description,
+            tag1: data.tag1,
+            tag2: data.tag2,
+            tag3: data.tag3,
+        }, {
+            where: {
+                id: data.id
+            }
+        })
+    }
+
+    // 通过文章id返回该文章的用户邮箱
+    async getUserEmailByMarkdownId(id) {
+        return markdownFile.findOne({
+            attributes: ['email'],
+            where: {
+                id
+            },
+            raw: true
+        })
+    }
+
+    // 通过关键字查找并返回文章信息
+    async getMarkdownByKeyWord(key) {
+        return await markdownFile.findAll({
+            where: {
+                content: {
+                    // 模糊查询
+                    [Op.like]: '%' + key + '%'
+                }
+            },
+            raw: true,
+            // 控制查询字段
+            attributes: ['id', 'title', 'description']
+        })
+    }
+
+    // 通过用户邮箱返回用户所有文章
+    async getAllUserMarkdownFiles(email) {
+        return await markdownFile.findAll({
+            attributes: ['id', 'type', 'title', 'description', 'createdAt', 'view', 'tag1', 'tag2', 'tag3'],
+            where: {
+                email: email
+            },
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ],
+            limit: 100
+        })
+    }
+
+    // 点赞
+    async supportIncrease(id) {
+        console.log('---supportIncrease---')
+        await markdownFile.increment(['praise'], {
+            where: {
+                id
+            }
+        })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        return "result";
+    }
+
+    // 通过id返回该文章的一些数据,默认这里用于展示在用户的浏览记录,但也可以自定义查询信息
+    async getMarkdownFileDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view']) {
+        console.log('---getMarkdownFileDetailById---')
+        return await markdownFile.findAll({
+            attributes: attr,
+            where: {
+                id: ids
+            },
+            raw: true
+        });
+    }
+
+    /**
+     * @Description:
+     * @author icestone
+     * @date 2023/5/3
+     * TODO 伪删除
+     */
+    async getDeleteResult(ids, email = 'demo@emaml') {
+        await insertLog({
+            logType: '伪删除文章',
+            detail: `${email}伪删除了文章:${ids}`,
+            fileNameAndPath
+        })
+        return await markdownFile.destroy({
+            where: {
+                id: ids
+            }
+        });
+    }
+
+    /**
+     * @Description:
+     * @author icestone
+     * @date 2023/5/4
+     * TODO 通过email获取用户的已删除文章
+     */
+    async getDeletedFiles(email) {
+        return await markdownFile.findAll({
+            attributes: ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view'],
+            where: {
+                destroyTime: {[Op.not]: null},
+                email
+            },
+            paranoid: false,
+        })
+    }
+
+    /**
+     * @Description:
+     * @author icestone
+     * @date 2023/5/5
+     * TODO 通过id恢复指定文章
+     */
+    async getRecoverResult(ids, email) {
+        await insertLog({
+            logType: '恢复文章',
+            detail: `${email}恢复了文章:${ids}`,
+            fileNameAndPath
+        })
+        return await markdownFile.restore({
+            where: {
+                id: ids
+            }
+        })
+    }
+
+    /**
+     * @Description:
+     * @author icestone
+     * @date 2023/5/5
+     * TODO 通过ids获取已被删除的文章的信息
+     */
+    async getAlreadyDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3']) {
+        return await markdownFile.findAll({
+            attributes: attr,
+            where: {
+                id: ids,
+            },
+            paranoid: false,
+            raw: true
+        })
+        /*.then(res => {
+            console.log("res:")
+            console.log(res)
+        })
+        .catch(e => {
+            console.log("e:")
+            console.log(e)
+        })*/
+    }
+
+    /**
+     * @Description:
+     * @author icestone
+     * @date 2023/5/5
+     * TODO 获取首页文章总数量,用作
+     */
+    async getAllCounts() {
+        // @date 2023/5/5 , @author icestone
+        // TODO 查询 states 大于0的数据
+        return await markdownFile.findAndCountAll({
+            attributes: ['id'],
+            where: {
+                states: {
+                    [Op.gte]: 0
+                }
+            },
+            raw: true
+        });
+    }
+
+    /* @author icestone , 18:40
+     * @date 2023/5/5
+     * TODO 查询与传入的tag相关的数据
+    */
+    async getAboutMarkdown(tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+        const processedTags = [];
+        console.log('查询的tag:')
+        console.log(tags);
+        tags.forEach((item) => {
+            if (item.length > 0) {
+                processedTags.push(item);
+            } else {
+            }
+        })
+        console.log('---processedTags---')
+        console.log(processedTags)
+        return await markdownFile.findAll({
+            attributes: attr,
+            where: {
+                [Op.or]: [
+                    {
+                        tag1: processedTags
+                    },
+                    {
+                        tag2: processedTags
+                    },
+                    {
+                        tag3: processedTags
+                    },
+
+                ]
+            }
+        })
+        /*.then(res => {
+            console.log("res:")
+            console.log(res)
+        })
+        .catch(e => {
+            console.log("e:")
+            console.log(e)
+        })*/
+    }
+
+    /* @author icestone , 2:48
+     * @date 2023/5/7
+     * TODO 通过email返回该用户的所有文章tag
+    */
+    async getAllTagsByEmail(email) {
+        let result = await markdownFile.findAll({
+            attributes: ['tag1', 'tag2', 'tag3'],
+            where: {
+                [Op.and]: [
+                    {email},
+                    {
+                        tag1: {[Op.not]: null}
+                    }, {
+                        tag2: {[Op.not]: null}
+                    }, {
+                        tag3: {[Op.not]: null}
+                    },
+                ]
+            },
+            raw: true
+        })
+        // 扁平化对象
+        result = Object.values(result);
+        let resultList = [];
+        result.forEach((item, index) => {
+            Object.values(item).map(it => {
+                if (resultList.indexOf(it) == -1) {
+                    // 不存在
+                    resultList.push(it)
+                }
+            })
+        })
+        return {...resultList};
+    }
+
+    /* @author icestone , 15:50
+     * @date 2023/5/7
+     * TODO 更新操作,这里的 data 传入的应该是对象
+    */
+    async UpdateSomething(operate, data, id) {
+        console.log('---UpdateSomething---')
+        console.log("data:")
+        console.log(data)
+        return await markdownFile.update(
+            data,
+            {
+                where: {
+                    id
+                }
+            }
+        )
+    }
+}
+
+module.exports = new MarkdownFileService()

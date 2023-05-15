@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+<form id="form1">
+    <label>
+        <input type="text" value="icestone" id="username">
+        <input type="text" value="123456" id="password">
+        <button class="sub" type="button">点击触发提交</button>
+    </label>
+</form>
+<script src="./js/jquery.js"></script>
+<script src="./js/axios.js"></script>
+<script>
+	$('.sub').click(function () {
+		const username = form1.username.value
+		const password = form1.password.value
+		axios.post('127.0.0.1/user/login', {
+			'username': username,
+			'password': password,
+			proxy: {
+				host: '127.0.0.1',
+				port: 80
+			}
+		})
+			.then(function (response) {
+				console.log(response)
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/main.js",
+    "start": "node src/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chalk": "^5.2.0",
+    "cheerio": "^1.0.0-rc.12",
+    "co-views": "^2.1.0",
+    "dotenv": "^16.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-html-template": "^1.0.0",
+    "koa-multer": "^1.0.2",
+    "koa-parameter": "^3.0.1",
+    "koa-router": "^10.1.1",
+    "koa-sendfile": "^3.0.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^8.0.0",
+    "koa2-cors": "^2.0.6",
+    "md5": "^2.3.0",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.5",
+    "sequelize": "^6.19.0",
+    "static-resource-plugin": "^1.0.6",
+    "turndown": "^7.1.1"
+  },
+  "devDependencies": {
+    "jimp": "^0.22.7",
+    "nodemon": "^2.0.15"
+  }
+}
