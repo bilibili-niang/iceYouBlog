@@ -23,7 +23,6 @@
               <li class="list-group-item" v-for="(item,index) in notesList" :key="index">
 
                 <el-row>
-
                   <el-col :span="4">
                     <div class="icon"><img :src="item.icon" alt=""></div>
                   </el-col>
@@ -61,31 +60,20 @@
                         <Plus/>
                       </el-icon>
                     </el-button>
-
-
                   </el-col>
-
                 </el-row>
-
               </li>
             </ul>
           </div>
         </div>
       </el-col>
       <el-col :span="21">
-
-
         <!--笔记的填充区域-->
         <div class="right noteLim" v-if="showRight">
-          <div class="imageLim">
-            <div class="cover"
-                 v-bind:style="{backgroundImage:'url(' + noteData.cover + ')',backgroundRepeat:'no-repeat'}">
-            </div>
+          <div class="btns">
+            <el-input v-model="noteData.note_title" placeholder="Please input"/>
           </div>
-
-          <el-input v-model="noteData.note_title" placeholder="Please input"/>
-          <el-divider content-position="left">Life is too long to end at a grave</el-divider>
-
+          <el-text>Life is too long to end at a grave</el-text>
           <v-md-editor
               :include-level="[3,4]"
               @save="saveNote"
@@ -96,6 +84,11 @@
         </div>
       </el-col>
     </el-row>
+    <div class="imageLim">
+      <div class="cover"
+           v-bind:style="{backgroundImage:'url(' + noteData.cover + ')',backgroundRepeat:'no-repeat'}">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -216,16 +209,23 @@ export default {
         }
       })
           .then(res => {
-            console.log('res')
-            console.log(res)
             if (res.success) {
-              this.noteData = res.result
+              /* @author icestone , 17:20
+               * @date 2023/5/15
+               * TODO 如果content为null,v-md-editor会报错,这里判断一下
+              */
+              if (res.result.content == null) {
+                res.result.content = `> type your first title!`;
+                this.noteData = res.result;
+              } else {
+                this.noteData = res.result
+              }
             } else {
               console.log('笔记获取失败')
             }
           })
           .catch(e => {
-
+            console.log(e)
           })
 
     },
@@ -304,7 +304,7 @@ export default {
 </script>
 <style scoped lang="less">
 .el-row {
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
 }
 
 .el-row:last-child {
@@ -330,7 +330,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    //height: 100vh;
   }
 
   .left {
@@ -417,19 +417,31 @@ export default {
   .right {
     display: flex;
     width: 100%;
-    margin-bottom: 15rem;
+    margin-bottom: 3rem;
 
-    .imageLim {
+    .v-md-editor {
+      min-height: 80vh;
+    }
+  }
+
+  .imageLim {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    .cover {
       display: flex;
       width: 100%;
-      height: 13.3rem;
-
-      .cover {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        background-size: 100% auto;
-      }
+      height: 100%;
+      background-size: cover;
+      filter: blur(0.1rem);
     }
   }
 }
