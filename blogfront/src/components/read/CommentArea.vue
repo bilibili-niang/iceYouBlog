@@ -61,6 +61,9 @@ export default {
           })
     },
   },
+  created() {
+    this.getAllComment(this.id);
+  },
   watch: {
     id(newVal) {
       this.oldId = newVal;

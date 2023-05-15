@@ -28,7 +28,9 @@
         </div>
       </div>
     </div>
-
+    评论区:
+    <comment :user="commentUser" title="添加友链" :id="-1" type="friendLink"></comment>
+    <CommentArea id="-1"></CommentArea>
 
   </div>
 </template>
@@ -37,9 +39,12 @@
 import http from '@/common/api/request';
 import {ElMessage} from 'element-plus';
 import {h} from 'vue';
+import comment from "@/components/read/Comment.vue";
+import CommentArea from "@/components/read/CommentArea.vue";
 
 export default {
   name: "links",
+  components: {CommentArea, comment},
   data() {
     return {
       linkList: [],
@@ -47,7 +52,11 @@ export default {
       form: {
         title: '',
         url: ''
-      }
+      },
+      commentUser: {
+        name: '',
+        url: '',
+      },
     }
   },
   methods: {

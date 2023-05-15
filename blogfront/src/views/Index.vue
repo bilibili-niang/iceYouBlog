@@ -127,16 +127,14 @@ export default {
             this.alertMessage(e)
           })
     },
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage(title, type) {
       ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
-        ]),
+        message: title,
+        grouping: true,
+        type: 'success',
       })
     },
-    timeFormat(data) {
+    timeFormat() {
       this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
     },
     // 获取首页数据
@@ -188,22 +186,6 @@ export default {
         // console.log("header 到了最顶部")
       }
     },
-    getDataById() {
-      const lastElement = [...this.indexList].pop();
-      const id = lastElement.id || 0;
-      http.$axios({
-        url: '/home/',
-        method: 'POST',
-        data: {
-          id
-        }
-      })
-          .then(res => {
-            this.indexList = res.result.res;
-          })
-          .catch(e => {
-          })
-    },
   },
   created() {
     // 查询分页数据
@@ -233,6 +215,5 @@ export default {
   padding-bottom: 10rem;
   min-height: 90vh;
   justify-content: space-between;
-
 }
 </style>

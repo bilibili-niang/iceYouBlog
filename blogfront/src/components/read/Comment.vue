@@ -6,10 +6,7 @@
         left-toolbar="undo redo"
         :include-level="[3,4]" @save="save()" v-model="content"></v-md-editor>
     <el-dialog v-model="dialogFormVisible" title="留言一下">
-      <el-text>为文章
-        <el-text tag="b">{{ title }}</el-text>
-        留言
-      </el-text>
+      <el-text>为<el-text tag="b">{{ title }}</el-text>留言</el-text>
       <template #footer>
           <span class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取消</el-button>

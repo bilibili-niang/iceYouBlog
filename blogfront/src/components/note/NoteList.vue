@@ -1,89 +1,39 @@
 <template>
   <div class="noteList">
-    <el-row>
-      <el-col :span="3">
-        <div class="left noteLim">
-          <div class="btns">
-            <el-button @click="showAddNewNote()">
-              <el-icon>
-                <Plus/>
-              </el-icon>
-            </el-button>
-          </div>
-          <div class="newNote" v-if="showBtns">
-            <el-input v-model="title" placeholder="Please input"/>
-            <el-button @click="submitNewNote()">
-              提交
-            </el-button>
-          </div>
+    <div class="btns">
+      <el-button type="primary" @click="drawer = true">check all</el-button>
+      <el-input class="m-r" v-model="noteData.note_title" placeholder="Please input"/>
+      <el-button type="primary" @click="shareNote(nowId)">share</el-button>
+    </div>
 
-          <el-divider/>
-          <div class="noteListLim">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item" v-for="(item,index) in notesList" :key="index">
-
-                <el-row>
-                  <el-col :span="4">
-                    <div class="icon"><img :src="item.icon" alt=""></div>
-                  </el-col>
-
-                  <el-col :span="20">
-                    <el-text truncated @click="showNote(item.id)" class="hvr-shadow">{{ item.note_title }}</el-text>
-                  </el-col>
-
-                </el-row>
-
-                <el-row class="iconList">
-
-                  <el-col :span="4">
-                    <!--点击展开子目录-->
-                    <el-button link>
-                      <el-icon>
-                        <ArrowRight/>
-                      </el-icon>
-                    </el-button>
-                  </el-col>
-
-                  <el-col :span="4">
-                    <el-button link>
-                      <el-icon>
-                        <More/>
-                      </el-icon>
-                    </el-button>
-                  </el-col>
-
-                  <el-col :span="4">
-
-                    <!--添加子笔记的按钮-->
-                    <el-button link @click="addNewChildrenNote(item)">
-                      <el-icon>
-                        <Plus/>
-                      </el-icon>
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </li>
-            </ul>
-          </div>
+    <el-drawer v-model="drawer" size="25%" direction="ltr" title="I am the title" :with-header="false">
+      <el-text>my note list</el-text>
+      <div class="left noteLim">
+        <div class="newNote">
+          <el-input v-model="title" placeholder="新建一个"/>
+          <el-button @click="submitNewNote()">
+            提交
+          </el-button>
         </div>
-      </el-col>
-      <el-col :span="21">
-        <!--笔记的填充区域-->
-        <div class="right noteLim" v-if="showRight">
-          <div class="btns">
-            <el-input v-model="noteData.note_title" placeholder="Please input"/>
-          </div>
-          <el-text>Life is too long to end at a grave</el-text>
-          <v-md-editor
-              :include-level="[3,4]"
-              @save="saveNote"
-              v-model="noteData.content"
-              :disabled-menus="[]"
-          ></v-md-editor>
-
+        <el-divider/>
+        <div class="noteListLim">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" v-for="(item,index) in notesList" :key="index">
+              <NoteListItem :item="item" :showNote="getItemId"></NoteListItem>
+            </li>
+          </ul>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </el-drawer>
+    <!--笔记的填充区域-->
+    <div class="right noteLim" v-if="showRight">
+      <v-md-editor
+          :include-level="[3,4]"
+          @save="saveNote"
+          v-model="noteData.content"
+          :disabled-menus="[]"
+      ></v-md-editor>
+    </div>
     <div class="imageLim">
       <div class="cover"
            v-bind:style="{backgroundImage:'url(' + noteData.cover + ')',backgroundRepeat:'no-repeat'}">
@@ -96,24 +46,33 @@
 import http from '../../common/api/request';
 import {h} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus'
+import NoteListItem from "@/components/note/NoteListItem.vue";
 
 export default {
   name: "noteList",
+  components: {NoteListItem},
   data() {
     return {
       notesList: [],
       title: '',
-      showBtns: false,
       noteData: {},
       showRight: false,
       // 当前被点击的id
-      nowId: ''
+      nowId: '',
+      drawer: false
     }
   },
   created() {
     this.initNotesList();
   },
   methods: {
+    /* @author icestone , 21:31
+     * @date 2023/5/15
+     * TODO 点击设置分享权限该文章
+    */
+    shareNote(id) {
+      console.log(`将要分享的id:${id}`)
+    },
     // 提交二级笔记的service
     submitChildrenNote(title, fatherId) {
       http.$axios({
@@ -158,7 +117,11 @@ export default {
           h('span', null, title),
           h('i', {style: `color: ${useColor}`}, sub),
         ]),
+        grouping: true,
       })
+    },
+    getItemId(id) {
+      this.showNote(id);
     },
     // 检测在按下ctrl+s时进行保存
     saveNote() {
@@ -257,13 +220,6 @@ export default {
           })
 
     },
-    // 点击展示新建的窗口
-    showAddNewNote() {
-      console.log('showAddNewNote')
-      this.showBtns = !this.showBtns;
-
-
-    },
     initNotesList() {
       http.$axios({
         url: '/note/allNotes',
@@ -303,10 +259,6 @@ export default {
 }
 </script>
 <style scoped lang="less">
-.el-row {
-  //margin-bottom: 20px;
-}
-
 .el-row:last-child {
   margin-bottom: 0;
 }
@@ -326,26 +278,39 @@ export default {
   width: 100%;
   height: 100%;
 
+  .btns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    div.el-input {
+      max-width: 13rem;
+    }
+
+    button {
+      margin-right: .3rem;
+    }
+  }
+
+  // 左侧展开的列表
+  :deep .el-drawer__body {
+    padding: .3rem;
+
+  }
+
   .noteLim {
     display: flex;
     flex-direction: column;
     width: 100%;
-    //height: 100vh;
   }
 
   .left {
     width: 100%;
     display: flex;
-    padding: 0.5rem;
-
-    .btns {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
+    padding: 0;
 
     .newNote {
       display: flex;
@@ -376,27 +341,9 @@ export default {
             background: rgba(142, 197, 252, 0.5);
           }
 
-          .el-row {
-            display: flex;
-            width: 100%;
-
-            .el-col {
-              display: flex;
-              align-items: center;
-            }
-          }
-
           .iconList {
             button {
               font-size: 1.3rem;
-            }
-          }
-
-          .icon {
-            img {
-              display: flex;
-              width: 1.5rem;
-              height: 1.5rem;
             }
           }
 
@@ -420,7 +367,7 @@ export default {
     margin-bottom: 3rem;
 
     .v-md-editor {
-      min-height: 80vh;
+      min-height: 85vh;
     }
   }
 
