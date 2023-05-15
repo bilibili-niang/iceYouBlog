@@ -63,7 +63,7 @@ export default {
       small: false,
       background: false,
       pageSize2: 10,
-      currentPage2: 5,
+      currentPage2: 1,
       drawer: false
     }
   },

@@ -249,9 +249,16 @@ class MarkdownFileService {
         })
     }
 
-    // 通过用户邮箱返回用户所有文章
-    async getAllUserMarkdownFiles(email) {
-        return await markdownFile.findAll({
+
+    /* @author icestone , 23:45
+     * @date 2023/5/15
+     * TODO 通过用户邮箱返回用户所有文章分页数据的接口,
+     *  邮箱,返回数量,跳过条数
+    */
+    async getAllUserMarkdownFiles(email, limit = 20, id = 0) {
+        // return await markdownFile.findAll({
+        console.log(`limit:${limit},id:${id}`)
+        return await markdownFile.findAndCountAll({
             attributes: ['id', 'type', 'title', 'description', 'createdAt', 'view', 'tag1', 'tag2', 'tag3'],
             where: {
                 email: email
@@ -260,7 +267,9 @@ class MarkdownFileService {
                 // 我们从要排序的模型开始排序数组
                 ['id', 'DESC']
             ],
-            limit: 100
+            limit,
+            // 跳过的数量
+            offset: id,
         })
     }
 

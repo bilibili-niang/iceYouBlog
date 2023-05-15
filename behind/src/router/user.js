@@ -1,9 +1,6 @@
 //用户模块
 const Router = require('koa-router')
 
-//中间件
-const {Validator} = require('../middleware/public.middleware')
-
 //controller
 const {
     register,

@@ -79,7 +79,21 @@
             <el-button @click="submitTags()">提交</el-button>
 
           </el-drawer>
-
+          <div class="btns">
+            <!--<el-button @click="getDataById()">下一页</el-button>-->
+            <el-pagination
+                v-model:current-page="currentPage2"
+                v-model:page-size="pageSize2"
+                :page-sizes="[10, 20, 30, 40]"
+                small="small"
+                :disabled="disabled"
+                background="false"
+                layout="sizes, prev, pager, next"
+                :total="allCount"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+            />
+          </div>
         </el-tab-pane>
         <el-tab-pane label="History" name="history">
           <div class="card" style="width: 100%;" v-for="(item,index) in historyList" :key="index">
@@ -135,9 +149,59 @@ export default {
       selectedList: [],
       // 当前需要添加tag的文章的信息
       currentInfo: {},
+      pageSize2: 10,
+      currentPage2: 1,
+      allCount: 0,
+      disabled: false
     }
   },
   methods: {
+
+    /* @author icestone , 23:52
+     * @date 2023/5/15
+     * TODO 分页按钮
+    */
+    handleCurrentChange(val) {
+      let id = this.pageSize2 * val;
+      // @date 2023/5/15 , @author icestone
+      // TODO   请求数据
+      http.$axios({
+        url: '/markdownFile/getUserArticle',
+        method: 'POST',
+        headers: {
+          token: true
+        },
+        data: {
+          limit: 20,
+          id
+        }
+      })
+          .then(res => {
+            console.log('请求的数据')
+            console.log(res)
+            // @date 2023/5/16 , @author icestone
+            // TODO 如果返回的有数据:
+            if (Boolean(res.result.rows.length)) {
+              this.alertMessage(res.message)
+              this.articleList = res.result.rows;
+              // 取消一下选中
+              this.articleList.map(item => {
+                item.checked = false;
+              })
+            } else {
+              this.alertMessage("你已查询到尽头辣!")
+            }
+          })
+          .catch(e => {
+            console.log("e:")
+            console.log(e)
+          })
+
+
+    },
+    handleSizeChange(val) {
+      // console.log(`${val} items per page`)
+    },
     /* @author icestone , 14:19
      * @date 2023/5/7
      * TODO 将传入的id存储到 selectedList 中
@@ -395,8 +459,6 @@ export default {
           }
         })
             .then(res => {
-              console.log("res:")
-              console.log(res)
               if (res.success) {
                 this.historyList = res.result;
               } else {
@@ -451,9 +513,12 @@ export default {
       })
           .then(res => {
             this.alertMessage(res.message)
-            if (JSON.stringify(res.result).length > 10) {
+            if (JSON.stringify(res.result.rows).length > 10) {
               // articleList数据
-              this.articleList = res.result;
+              this.articleList = res.result.rows;
+              // @date 2023/5/15 , @author icestone
+              // TODO 所有文章的数量,用作分页
+              this.allCount = res.result.count;
               this.articleList.map(item => {
                 item.checked = false;
               })
@@ -494,6 +559,8 @@ export default {
 
 <style scoped lang="less">
 .user {
+  padding-bottom: 10rem;
+
   .card {
     padding: 0.5rem;
     width: 100%;

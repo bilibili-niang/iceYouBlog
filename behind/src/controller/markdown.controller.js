@@ -234,10 +234,14 @@ class MarkdownController {
         }
     }
 
-    // 返回用户所有文章
+    // 返回用户文章分页接口
     async returnUserAllArticle(ctx) {
         console.log('---returnUserAllArticle---')
-        const result = await getAllUserMarkdownFiles(ctx.state.user.email);
+        const {
+            limit = 20,
+            id = 0
+        } = ctx.request.body;
+        const result = await getAllUserMarkdownFiles(ctx.state.user.email, limit, id);
         if ((await result).length == 0) {
             // @date 2023/5/10 , @author icestone
             // TODO 为空,用户没有文章
