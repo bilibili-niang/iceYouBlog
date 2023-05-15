@@ -15,7 +15,7 @@
       admin
       <br>
       关于项目:
-      https://github.com/bilibili-niang/iceYouBlog
+      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
 
     </el-drawer>
 
