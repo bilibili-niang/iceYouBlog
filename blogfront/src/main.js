@@ -13,15 +13,20 @@ import 'hover.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /*引入公共样式*/
 import '@/assets/css/reset.less'
+import '@/assets/css/personalize.less'
 
 // markdown预览组件以及样式
 import VueMarkdownEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
+// 显示行数
 import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
+// 复制插件
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+
 // @date 2023/5/7 , @author icestone
-import Prism from 'prismjs';
 // 引入所有语言包,管他妈的直接全部引入
 import hljs from 'highlight.js';
 
@@ -33,15 +38,15 @@ VueMarkdownEditor.use(githubTheme, {
 });
 
 VueMarkdownEditor.use(createLineNumbertPlugin());
+VueMarkdownEditor.use(createCopyCodePlugin());
 
 const app = createApp(App)
 // @date 2023/5/6 , @author icestone
-// 引入v-md-editor预览组件
+// 引入v-md-editor编辑组件
 app.use(VueMarkdownEditor);
 
 app.use(store)
 app.use(ElementPlus)
-
 
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

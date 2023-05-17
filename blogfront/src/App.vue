@@ -27,7 +27,7 @@ export default {
       //这里是夜间
       this.day = false;
       const body = document.querySelector('body');
-      body.style.backgroundColor = 'rgba(0,0,0,0.2)'
+      body.style.backgroundColor = 'rgba(18,18,18,0)'
     }
     console.log(this.day)
   },

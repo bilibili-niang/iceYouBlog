@@ -1,5 +1,5 @@
 <template>
-  <div class="indexCard">
+  <div class="indexCard hover" id="element">
     <div class="card-body">
       <el-text tag="b" size="large">
         <h5>{{ item.title }}</h5>
@@ -49,12 +49,32 @@ import timeFormat from "@/common/filter/time";
 import http from "@/common/api/request";
 import {ElMessage} from "element-plus";
 import {h} from "vue";
+import WOW from "wow.js";
 
 export default {
   name: "indexCard",
   components: {MarkdownTags},
   props: {
     item: {}
+  },
+  mounted() {
+    // 倍数
+    // 妈的不好用,太抖了
+    /*const multiple = 15;
+    document.querySelectorAll(".indexCard").forEach(item => {
+      item.addEventListener("mousemove", function (e) {
+        // console.log(e.layerX, e.layerY)
+        let box = item.getBoundingClientRect();
+        // console.log(`box`)
+        // console.log(box);
+        let calcX = (e.clientY - box.y - (box.height / 2)) / multiple * -1;
+        let calcY = (e.clientX - box.x - (box.width / 2)) / multiple * -1;
+        item.style.transform = "rotateX(" + calcX + "deg) " + "rotateY(" + calcY + "deg)";
+        console.log("calcX:")
+        console.log(calcX)
+      })
+    })*/
+
   },
   methods: {
     alertMessage(title, sub, color) {
@@ -101,7 +121,7 @@ export default {
     // @date 2023/5/5 , @author icestone
     // TODO 第一次创建子组件并接收到值时需要格式化下时间
     this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || '';
-  }
+  },
 }
 </script>
 

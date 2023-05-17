@@ -1,10 +1,28 @@
 <template>
   <div class="noteList">
     <div class="btns">
-      <el-button type="primary" @click="drawer = true">check all</el-button>
+      <el-button @click="drawer = true">check all</el-button>
       <el-input class="m-r" v-model="noteData.note_title" placeholder="Please input"/>
-      <el-button type="primary" @click="shareNote(nowId)">share</el-button>
+      <el-button @click="showDrawer = true">share</el-button>
+
+      <el-text v-if="noteData.allowView">公开分享</el-text>
+      <el-text v-else>没有公开分享</el-text>
+
+      <el-button @click="goToShareLink(noteData.id)" v-if="noteData.allowView">check share link
+      </el-button>
+
     </div>
+    <el-drawer v-model="showDrawer" title="是否分享你的笔记" size="50%">
+      <div>
+        noteData:
+        { "id": 6, "note_title": "面试说的话", "allowView": 0, "content": "> type your first title!", "cover":
+        "/images/cover/1.png", "icon": "/images/icon/default.png", "allowComment": 0, "allowEditUserList": null }
+        <br>
+        {{ noteData }}
+
+        <el-button :@click="shareNoteById(noteData.id)">share</el-button>
+      </div>
+    </el-drawer>
 
     <el-drawer v-model="drawer" size="25%" direction="ltr" title="I am the title" :with-header="false">
       <el-text>my note list</el-text>
@@ -59,19 +77,45 @@ export default {
       showRight: false,
       // 当前被点击的id
       nowId: '',
-      drawer: false
+      drawer: false,
+      // 分享的弹窗
+      showDrawer: false,
+
     }
   },
   created() {
     this.initNotesList();
   },
   methods: {
+    /* @author icestone , 20:24
+     * @date 2023/5/16
+     * TODO 前往分享链接
+    */
+    goToShareLink(id) {
+      console.log(`分享id:${id}`)
+    },
     /* @author icestone , 21:31
      * @date 2023/5/15
      * TODO 点击设置分享权限该文章
     */
-    shareNote(id) {
+    shareNoteById(id) {
       console.log(`将要分享的id:${id}`)
+      http.$axios({
+        url: '/note/publicNote',
+        method: 'POST',
+        headers: {
+          token: true
+        },
+        data: {
+          id,
+        }
+      }).then(res => {
+        this.alertMessage(res.message)
+      })
+          .catch(e => {
+            this.alertMessage(e)
+          })
+
     },
     // 提交二级笔记的service
     submitChildrenNote(title, fatherId) {

@@ -93,6 +93,37 @@ class NotesService {
             secondLevel: true,
         })
     }
+
+    /* @author icestone , 20:04
+     * @date 2023/5/16
+     * TODO 通过id,指定字段查询该note的信息
+    */
+    async getNoteUserInfoById(id, attr = ['email']) {
+        return await notes.findOne({
+            attributes: attr,
+            where: {
+                id
+            },
+            raw: true
+        })
+    }
+
+    /* @author icestone , 20:13
+ * @date 2023/5/16
+ * TODO 更改note权限为公开
+*/
+    async changeNoteViewAuth(id) {
+        return await notes.update({
+            allowView: 1
+        }, {
+            where: {
+                id
+            },
+        }, {
+            raw: true
+        })
+
+    }
 }
 
 module.exports = new NotesService();

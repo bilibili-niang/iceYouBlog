@@ -11,16 +11,17 @@
         <markdownTags :tag="codeClipsData.tag1" :click="true" v-if="codeClipsData.tag1"></markdownTags>
         <markdownTags :tag="codeClipsData.tag2" :click="true" v-if="codeClipsData.tag2"></markdownTags>
         <markdownTags :tag="codeClipsData.tag3" :click="true" v-if="codeClipsData.tag3"></markdownTags>
-
       </span>
       <el-divider content-position="left">
         <el-text>code</el-text>
       </el-divider>
-      <pre>
-        <code>
-          {{ codeClipsData.content }}
-        </code>
-      </pre>
+
+      <v-md-editor
+          :include-level="[3,4]"
+          v-model="codeClipsData.content"
+          mode="preview"
+          @copy-code-success="handleCopyCodeSuccess"
+      ></v-md-editor>
     </div>
   </div>
 </template>
@@ -40,6 +41,9 @@ export default {
     }
   },
   methods: {
+    handleCopyCodeSuccess(code) {
+      this.alertMessage("复制成功")
+    },
     initData() {
       console.log('initData')
       this.codeClipsId = this.$route.query.id || '0';
@@ -87,11 +91,6 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-
-    span {
-      display: flex;
-      align-items: center;
-    }
   }
 }
 </style>

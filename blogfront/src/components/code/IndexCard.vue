@@ -11,9 +11,12 @@
     </el-row>
 
     <div class="text">
-      <code>
-        {{ item.content }}
-      </code>
+      <v-md-editor
+          :include-level="[3,4]"
+          v-model="item.content"
+          mode="preview"
+          @copy-code-success="handleCopyCodeSuccess"
+      ></v-md-editor>
     </div>
     <div class="tags">
       <el-button class="m-r" round @click="goToRead(item.id)">read</el-button>
@@ -28,6 +31,8 @@
 <script>
 import MarkdownTags from "@/components/common/MarkdownTags.vue";
 import timeFormat from "@/common/filter/time";
+import {ElMessage} from "element-plus";
+import {h} from "vue";
 
 export default {
   name: "IndexCard",
@@ -36,6 +41,18 @@ export default {
     item: {}
   },
   methods: {
+    handleCopyCodeSuccess() {
+      this.alertMessage("复制成功")
+    },
+    alertMessage(title, sub, color) {
+      const useColor = color || 'red';
+      ElMessage({
+        message: h('p', null, [
+          h('span', null, title),
+          h('i', {style: `color: ${useColor}`}, sub),
+        ]),
+      })
+    },
     // 点击后跳转详情
     goToRead(id) {
       const routeUrl = this.$router.resolve({

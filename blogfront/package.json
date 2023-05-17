@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cl  i-service build"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
     "@element-plus/icons-vue": "^2.1.0",
     "@kangc/v-md-editor": "next",
     "@popperjs/core": "^2.11.7",
+    "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "babel-plugin-prismjs": "^2.1.0",
     "better-scroll": "^2.5.0",
@@ -25,14 +26,14 @@
     "less-loader": "^4.0.1",
     "moment": "^2.29.4",
     "popper.js": "^1.16.1",
-    "prismjs": "^1.29.0",
     "tailwindcss": "^3.3.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "vue": "^3.2.13",
     "vue-meta": "^2.4.0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.75.0",
+    "wow.js": "^1.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",

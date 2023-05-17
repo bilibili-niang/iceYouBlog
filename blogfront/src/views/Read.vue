@@ -11,16 +11,15 @@
     <div class="dataContainer" v-if="dataExist">
       <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
                  :userInf="userInf"></indexCard>
-
       <div class="articleCon">
         <v-md-editor
             :include-level="[3,4]"
             v-model="markdownData.content"
             mode="preview"
+            @copy-code-success="handleCopyCodeSuccess"
         ></v-md-editor>
       </div>
     </div>
-
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item title="友善地评论" name="1">
         <div class="commentUserInf m-b f-c">
@@ -64,6 +63,9 @@ import CommentArea from "@/components/read/CommentArea.vue";
 export default {
   name: "Read",
   methods: {
+    handleCopyCodeSuccess(code) {
+      this.alertMessage("复制成功")
+    },
     /* @author icestone , 16:02
      * @date 2023/5/6
      * TODO 前往实验性功能的编辑

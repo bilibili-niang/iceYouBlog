@@ -3,7 +3,8 @@ const {
     addNote,
     getNoteById,
     updateNoteById,
-    getNewSecondNote
+    getNewSecondNote,
+    changeNoteViewAuth
 } = require('../services/notes.service');
 
 class NoteController {
@@ -110,6 +111,23 @@ class NoteController {
         }
 
     }
+
+    /* @author icestone , 19:56
+     * @date 2023/5/16
+     * TODO 公开某个note
+    */
+    async returnUserPublicNoteResult(ctx) {
+        console.log(`当前note的用户信息:`)
+        // 更改权限为公开
+        const result = await changeNoteViewAuth(ctx.request.body.id);
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: "更改note权限成功",
+            result
+        }
+    }
+
 }
 
 module.exports = new NoteController();

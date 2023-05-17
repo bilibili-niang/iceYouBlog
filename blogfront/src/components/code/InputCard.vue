@@ -1,34 +1,32 @@
 <template>
   <div class="inputCard">
-    <el-button @click="drawer = true">add</el-button>
+    <el-button @click="drawer = true">add code</el-button>
     <el-drawer v-model="drawer" title="新增code" size="70%" direction="ttb" :with-header="false">
-      <el-form>
-        <el-form-item label="title" label-width="100px">
-          <el-input v-model="form.title" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="tag1" label-width="100px">
-          <el-input v-model="form.tag1" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="tag2" label-width="100px">
-          <el-input v-model="form.tag2" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="tag3" label-width="100px">
-          <el-input v-model="form.tag3" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="content" label-width="100px">
-          <el-input
-              v-model="form.content"
-              :rows="13"
-              type="textarea"
-              placeholder="Please input content"
-          />
-        </el-form-item>
-
-        <el-form-item label="description" label-width="100px">
+      {{form}}
+      <div class="form">
+        <div class="des">
+          <div class="desLim m-b">
+            <el-text class=m-r>title</el-text>
+            <el-input v-model="form.title" autocomplete="off"/>
+            <el-text class=m-r>tag1</el-text>
+            <el-input v-model="form.tag1" autocomplete="off"/>
+          </div>
+          <div class="desLim m-b">
+            <el-text class=m-r>tag2</el-text>
+            <el-input v-model="form.tag2" autocomplete="off"/>
+            <el-text class=m-r>tag3</el-text>
+            <el-input v-model="form.tag3" autocomplete="off"/>
+          </div>
+          <el-text>description</el-text>
           <el-input v-model="form.description" autocomplete="off"/>
-        </el-form-item>
-
-      </el-form>
+        </div>
+        <v-md-editor
+            :include-level="[3,4,5]"
+            @save="drawer = true"
+            v-model="form.content"
+            :disabled-menus="[]"
+        ></v-md-editor>
+      </div>
 
       <div class="btns">
         <el-button @click="submitCode()">submit</el-button>
@@ -49,18 +47,12 @@ export default {
     return {
       showFlag: false,
       form: {
-        title: '这是我的标题',
+        title: 'my title',
         tag1: 'css',
         tag2: 'html',
-        tag3: 'demo',
-        content: `.list-group {
-      z-index: 3;
-      .list-group-item{
-
-        padding: 0.3rem;
-      }
-    }`,
-        description: '这个是css的代码,有些不懂的就写在这里了'
+        tag3: 'code',
+        content: `> type your first code`,
+        description: 'description about this code'
       },
       drawer: false
     }
@@ -75,6 +67,10 @@ export default {
         ]),
       })
     },
+    /* @author icestone , 17:27
+     * @date 2023/5/16
+     * TODO 提交
+    */
     submitCode() {
       console.log("this.form:")
       console.log(this.form)
@@ -111,5 +107,25 @@ export default {
 </script>
 
 <style scoped lang="less">
+.inputCard {
+  :deep .el-input {
+    width: auto;
+    margin-right: .3rem;
+  }
 
+  .des {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+
+    .desLim {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  .v-md-editor {
+    min-height: 40vh;
+  }
+}
 </style>

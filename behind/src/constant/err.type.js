@@ -18,7 +18,7 @@ module.exports = {
         success: false,
         result: ''
     },
-    userParamsError:{
+    userParamsError: {
         code: '10005',
         message: '获取用户信息传参错误',
         success: false,
@@ -158,6 +158,19 @@ module.exports = {
         success: false,
         result: ''
     },
+    // 关于note的报错,以11开头
+    noteParamsNotAllow: {
+        code: '11001',
+        message: "note操作传参错误",
+        success: false,
+        result: ''
+    },
+    noteAuthNotAllow:{
+        code: '11002',
+        message: "note操作权不够",
+        success: false,
+        result: ''
+    }
 
 
 }

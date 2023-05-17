@@ -1,58 +1,65 @@
 <template>
   <!-- content goes here -->
   <div class="index container">
-    <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
-      关于
-    </el-button>
-    <el-drawer
-        v-model="drawer"
-        title="I am the title"
-        direction="ttb"
-        :with-header="false">
-      测试账户:
-      admin
-      密码:
-      admin
-      <br>
-      关于项目:
-      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
-
-    </el-drawer>
-
-    <div class="card hvr-glow" style="width: 100%;" v-for="(item,index) in indexList"
-         :key="index">
-      <indexCard :item="item"></indexCard>
+    <div class="left">
+      <div class="btns m-b">
+        <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
+          关于
+        </el-button>
+        <el-drawer
+            v-model="drawer"
+            title="I am the title"
+            direction="ttb"
+            :with-header="false">
+          测试账户:
+          admin
+          密码:
+          admin
+          <br>
+          关于项目:
+          <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
+        </el-drawer>
+      </div>
+      <div class="card hvr-glow" style="width: 100%;" v-for="(item,index) in indexList"
+           :key="index">
+        <IndexCard :item="item"></IndexCard>
+      </div>
+      <div class="btns">
+        <!--<el-button @click="getDataById()">下一页</el-button>-->
+        <el-pagination
+            v-model:current-page="currentPage2"
+            v-model:page-size="pageSize2"
+            :page-sizes="[10, 20, 30, 40]"
+            :small="small"
+            :disabled="disabled"
+            :background="background"
+            layout="sizes, prev, pager, next"
+            :total="allCount"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+      </div>
     </div>
-    <div class="btns">
-      <!--<el-button @click="getDataById()">下一页</el-button>-->
-      <el-pagination
-          v-model:current-page="currentPage2"
-          v-model:page-size="pageSize2"
-          :page-sizes="[10, 20, 30, 40]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
-          layout="sizes, prev, pager, next"
-          :total="allCount"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-      />
+    <div class="right">
+      <AdminCard>
+
+      </AdminCard>
     </div>
+
   </div>
 </template>
 
 <script>
-import http from '../common/api/request';
-import timeFormat from '../common/filter/time'
-import filters from '../common/filter/time';
+import http from '@/common/api/request';
+import filters from '@/common/filter/time';
 import {ElMessage} from 'element-plus';
-import {h} from 'vue';
 import MarkdownTags from "@/components/common/MarkdownTags.vue";
 import IndexCard from "@/components/index/IndexCard.vue";
+import AdminCard from "@/components/index/AdminCard.vue";
 
 export default {
   name: "Index",
-  components: {IndexCard, MarkdownTags},
+  components: {AdminCard, IndexCard, MarkdownTags},
   data() {
     return {
       indexList: [],
@@ -209,11 +216,24 @@ export default {
 <style scoped lang="less">
 .index {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   padding-top: 3rem;
   padding-bottom: 10rem;
   min-height: 90vh;
   justify-content: space-between;
+
+  .left {
+    padding-left: .3rem;
+    display: flex;
+    width: 80%;
+    flex-direction: column;
+  }
+
+  .right {
+    display: flex;
+    height: 100%;
+    background: #8f5f5f;
+    flex: 1;
+  }
 }
 </style>
