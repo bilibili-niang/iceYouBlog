@@ -43,4 +43,5 @@ router.post('/isAdmin', auth, returnUserIsAdmin)
 // 通过email获取给第三方看的用户信息
 router.post('/getUserInfoByEmail', returnUserInfoByEmail)
 
+
 module.exports = router

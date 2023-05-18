@@ -30,9 +30,58 @@
             </el-button>
           </li>
 
+          <li class="list-group-item">
+            <el-text>选择需要展示的admin账户</el-text>
+            <div class="user" v-for="(item,index) in allAdminList" :key="index">
+              <el-row>
+                <el-col :span="8">
+                  <Avatar :imgUrl="item.avatar"></Avatar>
+                </el-col>
+                <el-col :span="16">
+                  <div class="UserInfo">
+                    <div class="Lim">
+                      <el-tag class="ml-2" type="info">id</el-tag>
+                      <el-text>
+                        {{ item.id }}
+                      </el-text>
+                    </div>
+
+                    <div class="Lim">
+                      <el-tag class="ml-2" type="info">username</el-tag>
+                      <el-text>
+                        {{ item.username }}
+                      </el-text>
+                    </div>
+
+                    <div class="Lim">
+                      <el-tag class="ml-2" type="info">email</el-tag>
+                      <el-text>
+                        {{ item.email }}
+                      </el-text>
+                    </div>
+
+                    <div class="Lim">
+                      <el-tag class="ml-2" type="info">occupation</el-tag>
+                      <el-text>
+                        {{ item.occupation }}
+                      </el-text>
+                    </div>
+
+                    <div class="Lim">
+                      <el-tag class="ml-2" type="info">word</el-tag>
+                      <el-text>
+                        {{ item.word }}
+                      </el-text>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+              <div class="uerOptions">
+                <el-button @click="operateAdminUser(item.email,'showInIndex')">setAsIndexUser</el-button>
+              </div>
+            </div>
+          </li>
         </ul>
-
-
       </el-tab-pane>
     </el-tabs>
 
@@ -53,7 +102,9 @@ export default {
     return {
       isAdmin: false,
       friendLinks: [],
-      activeName: 'friendLinks'
+      activeName: 'friendLinks',
+      // 存放所有的admin用户信息
+      allAdminList: {},
     }
   },
   computed: {
@@ -62,6 +113,57 @@ export default {
     }
   },
   methods: {
+    /* @author icestone , 18:15
+     * @date 2023/5/17
+     * TODO 操作admin用户
+    */
+    operateAdminUser(email, operate) {
+      console.log("operateAdminUser")
+      console.log(`email:${email},operate:${operate}`)
+      http.$axios({
+        url: '/admin/operateUser',
+        method: 'POST',
+        headers: {
+          token: true
+        },
+        data: {
+          email,
+          operate
+        }
+      })
+          .then(res => {
+            console.log("res:")
+            console.log(res)
+            this.alertMessage(res.message)
+          })
+          .catch(e => {
+            console.log("e:")
+            console.log(e)
+          })
+
+
+    },
+    /* @author icestone , 17:56
+     * @date 2023/5/17
+     * TODO 获取所有admin的信息
+    */
+    getAllAdminUserInfo() {
+      http.$axios({
+        url: '/admin/getAllAdminInfo',
+        method: 'POST',
+        headers: {
+          token: true
+        }
+      })
+          .then(res => {
+            this.allAdminList = res.result;
+          })
+          .catch(e => {
+            console.log("e:")
+            console.log(e)
+          })
+
+    },
     initLinks() {
       // 请求友链信息
       http.$axios({
@@ -108,8 +210,7 @@ export default {
           h('i', {style: `color: ${useColor}`}, sub),
         ]),
       })
-    }
-    ,
+    },
     initData() {
       console.log('store中的数据:')
       console.log(this.userInfoStore)
@@ -152,6 +253,7 @@ export default {
   created() {
     this.initData();
     this.initLinks();
+    this.getAllAdminUserInfo();
 
   }
 
@@ -166,4 +268,19 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+
+:deep .list-group-item {
+  padding: .3rem;
+}
+
+.friendLinks {
+  flex-wrap: wrap;
+
+  :deep .card {
+    padding: 0;
+    min-width: 19rem;
+
+  }
+}
+
 </style>

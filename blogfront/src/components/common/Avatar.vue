@@ -18,6 +18,13 @@ export default {
 </script>
 
 <style scoped lang="less">
+.demo-type {
+  margin: .3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .demo-type div span {
   display: flex;
   width: 5rem;
@@ -26,8 +33,10 @@ export default {
   border-radius: 50%;
 
   :deep img {
-    width: 5rem;
-    height: 5rem;
+    width: 100%;
+    height: 100%;
+    min-width: 5rem;
+    min-height: 5rem;
   }
 }
 </style>

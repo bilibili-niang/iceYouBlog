@@ -3,11 +3,17 @@ const {
     getAddResult
 } = require('../services/friend.service')
 const {
-    getLogs
+    getLogs,
+    getAllAdminUserInfo,
+    operateUser,
+    getShowInIndexAdminUser
 } = require('../services/admin.service')
 const {
     getDeleteResult
 } = require('../services/markdownFile.service')
+const {
+    paramsVerify
+} = require('../middleware/admin.middleware')
 
 class AdminController {
     // 返回所有友链
@@ -72,9 +78,68 @@ class AdminController {
                 result
             }
         }
-
     }
 
+
+    /* @author icestone , 17:32
+ * @date 2023/5/17
+ * TODO 返回admin用户的列表
+*/
+    async returnAllAdminUser(ctx) {
+        paramsVerify
+        const result = await getAllAdminUserInfo();
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: "获取所有admin用户列表",
+            result
+        }
+    }
+
+    /* @author icestone , 18:37
+     * @date 2023/5/17
+     * TODO 对admin用户进行操作
+    */
+
+    async returnOperateResult(ctx) {
+        const paramsRes = paramsVerify({
+            email: {
+                allowNull: false,
+                default: null,
+                from: 'user'
+            },
+            operate: {
+                allowNull: false,
+                default: null,
+            }
+        }, ctx)
+        if (paramsRes == 0) {
+            const result = await operateUser(ctx.state.user.email, ctx.request.body.operate)
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: '操作admin用户成功',
+                result,
+            }
+        } else {
+            console.log('paramsRes的传参错误')
+            ctx.body = paramsRes
+        }
+    }
+
+    /* @author icestone , 15:47
+     * @date 2023/5/18
+     * TODO 返回展示在index页面的admin用户信息
+    */
+    async returnIndexAdmin(ctx) {
+        const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word']);
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: "获取展示在index页面的用户",
+            result
+        }
+    }
 }
 
 module.exports = new AdminController();

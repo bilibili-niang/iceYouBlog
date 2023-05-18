@@ -28,7 +28,7 @@ const User = seq.define('markdown_user', {
     is_admin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0,
+        defaultValueValue: 0,
         comment: '是否为管理员,0:不是管理员(默认);1:是管理员'
     },
     verificationCode: {
@@ -50,24 +50,30 @@ const User = seq.define('markdown_user', {
         type: DataTypes.STRING,
         allowNull: true,
         comment: '用户的默认头像',
-        default: '/images/avatars/defaultAvatar.png'
+        defaultValue: '/images/avatars/defaultValueAvatar.png'
     },
     occupation: {
         type: DataTypes.STRING(30),
         allowNull: true,
         comment: '用户职业',
-        default: 'coder'
+        defaultValue: 'coder'
     },
     githubUrl: {
         type: DataTypes.STRING(100),
         allowNull: true,
         comment: '用户的github地址',
-        default: 'null'
+        defaultValue: 'null'
     },
     word: {
         type: DataTypes.STRING(300),
         allowNull: true,
         comment: '该用户有机会成为金句的话',
+    },
+    showInIndex:{
+        type: DataTypes.STRING(10),
+        allowNull: true,
+        comment: '是否展示在index页面',
+        defaultValueValue: 'null'
     }
 })
 //同步并创建表,创建完之后可以注释掉了

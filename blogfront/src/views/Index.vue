@@ -1,25 +1,25 @@
 <template>
   <!-- content goes here -->
+  <div class="btns m-b">
+    <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
+      关于
+    </el-button>
+    <el-drawer
+        v-model="drawer"
+        title="I am the title"
+        direction="ttb"
+        :with-header="false">
+      测试账户:
+      admin
+      密码:
+      admin
+      <br>
+      关于项目:
+      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
+    </el-drawer>
+  </div>
   <div class="index container">
-    <div class="left">
-      <div class="btns m-b">
-        <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
-          关于
-        </el-button>
-        <el-drawer
-            v-model="drawer"
-            title="I am the title"
-            direction="ttb"
-            :with-header="false">
-          测试账户:
-          admin
-          密码:
-          admin
-          <br>
-          关于项目:
-          <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
-        </el-drawer>
-      </div>
+    <div class="left m-r">
       <div class="card hvr-glow" style="width: 100%;" v-for="(item,index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
@@ -41,9 +41,7 @@
       </div>
     </div>
     <div class="right">
-      <AdminCard>
-
-      </AdminCard>
+      <AdminCard></AdminCard>
     </div>
 
   </div>
@@ -220,20 +218,22 @@ export default {
   padding-top: 3rem;
   padding-bottom: 10rem;
   min-height: 90vh;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
 
   .left {
     padding-left: .3rem;
     display: flex;
-    width: 80%;
+    flex: 1;
     flex-direction: column;
+    max-width: 100%;
   }
 
   .right {
     display: flex;
     height: 100%;
-    background: #8f5f5f;
-    flex: 1;
+    max-width: 100%;
+    justify-content: center;
   }
 }
 </style>

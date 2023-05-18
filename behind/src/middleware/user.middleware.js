@@ -5,7 +5,7 @@ const md5 = require("md5");
 const {JWT_SECRET} = require('../config/config.default')
 //报错类型
 const {
-    userFormateError, userDoesNotExist, invalidPassword, userLoginError, TokenExpiredError, JsonWebTokenError,
+    userFormateError, userDoesNotExist, userLoginError, TokenExpiredError, JsonWebTokenError,
     informationNotAllow, tokenNotExist,
 
 } = require('../constant/err.type')
@@ -24,10 +24,7 @@ const verifyLogin = async (ctx, next) => {
     password = md5(password + md5Key);
     ctx.request.body.password = md5(password + md5Key);
     const username = ctx.request.body.username || '';
-    console.log("username, password:")
-    console.log(username, password)
     try {
-        // const res = await getUserInfo({username})
         const res = await getUserInfoByName(username)
         if (!res) {
             console.error('用户名不存在', {username})
