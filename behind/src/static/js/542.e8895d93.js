@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkblogfront=self.webpackChunkblogfront||[]).push([[542],{9542:function(e,n,r){r.r(n),r.d(n,{default:function(){return s}});var t=r(4535);const u={class:"userDetail"},l=[(0,t._)("h2",null,"UserDetail",-1)];n={name:"UserDetail"};var s=(0,r(8696).Z)(n,[["render",function(e,n,r,s,a,i){return(0,t.wg)(),(0,t.iD)("div",u,l)}]])}}]);

@@ -1,5 +1,5 @@
 <template>
-  <div class="indexCard hover" id="element">
+  <div class="indexCard hover m-b" id="element">
     <div class="card-body">
       <el-text tag="b" size="large">
         <h5>{{ item.title }}</h5>
@@ -37,7 +37,7 @@
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
             <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-          </span>
+        </span>
       </div>
     </div>
   </div>
@@ -49,7 +49,6 @@ import timeFormat from "@/common/filter/time";
 import http from "@/common/api/request";
 import {ElMessage} from "element-plus";
 import {h} from "vue";
-import WOW from "wow.js";
 
 export default {
   name: "indexCard",
@@ -127,6 +126,7 @@ export default {
 
 <style scoped lang="less">
 .indexCard {
+
   .card-body {
     padding-top: 0.35rem;
     display: flex;

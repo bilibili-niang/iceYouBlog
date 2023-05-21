@@ -41,14 +41,12 @@ class AdminMiddleware {
         const keys = Object.keys(verify);
         let flag = 0;
         keys.map(item => {
-            let param = '';
             const type = verify[item].type || null;
             // @date 2023/5/18 , @author icestone
             // TODO 动态获取
             // user 从 ctx.state.user 上获取
             if (type == 'user') {
                 const nowVal = ctx.state.user[item]
-                console.log(`是否允许为空:`)
                 if (!nowVal) {
                     // @date 2023/5/18 , @author icestone
                     // TODO 如果目标不存在
@@ -68,13 +66,28 @@ class AdminMiddleware {
                     }
                 }
             } else {
-                const nowVal = ctx.request.body[item];
+                const nowVal = ctx.request.body[item] || null;
+                console.log(`nowVal:${nowVal}`)
+                console.log(`verify[item]:`)
+                console.log(verify[item])
                 if (!nowVal) {
                     // @date 2023/5/18 , @author icestone
                     // TODO 如果目标不存在
-                    if (verify[item].allowNull || null) {
+                    if (verify[item].allowNull || false == false) {
                         // @date 2023/5/18 , @author icestone
                         // TODO 如果允许不存在
+                        console.log('不允许为空')
+                        console.log(`nowVal:${nowVal}`)
+                        if (nowVal == null) {
+                            console.log('目标值为空,但是不允许,报错')
+                            flag = {
+                                code: 300,
+                                message: "传参参数错误",
+                                success: false,
+                                result: "传参错误"
+                            }
+                        } else {
+                        }
                     } else {
                         // @date 2023/5/18 , @author icestone
                         // TODO 如果不允许不存在,报错

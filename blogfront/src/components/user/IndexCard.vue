@@ -24,6 +24,12 @@
             {{ item.id }}
           </el-text>
         </span>
+        <span v-if="item.recommendLevel">
+          <el-button round>recommendLevel</el-button>
+           <el-text>
+            {{ item.recommendLevel }}
+          </el-text>
+        </span>
         <el-divider direction="vertical"/>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
@@ -94,7 +100,7 @@ export default {
 <style scoped lang="less">
 .indexCard {
   .card-body {
-    padding-top: 0.35rem;
+    padding: .3rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

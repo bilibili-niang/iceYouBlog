@@ -1,9 +1,13 @@
 <template>
   <div class="codeClips container">
-    <InputCard></InputCard>
+    <InputCard v-if="userInfoStore.loginStatus"></InputCard>
     <div class="cardsLim">
-      <ul class="list-group list-group-flush" v-for="(item,index) in codeList" :key="index">
-        <IndexCard :item="item"></IndexCard>
+      <div class="codeZoomCard" v-if="showZoomCard">
+        <el-button @click="showZoomCard=false">close</el-button>
+        <ZoomCard :item="nowItem[0]"></ZoomCard>
+      </div>
+      <ul v-else class="list-group list-group-flush" v-for="(item,index) in codeList" :key="index">
+        <IndexCard :item="item" :zoomFun="zoom"></IndexCard>
       </ul>
     </div>
   </div>
@@ -15,17 +19,39 @@ import http from '@/common/api/request';
 import {ElMessage} from 'element-plus';
 import {h} from 'vue';
 import IndexCard from '@/components/code/IndexCard.vue'
+import ZoomCard from "@/components/code/ZoomCard.vue";
 
 export default {
   name: "CodeIndex",
   data() {
     return {
       codeList: [],
-      showDelFlag: false
+      showDelFlag: false,
+      showZoomCard: false,
+      nowItem: {},
     }
   },
-  components: {InputCard, IndexCard},
+  computed: {
+    userInfoStore() {
+      return this.$store.state.user;
+    }
+  },
+  components: {ZoomCard, InputCard, IndexCard},
   methods: {
+    /* @author icestone , 23:54
+     * @date 2023/5/19
+     * TODO 代码card放大看看
+    */
+    zoom(val) {
+      console.log(val);
+      this.showZoomCard = true;
+      console.log(this.codeList);
+      this.nowItem = this.codeList.filter(item => {
+        return item.id == val
+      })
+
+
+    },
     alertMessage(title, sub, color) {
       const useColor = color || 'red';
       ElMessage({
@@ -65,9 +91,10 @@ export default {
   padding-bottom: 3rem;
 
   .cardsLim {
-    padding-top: 1rem;
+    padding-top: .3rem;
 
     .list-group {
+      animation: fadeIn .3s;
 
       .list-group-item {
         border-radius: 0.5rem;
@@ -95,6 +122,20 @@ export default {
         }
       }
     }
+  }
+
+  .codeZoomCard {
+    animation: fadeIn .3s;
+  }
+
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>

@@ -114,7 +114,7 @@ class AdminController {
             }
         }, ctx)
         if (paramsRes == 0) {
-            const result = await operateUser(ctx.state.user.email, ctx.request.body.operate)
+            const result = await operateUser(ctx.request.body.email, ctx.request.body.operate)
             ctx.body = {
                 code: 200,
                 success: true,

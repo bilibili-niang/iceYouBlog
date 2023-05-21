@@ -3,9 +3,11 @@ const {JWT_SECRET} = require('../config/config.default')
 const cheerio = require('cheerio');
 const TurndownService = require('turndown');
 let turndownService = new TurndownService();
+
 const {
     getUserInfoByEmail
 } = require('../services/user.service');
+
 const {
     updateMarkdownByEmail,
     getUserEmailByMarkdownId,
@@ -27,8 +29,11 @@ const {
     getAlreadyDetailById,
     getAllCounts,
     getAllTagsByEmail,
-    UpdateSomething
-} = require('../services/markdownFile.service')
+    UpdateSomething,
+    setRecommendByType,
+    getRecommendMarkdownFile
+} = require('../services/markdownFile.service');
+
 const markdownFile = require('../schema/markdownFile');
 const https = require('https');
 const {salt} = require('../config/default');
@@ -44,6 +49,7 @@ const {
 } = require('../services/history.service');
 const path = require("path");
 const user = require("../schema/user.model");
+const {paramsVerify} = require("../middleware/admin.middleware");
 
 class MarkdownController {
     async newFile(ctx) {
@@ -552,6 +558,44 @@ class MarkdownController {
         }
     }
 
+    /* @author icestone , 15:11
+     * @date 2023/5/20
+     * TODO 将制定type设置为推荐
+    */
+    async returnSetRecommend(ctx) {
+        console.log('ctx.request.body')
+        console.log(ctx.request.body);
+        // const result = await setRecommendByType()
+        const paramsRes = paramsVerify({
+            ids: {
+                allowNull: false,
+                default: null,
+            },
+            level: {
+                allowNull: false,
+                default: null,
+                dataType: 'int'
+            }
+        }, ctx)
+
+        // @date 2023/5/20 , @author icestone
+        // TODO 参数验证通过
+        if (paramsRes == 0) {
+            console.log("ctx.request.body.level:");
+            console.log(ctx.request.body.level);
+            const result = await setRecommendByType(ctx.request.body.ids, ctx.request.body.level);
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: "修改置顶成功",
+                result
+            }
+        } else {
+            ctx.body = paramsRes
+        }
+
+    }
+
     /* @author icestone , 15:46
      * @date 2023/5/7
      * TODO 根据前端传来的 operate 操作符,更新某些列
@@ -588,7 +632,22 @@ class MarkdownController {
         ctx.body = {
             code: 200
         }
+    }
 
+    /* @author icestone , 16:58
+     * @date 2023/5/20
+     * TODO 获取推荐文章
+    */
+    async returnRecommendMarkdown(ctx) {
+        const result = await getRecommendMarkdownFile();
+        console.log("result:")
+        console.log(result)
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: "获取置顶文章",
+            result
+        }
     }
 }
 

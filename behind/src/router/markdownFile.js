@@ -18,7 +18,9 @@ const {
     returnDeletedFiles,
     returnAllCounts,
     returnAllTags,
-    getUpdateSomethingResult
+    getUpdateSomethingResult,
+    returnSetRecommend,
+    returnRecommendMarkdown
 } = require('../controller/markdown.controller')
 const {
     hasOperateAdnIds
@@ -79,5 +81,13 @@ router.get('/allCounts', returnAllCounts)
 */
 
 router.post('/getAllTags', auth, returnAllTags)
+
+/* @author icestone , 15:10
+ * @date 2023/5/20
+ * TODO 将文章设置为推荐
+*/
+router.post('/setRecommend', auth, returnSetRecommend)
+
+router.get("/getRecommend", returnRecommendMarkdown)
 
 module.exports = router

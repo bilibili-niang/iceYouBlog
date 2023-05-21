@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cl  i-service build"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",

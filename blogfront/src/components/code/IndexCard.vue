@@ -1,5 +1,5 @@
 <template>
-  <li class="indexCard list-group-item  animation-time hover-around-shadow">
+  <li class="indexCard list-group-item  hvr-glow">
     <el-divider content-position="left">id:{{ item.id }}</el-divider>
     <el-row>
       <el-tag class="ml-2" type="info">title</el-tag>
@@ -19,6 +19,7 @@
       ></v-md-editor>
     </div>
     <div class="tags">
+      <el-button class="m-r" round @click="zoomFun(item.id)">放大看看</el-button>
       <el-button class="m-r" round @click="goToRead(item.id)">read</el-button>
       <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
       <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
@@ -38,7 +39,8 @@ export default {
   name: "IndexCard",
   components: {MarkdownTags},
   props: {
-    item: {}
+    item: {},
+    zoomFun: {type: Function}
   },
   methods: {
     handleCopyCodeSuccess() {

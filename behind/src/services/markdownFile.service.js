@@ -259,7 +259,7 @@ class MarkdownFileService {
         // return await markdownFile.findAll({
         console.log(`limit:${limit},id:${id}`)
         return await markdownFile.findAndCountAll({
-            attributes: ['id', 'type', 'title', 'description', 'createdAt', 'view', 'tag1', 'tag2', 'tag3'],
+            attributes: ['id', 'type', 'title', 'description', 'createdAt', 'view', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
                 email: email
             },
@@ -496,6 +496,45 @@ class MarkdownFileService {
                 }
             }
         )
+    }
+
+    /* @author icestone , 15:13
+     * @date 2023/5/20
+     * TODO 根据传入的不同类型将其设置为推荐
+     *  传入 ids,需要置顶的文章id,数组,level 置顶等级
+    */
+    async setRecommendByType(ids, level) {
+        return await markdownFile.update({
+            recommendLevel: level
+        }, {
+            where: {
+                id: ids
+            },
+            raw: true
+        })
+    }
+
+    /* @author icestone , 17:00
+     * @date 2023/5/20
+     * TODO 返回推荐文章
+    */
+    async getRecommendMarkdownFile() {
+        return await markdownFile.findAll({
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
+            where: {
+                recommendLevel: {
+                    [Op.gt]: 0
+                }
+            }
+        })
+            /*.then(res => {
+                console.log("res:")
+                console.log(res)
+            })
+            .catch(e => {
+                console.log("e:")
+                console.log(e)
+            })*/
     }
 }
 

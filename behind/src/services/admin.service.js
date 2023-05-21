@@ -45,6 +45,7 @@ class AdminService {
     */
     async operateUser(email, operate = null) {
         console.log(`---operateUser---`)
+        console.log(`将要修改的email':${email}`)
         // @date 2023/5/18 , @author icestone
         // TODO 设置admin展示在首页
         if (operate == 'showInIndex') {
@@ -70,7 +71,7 @@ class AdminService {
      * @date 2023/5/18
      * TODO 获取展示在index页面的admin用户信息:
     */
-    async getShowInIndexAdminUser(attr=[]) {
+    async getShowInIndexAdminUser(attr = []) {
         return await user.findOne({
             attributes: attr,
             where: {

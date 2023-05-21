@@ -4,6 +4,11 @@
       <el-text tag="b" size="large">{{ codeClipsData.title }}</el-text>
       <el-text>{{ codeClipsData.createdAt }}</el-text>
       <el-text>{{ codeClipsData.description }}</el-text>
+      <div class="btns">
+        <el-button v-if="userInfoStore.userInfo.email==codeClipsData.email" @click="goToEditCode(codeClipsData.id)">
+          编辑
+        </el-button>
+      </div>
       <el-divider content-position="left">
         <el-text>tags</el-text>
       </el-divider>
@@ -40,7 +45,19 @@ export default {
       codeClipsData: ''
     }
   },
+  computed: {
+    userInfoStore() {
+      return this.$store.state.user;
+    }
+  },
   methods: {
+    /* @author icestone , 0:39
+     * @date 2023/5/20
+     * TODO 前往编辑
+    */
+    goToEditCode(id) {
+      console.log(`id:${id}`)
+    },
     handleCopyCodeSuccess(code) {
       this.alertMessage("复制成功")
     },

@@ -55,7 +55,21 @@
         <el-tab-pane label="Article" name="article">
           <div class="options">
             <el-button @click="open">删除</el-button>
+            <el-button @click="setAsRecommend">置顶</el-button>
           </div>
+
+          <el-drawer v-model="showRecommendLevel" direction="ttb" title="选择你的推荐等级" :with-header="false">
+            <el-select v-model="recommendLevel" class="m-2" placeholder="Select" size="large">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
+            <el-button @click="subMitRecommend">决定这个了</el-button>
+          </el-drawer>
+
           <!--bootstrap的card-->
           <div class="card" style="width: 100%;" v-for="(item,index) in articleList" :key="index">
             <indexCard :item="item" ref="indexCard" v-on:showAlert="getShowAlert"></indexCard>
@@ -122,7 +136,7 @@
 
 <script>
 import Avatar from '@/components/common/Avatar.vue'
-import http from '../common/api/request'
+import http from '@/common/api/request'
 import router from '@/router';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import {h} from 'vue';
@@ -152,11 +166,81 @@ export default {
       pageSize2: 10,
       currentPage2: 1,
       allCount: 0,
-      disabled: false
+      disabled: false,
+      // @date 2023/5/20 , @author icestone
+      // TODO 展示设置文章推荐等级的抽屉
+      showRecommendLevel: false,
+      options: [
+        {
+          value: '0',
+          label: 'level 0 不设置置顶',
+        }, {
+          value: 1,
+          label: 'level 1',
+        },
+        {
+          value: 2,
+          label: 'level 2',
+        },
+        {
+          value: 3,
+          label: 'level 3',
+        },
+        {
+          value: 4,
+          label: 'level 4',
+        },
+        {
+          value: 5,
+          label: 'level 5',
+        },
+      ],
+      recommendLevel: null
     }
   },
   methods: {
-
+    /* @author icestone , 15:46
+     * @date 2023/5/20
+     * TODO 设置置顶文章
+    */
+    subMitRecommend() {
+      http.$axios({
+        url: '/markdownFile/setRecommend',
+        method: 'POST',
+        headers: {
+          token: true
+        },
+        data: {
+          ids: this.selectedItem,
+          level: this.recommendLevel
+        }
+      })
+          .then(res => {
+            this.alertMessage(res.message)
+            this.showRecommendLevel = false;
+            this.getUserArticle();
+          })
+          .catch(e => {
+            this.alertMessage(e)
+            this.showRecommendLevel = false;
+            this.getUserArticle();
+          })
+    },
+    /* @author icestone , 15:26
+     * @date 2023/5/20
+     * TODO 显示设置置顶文章的可选等级
+    */
+    setAsRecommend() {
+      // 获取一下选中
+      this.showSelectedItem();
+      // @date 2023/5/20 , @author icestone
+      // TODO 选择id不为0才展开
+      if (this.selectedItem.length != 0) {
+        this.showRecommendLevel = true;
+      } else {
+        this.alertMessage('请选中再操作', '当前没有选中item', 'red')
+      }
+    },
     /* @author icestone , 23:52
      * @date 2023/5/15
      * TODO 分页按钮
@@ -350,24 +434,32 @@ export default {
      * TODO 伪删除所选文章
      */
     open() {
-      ElMessageBox.confirm(
-          '确定要删除吗?',
-          'Warning',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-      )
-          .then(() => {
-            this.delSelectedItems();
-          })
-          .catch(() => {
-            ElMessage({
-              type: 'info',
-              message: 'Delete canceled',
+      // 获取一下选中
+      this.showSelectedItem();
+      // @date 2023/5/20 , @author icestone
+      // TODO 选中才会显示
+      if (this.selectedItem.length != 0) {
+        ElMessageBox.confirm(
+            '确定要删除吗?',
+            'Warning',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+            }
+        )
+            .then(() => {
+              this.delSelectedItems();
             })
-          })
+            .catch(() => {
+              ElMessage({
+                type: 'info',
+                message: 'Delete canceled',
+              })
+            })
+      } else {
+        this.alertMessage('请选中再操作', '当前没有选中item', 'red')
+      }
     },
     /**
      * @Description:
@@ -376,8 +468,6 @@ export default {
      * TODO 伪删除文章
      */
     delSelectedItems() {
-      // 获取一下选中
-      this.showSelectedItem();
       http.$axios({
         url: '/markdownFile/operate',
         method: 'POST',
@@ -562,9 +652,8 @@ export default {
   padding-bottom: 10rem;
 
   .card {
-    padding: 0.5rem;
+    margin-bottom: .3rem;
     width: 100%;
-    margin-bottom: 1rem;
     position: relative;
 
     .btns {

@@ -125,6 +125,7 @@ const routes = [
             {
                 path: '/code/detail',
                 name: "Detail",
+                meta: {title: "code detail"},
                 component: () => import('@/components/code/Detail.vue')
             }
         ],

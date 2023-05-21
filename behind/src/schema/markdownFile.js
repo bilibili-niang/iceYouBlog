@@ -99,6 +99,12 @@ const markdownFile = seq.define('markdownFile', {
         allowNull: true,
         comment: '文章类型',
         defaultValue: 'blog'
+    },
+    recommendLevel:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: '文章置顶等级',
+        defaultValue: '0'
     }
 }, {
     paranoid: true,

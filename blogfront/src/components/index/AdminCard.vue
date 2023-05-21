@@ -1,5 +1,5 @@
 <template>
-  <div class="adminCard">
+  <div class="adminCard" v-if="info">
     <div class="card hvr-glow" style="width: 100%;">
       <img :src="info.avatar">
       <div class="lim">
@@ -60,7 +60,6 @@ export default {
           })
     }
   }
-
 }
 </script>
 
@@ -69,6 +68,11 @@ export default {
   position: relative;
   overflow: hidden;
   width: 100%;
+  margin-bottom: .3rem;
+
+  .card-body {
+    padding: .3rem;
+  }
 
   span.el-text {
     transition: .2s;

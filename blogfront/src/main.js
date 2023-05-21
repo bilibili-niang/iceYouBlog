@@ -26,6 +26,8 @@ import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/
 import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
 import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 
+import animated from 'animate.css';
+
 // @date 2023/5/7 , @author icestone
 // 引入所有语言包,管他妈的直接全部引入
 import hljs from 'highlight.js';
@@ -47,6 +49,7 @@ app.use(VueMarkdownEditor);
 
 app.use(store)
 app.use(ElementPlus)
+app.use(animated);
 
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

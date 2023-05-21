@@ -5,8 +5,9 @@ const {
     returnHomeListById,
     returnSupportResult
 } = require('../controller/markdown.controller')
-const {notRequireTokenParams} = require('../middleware/public.middleware');
-const {auth, ifAuth} = require('../middleware/user.middleware');
+const {
+    ifAuth
+} = require('../middleware/user.middleware');
 
 const router = new Router({prefix: '/home'})
 

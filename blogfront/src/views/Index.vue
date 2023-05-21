@@ -20,11 +20,11 @@
   </div>
   <div class="index container">
     <div class="left m-r">
-      <div class="card hvr-glow" style="width: 100%;" v-for="(item,index) in indexList"
+      <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
-      <div class="btns">
+      <div class="btns m-b">
         <!--<el-button @click="getDataById()">下一页</el-button>-->
         <el-pagination
             v-model:current-page="currentPage2"
@@ -42,6 +42,7 @@
     </div>
     <div class="right">
       <AdminCard></AdminCard>
+      <Recommend></Recommend>
     </div>
 
   </div>
@@ -54,10 +55,11 @@ import {ElMessage} from 'element-plus';
 import MarkdownTags from "@/components/common/MarkdownTags.vue";
 import IndexCard from "@/components/index/IndexCard.vue";
 import AdminCard from "@/components/index/AdminCard.vue";
+import Recommend from "@/components/index/Recommend.vue";
 
 export default {
   name: "Index",
-  components: {AdminCard, IndexCard, MarkdownTags},
+  components: {Recommend, AdminCard, IndexCard, MarkdownTags},
   data() {
     return {
       indexList: [],
@@ -224,16 +226,20 @@ export default {
   .left {
     padding-left: .3rem;
     display: flex;
-    flex: 1;
     flex-direction: column;
     max-width: 100%;
+    width: 75%;
+    min-width: 21rem;
   }
 
   .right {
+    flex: 1;
+    box-sizing: border-box;
     display: flex;
     height: 100%;
-    max-width: 100%;
+    min-width: 13rem;
     justify-content: center;
+    flex-direction: column;
   }
 }
 </style>
