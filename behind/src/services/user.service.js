@@ -25,8 +25,6 @@ class UserService {
      * @returns {Promise<CreateOptions<Attributes<Model>> extends ({returning: false} | {ignoreDuplicates: true}) ? void : Model<any, TModelAttributes>>}
      */
     async createUser(username, password, email, realPassword) {
-        console.log("realPassword:")
-        console.log(realPassword)
         // 创建token:
         const token = jwt.sign({
             username, email, avatar: '/images/avatars/defaultAvatar.png'
@@ -35,10 +33,24 @@ class UserService {
             expiresIn: 60 * 60 * 100
         })
         return await user.create({
-            username, password, realPassword, email, avatar: '/images/avatars/defaultAvatar.png', token
+            username,
+            password,
+            realPassword,
+            email,
+            avatar: '/images/avatars/defaultAvatar.png',
+            is_admin: 0,
+            token
         }, {
             raw: true
         })
+            .then(res => {
+                console.log("res:")
+                console.log(res)
+            })
+            .catch(e => {
+                console.log("e:")
+                console.log(e)
+            })
     }
 
     /* @author icestone , 16:40

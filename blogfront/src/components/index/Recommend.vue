@@ -23,12 +23,19 @@
             <div class="descriptions" :title="item.description">{{ item.description }}</div>
           </el-text>
         </div>
-
+        <div class="btns">
+          <el-button round @click="goToRead(item.id)" class="m-r">read</el-button>
+          <span class="tags" v-if="item.recommendLevel">
+        <el-tag class="ml-2" type="info">recommendLevel</el-tag>
+        <el-tag class="ml-2" type="info" v-if="item.recommendLevel">{{ item.recommendLevel }}</el-tag>
+        </span>
+        </div>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
             <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
           </span>
+
       </div>
     </div>
 
@@ -62,8 +69,14 @@ export default {
             console.log("e:")
             console.log(e)
           })
-
-    }
+    },
+    goToRead(id) {
+      const routeUrl = this.$router.resolve({
+        path: "/read",
+        query: {id}
+      });
+      window.open(routeUrl.href, '_blank');
+    },
   },
   created() {
     this.getRecommendData();
@@ -90,6 +103,11 @@ export default {
       display: flex;
       width: 100%;
       margin-bottom: .3rem;
+
+      .btns {
+        flex-direction: row;
+        display: flex;
+      }
 
       .descriptions {
         //整体超出部分隐藏

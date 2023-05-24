@@ -1,18 +1,14 @@
 <template>
   <div class="register container">
     <div class="form">
-
-      <el-alert title="warning alert" type="warning"/>
-
-      <el-input v-model="login.email" placeholder="Please input email" clearable/>
-      <el-input v-model="login.username" placeholder="Please input username" clearable/>
-      <el-input v-model="login.password" placeholder="Please input pwd" clearable/>
-
-      <el-button @click="submit">submit</el-button>
-      <el-button @click="getToken">get</el-button>
-
+      <el-input class="m-b" v-model="login.email" placeholder="Please input email" clearable/>
+      <el-input class="m-b" v-model="login.username" placeholder="Please input username" clearable/>
+      <el-input class="m-b" v-model="login.password" placeholder="Please input pwd" clearable/>
+      <div class="btns">
+        <el-button @click="submit">submit</el-button>
+        <el-button @click="getToken">get</el-button>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -26,8 +22,8 @@ export default {
     return {
       login: {
         email: 'demo@demo.com',
-        username: 'icestone',
-        password: '12345678910'
+        username: 'username',
+        password: 'password'
       }
     }
   },
@@ -36,20 +32,23 @@ export default {
       if (this.login.username.length < 1 || this.login.password.length < 1) {
         console.log('data error')
       }
-      const res = await http.$axios({
+      await http.$axios({
         url: '/user/register/',
         method: 'POST',
         data: this.login,
       })
-      console.log(res)
-      if (res.code == 200) {
-        // 写入token
-        const userInfo = res.result || '';
-        console.log("userInfo");
-        console.log(userInfo);
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      }
-
+          .then(res => {
+            console.log("res:")
+            console.log(res)
+            if (res.success) {
+              const userInfo = res.result || '';
+              localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            }
+          })
+          .catch(e => {
+            console.log("e:")
+            console.log(e)
+          })
     },
     getToken() {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -81,3 +80,9 @@ export default {
   }
 }
 </script>
+<style scoped lang="less">
+.form {
+  display: flex;
+  flex-direction: column;
+}
+</style>

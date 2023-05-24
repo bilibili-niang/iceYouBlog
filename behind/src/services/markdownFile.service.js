@@ -40,12 +40,16 @@ class MarkdownFileService {
         const offset = (pageNum - 1) * pageSize
         // const {count, rows} = await markdownFile.findAndCountAll({offset: offset, limit: pageSize * 1});
         return await markdownFile.findAndCountAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             offset: offset,
             limit: pageSize * 1,
             where: {
                 states: {
                     [Op.gte]: 0
+                },
+                recommendLevel: {
+                    // 推荐等级小于等于1的
+                    [Op.lte]: 1
                 }
             },
             order: [
@@ -132,10 +136,14 @@ class MarkdownFileService {
         console.log('---getHomeIndexListById---')
         console.log(`id:${id},limit:${limit}`)
         return await markdownFile.findAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
                 states: {
                     [Op.gte]: 0
+                },
+                recommendLevel: {
+                    // 推荐等级小于等于1的
+                    [Op.lte]: 1
                 }
             },
             raw: true,
@@ -523,18 +531,23 @@ class MarkdownFileService {
             attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
                 recommendLevel: {
-                    [Op.gt]: 0
+                    [Op.gt]: 1
                 }
-            }
+            },
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ],
+            limit: 5
         })
-            /*.then(res => {
-                console.log("res:")
-                console.log(res)
-            })
-            .catch(e => {
-                console.log("e:")
-                console.log(e)
-            })*/
+        /*.then(res => {
+            console.log("res:")
+            console.log(res)
+        })
+        .catch(e => {
+            console.log("e:")
+            console.log(e)
+        })*/
     }
 }
 

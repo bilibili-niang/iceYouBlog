@@ -34,13 +34,12 @@ class UserController {
         // 失败即为undefined,因为用户名或密码重复
         console.log('注册返回的信息:')
         console.log(result)
-        if (result == 0 || result == undefined) {
+        if (result == undefined) {
             ctx.body = {
                 code: 201,
                 message: '用户注册失败,用户名或密码重复',
                 success: false,
                 result
-
             }
         } else {
             ctx.body = {
@@ -57,6 +56,7 @@ class UserController {
      * TODO 登录逻辑
     */
     async login(ctx) {
+        console.log("---login---")
         const {username} = ctx.request.body || '';
         try {
             const {password, ...result} = await getUserInfo({username})

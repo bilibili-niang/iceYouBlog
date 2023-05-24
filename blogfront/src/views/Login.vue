@@ -1,8 +1,8 @@
 <template>
   <div class="login container">
     <div class="form hover-around-shadow animation-time">
-      <el-input v-model="login.username" placeholder="Please input username" clearable/>
-      <el-input v-model="login.password" placeholder="Please input pwd" clearable/>
+      <el-input v-model="login.username" placeholder="Please input username"/>
+      <el-input v-model="login.password" placeholder="Please input pwd"/>
       <div class="btns">
         <el-button @click="submit">登录</el-button>
         <el-button @click="getToken">get</el-button>
@@ -106,6 +106,7 @@ export default {
 <style scoped lang="less">
 .login {
   padding-top: 1rem;
+  align-items: center;
 
   .form {
     padding: 0.3rem;

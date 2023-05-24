@@ -1,6 +1,6 @@
 <template>
   <div class="user container">
-    <div class="userCard card">
+    <div class="userCard card p-small">
       <div class="avatar">
         <Avatar :imgUrl="userInfo.avatar"></Avatar>
       </div>
@@ -22,13 +22,17 @@
         <span class="align-middle">
           <el-text tag="b" size="small">email:</el-text>
           <p>
+            <el-text>
             {{ userInfo.email }}
+            </el-text>
           </p>
           </span>
           <span>
           <el-text tag="b" size="small">id:</el-text>
           <p>
+            <el-text>
             {{ userInfo.id }}
+            </el-text>
           </p>
           </span>
         </div>
@@ -36,16 +40,22 @@
       <div class="icon">
         <span v-if="Boolean(userInfo.githubUrl)">
           <el-text tag="b" size="small">github:</el-text>
+          <el-text>
             {{ userInfo.githubUrl }}
+          </el-text>
         </span>
 
         <span v-if="Boolean(userInfo.word)">
           <el-text tag="b" size="small">word:</el-text>
+          <el-text>
             {{ userInfo.word }}
+          </el-text>
         </span>
         <span v-if="Boolean(userInfo.occupation)">
           <el-text tag="b" size="small">occupation:</el-text>
+          <el-text>
             {{ userInfo.occupation }}
+          </el-text>
         </span>
       </div>
     </div>

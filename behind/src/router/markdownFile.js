@@ -88,6 +88,10 @@ router.post('/getAllTags', auth, returnAllTags)
 */
 router.post('/setRecommend', auth, returnSetRecommend)
 
+/* @author icestone , 0:09
+ * @date 2023/5/24
+ * TODO 获取推荐的文章
+*/
 router.get("/getRecommend", returnRecommendMarkdown)
 
 module.exports = router
