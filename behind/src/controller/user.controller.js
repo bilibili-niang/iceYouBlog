@@ -8,8 +8,9 @@ const {
     updateUserInfo,
     getUserBaseInfoAndToken,
     getUserisAdminByEmail,
-    updateAvatarByEmail,
-    getUserInfoByEmail
+    createHeadImgByEmail,
+    getUserInfoByEmail,
+    getUserHeadImg
 } = require('../services/user.service')
 
 const {
@@ -177,17 +178,11 @@ class UserController {
         //传入绝对路径返回的basename为文件名称+拓展名
         const basename = path.basename(file.path)
         const imgPath = '/' + basename;
-        console.log("imgPath:")
-        console.log(imgPath)
-        console.log('用户信息:')
-        console.log(ctx.state.user)
-
-        const result = await updateAvatarByEmail(ctx.state.user.email, imgPath)
-
+        const result = await createHeadImgByEmail(ctx.state.user.email, imgPath)
         ctx.body = {
             code: 200,
             success: true,
-            message: '头像上传成功',
+            message: '用户头图上传成功',
             result
         }
     }
@@ -228,7 +223,18 @@ class UserController {
         }
     }
 
-
+    // 返回用户头图
+    async returnUserHeadImg(ctx) {
+        console.log("ctx.state:");
+        console.log(ctx.state);
+        const result = await getUserHeadImg(ctx.state.user.email);
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: '获取用户头图',
+            result
+        }
+    }
 }
 
 module.exports = new UserController()

@@ -8,8 +8,8 @@ const {
     updateUserAvatar
 } = require('../controller/user.controller');
 const {
- uploadMarkdownImage
-}=require('../controller/markdown.controller')
+    uploadMarkdownImage
+} = require('../controller/markdown.controller')
 
 /* @author icestone , 15:15
  * @date 2023/5/11
@@ -22,5 +22,11 @@ router.post('/avatar', authBybody, updateUserAvatar)
  * TODO markdown图片上传
 */
 router.post('/markdownImages', auth, uploadMarkdownImage)
+
+/* @author icestone , 17:46
+ * @date 2023/5/28
+ * TODO 用户上传头图
+*/
+router.post('/headImg', authBybody, updateUserAvatar)
 
 module.exports = router

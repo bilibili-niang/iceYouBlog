@@ -1,5 +1,14 @@
 <template>
-  <div class="indexCard hover m-b" id="element">
+  <div class="indexCard hover" id="element">
+    <div class="imgLim">
+      <!--      <img :src="item.headImg" alt="">-->
+      <el-image :src="item.headImg" lazy fit="fit">
+        <!--加载失败:-->
+        <template #error>
+          <el-image src="/images/headImg/defaultHeadImg.png" lazy fit="fit"/>
+        </template>
+      </el-image>
+    </div>
     <div class="card-body">
       <el-text tag="b" size="large">
         <h5>{{ item.title }}</h5>
@@ -126,12 +135,69 @@ export default {
 
 <style scoped lang="less">
 .indexCard {
+  position: relative;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  border-radius: .3rem;
+  @media (max-width: 1200px) {
+
+    .card-body {
+      margin-left: 0 !important;
+    }
+
+    .imgLim {
+      width: 100% !important;
+      height: 100%;
+
+      img {
+        opacity: .5;
+      }
+    }
+  }
+
+  &:hover {
+    .imgLim {
+      filter: blur(1rem);
+      width: 100% !important;
+    }
+
+    .card-body {
+      //margin-left: 20% !important;
+      //margin-right: 20%;
+      //background: rgb(255, 255, 255, .1);
+
+      background: rgba(255, 255, 255, .7);
+      border-radius: .5rem !important;
+      color: #ffffff;
+    }
+  }
+
+  .imgLim {
+    z-index: -1;
+    position: absolute;
+    transition: .5s;
+    top: 0;
+    left: 0;
+    width: 40%;
+    overflow: hidden;
+
+    img {
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+  }
 
   .card-body {
+    border-radius: 0;
+    transition: .5s;
+    margin-left: 40%;
     padding-top: 0.35rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    background: rgba(255, 255, 255, 0);
 
     .bottomLim {
       display: flex;
@@ -145,4 +211,5 @@ export default {
     }
   }
 }
+
 </style>

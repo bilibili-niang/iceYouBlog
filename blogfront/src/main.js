@@ -28,6 +28,8 @@ import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 
 import animated from 'animate.css';
 
+import VueLazyload from 'vue-lazyload'  //引入这个懒加载插件
+
 // @date 2023/5/7 , @author icestone
 // 引入所有语言包,管他妈的直接全部引入
 import hljs from 'highlight.js';
@@ -50,6 +52,12 @@ app.use(VueMarkdownEditor);
 app.use(store)
 app.use(ElementPlus)
 app.use(animated);
+app.use(VueLazyload, {
+    preLoad: 1,
+    // error: require('../public/favicon.ico'),
+    // loading: require('../public/favicon.ico'),
+    attempt: 2,
+})
 
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

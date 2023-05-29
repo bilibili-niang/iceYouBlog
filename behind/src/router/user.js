@@ -9,7 +9,8 @@ const {
     updateUserById,
     returnUserInfAndToken,
     returnUserIsAdmin,
-    returnUserInfoByEmail
+    returnUserInfoByEmail,
+    returnUserHeadImg
 } = require('../controller/user.controller')
 
 const {
@@ -41,7 +42,12 @@ router.post('/getUserInfByToken', auth, returnUserInfAndToken)
 router.post('/isAdmin', auth, returnUserIsAdmin)
 
 // 通过email获取给第三方看的用户信息
-router.post('/getUserInfoByEmail', returnUserInfoByEmail)
+router.post('/getUserInfoByEmail', auth, returnUserInfoByEmail)
+/* @author icestone , 17:17
+ * @date 2023/5/27
+ * TODO 获取用户头图
+*/
+router.post('/headImg', auth, returnUserHeadImg)
 
 
 module.exports = router

@@ -222,6 +222,13 @@ export default {
   min-height: 90vh;
   justify-content: center;
   flex-wrap: wrap;
+  @media (max-width: 1200px) {
+    //flex-direction: column;
+    flex-direction: column-reverse !important;
+    .left {
+      width: 100% !important;
+    }
+  }
 
   .left {
     padding-left: .3rem;

@@ -3,12 +3,13 @@
     <div v-if="!dataExist">
       文章不存在或已被删除
     </div>
-    <div class="imgLim">
-      <img src="/images/cover/1.png" alt="">
-      <div class="img"></div>
-    </div>
     <!--文章存在-->
     <div class="dataContainer" v-if="dataExist">
+      <div class="imgLim animation-time">
+        <img :src="markdownData.headImg" alt="" v-if="markdownData.headImg">
+        <img src="/images/cover/1.png" alt="" v-if="!markdownData.headImg">
+        <div class="img"></div>
+      </div>
       <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
                  :userInf="userInf"></indexCard>
       <div class="articleCon">
@@ -191,7 +192,7 @@ export default {
   .imgLim {
     z-index: -1;
     max-height: 30%;
-    min-height: 13rem;
+    min-height: 20rem;
     overflow: hidden;
     position: fixed;
     top: 0;
@@ -199,6 +200,8 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
+    filter: blur(.3rem) grayscale(80%);
+
 
     img {
       background-size: cover;
@@ -249,16 +252,22 @@ export default {
   }
 
   .dataContainer {
+    margin-top: 18rem;
     display: flex;
     width: 100%;
     flex-direction: column;
+
+    &:hover {
+      .imgLim {
+        filter: blur(0) grayscale(0);
+      }
+    }
 
     .articleCon {
       display: flex;
       width: 100%;
       flex-direction: column;
-      margin-top: 1.3rem;
-      //margin-bottom: 15rem;
+      margin-top: .3rem;
       z-index: 3;
       background: #ffffff;
       border-radius: 0.5rem;

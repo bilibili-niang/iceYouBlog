@@ -224,6 +224,7 @@ class MarkdownFileService {
             tag1: data.tag1,
             tag2: data.tag2,
             tag3: data.tag3,
+            headImg: data.headImg,
         }, {
             where: {
                 id: data.id
@@ -299,7 +300,7 @@ class MarkdownFileService {
     }
 
     // 通过id返回该文章的一些数据,默认这里用于展示在用户的浏览记录,但也可以自定义查询信息
-    async getMarkdownFileDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view']) {
+    async getMarkdownFileDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg']) {
         console.log('---getMarkdownFileDetailById---')
         return await markdownFile.findAll({
             attributes: attr,

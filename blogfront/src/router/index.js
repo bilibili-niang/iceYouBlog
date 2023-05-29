@@ -41,7 +41,20 @@ const routes = [
         path: '/user',
         name: 'user',
         meta: {title: "用户"},
-        component: () => import('../views/User.vue')
+        children: [
+            {
+                path: '/user/',
+                name: 'user',
+                meta: {title: "用户"},
+                component: () => import('../views/User.vue'),
+            },
+            {
+                path: '/user/headImg',
+                name: 'headImg',
+                meta: {title: "头图"},
+                component: () => import('@/components/user/HeadImg.vue'),
+            },
+        ],
     },
     {
         path: '/edit',

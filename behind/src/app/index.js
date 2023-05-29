@@ -12,7 +12,6 @@ const views = require('koa-views')
 const app = new koa()
 const errHandler = require('./errHadnler')
 const path = require('path')
-const cors = require('koa2-cors')
 
 // 跨域
 app.use(async (ctx, next) => {

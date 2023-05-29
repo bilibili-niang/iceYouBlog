@@ -41,7 +41,8 @@
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "unplugin-auto-import": "^0.15.1",
-    "unplugin-vue-components": "^0.24.1"
+    "unplugin-vue-components": "^0.24.1",
+    "vue-lazyload": "^3.0.0"
   },
   "browserslist": [
     "> 1%",

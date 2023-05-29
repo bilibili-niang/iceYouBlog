@@ -24,9 +24,31 @@
         <el-form-item label="文章tag3" label-width="100px">
           <el-input v-model="markdownData.tag3" autocomplete="off"/>
         </el-form-item>
+        <el-form-item label="headImg" label-width="100px">
+          <el-input v-model="markdownData.headImg" autocomplete="off"/>
+          <el-button @click="selectHeadImg">选择图片</el-button>
+        </el-form-item>
       </el-form>
       <el-button @click="drawer = false">再想想</el-button>
-      <el-button type="primary" @click="submit">提交</el-button>
+      <el-button @click="submit">提交</el-button>
+    </el-drawer>
+
+    <el-drawer v-model="headImgDrawer" title="选择你的头图" size="90%" direction="ttb" :with-header="false">
+      选择你的头图
+      <!--下面是头图的预览-->
+      <div class="demo-image__lazy">
+        <div v-for="(item,index) in headImgList" :key="index" class="demo-image__preview" @click="setHeadImg(item.url)">
+          <el-image
+              :src="item.url"
+              lazy
+              fit="cover"
+              :preview-src-list="previewImgList"
+              :initial-index="index"
+              :hide-on-click-modal="true"
+              :close-on-press-escape="true"
+          />
+        </div>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -54,8 +76,13 @@ type you first line code
         tag1: '',
         tag2: '',
         tag3: '',
+        headImg: ''
       },
       drawer: false,
+      // 头图的框
+      headImgDrawer: false,
+      headImgList: [],
+      previewImgList: [],
       toolbar: {
         customToolbar1: {
           title: '基础工具栏',
@@ -78,10 +105,43 @@ type you first line code
     }
   },
   methods: {
+    // 监听图片的点击
+    setHeadImg(url) {
+      this.markdownData.headImg = url;
+    },
+    selectHeadImg() {
+      this.headImgDrawer = true;
+      //   获取头图
+      http.$axios({
+        url: '/user/headImg',
+        method: 'POST',
+        headers: {
+          token: true
+        },
+      })
+          .then(res => {
+            console.log("res:")
+            console.log(res)
+            if (res.success) {
+              this.headImgList = res.result;
+              this.previewImgList = this.headImgList.map(item => {
+                return item.url
+              })
+
+            } else {
+            }
+          })
+          .catch(e => {
+            console.log("e:")
+            console.log(e)
+          })
+
+
+    },
     /* @author icestone , 14:49
- * @date 2023/5/11
- * TODO 上传图片
-*/
+    * @date 2023/5/11
+    * TODO 上传图片
+   */
     handleUploadImage(event, insertImage, files) {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
       console.log("files");
@@ -89,12 +149,12 @@ type you first line code
       let form = new FormData();
       form.append('file', files);
       // 回显
-       insertImage({
-         url: '/images/2.png',
-         desc: '回显图片名称',
-         // width: 'auto',
-         // height: 'auto',
-       });
+      insertImage({
+        url: '/images/2.png',
+        desc: '回显图片名称',
+        // width: 'auto',
+        // height: 'auto',
+      });
     },
     /* @author icestone , 16:05
      * @date 2023/5/6
@@ -202,5 +262,28 @@ type you first line code
 .v-md-editor {
   min-height: 90vh;
   flex: 1;
+}
+
+//头图
+.demo-image__lazy {
+  height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .demo-image__preview {
+    display: flex;
+    width: 50%;
+  }
+
+  .el-image {
+    padding: .3rem;
+
+    img {
+      display: flex;
+      width: 70%;
+    }
+  }
 }
 </style>

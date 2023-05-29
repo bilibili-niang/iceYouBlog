@@ -136,7 +136,9 @@
           </div>
 
         </el-tab-pane>
-        <el-tab-pane label="codeSnippet" name="codeSnippet">codeSnippet</el-tab-pane>
+        <el-tab-pane label="headImgs" name="headImgs">
+          <router-link to="/user/headImg">HeadImg</router-link>
+        </el-tab-pane>
         <el-tab-pane label="feelings" name="feelings">feelings</el-tab-pane>
 
       </el-tabs>

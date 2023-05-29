@@ -3,8 +3,7 @@
     <div class="form">
       <div style="margin: 20px"/>
       <el-form
-          label-width="100px"
-      >
+          label-width="100px">
         <div class="avatar">
           <Avatar :imgUrl="userInfo.avatar"></Avatar>
           <!--<div class="demo" @click="handleAvatarSuccess()">demo</div>-->

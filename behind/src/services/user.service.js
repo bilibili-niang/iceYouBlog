@@ -2,6 +2,7 @@ const user = require('../schema/user.model');
 const jwt = require("jsonwebtoken");
 const {salt, md5Key} = require('../config/default');
 const md5 = require("md5");
+const image = require('../schema/image')
 
 class UserService {
     /* @author icestone , 16:32
@@ -178,7 +179,6 @@ class UserService {
                 email
             }
         })
-
     }
 
     // 查询用户是否为admin
@@ -230,6 +230,31 @@ class UserService {
                 email
             },
             raw: true
+        })
+    }
+
+    /* @author icestone , 17:21
+     * @date 2023/5/27
+     * TODO 根据email返回用户的头图
+    */
+    async getUserHeadImg(email) {
+        // return await
+        // return 'result'
+        return await image.findAll({
+            where: {
+                email
+            },
+            raw: true
+        })
+    }
+
+    /* @author icestone , 17:47
+     * @date 2023/5/28
+     * TODO 通过email和图片路径写入 头图
+    */
+    async createHeadImgByEmail(email, url) {
+        return await image.create({
+            email, url
         })
     }
 

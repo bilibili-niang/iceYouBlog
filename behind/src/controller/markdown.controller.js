@@ -106,7 +106,7 @@ class MarkdownController {
         const token = ctx.request.header.token || '';
         // 不存在时返回id为0的文章
         const id = ctx.request.body.id || 0;
-        const res = await getMarkdownFileDetailById(id, ['url', 'email', 'id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'content']);
+        const res = await getMarkdownFileDetailById(id, ['url', 'email', 'id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'content', 'headImg']);
         if (!res.length) {
             // 该文章数据不存在,返回错误信息:
             ctx.body = notExistFile
@@ -114,6 +114,7 @@ class MarkdownController {
             // @date 2023/5/8 , @author icestone
             // TODO token存在,写入历史记录
             if (token) {
+                console.log('存在token')
                 historyByToken(res, token);
             } else {
             }
