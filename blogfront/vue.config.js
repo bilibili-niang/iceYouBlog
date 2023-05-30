@@ -43,7 +43,7 @@ module.exports = defineConfig({
                         //warnings: false, 注释不然打包会报错如图下图
                         drop_console: true,  //注释console
                         drop_debugger: true, //注释debugger
-                        pure_funcs: ['console.log'], //移除console.log
+                        pure_funcs: ['c onsole.log'], //移除console.log
                     },
                 },
             })*/
