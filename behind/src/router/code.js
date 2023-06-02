@@ -1,12 +1,13 @@
 const Router = require('koa-router')
-const {auth} = require('../middleware/user.middleware');
-const router = new Router({prefix: '/code'})
+const { auth } = require('../middleware/user.middleware')
+const router = new Router({ prefix: '/code' })
 const {
     returnNewCOde,
     returnCodeClips,
     returnDelCodeClips,
-    returnCodeClipsData
-} = require('../controller/code.controller');
+    returnCodeClipsData,
+    returnSearchResult
+} = require('../controller/code.controller')
 
 // 新增代码片段
 router.post('/codeClips', auth, returnNewCOde)
@@ -19,5 +20,7 @@ router.post('/delCodeClips', returnDelCodeClips)
 
 // 通过id获取具体code的数据
 router.post('/getCodeClipsData', returnCodeClipsData)
+// 搜索
+router.post('/search', returnSearchResult)
 
-module.exports = router;
+module.exports = router

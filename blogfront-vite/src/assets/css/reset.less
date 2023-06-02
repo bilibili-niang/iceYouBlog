@@ -1,0 +1,223 @@
+.container {
+  overflow-y: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  :deep .container {
+    max-width: 75%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  :deep .container {
+    max-width: 95%;
+  }
+}
+
+p {
+  margin-bottom: 0.2rem;
+}
+
+//滚动条样式
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  /**/
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(239, 239, 239);
+  border-radius: 2px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+body::-webkit-scrollbar-corner {
+  background: #ffffff;
+}
+
+div {
+  .iconPng {
+    display: flex;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-size: cover;
+
+    .iconPng-l {
+      display: flex;
+      width: 4rem;
+      height: 4rem;
+      background-size: cover;
+    }
+  }
+}
+
+// 下面是markdown文章的显示样式
+.hoverStyle {
+  transition: 0.2s;
+  border-radius: 0.5rem;
+
+  &:hover {
+    /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
+    //margin-top: 0;
+    box-shadow: 0 0 15px 2px #918f8f; /*盒子阴影*/
+    transition: all 0.2s; /*持续时间*/
+  }
+}
+
+.show {
+  h4 {
+    border-left: #a1c4fd 0.5rem solid;
+    padding-left: 1rem;
+    margin-top: 1.3rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  h5 {
+    border-left: #a1c4fd 0.5rem solid;
+    padding-left: 1rem;
+    margin-top: 1.3rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  pre {
+    padding: 0.3rem;
+    .hoverStyle();
+
+    code {
+      border-radius: 0.5rem;
+    }
+  }
+
+  ul {
+    padding-left: 1.3rem;
+    margin-left: 0.3rem;
+    list-style: circle;
+
+    li {
+      ul {
+        margin-left: 1.3rem;
+        list-style: none;
+      }
+    }
+  }
+
+  table {
+    margin: 0.3rem;
+    padding: 1.3rem;
+
+  }
+}
+
+// 自定义hover样式:
+.hover-around-shadow:hover {
+  margin-top: 0; /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
+  box-shadow: 0 0 15px 2px #918f8f; /*盒子阴影*/
+  transition: all 0.2s; /*持续时间*/
+}
+
+// 动画持续时间
+.animation-time {
+  transition: 0.2s;
+}
+
+
+.title-left-sm {
+  border-left: 0.5rem solid #accbee;
+  padding-left: 0.5rem;
+}
+
+// 自定义tag的样式
+.tags .el-tag {
+  margin-right: 0.3rem;
+}
+
+div.el-input__wrapper {
+  max-width: 13rem;
+}
+
+// 自定义tag的容器
+.tags {
+  display: flex;
+  flex-direction: row;
+  margin: 0.3rem;
+  box-sizing: border-box;
+}
+
+.el-divider__text {
+  background: none;
+}
+
+.vEdit {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.m-l {
+  margin-left: .3rem;
+}
+
+.m-r {
+  margin-right: .3rem;
+}
+
+.m-b {
+  margin-bottom: .3rem;
+}
+
+.m-t {
+  margin-top: .3rem;
+}
+
+.p-l {
+  padding-left: .3rem;
+}
+
+.p-l {
+  padding-right: .3rem;
+}
+
+.p-small {
+  padding: .3rem;
+}
+
+.f-r {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.f-c {
+  display: flex;
+  flex-direction: column;
+}
+
+.border-radius-normal {
+  border-radius: .5rem;
+}
+
+.border-radius-small {
+  border-radius: .5rem;
+}
+
+.p-normal {
+  padding: .3rem;
+}
