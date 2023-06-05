@@ -134,13 +134,24 @@
             </div>
             <historyIndexCard :item="item"></historyIndexCard>
           </div>
-
         </el-tab-pane>
-        <el-tab-pane label="headImgs" name="headImgs">
+        <el-tab-pane label="others" name="others">
+          <dvi class="others">
+          <span>
+            <el-text>
+            查看头图
+            </el-text>
           <router-link to="/user/headImg">HeadImg</router-link>
+          </span>
+            <span>
+            <el-text>
+            我的评论
+            </el-text>
+          <router-link to="/user/postedComments">已发布的评论</router-link>
+          </span>
+          </dvi>
         </el-tab-pane>
         <el-tab-pane label="feelings" name="feelings">feelings</el-tab-pane>
-
       </el-tabs>
     </div>
   </div>
@@ -149,16 +160,16 @@
 <script>
 import Avatar from '@/components/common/Avatar.vue'
 import http from '@/common/api/request'
-import router from '@/router';
-import {ElMessage, ElMessageBox} from 'element-plus';
-import {h} from 'vue';
-import IndexCard from "@/components/user/IndexCard.vue";
-import HistoryIndexCard from "@/components/user/HistoryIndexCard.vue";
+import router from '@/router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { h } from 'vue'
+import IndexCard from "@/components/user/IndexCard.vue"
+import HistoryIndexCard from "@/components/user/HistoryIndexCard.vue"
 
 export default {
   name: "User",
-  components: {HistoryIndexCard, IndexCard, Avatar},
-  data() {
+  components: { HistoryIndexCard, IndexCard, Avatar },
+  data () {
     return {
       userInfo: {},
       sequence: 0,
@@ -215,7 +226,7 @@ export default {
      * @date 2023/5/20
      * TODO 设置置顶文章
     */
-    subMitRecommend() {
+    subMitRecommend () {
       http.$axios({
         url: '/markdownFile/setRecommend',
         method: 'POST',
@@ -229,26 +240,26 @@ export default {
       })
           .then(res => {
             this.alertMessage(res.message)
-            this.showRecommendLevel = false;
-            this.getUserArticle();
+            this.showRecommendLevel = false
+            this.getUserArticle()
           })
           .catch(e => {
             this.alertMessage(e)
-            this.showRecommendLevel = false;
-            this.getUserArticle();
+            this.showRecommendLevel = false
+            this.getUserArticle()
           })
     },
     /* @author icestone , 15:26
      * @date 2023/5/20
      * TODO 显示设置置顶文章的可选等级
     */
-    setAsRecommend() {
+    setAsRecommend () {
       // 获取一下选中
-      this.showSelectedItem();
+      this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
       // TODO 选择id不为0才展开
       if (this.selectedItem.length != 0) {
-        this.showRecommendLevel = true;
+        this.showRecommendLevel = true
       } else {
         this.alertMessage('请选中再操作', '当前没有选中item', 'red')
       }
@@ -257,8 +268,8 @@ export default {
      * @date 2023/5/15
      * TODO 分页按钮
     */
-    handleCurrentChange(val) {
-      let id = this.pageSize2 * val;
+    handleCurrentChange (val) {
+      let id = this.pageSize2 * val
       // @date 2023/5/15 , @author icestone
       // TODO   请求数据
       http.$axios({
@@ -279,10 +290,10 @@ export default {
             // TODO 如果返回的有数据:
             if (Boolean(res.result.rows.length)) {
               this.alertMessage(res.message)
-              this.articleList = res.result.rows;
+              this.articleList = res.result.rows
               // 取消一下选中
               this.articleList.map(item => {
-                item.checked = false;
+                item.checked = false
               })
             } else {
               this.alertMessage("你已查询到尽头辣!")
@@ -295,27 +306,27 @@ export default {
 
 
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       // console.log(`${val} items per page`)
     },
     /* @author icestone , 14:19
      * @date 2023/5/7
      * TODO 将传入的id存储到 selectedList 中
     */
-    addChecked(item, id) {
+    addChecked (item, id) {
       // @date 2023/5/7 , @author icestone
       // TODO 如果存在该id,弹出指定id
-      if (this.selectedList.indexOf(id) != -1) {
+      if (this.selectedList.indexOf(id) != - 1) {
         this.selectedList.splice(this.selectedList.indexOf(id))
       } else {
         // @date 2023/5/7 , @author icestone
         // TODO 如果 selectedList 的长度大于等于3,已满,替换掉第一个
         if (this.selectedList.length >= 3) {
-          this.selectedList.splice(0, 1, id);
+          this.selectedList.splice(0, 1, id)
         } else {
           // @date 2023/5/7 , @author icestone
           // TODO 未满,增加
-          this.selectedList.push(id);
+          this.selectedList.push(id)
         }
       }
     },
@@ -325,7 +336,7 @@ export default {
      * TODO 提交选中的tags
     */
     submitTags: function () {
-      const tags = [];
+      const tags = []
       Object.values(this.selectedList).map(item => {
         tags.push(this.tagList[item])
       })
@@ -346,21 +357,21 @@ export default {
         }
       })
           .then(res => {
-            this.alertMessage(res.message);
-            this.drawer = false;
-            this.getUserArticle();
+            this.alertMessage(res.message)
+            this.drawer = false
+            this.getUserArticle()
           })
           .catch(e => {
-            this.alertMessage(e);
+            this.alertMessage(e)
           })
     },
     /* @author icestone , 15:31
      * @date 2023/5/7
      * TODO 接收子组件传给父组件的值
     */
-    getShowAlert(val) {
-      this.currentInfo = val;
-      this.drawer = val.flag;
+    getShowAlert (val) {
+      this.currentInfo = val
+      this.drawer = val.flag
     },
     /**
      * @Description:
@@ -368,7 +379,7 @@ export default {
      * @date 2023/5/5
      * TODO 初始化获取用户已删除的文章数据
      */
-    async getDeletedFiles() {
+    async getDeletedFiles () {
       // 发起请求,
       await http.$axios({
         url: '/markdownFile/deletedFile',
@@ -378,18 +389,18 @@ export default {
         },
       })
           .then(res => {
-            this.alertMessage(res.message);
+            this.alertMessage(res.message)
             if (res.success) {
-              this.deletedFile = res.result;
+              this.deletedFile = res.result
               this.deletedFile.map(item => {
-                item.checked = false;
+                item.checked = false
               })
             } else {
               console.log('error')
             }
           })
           .catch(e => {
-            this.alertMessage(e);
+            this.alertMessage(e)
           })
     },
     /**
@@ -398,19 +409,19 @@ export default {
      * @date 2023/5/4
      * TODO 恢复所选的文章
      */
-    async recover() {
+    async recover () {
       // @date 2023/5/4 , @author icestone
       // TODO 清空一下所选的id数组
-      this.selectedItem = [];
+      this.selectedItem = []
       // @date 2023/5/4 , @author icestone
       // TODO 获取删除文章中所选择的id
       this.deletedFile.forEach((item, index) => {
         if (item.checked) {
-          this.selectedItem.push(item.id);
+          this.selectedItem.push(item.id)
         }
       })
-      console.log('所选择的id:');
-      console.log(this.selectedItem);
+      console.log('所选择的id:')
+      console.log(this.selectedItem)
       if (this.selectedItem.length > 0) {
         await http.$axios({
           url: '/markdownFile/operate',
@@ -428,7 +439,7 @@ export default {
               this.alertMessage(res.message)
               // @date 2023/5/5 , @author icestone
               // TODO 重新获取数据
-              this.getDeletedFiles();
+              this.getDeletedFiles()
             })
             .catch(e => {
               this.alertMessage(e)
@@ -445,9 +456,9 @@ export default {
      * @date 2023/5/4
      * TODO 伪删除所选文章
      */
-    open() {
+    open () {
       // 获取一下选中
-      this.showSelectedItem();
+      this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
       // TODO 选中才会显示
       if (this.selectedItem.length != 0) {
@@ -461,7 +472,7 @@ export default {
             }
         )
             .then(() => {
-              this.delSelectedItems();
+              this.delSelectedItems()
             })
             .catch(() => {
               ElMessage({
@@ -479,7 +490,7 @@ export default {
      * @date 2023/5/5
      * TODO 伪删除文章
      */
-    delSelectedItems() {
+    delSelectedItems () {
       http.$axios({
         url: '/markdownFile/operate',
         method: 'POST',
@@ -500,11 +511,11 @@ export default {
             })
             // @date 2023/5/3 , @author icestone
             // TODO 删除之后重新获取数据
-            this.getUserArticle();
+            this.getUserArticle()
             // @date 2023/5/5 , @author icestone
             // TODO 将所有的选中取消
             this.articleList.map(item => {
-              item.checked = false;
+              item.checked = false
             })
           })
           .catch(e => {
@@ -519,25 +530,25 @@ export default {
      * @date 2023/5/4
      * TODO 获取选中的item,存储在 selectedItem 中
      */
-    showSelectedItem() {
+    showSelectedItem () {
       this.articleList.forEach((item, index) => {
         if (item.checked) {
-          this.selectedItem.push(item.id);
+          this.selectedItem.push(item.id)
         }
       })
     },
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
       })
     },
     // 跳转编辑个人信息
-    editUser() {
-      this.$router.push('/editUser');
+    editUser () {
+      this.$router.push('/editUser')
     },
     /**
      * @Description:
@@ -545,8 +556,8 @@ export default {
      * @date 2023/5/5
      * TODO 点击不同的选项卡
      */
-    async initHistory(tab, event) {
-      this.selectedItem = [];
+    async initHistory (tab, event) {
+      this.selectedItem = []
 
       if (tab.props.name == 'history') {
         if (JSON.stringify(this.historyList).length > 10) {
@@ -562,7 +573,7 @@ export default {
         })
             .then(res => {
               if (res.success) {
-                this.historyList = res.result;
+                this.historyList = res.result
               } else {
                 console.log('error')
               }
@@ -572,35 +583,35 @@ export default {
               console.log(e)
             })
       } else if (tab.props.name == 'DeletedFile') {
-        this.getDeletedFiles();
+        this.getDeletedFiles()
       }
     },
     // 退出登录
-    loginOut() {
-      localStorage.removeItem("userInfo");
-      this.$router.push('/');
+    loginOut () {
+      localStorage.removeItem("userInfo")
+      this.$router.push('/')
     },
     // 初始化时判断是否有用户登陆
-    initUser() {
-      const user = localStorage.getItem("userInfo") || '';
+    initUser () {
+      const user = localStorage.getItem("userInfo") || ''
       if (user.length < 10) {
-        router.push({path: '/'});
+        router.push({ path: '/' })
         this.alertMessage('当前没有用户登录')
       } else {
         this.alertMessage('有用户登录')
         // 由用户存在
-        this.userInfo = JSON.parse(user);
+        this.userInfo = JSON.parse(user)
       }
     },
-    goToRead(id) {
+    goToRead (id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
     },
     // 获取该用户的文章
-    getUserArticle() {
+    getUserArticle () {
       http.$axios({
         url: '/markdownFile/getUserArticle',
         method: 'POST',
@@ -617,12 +628,12 @@ export default {
             this.alertMessage(res.message)
             if (JSON.stringify(res.result.rows).length > 10) {
               // articleList数据
-              this.articleList = res.result.rows;
+              this.articleList = res.result.rows
               // @date 2023/5/15 , @author icestone
               // TODO 所有文章的数量,用作分页
-              this.allCount = res.result.count;
+              this.allCount = res.result.count
               this.articleList.map(item => {
-                item.checked = false;
+                item.checked = false
               })
             }
           })
@@ -631,12 +642,12 @@ export default {
           })
     }
   },
-  created() {
-    this.initUser();
-    this.getUserArticle();
+  created () {
+    this.initUser()
+    this.getUserArticle()
   },
   watch: {
-    drawer(newVal) {
+    drawer (newVal) {
       // flag更新,获取tag
       if (newVal) {
         http.$axios({
@@ -648,7 +659,7 @@ export default {
         })
             .then(res => {
               this.alertMessage(res.message)
-              this.tagList = res.result;
+              this.tagList = res.result
             })
             .catch(e => {
               this.alertMessage(e)
@@ -742,6 +753,11 @@ export default {
   .list {
     .options {
       margin-bottom: 0.3rem;
+    }
+
+    .others {
+      display: flex;
+      flex-direction: column;
     }
   }
 

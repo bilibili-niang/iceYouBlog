@@ -3,7 +3,7 @@
     <div class="card hvr-glow" style="width: 100%;">
       <img :src="info.avatar">
       <div class="lim">
-        <Avatar :imgUrl="info.avatar"></Avatar>
+        <Avatar :imgUrl="info.avatar" :email="info.email"></Avatar>
       </div>
       <div class="card-body">
         <div>

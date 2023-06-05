@@ -54,6 +54,18 @@ const routes = [
                 meta: {title: "头图"},
                 component: () => import('@/components/user/HeadImg.vue'),
             },
+            {
+                path: '/user/postedComments',
+                name: 'postedComments',
+                meta: {title: "已发布评论"},
+                component: () => import('@/components/user/PostedComments.vue'),
+            },
+            {
+                path: '/user/about',
+                name: 'about',
+                meta: {title: "关于该用户"},
+                component: () => import('@/components/user/About.vue'),
+            },
         ],
     },
     {

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-type">
+  <div class="demo-type" @click="goDetail(email)">
     <div>
       <el-avatar :src="imgUrl" class="shadow"/>
     </div>
@@ -11,9 +11,21 @@
 export default {
   name: "Avatar",
   props: {
+    email: String,
     request: true,
     imgUrl: String
   },
+  methods: {
+    goDetail (email) {
+      console.log('将要跳转的email:')
+      console.log(email)
+      const routeUrl = this.$router.resolve({
+        path: "/user/about",
+        query: { email }
+      })
+      window.open(routeUrl.href, '_blank')
+    }
+  }
 }
 </script>
 

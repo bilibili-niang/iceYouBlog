@@ -10,7 +10,8 @@ const {
     returnUserInfAndToken,
     returnUserIsAdmin,
     returnUserInfoByEmail,
-    returnUserHeadImg
+    returnUserHeadImg,
+    returnUserAllPostedCommented
 } = require('../controller/user.controller')
 
 const {
@@ -21,7 +22,7 @@ const {
     userValidator, auth
 } = require('../middleware/user.middleware')
 
-const router = new Router({prefix: '/user'})
+const router = new Router({ prefix: '/user' })
 
 //用户注册
 router.post('/register', cryptPassword, register)
@@ -42,12 +43,18 @@ router.post('/getUserInfByToken', auth, returnUserInfAndToken)
 router.post('/isAdmin', auth, returnUserIsAdmin)
 
 // 通过email获取给第三方看的用户信息
-router.post('/getUserInfoByEmail', auth, returnUserInfoByEmail)
+router.post('/getUserInfoByEmail', returnUserInfoByEmail)
 /* @author icestone , 17:17
  * @date 2023/5/27
  * TODO 获取用户头图
 */
 router.post('/headImg', auth, returnUserHeadImg)
+
+/* @author icestone , 14:43
+ * @date 2023/6/4
+ * TODO 根据email获取该用户的所有email
+*/
+router.post('/getUserAllPostedComments', auth, returnUserAllPostedCommented)
 
 
 module.exports = router

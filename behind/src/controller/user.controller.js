@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const path = require('path');
+const jwt = require('jsonwebtoken')
+const path = require('path')
 const {
     createUser,
     getUserInfo,
@@ -10,7 +10,8 @@ const {
     getUserisAdminByEmail,
     createHeadImgByEmail,
     getUserInfoByEmail,
-    getUserHeadImg
+    getUserHeadImg,
+    getUserAllComments
 } = require('../services/user.service')
 
 const {
@@ -26,10 +27,10 @@ const {
 } = require('../constant/err.type')
 
 class UserController {
-    async register(ctx) {
+    async register (ctx) {
         //TODO: 1.获取数据
         // console.log(ctx.request.body)
-        const {username, password, email} = ctx.request.body || '';
+        const { username, password, email } = ctx.request.body || ''
         //TODO: 2.操作数据库
         let result = await createUser(username, password, email, ctx.request.body.oldPwd)
         // 失败即为undefined,因为用户名或密码重复
@@ -56,12 +57,12 @@ class UserController {
      * @date 2023/5/8
      * TODO 登录逻辑
     */
-    async login(ctx) {
+    async login (ctx) {
         console.log("---login---")
-        const {username} = ctx.request.body || '';
+        const { username } = ctx.request.body || ''
         try {
-            const {password, ...result} = await getUserInfo({username})
-            const token = result.token;
+            const { password, ...result } = await getUserInfo({ username })
+            const token = result.token
             // 验证token是否过期
             jwt.verify(token, salt, async function (err, data) {
                 const userInf = {
@@ -72,12 +73,12 @@ class UserController {
                 if (err) {
                     console.log('token过期')
                     // 创建新的token:
-                    let newToken = jwt.sign(userInf, salt, {expiresIn: 60 * 60 * 24})
-                    const resUserInf = await updateUserToken(result.email, newToken);
+                    let newToken = jwt.sign(userInf, salt, { expiresIn: 60 * 60 * 24 })
+                    const resUserInf = await updateUserToken(result.email, newToken)
                     // 成功返回1
                     if (resUserInf == 1) {
                         // 再次查询
-                        const {password, ...result} = await getUserInfo({username})
+                        const { password, ...result } = await getUserInfo({ username })
                         ctx.body = {
                             code: 0,
                             message: '用户登录成功',
@@ -103,15 +104,15 @@ class UserController {
                 }
             })
         } catch (e) {
-            ctx.body = userLoginError;
+            ctx.body = userLoginError
         }
     }
 
     // 返回用户信息和用户文章
-    async returnUserInfAndMarkdown(ctx) {
+    async returnUserInfAndMarkdown (ctx) {
         // 通过email获取user表中用户信息
-        const resUser = await getUserBaseInfo(ctx.state.user.email);
-        const resMarkdown = await getUserMarkdownData(ctx.state.user.email);
+        const resUser = await getUserBaseInfo(ctx.state.user.email)
+        const resMarkdown = await getUserMarkdownData(ctx.state.user.email)
         ctx.body = {
             code: 200,
             success: true,
@@ -124,9 +125,9 @@ class UserController {
     }
 
     // 通过token返回用户信息
-    async returnUserInf(ctx) {
+    async returnUserInf (ctx) {
         // 通过email获取user表中用户信息
-        const resUser = await getUserBaseInfo(ctx.state.user.email);
+        const resUser = await getUserBaseInfo(ctx.state.user.email)
         ctx.body = {
             code: 200,
             success: true,
@@ -138,9 +139,9 @@ class UserController {
     }
 
     // 返回用户信息和token
-    async returnUserInfAndToken(ctx) {
+    async returnUserInfAndToken (ctx) {
         // 通过email获取user表中用户信息
-        const resUser = await getUserBaseInfoAndToken(ctx.state.user.email);
+        const resUser = await getUserBaseInfoAndToken(ctx.state.user.email)
         ctx.body = {
             code: 200,
             success: true,
@@ -152,9 +153,9 @@ class UserController {
     }
 
     // 通过用户id修改用户信息:
-    async updateUserById(ctx) {
-        const res = await updateUserInfo(ctx.state.user.id, ctx.request.body);
-        const flag = res[0] || '';
+    async updateUserById (ctx) {
+        const res = await updateUserInfo(ctx.state.user.id, ctx.request.body)
+        const flag = res[0] || ''
         if (flag == 1) {
             // 为1,修改成功
             ctx.body = {
@@ -166,18 +167,18 @@ class UserController {
                 }
             }
         } else {
-            ctx.body = userUpdateError;
+            ctx.body = userUpdateError
         }
     }
 
     // 更新用户头像
-    async updateUserAvatar(ctx) {
+    async updateUserAvatar (ctx) {
         console.log('updateUserAvatar')
         //ctx.request.files.file中的file需要与前端使用的名称保持一致
         const file = ctx.request.files.file
         //传入绝对路径返回的basename为文件名称+拓展名
         const basename = path.basename(file.path)
-        const imgPath = '/' + basename;
+        const imgPath = '/' + basename
         const result = await createHeadImgByEmail(ctx.state.user.email, imgPath)
         ctx.body = {
             code: 200,
@@ -188,7 +189,7 @@ class UserController {
     }
 
     // 查询用户是否为admin
-    async returnUserIsAdmin(ctx) {
+    async returnUserIsAdmin (ctx) {
         console.log('---returnUserIsAdmin---')
         const result = await getUserisAdminByEmail(ctx.state.user.email)
         ctx.body = {
@@ -203,17 +204,17 @@ class UserController {
      * @date 2023/5/11
      * TODO
     */
-    async returnUserInfoByEmail(ctx) {
+    async returnUserInfoByEmail (ctx) {
         console.log('---returnUserInfoByEmail---')
-        const {email = null} = ctx.request.body;
+        const { email = null } = ctx.request.body
         console.log("email")
         console.log(email)
         if (email == null) {
             // @date 2023/5/11 , @author icestone
             // TODO 传参错误
-            ctx.body = userParamsError;
+            ctx.body = userParamsError
         } else {
-            const result = await getUserInfoByEmail(email, ['avatar']);
+            const result = await getUserInfoByEmail(email, ['avatar'])
             ctx.body = {
                 code: 200,
                 success: true,
@@ -224,10 +225,10 @@ class UserController {
     }
 
     // 返回用户头图
-    async returnUserHeadImg(ctx) {
-        console.log("ctx.state:");
-        console.log(ctx.state);
-        const result = await getUserHeadImg(ctx.state.user.email);
+    async returnUserHeadImg (ctx) {
+        console.log("ctx.state:")
+        console.log(ctx.state)
+        const result = await getUserHeadImg(ctx.state.user.email)
         ctx.body = {
             code: 200,
             success: true,
@@ -235,6 +236,21 @@ class UserController {
             result
         }
     }
+
+    /* @author icestone , 14:44
+     * @date 2023/6/4
+     * TODO 返回该用户的评论
+    */
+    async returnUserAllPostedCommented (ctx) {
+        const result = await getUserAllComments(ctx.state.user.email,'blog')
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: '返回指定email的所有评论',
+            result
+        }
+    }
+
 }
 
 module.exports = new UserController()

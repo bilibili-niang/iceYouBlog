@@ -60,6 +60,7 @@ export default {
       })
           .then(res => {
             this.open2(res.message)
+            this.$emit('refreshComments',true)
           })
           .catch(e => {
             console.log("e:")

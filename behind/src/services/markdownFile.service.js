@@ -541,7 +541,7 @@ class MarkdownFileService {
         })*/
     }
 
-    async getRecommendMarkdownFileByTags (tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+    async getRecommendMarkdownFileByTags (tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
         const processedTags = []
         tags.forEach((item) => {
             if (item.length > 0) {
@@ -562,6 +562,13 @@ class MarkdownFileService {
                     {
                         tag3: processedTags
                     },
+                ],
+                [Op.and]: [
+                    {
+                        id: {
+                            [Op.not]: id
+                        }
+                    }
                 ]
             }
         })

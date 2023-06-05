@@ -1,50 +1,76 @@
 <template>
   <div class="recommend">
-    <!--推荐-->
-    推荐~~~~~~~~~~~~~~~data:
-    <br>
-    {{ data }}
-    <br>
-    {{ tags }}
+    <el-tag class="ml-2 m-b m-l" type="info" v-if="markdowns">推荐文章</el-tag>
+    <div class="markdown" v-if="markdowns">
+      <!--推荐-->
+      <ul class="list-group  list-group-flush p-small">
+        <li class="list-group-item hvr-glow p-none m-b" v-for="(item,index) in markdowns" :key="index">
+          <MarkdownCard :item="item"></MarkdownCard>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import api from '@/common/api/markdownFiles'
+import MarkdownCard from '@/components/read/MarkdownCard.vue'
 
 const props = defineProps({
   tags: Object,
+  id: String
 })
-console.log("props:")
-console.log(props)
-
 const data = ref({})
-/* @author icestone , 11:38
- * @date 2023/5/31
- * TODO 获取与此tag相关的文章
-*/
-const initData = () => {
-  watch(tags, (newVal, oldVal) => {
-    console.log(newVal)
-  })
-  /*  api.getRecommendByTags({ tag1: tag1._key, tag2: tag2._key, tag3: tag3._key })
+const markdowns = ref([])
+
+watch(props, (nweProps) => {
+  api.getRecommendByTags({ tags: nweProps.tags, id: nweProps.id })
       .then(res => {
         console.log("res:")
         console.log(res)
+        markdowns.value = res.result
       })
       .catch(e => {
         console.log("e:")
         console.log(e)
-      })*/
-}
-
-initData()
-
+      })
+})
 </script>
 
 <style scoped lang="less">
 .recommend {
+  overflow: hidden;
 
+  .markdown {
+    display: flex;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: .3rem;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f6f5f5;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgb(224, 217, 217);
+      border-radius: 5px;
+    }
+  }
+
+  .list-group {
+    border-radius: .3rem;
+
+    .list-group-item {
+      border-radius: .3rem;
+      margin-bottom: .3rem;
+      padding: .1rem;
+    }
+  }
 }
 </style>

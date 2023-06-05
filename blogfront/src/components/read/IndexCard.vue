@@ -1,13 +1,13 @@
 <template>
-  <div class="indexCard hvr-glow">
-    <div class="card">
+  <div class="indexCard">
+    <div class="card hvr-glow">
       <div class="card-body">
         <el-text tag="b" size="large">
           <h5>{{ markdownData.title }}</h5>
         </el-text>
         <div class="userInfoDetail">
           <div class="imgLLim">
-            <Avatar :imgUrl="userInf.avatar"></Avatar>
+            <Avatar :imgUrl="userInf.avatar" :email="userInf.email"></Avatar>
           </div>
           <div class="info">
             <p class="name">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
+import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import Avatar from '@/components/common/Avatar.vue'
 
 export default {
@@ -73,12 +73,12 @@ export default {
      * @date 2023/5/6
      * TODO 前往实验性功能的编辑
     */
-    gotoEditExperiment(id) {
+    gotoEditExperiment (id) {
       const routeUrl = this.$router.resolve({
         path: "/edit/vMdEditor",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
     },
   }
 }
@@ -87,6 +87,10 @@ export default {
 <style scoped lang="less">
 .indexCard {
   border-radius: .5rem;
+
+  .card {
+    width: 100%;
+  }
 
   .card-body {
     display: flex;

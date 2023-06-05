@@ -1,7 +1,7 @@
 <template>
   <div class="markdownTags">
     <el-link :href="href" target="_blank" :underline="false" v-if="click">
-      <el-tag>{{ tag }}</el-tag>
+      <el-tag :size="size">{{ tag }}</el-tag>
     </el-link>
     <el-tag v-if="!click">{{ tag }}</el-tag>
   </div>
@@ -15,16 +15,17 @@ export default {
     click: {
       type: Boolean,
       default: true
-    }
+    },
+    size: String
   },
-  data() {
+  data () {
     return {
       href: '',
     }
   },
-  created() {
+  created () {
     // 允许点击
-    this.href = '#/read/readTag?tag1=' + this.tag;
+    this.href = '#/read/readTag?tag1=' + this.tag
   }
 }
 </script>

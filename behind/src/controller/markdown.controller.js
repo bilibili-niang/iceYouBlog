@@ -180,7 +180,7 @@ class MarkdownController {
                 console.log('没有url,可以直接返回')
                 ctx.body = {
                     code: 200,
-                    message: '查询首页数据',
+                    message: '查询单个文章数据',
                     success: true,
                     result: res[0],
                     userInf
@@ -654,10 +654,9 @@ class MarkdownController {
     async returnRecommendByTags (ctx) {
         console.log('ctx.request.body')
         console.log(ctx.request.body)
-        const { tag1 = null, tag2 = null, tag3 = null } = ctx.request.body
+        const { tags,id } = ctx.request.body
         console.log("tag1--,tag2--,tag3--")
-        console.log(tag1, tag2, tag3)
-        const result = await getRecommendMarkdownFileByTags([tag1, tag2, tag3])
+        const result = await getRecommendMarkdownFileByTags(tags,id)
         console.log("result:")
         console.log(result)
         ctx.body = {

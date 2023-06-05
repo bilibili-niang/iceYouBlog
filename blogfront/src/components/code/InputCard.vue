@@ -2,7 +2,6 @@
   <div class="inputCard">
     <el-button @click="drawer = true">add code</el-button>
     <el-drawer v-model="drawer" title="新增code" size="70%" direction="ttb" :with-header="false">
-      {{form}}
       <div class="form">
         <div class="des">
           <div class="desLim m-b">
@@ -37,13 +36,13 @@
 </template>
 
 <script>
-import http from '@/common/api/request';
-import {ElMessage} from 'element-plus';
-import {h} from 'vue';
+import http from '@/common/api/request'
+import { ElMessage } from 'element-plus'
+import { h } from 'vue'
 
 export default {
   name: "InputCard",
-  data() {
+  data () {
     return {
       showFlag: false,
       form: {
@@ -58,12 +57,12 @@ export default {
     }
   },
   methods: {
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
       })
     },
@@ -71,7 +70,7 @@ export default {
      * @date 2023/5/16
      * TODO 提交
     */
-    submitCode() {
+    submitCode () {
       console.log("this.form:")
       console.log(this.form)
       http.$axios({
@@ -83,12 +82,12 @@ export default {
         data: this.form
       })
           .then(res => {
-            this.alertMessage(res.message);
+            this.alertMessage(res.message)
             if (res.success) {
               // 成功
               console.log(res)
-              this.showFlag = false;
-              this.form = null;
+              this.showFlag = false
+              this.form = null
             } else {
               // 失败
               console.log(res)
@@ -98,9 +97,9 @@ export default {
             console.log(e)
           })
     },
-    showInput() {
+    showInput () {
       console.log('showInput')
-      this.showFlag = !this.showFlag;
+      this.showFlag = !this.showFlag
     }
   }
 }

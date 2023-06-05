@@ -11,7 +11,6 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import api from '@/common/api/markdownFiles'
 
 const props = defineProps({
   tags: Object,

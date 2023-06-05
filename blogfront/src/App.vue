@@ -1,6 +1,6 @@
 <template>
   <IndexHeader></IndexHeader>
-  <router-view/>
+  <router-view :key="$route.fullPath"/>
   <div class="footer animation-time">
     <el-link href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</el-link>
     <div>

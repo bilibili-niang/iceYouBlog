@@ -1,7 +1,7 @@
 <template>
   <!-- content goes here -->
   <div class="btns m-b">
-    <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
+    <el-button class="m-l" @click="drawer = true">
       关于
     </el-button>
     <el-drawer
@@ -49,18 +49,18 @@
 </template>
 
 <script>
-import http from '@/common/api/request';
-import filters from '@/common/filter/time';
-import {ElMessage} from 'element-plus';
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
-import IndexCard from "@/components/index/IndexCard.vue";
-import AdminCard from "@/components/index/AdminCard.vue";
-import Recommend from "@/components/index/Recommend.vue";
+import http from '@/common/api/request'
+import filters from '@/common/filter/time'
+import { ElMessage } from 'element-plus'
+import MarkdownTags from "@/components/common/MarkdownTags.vue"
+import IndexCard from "@/components/index/IndexCard.vue"
+import AdminCard from "@/components/index/AdminCard.vue"
+import Recommend from "@/components/index/Recommend.vue"
 
 export default {
   name: "Index",
-  components: {Recommend, AdminCard, IndexCard, MarkdownTags},
-  data() {
+  components: { Recommend, AdminCard, IndexCard, MarkdownTags },
+  data () {
     return {
       indexList: [],
       nav_show: '',
@@ -77,12 +77,12 @@ export default {
   methods: {
     // @date 2023/5/5 , @author icestone
     // TODO 分页按钮
-    handleCurrentChange(val) {
-      let id = this.pageSize2 * val;
+    handleCurrentChange (val) {
+      let id = this.pageSize2 * val
       if (val == 1) {
         // @date 2023/5/5 , @author icestone
         // TODO 第一页,跳过为0
-        id = 0;
+        id = 0
       } else {
       }
       // @date 2023/5/5 , @author icestone
@@ -97,31 +97,31 @@ export default {
       })
           .then(res => {
             if (res.result.length > 0) {
-              this.alertMessage(res.message);
-              this.indexList = res.result;
+              this.alertMessage(res.message)
+              this.indexList = res.result
             } else {
               this.alertMessage("你到达了未知领域")
-              this.indexList = [];
+              this.indexList = []
             }
           })
           .catch(e => {
             this.alertMessage(e)
           })
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       // console.log(`${val} items per page`)
     },
     /* @author icestone , 15:41
      * @date 2023/5/5
      * TODO 获取首页所有文章的统计
     */
-    initCount() {
+    initCount () {
       http.$axios({
         url: "/markdownFile/allCounts",
         method: 'GET',
       })
           .then(res => {
-            this.allCount = res.result;
+            this.allCount = res.result
             /*this.allCount = (res.result / 20);
             if (parseInt(this.allCount) < this.allCount) {
               this.allCount = parseInt(this.allCount) + 1;
@@ -134,47 +134,47 @@ export default {
             this.alertMessage(e)
           })
     },
-    alertMessage(title, type) {
+    alertMessage (title, type) {
       ElMessage({
         message: title,
         grouping: true,
         type: 'success',
       })
     },
-    timeFormat() {
+    timeFormat () {
       this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
     },
     // 获取首页数据
-    initData() {
+    initData () {
       http.$axios({
         url: '/home/'
       })
           .then(res => {
-            this.alertMessage(res.message);
-            this.indexList = res.result.rows || [];
+            this.alertMessage(res.message)
+            this.indexList = res.result.rows || []
           })
           .catch(e => {
-            this.alertMessage(e);
+            this.alertMessage(e)
           })
     },
-    scrolling() {
+    scrolling () {
       // 滚动条距文档顶部的距离
       let scrollTop =
           window.pageYOffset ||
           document.documentElement.scrollTop ||
-          document.body.scrollTop;
+          document.body.scrollTop
       // 滚动条滚动的距离
-      let scrollStep = scrollTop - this.oldScrollTop;
+      let scrollStep = scrollTop - this.oldScrollTop
       // console.log("header 滚动距离 ", scrollTop);
       // 更新——滚动前，滚动条距文档顶部的距离
-      this.oldScrollTop = scrollTop;
+      this.oldScrollTop = scrollTop
 
       //变量windowHeight是可视区的高度
       let windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight;
+          document.documentElement.clientHeight || document.body.clientHeight
       //变量scrollHeight是滚动条的总高度
       let scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight;
+          document.documentElement.scrollHeight || document.body.scrollHeight
 
       //滚动条到底部的条件
       if (scrollTop + windowHeight == scrollHeight) {
@@ -194,21 +194,21 @@ export default {
       }
     },
   },
-  created() {
+  created () {
     // 查询分页数据
-    this.initData();
+    this.initData()
     // @date 2023/5/5 , @author icestone
     // TODO 获取首页所有文章 count
-    this.initCount();
+    this.initCount()
   },
-  mounted() {
+  mounted () {
     // window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener("scroll", this.scrolling);
+    window.addEventListener("scroll", this.scrolling)
   },
   // 组件销毁前
-  beforeDestroy() {
+  beforeDestroy () {
     // window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener("scroll", this.scrolling);
+    window.removeEventListener("scroll", this.scrolling)
   },
 }
 </script>

@@ -1,28 +1,37 @@
 <template>
-  <div class="read">
+  <div class="read container">
     <div v-if="!dataExist">
       文章不存在或已被删除
     </div>
     <!--文章存在-->
-    <div class="dataContainer" v-if="dataExist">
-      <div class="imgLim animation-time">
-        <img :src="markdownData.headImg" alt="" v-if="markdownData.headImg">
-        <img src="/images/cover/1.png" alt="" v-if="!markdownData.headImg">
-        <div class="img"></div>
-      </div>
-      <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
-                 :userInf="userInf"></indexCard>
-      <div class="articleCon">
-        <v-md-editor
-            :include-level="[3,4]"
-            v-model="markdownData.content"
-            mode="preview"
-            @copy-code-success="handleCopyCodeSuccess"
-        ></v-md-editor>
-      </div>
-    </div>
-    <div class="otherOperates">
-      <Recommend v-if="dataExist" :tags="[markdownData.tag1,markdownData.tag2,markdownData.tag3]"></Recommend>
+    <div class="contentLim" v-if="dataExist">
+      <el-row>
+        <el-col :span="19" class="dataContainerLim">
+          <div class="dataContainer">
+            <div class="imgLim animation-time">
+              <img :src="markdownData.headImg" alt="" v-if="markdownData.headImg">
+              <img src="/images/cover/1.png" alt="" v-if="!markdownData.headImg">
+              <div class="img"></div>
+            </div>
+            <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
+                       :userInf="userInf"></indexCard>
+            <div class="articleCon">
+              <v-md-editor
+                  :include-level="[3,4]"
+                  v-model="markdownData.content"
+                  mode="preview"
+                  @copy-code-success="handleCopyCodeSuccess"
+              ></v-md-editor>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="5" class="right">
+          <Recommend v-if="dataExist" :id="id"
+                     :tags="[markdownData.tag1,markdownData.tag2,markdownData.tag3]"></Recommend>
+          <div class="otherOperates">
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item title="友善地评论" name="1">
@@ -32,7 +41,8 @@
               <el-tag class="ml-2" type="info" cal>你的名字</el-tag>
             </el-col>
             <el-col :span="20">
-              <el-input v-model="commentUser.name" placeholder="Please input name"/>
+              <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
+              <el-input v-model="userInf.username" placeholder="Please input name" v-else/>
             </el-col>
           </el-row>
           <el-row>
@@ -44,7 +54,8 @@
             </el-col>
           </el-row>
         </div>
-        <comment :user="commentUser" :id="markdownData.id" :title="markdownData.title" type="blog"></comment>
+        <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
+                 type="blog"></comment>
       </el-collapse-item>
       <el-collapse-item title="评论区" name="2">
         <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
@@ -56,7 +67,6 @@
 <script>
 import http from '../common/api/request'
 import filters from '../common/filter/time'
-import Avatar from '@/components/common/Avatar.vue'
 import { ElMessage } from 'element-plus'
 import { h } from 'vue'
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
@@ -68,6 +78,12 @@ import Recommend from '@/components/read/Recommend.vue'
 export default {
   name: "Read",
   methods: {
+    refresh (val) {
+      // 评论发表成功
+      if (val) {
+        this.refreshFlag = !this.refreshFlag
+      }
+    },
     handleCopyCodeSuccess (code) {
       this.alertMessage("复制成功")
     },
@@ -156,7 +172,6 @@ export default {
     Recommend,
     CommentArea,
     IndexCard,
-    Avatar,
     MarkdownTags,
     comment
   },
@@ -175,7 +190,15 @@ export default {
         url: '',
       },
       refreshFlag: true,
-      activeName: '2'
+      activeName: '2',
+      editForm: {
+        uuid: null,
+        parName: '',
+        phoneNum: '',
+        idNum: '',
+        parAddress: '',
+        parCategory: 0
+      },
     }
   },
   created () {
@@ -197,7 +220,7 @@ export default {
   align-items: center;
 
   .imgLim {
-    z-index: -1;
+    z-index: -10;
     max-height: 30%;
     min-height: 20rem;
     overflow: hidden;
@@ -217,8 +240,34 @@ export default {
     }
   }
 
+  .contentLim {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+
+    .otherOperates {
+      display: flex;
+      width: 25%;
+      margin-top: @marginTop;
+    }
+  }
+
   // 小屏
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 1200px) {
+    .contentLim {
+      flex-direction: column;
+    }
+
+    .dataContainerLim {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 1 !important;
+    }
+
+    .right {
+      display: none;
+    }
+
     & {
       padding-left: 0.3rem;
       padding-right: 0.3rem;
@@ -250,9 +299,16 @@ export default {
   }
 
   // 大屏
-  @media screen and (min-width: 800px) {
-    & {
+  @media screen and (min-width: 1200px) {
+    /*& {
       max-width: 1140px;
+    }*/
+    .contentLim {
+      flex-direction: row;
+
+      .el-row {
+        width: 100%;
+      }
     }
   }
 
@@ -283,6 +339,11 @@ export default {
     }
   }
 
+  .right {
+    margin-top: @marginTop;
+    overflow: hidden;
+  }
+
   .el-collapse {
     width: 100%;
 
@@ -291,13 +352,5 @@ export default {
       margin-bottom: .3rem;
     }
   }
-
-  .otherOperates {
-    position: fixed;
-    right: 3rem;
-    margin-top: @marginTop;
-
-  }
-
 }
 </style>

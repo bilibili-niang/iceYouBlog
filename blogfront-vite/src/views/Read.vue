@@ -1,5 +1,6 @@
 <template>
   <div class="read">
+    <h1>你好</h1>
     <div v-if="!dataExist">
       文章不存在或已被删除
     </div>
@@ -22,7 +23,10 @@
       </div>
     </div>
     <div class="otherOperates">
-      <Recommend v-if="dataExist" :tags="[markdownData.tag1,markdownData.tag2,markdownData.tag3]"></Recommend>
+      <!--推荐:-->
+      <h1>推荐:</h1>
+      {{ markdownData }}
+      <Recommend v-if="dataExist" :tags="markdownData.tag1"></Recommend>
     </div>
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item title="友善地评论" name="1">

@@ -8,7 +8,6 @@
       <!--推荐文章-->
       <div class="markdownLim card p-normal m-b border-radius-normal hvr-glow" v-for="(item,index) in markdownList"
            :key="index">
-        <img :src="item.headImg" class="imageCover">
         <div>
           <el-tag class="ml-2" type="info">id</el-tag>
           <el-text class="mx-1">{{ item.id }}</el-text>
@@ -44,18 +43,18 @@
 
 <script>
 import http from '@/common/api/request'
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
+import MarkdownTags from "@/components/common/MarkdownTags.vue"
 
 export default {
   name: "Recommend",
-  components: {MarkdownTags},
-  data() {
+  components: { MarkdownTags },
+  data () {
     return {
       markdownList: ''
     }
   },
   methods: {
-    getRecommendData() {
+    getRecommendData () {
       http.$axios({
         url: '/markdownFile/getRecommend',
         method: 'GET',
@@ -63,23 +62,23 @@ export default {
           .then(res => {
             console.log("res:")
             console.log(res)
-            this.markdownList = res.result;
+            this.markdownList = res.result
           })
           .catch(e => {
             console.log("e:")
             console.log(e)
           })
     },
-    goToRead(id) {
+    goToRead (id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
     },
   },
-  created() {
-    this.getRecommendData();
+  created () {
+    this.getRecommendData()
   }
 }
 </script>
@@ -122,32 +121,6 @@ export default {
         line-clamp: 2;
         //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
         -webkit-box-orient: vertical;
-
-      }
-
-
-      &:hover {
-        .imageCover {
-          filter: blur(1.5rem);
-          opacity: .8;
-        }
-
-        span.el-text {
-          color: #ffffff;
-        }
-      }
-
-      .imageCover {
-        transition: all .2s;
-        transform-style: preserve-3d;
-        position: absolute;
-        z-index: -1;
-        display: flex;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        opacity: 0;
       }
     }
   }

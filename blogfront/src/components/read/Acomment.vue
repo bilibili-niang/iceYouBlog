@@ -1,6 +1,6 @@
 <template>
   <!--单个用户的评论-->
-  <el-divider content-position="left">{{ item.id }}</el-divider>
+  <el-divider content-position="left"></el-divider>
   <div class="aComment hvr-glow p-l p-l">
     <div class="avatar m-r">
       <Avatar :imgUrl="avatar"></Avatar>
@@ -38,23 +38,22 @@
 
 <script>
 import http from "@/common/api/request"
-import Avatar from "@/components/common/Avatar.vue";
+import Avatar from "@/components/common/Avatar.vue"
 
 export default {
   name: "Acomment",
-  components: {Avatar},
+  components: { Avatar },
   props: {
     item: {}
   },
-  data() {
+  data () {
     return {
       avatar: '/images/avatars/defaultAvatar.png'
     }
   },
-  created() {
-    const email = this.item.email || null;
+  created () {
+    const email = this.item.email || null
     if (email) {
-      console.log(`请求${email}的头像`)
       http.$axios({
         url: "/user/getUserInfoByEmail/",
         method: 'POST',
@@ -63,17 +62,10 @@ export default {
         }
       })
           .then(res => {
-            console.log("res:")
-            console.log(res)
-            this.avatar = res.result.avatar;
-          })
-          .catch(e => {
-            console.log("e:")
-            console.log(e)
+            this.avatar = res.result.avatar
           })
 
     } else {
-      console.log('使用默认头像');
     }
   },
 

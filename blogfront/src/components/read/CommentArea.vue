@@ -14,19 +14,19 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
-import Acomment from "@/components/read/Acomment.vue";
+import http from "@/common/api/request"
+import Acomment from "@/components/read/Acomment.vue"
 
 export default {
   name: "CommentArea",
-  components: {Acomment},
+  components: { Acomment },
   props: {
     id: 0,
     refresh: {
       type: Boolean
     }
   },
-  data() {
+  data () {
     return {
       // 关于该文章的评论
       commentList: [],
@@ -38,7 +38,7 @@ export default {
  * @date 2023/5/11
  * TODO 获取与该文章有关的评论
 */
-    getAllComment(id) {
+    getAllComment (id) {
       http.$axios({
         url: '/comment/getCommentById',
         method: 'POST',
@@ -50,9 +50,9 @@ export default {
         }
       })
           .then(res => {
-            this.commentList = res.result;
+            this.commentList = res.result
             if (this.commentList.length) {
-              this.commentFlag = false;
+              this.commentFlag = false
             }
           })
           .catch(e => {
@@ -61,14 +61,18 @@ export default {
           })
     },
   },
-  created() {
-    this.getAllComment(this.id);
+  created () {
+    this.getAllComment(this.id)
   },
   watch: {
-    id(newVal) {
-      this.oldId = newVal;
+    id (newVal) {
+      this.oldId = newVal
       console.log('子组件的id发生变化')
-      this.getAllComment(this.oldId);
+      this.getAllComment(this.oldId)
+    },
+    // 评论状态发生改变,获取下评论数据
+    refresh (newVal) {
+      this.getAllComment(this.id)
     }
   }
 }
