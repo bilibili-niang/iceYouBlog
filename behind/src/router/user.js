@@ -52,7 +52,7 @@ router.post('/headImg', auth, returnUserHeadImg)
 
 /* @author icestone , 14:43
  * @date 2023/6/4
- * TODO 根据email获取该用户的所有email
+ * TODO 根据email获取该用户的所有评论
 */
 router.post('/getUserAllPostedComments', auth, returnUserAllPostedCommented)
 

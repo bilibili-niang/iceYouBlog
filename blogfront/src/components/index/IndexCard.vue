@@ -29,13 +29,6 @@
           </el-text>
         </span>
         <el-divider direction="vertical"/>
-        <span>
-          <el-button round>id</el-button>
-           <el-text>
-            {{ item.id }}
-          </el-text>
-        </span>
-        <el-divider direction="vertical"/>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>

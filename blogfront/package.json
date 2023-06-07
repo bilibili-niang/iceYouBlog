@@ -29,7 +29,7 @@
     "popper.js": "^1.16.1",
     "tailwindcss": "^3.3.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue": "^3.2.13",
+    "vue": "^3.3.4",
     "vue-meta": "^2.4.0",
     "vue-router": "^4.0.3",
     "vue3-lazy": "^1.0.0-alpha.1",
@@ -42,6 +42,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "tailwindcss": "^3.3.2",
     "unplugin-auto-import": "^0.15.1",
     "unplugin-vue-components": "^0.24.1"
   },

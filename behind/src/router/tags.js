@@ -14,5 +14,4 @@ const router = new Router({prefix: '/tag'})
 
 router.post('/aboutTag', hasTag, returnAboutTag)
 
-
 module.exports = router;

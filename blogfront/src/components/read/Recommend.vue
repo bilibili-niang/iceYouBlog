@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <el-tag class="ml-2 m-b m-l" type="info" v-if="markdowns">推荐文章</el-tag>
+    <el-tag class="ml-2 m-b m-l" type="info" v-if="markdowns.length>0">推荐文章</el-tag>
     <div class="markdown" v-if="markdowns">
       <!--推荐-->
       <ul class="list-group  list-group-flush p-small">
@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import api from '@/common/api/markdownFiles'
+import markdownApi from '@/common/api/markdownFiles'
 import MarkdownCard from '@/components/read/MarkdownCard.vue'
 
 const props = defineProps({
@@ -25,7 +25,7 @@ const data = ref({})
 const markdowns = ref([])
 
 watch(props, (nweProps) => {
-  api.getRecommendByTags({ tags: nweProps.tags, id: nweProps.id })
+  markdownApi.getRecommendByTags({ tags: nweProps.tags, id: nweProps.id })
       .then(res => {
         console.log("res:")
         console.log(res)
@@ -47,6 +47,7 @@ watch(props, (nweProps) => {
     max-height: 70vh;
     overflow-y: auto;
     border-radius: .3rem;
+    overflow-x: hidden;
 
     &::-webkit-scrollbar {
       width: 5px;

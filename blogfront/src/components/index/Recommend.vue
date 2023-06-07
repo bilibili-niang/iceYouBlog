@@ -9,14 +9,10 @@
       <div class="markdownLim card p-normal m-b border-radius-normal hvr-glow" v-for="(item,index) in markdownList"
            :key="index">
         <div>
-          <el-tag class="ml-2" type="info">id</el-tag>
-          <el-text class="mx-1">{{ item.id }}</el-text>
-        </div>
-        <div>
           <el-tag class="ml-2" type="info">title</el-tag>
           <el-text class="mx-1">{{ item.title }}</el-text>
         </div>
-        <div>
+        <div v-if="item.description">
           <el-tag class="ml-2" type="info">description</el-tag>
           <el-text class="mx-1">
             <div class="descriptions" :title="item.description">{{ item.description }}</div>

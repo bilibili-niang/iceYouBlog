@@ -1,209 +1,153 @@
 <template>
-  <div class="indexHeader">
-    <!--index全局组件-->
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">
+  <div class="lim container">
+    <div class="left">
+      <ul>
+        <li class="list-group-item active">
           <el-link href="/" target="_self">index</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page" v-if="!loginState">
+        <li class="list-group-item" v-if="!loginState">
           <el-link href="#/login" target="_blank">login</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page" v-if="!loginState">
+        <li class="list-group-item" v-if="!loginState">
           <el-link href="#/register" target="_blank">register</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page">
+        <li class="list-group-item">
           <el-link href="#/code/codeClips" target="_self">code clips</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page">
+        <li class="list-group-item">
           <el-link href="#/friend/links" target="_self">友链</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page" v-if="userInfoStore.userInfo.is_admin">
+        <li class="list-group-item" v-if="userInfo.is_admin">
           <el-link href="#/admin" target="_self">admin</el-link>
         </li>
-        <li class="breadcrumb-item" aria-current="page">
-          <Search></Search>
+        <li class="list-group-item">
+         <Search></Search>
         </li>
-      </ol>
-    </nav>
-    <el-popover placement="bottom" trigger="hover" :width="300" v-if="loginState">
-      <template #reference>
-        <el-button style="margin-right: 16px" class="animation-time hover-around-shadow">more</el-button>
-      </template>
-      <div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="avatarLim">
-              <Avatar :imgUrl="userInf.avatar"></Avatar>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <el-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</el-link>
-          </li>
-          <li class="list-group-item">
-            <el-link @click="goToUserInf" target="_blank">{{ userInf.username }}的主页</el-link>
-          </li>
-          <li class="list-group-item">
-            <el-link href="#/noteList" target="_blank">我的笔记列表</el-link>
-          </li>
-          <li class="list-group-item">
-            <el-link href="#/new/blog" target="_blank">新建blog</el-link>
-          </li>
-          <li class="list-group-item">
-            <el-link @click="goToUserHistory" target="_blank">历史记录</el-link>
-          </li>
-          <li class="list-group-item">
-            <el-link @click="goToUserSearchHistory" target="_blank">搜索记录</el-link>
-          </li>
-        </ul>
-      </div>
-    </el-popover>
+      </ul>
+    </div>
+    <div class="right">
 
+      <div class="avatarLim">
+        <el-popover
+            :width="300"
+            popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: .1rem;"
+        >
+          <template #reference>
+            <el-avatar :src="userInf.avatar"/>
+          </template>
+          <template #default>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="avatarLim">
+                  <Avatar :imgUrl="userInf.avatar" :email="userInf.email"></Avatar>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <el-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</el-link>
+              </li>
+              <li class="list-group-item">
+                <el-link @click="goToUserInf" target="_blank">{{ userInf.username }}的主页</el-link>
+              </li>
+              <li class="list-group-item">
+                <el-link href="#/noteList" target="_blank">我的笔记列表</el-link>
+              </li>
+              <li class="list-group-item">
+                <el-link href="#/new/blog" target="_blank">新建blog</el-link>
+              </li>
+              <li class="list-group-item">
+                <el-link @click="goToUserHistory" target="_blank">历史记录</el-link>
+              </li>
+              <li class="list-group-item">
+                <el-link @click="goToUserSearchHistory" target="_blank">搜索记录</el-link>
+              </li>
+            </ul>
+          </template>
+        </el-popover>
+
+
+      </div>
+
+    </div>
   </div>
 </template>
 
-<script>
-import Avatar from '@/components/common/Avatar.vue';
-import Search from '@/components/common/Search.vue';
+<script setup>
+import { useStore } from "vuex"
+import Avatar from '@/components/common/Avatar.vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Search from '@/components/common/Search.vue'
 
-
-export default {
-  name: "IndexHeader",
-  components: {Avatar, Search},
-  computed: {
-    userInfoStore() {
-      return this.$store.state.user;
+const userInf = ref()
+const loginState = ref()
+const router = useRouter()
+const store = useStore()
+const { userInfo } = store.state.user
+console.log(userInfo)
+const init = () => {
+  const inf = JSON.parse(localStorage.getItem('userInfo'))
+  if (JSON.stringify(inf).length > 10) {
+    const token = inf.token || ''
+    userInf.value = inf
+    if (token.length > 10) {
+      loginState.value = true
     }
-  },
-  data() {
-    return {
-      activeName: 'first',
-      loginState: false,
-      userInf: '',
-    }
-  },
-  created() {
-    this.init();
-  },
-  methods: {
-    // 阅读历史文章
-    goToRead(id) {
-      const routeUrl = this.$router.resolve({
-        path: "/read",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
-    },
-    goToUserHistory() {
-      const routeUrl = this.$router.resolve({
-        path: "/myselfHistory",
-      });
-      window.open(routeUrl.href, '_blank');
-    },
-    goToUserSearchHistory() {
-      const routeUrl = this.$router.resolve({
-        path: "/searchHistory",
-      });
-      window.open(routeUrl.href, '_blank');
-    },
-    // 前往查看用户信息
-    goToUserInf() {
-      const routeUrl = this.$router.resolve({
-        path: "/userDetail",
-        query: {
-          email: this.userInf.email
-        }
-      });
-      window.open(routeUrl.href, '_blank');
-    },
-    init() {
-      const inf = JSON.parse(localStorage.getItem('userInfo'))
-      if (JSON.stringify(inf).length > 10) {
-        const token = inf.token || '';
-        this.userInf = inf;
-        if (token.length > 10) {
-          this.loginState = true
-        }
-      }
-      // console.log(this.userInf)
-    },
   }
-
 }
+const goToUserInf = () => {
+  const routeUrl = router.resolve({
+    path: "/userDetail",
+    query: {
+      email: userInf.value.email
+    }
+  })
+  window.open(routeUrl.href, '_blank')
+}
+const goToUserHistory = () => {
+  const routeUrl = router.resolve({
+    path: "/myselfHistory",
+  })
+  window.open(routeUrl.href, '_blank')
+}
+const goToUserSearchHistory = () => {
+  const routeUrl = router.resolve({
+    path: "/searchHistory",
+  })
+  window.open(routeUrl.href, '_blank')
+}
+init()
 </script>
-
-<style scoped lang="less">
-:deep nav {
-  padding-left: 0;
-}
-
-.indexHeader {
-  margin: 0 auto;
-  position: relative;
-  overflow: visible;
+<style lang="less" scoped>
+.lim {
   display: flex;
-  box-sizing: border-box;
-  padding-left: 1.3rem;
+  flex-direction: row;
+  width: 100%;
+  max-height: 3rem;
+  min-height: 0;
+  justify-content: space-between;
 
-  //小屏幕
-  @media screen and (min-width: 1500px) {
-    & {
-      padding-right: 1.3rem;
-      max-width: 75%;
-    }
-  }
-
-  @media screen and (max-width: 1200px) {
-    & {
-      width: 100%;
-      justify-content: flex-start;
-    }
-  }
-
-  .avatar {
-    position: absolute;
-    right: 1rem;
-    top: 0;
-    padding: 0;
-    z-index: 9;
-    box-sizing: border-box;
-    border-radius: 0.5rem;
-    transition: 0.2s;
-    width: 5rem;
-    height: 5rem;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    background: rgba(0, 0, 0, 0);
-  }
-
-  .el-button {
-    position: absolute;
-    right: 10px;
-    top: 0.2rem;
-  }
-
-  hr {
-    margin: 0.2rem;
-    padding-top: 0;
-  }
-
-  .items {
+  .left {
     display: flex;
-    width: 100%;
-    flex-direction: column;
+    align-items: center;
 
-    .des {
+    ul {
+      list-style: none;
+      padding-left: 0;
       display: flex;
-      width: 100%;
+      flex-direction: row;
+      margin-bottom: 0;
+
+      li {
+        margin-right: 1.3rem;
+      }
     }
 
-    span {
-      display: flex;
-      width: 100%;
-    }
+  }
 
-    a {
-      justify-content: flex-start !important;
+  .right {
+    .select {
+      display: flex;
+      flex-direction: column;
     }
   }
 }

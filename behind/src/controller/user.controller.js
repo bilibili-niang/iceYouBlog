@@ -206,21 +206,30 @@ class UserController {
     */
     async returnUserInfoByEmail (ctx) {
         console.log('---returnUserInfoByEmail---')
-        const { email = null } = ctx.request.body
-        console.log("email")
-        console.log(email)
+        const { email = null, type = null } = ctx.request.body
         if (email == null) {
             // @date 2023/5/11 , @author icestone
             // TODO 传参错误
             ctx.body = userParamsError
         } else {
-            const result = await getUserInfoByEmail(email, ['avatar'])
-            ctx.body = {
-                code: 200,
-                success: true,
-                message: '获取用户头像url',
-                result
+            if (type == null) {
+                const result = await getUserInfoByEmail(email, ['avatar'])
+                ctx.body = {
+                    code: 200,
+                    success: true,
+                    message: '获取用户头像url',
+                    result
+                }
+            } else if (type == 'all') {
+                const result = await getUserInfoByEmail(email, ['username', 'avatar', 'occupation', 'githubUrl', 'word'])
+                ctx.body = {
+                    code: 200,
+                    success: true,
+                    message: '获取用户头像url',
+                    result
+                }
             }
+
         }
     }
 
@@ -242,7 +251,7 @@ class UserController {
      * TODO 返回该用户的评论
     */
     async returnUserAllPostedCommented (ctx) {
-        const result = await getUserAllComments(ctx.state.user.email,'blog')
+        const result = await getUserAllComments(ctx.state.user.email, 'blog')
         ctx.body = {
             code: 200,
             success: true,

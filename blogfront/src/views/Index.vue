@@ -20,11 +20,12 @@
   </div>
   <div class="index container">
     <div class="left m-r">
+      <el-switch v-model="value" active-text="list" inactive-text="timeLine" />
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
-           :key="index">
+           :key="index" v-if="value">
         <IndexCard :item="item"></IndexCard>
       </div>
-      <div class="btns m-b">
+      <div class="btns m-b" v-if="value">
         <!--<el-button @click="getDataById()">下一页</el-button>-->
         <el-pagination
             v-model:current-page="currentPage2"
@@ -38,6 +39,25 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
+      </div>
+      <div class="timeLine" v-if="!value">
+
+          <el-timeline>
+          <el-timeline-item center :timestamp="item.createdAt" placement="top"  v-for="(item,index) in indexList"
+           :key="index">
+              <h5>{{ item.title }}</h5>
+              <p>{{ item.description }}</p>
+              <span class="tags">
+                  <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
+                  <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
+                  <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
+              </span>
+              <span>
+                <el-button round @click="goToRead(item.id)">read</el-button>
+              </span>
+          </el-timeline-item>
+        </el-timeline>
+
       </div>
     </div>
     <div class="right">
@@ -71,10 +91,19 @@ export default {
       background: false,
       pageSize2: 10,
       currentPage2: 1,
-      drawer: false
+      drawer: false,
+      value:true
     }
   },
   methods: {
+    // 跳转阅读
+    goToRead (id) {
+      const routeUrl = this.$router.resolve({
+        path: "/read",
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
     // @date 2023/5/5 , @author icestone
     // TODO 分页按钮
     handleCurrentChange (val) {

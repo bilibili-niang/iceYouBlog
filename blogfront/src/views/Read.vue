@@ -24,6 +24,35 @@
               ></v-md-editor>
             </div>
           </div>
+
+          <el-collapse v-model="activeName" accordion class="m-t">
+            <el-collapse-item title="友善地评论" name="1">
+              <div class="commentUserInf m-b f-c">
+                <el-row>
+                  <el-col :span="4">
+                    <el-tag class="ml-2" type="info" cal>你的名字</el-tag>
+                  </el-col>
+                  <el-col :span="20">
+                    <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
+                    <el-input v-model="userInf.username" placeholder="Please input name" v-else/>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4">
+                    <el-tag class="ml-2" type="info">你的url</el-tag>
+                  </el-col>
+                  <el-col :span="20">
+                    <el-input v-model="commentUser.url" placeholder="Please input url"/>
+                  </el-col>
+                </el-row>
+              </div>
+              <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
+                       type="blog"></comment>
+            </el-collapse-item>
+            <el-collapse-item title="评论区" name="2">
+              <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
+            </el-collapse-item>
+          </el-collapse>
         </el-col>
         <el-col :span="5" class="right">
           <Recommend v-if="dataExist" :id="id"
@@ -33,34 +62,6 @@
         </el-col>
       </el-row>
     </div>
-    <el-collapse v-model="activeName" accordion>
-      <el-collapse-item title="友善地评论" name="1">
-        <div class="commentUserInf m-b f-c">
-          <el-row>
-            <el-col :span="4">
-              <el-tag class="ml-2" type="info" cal>你的名字</el-tag>
-            </el-col>
-            <el-col :span="20">
-              <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
-              <el-input v-model="userInf.username" placeholder="Please input name" v-else/>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4">
-              <el-tag class="ml-2" type="info">你的url</el-tag>
-            </el-col>
-            <el-col :span="20">
-              <el-input v-model="commentUser.url" placeholder="Please input url"/>
-            </el-col>
-          </el-row>
-        </div>
-        <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
-                 type="blog"></comment>
-      </el-collapse-item>
-      <el-collapse-item title="评论区" name="2">
-        <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
-      </el-collapse-item>
-    </el-collapse>
   </div>
 </template>
 

@@ -1,6 +1,5 @@
 const code = require('../schema/code')
 const { Op } = require('sequelize')
-const markdownFile = require('../schema/markdownFile')
 
 class CodeService {
     async newCodeClips (email, options) {

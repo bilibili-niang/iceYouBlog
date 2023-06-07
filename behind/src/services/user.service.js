@@ -120,12 +120,13 @@ class UserService {
     }
 
     // 通过email查找用户信息:
-    async getUserInfoByEmail (email) {
+    async getUserInfoByEmail (email, attrs = ['avatar']) {
         console.log('查找的email')
         console.log(email)
         // const res = await user.findAll({
         return await user.findAll({
-            attributes: ['username', 'email', 'avatar', 'occupation', 'word'], where: {
+            attributes: attrs,
+            where: {
                 email
             }, raw: true
         })

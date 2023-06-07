@@ -1,10 +1,9 @@
 <template>
   <div class="search">
-    <el-button text @click="drawer = true" class="searchBtn">搜索一下</el-button>
+    <el-link @click="drawer = true">搜索</el-link>
     <br>
     <el-drawer v-model="drawer" direction="ttb" size="70%" title="搜索一下" :with-header="false">
       <el-input v-model="key" placeholder="Please input search key"/>
-      <!--<el-text>搜索的关键字是:{{ key }}</el-text>-->
       <ul class="list-group list-group-flush">
         <li class="list-group-item hover-around-shadow animation-time" v-for="(item,index) in searchResult"
             :key="index">
@@ -21,13 +20,13 @@
 </template>
 
 <script>
-import http from '../../common/api/request';
-import {ElMessage} from 'element-plus';
-import {h} from 'vue';
+import http from '../../common/api/request'
+import { ElMessage } from 'element-plus'
+import { h } from 'vue'
 
 export default {
   name: "Search",
-  data() {
+  data () {
     return {
       drawer: false,
       key: '',
@@ -35,24 +34,24 @@ export default {
     }
   },
   methods: {
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
       })
     },
     // 跳转阅读
-    goToRead(id) {
+    goToRead (id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
     },
-    getResultByKey(key) {
+    getResultByKey (key) {
       http.$axios({
         url: '/markdownFile/search',
         method: 'POST',
@@ -69,7 +68,7 @@ export default {
               this.alertMessage('没有搜索结果', '换个词搜索试试?', 'rgba(255,0,0,0.5)')
             } else {
               // 有搜索结果
-              this.searchResult = res.result;
+              this.searchResult = res.result
             }
           })
           .catch(e => {
@@ -79,7 +78,7 @@ export default {
     }
   },
   watch: {
-    key(item1, item2) {
+    key (item1, item2) {
       // item1为新值，item2为旧值
       this.getResultByKey(item1)
     }
