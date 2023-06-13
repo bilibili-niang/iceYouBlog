@@ -1,32 +1,31 @@
 <template>
   <!-- content goes here -->
   <div class="btns m-b">
-    <el-button class="m-l" @click="drawer = true">
-      关于
-    </el-button>
-    <el-drawer
-        v-model="drawer"
-        title="I am the title"
-        direction="ttb"
-        :with-header="false">
-      测试账户:
-      admin
-      密码:
-      admin
-      <br>
-      关于项目:
-      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
-    </el-drawer>
+    <!--<el-button class="m-l" @click="drawer = true">
+          关于
+        </el-button>
+        <el-drawer
+            v-model="drawer"
+            title="I am the title"
+            direction="ttb"
+            :with-header="false">
+          测试账户:
+          admin
+          密码:
+          admin
+          <br>
+          关于项目:
+          <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
+        </el-drawer>-->
   </div>
   <div class="index container">
-    <div class="left m-r">
-      <el-switch v-model="value" active-text="list" inactive-text="timeLine" />
+    <div class="left m-r" v-loading="indexList.length==0">
+      <el-switch v-model="value" active-text="list" inactive-text="timeLine"/>
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
            :key="index" v-if="value">
         <IndexCard :item="item"></IndexCard>
       </div>
       <div class="btns m-b" v-if="value">
-        <!--<el-button @click="getDataById()">下一页</el-button>-->
         <el-pagination
             v-model:current-page="currentPage2"
             v-model:page-size="pageSize2"
@@ -42,17 +41,17 @@
       </div>
       <div class="timeLine" v-if="!value">
 
-          <el-timeline>
-          <el-timeline-item center :timestamp="item.createdAt" placement="top"  v-for="(item,index) in indexList"
-           :key="index">
-              <h5>{{ item.title }}</h5>
-              <p>{{ item.description }}</p>
-              <span class="tags">
+        <el-timeline>
+          <el-timeline-item center :timestamp="item.createdAt" placement="top" v-for="(item,index) in indexList"
+                            :key="index">
+            <h5>{{ item.title }}</h5>
+            <p>{{ item.description }}</p>
+            <span class="tags">
                   <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
                   <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
                   <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
               </span>
-              <span>
+            <span>
                 <el-button round @click="goToRead(item.id)">read</el-button>
               </span>
           </el-timeline-item>
@@ -92,7 +91,7 @@ export default {
       pageSize2: 10,
       currentPage2: 1,
       drawer: false,
-      value:true
+      value: true
     }
   },
   methods: {
@@ -151,13 +150,6 @@ export default {
       })
           .then(res => {
             this.allCount = res.result
-            /*this.allCount = (res.result / 20);
-            if (parseInt(this.allCount) < this.allCount) {
-              this.allCount = parseInt(this.allCount) + 1;
-            } else {
-              this.allCount = parseInt(this.allCount);
-            }
-            console.log(`this.allCount:${this.allCount}`)*/
           })
           .catch(e => {
             this.alertMessage(e)
@@ -186,42 +178,6 @@ export default {
             this.alertMessage(e)
           })
     },
-    scrolling () {
-      // 滚动条距文档顶部的距离
-      let scrollTop =
-          window.pageYOffset ||
-          document.documentElement.scrollTop ||
-          document.body.scrollTop
-      // 滚动条滚动的距离
-      let scrollStep = scrollTop - this.oldScrollTop
-      // console.log("header 滚动距离 ", scrollTop);
-      // 更新——滚动前，滚动条距文档顶部的距离
-      this.oldScrollTop = scrollTop
-
-      //变量windowHeight是可视区的高度
-      let windowHeight =
-          document.documentElement.clientHeight || document.body.clientHeight
-      //变量scrollHeight是滚动条的总高度
-      let scrollHeight =
-          document.documentElement.scrollHeight || document.body.scrollHeight
-
-      //滚动条到底部的条件
-      if (scrollTop + windowHeight == scrollHeight) {
-        //你想做的事情
-        // console.log("你已经到底部了");
-        // 加载后面的数据
-        // this.getDataById();
-      }
-      if (scrollStep < 0) {
-        // console.log("滚动条向上滚动了！");
-      } else {
-        // console.log("滚动条向下滚动了！");
-      }
-      // 判断是否到了最顶部
-      if (scrollTop <= 0) {
-        // console.log("header 到了最顶部")
-      }
-    },
   },
   created () {
     // 查询分页数据
@@ -229,15 +185,6 @@ export default {
     // @date 2023/5/5 , @author icestone
     // TODO 获取首页所有文章 count
     this.initCount()
-  },
-  mounted () {
-    // window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener("scroll", this.scrolling)
-  },
-  // 组件销毁前
-  beforeDestroy () {
-    // window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener("scroll", this.scrolling)
   },
 }
 </script>
@@ -252,14 +199,18 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   @media (max-width: 1200px) {
-    //flex-direction: column;
     flex-direction: column-reverse !important;
     .left {
       width: 100% !important;
     }
+
+    .recommend {
+      display: none;
+    }
   }
 
   .left {
+    min-height: 70vh;
     padding-left: .3rem;
     display: flex;
     flex-direction: column;
@@ -276,6 +227,7 @@ export default {
     min-width: 13rem;
     justify-content: center;
     flex-direction: column;
+
   }
 }
 </style>

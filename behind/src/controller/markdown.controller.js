@@ -32,7 +32,8 @@ const {
     UpdateSomething,
     setRecommendByType,
     getRecommendMarkdownFile,
-    getRecommendMarkdownFileByTags
+    getRecommendMarkdownFileByTags,
+    getMarkdownByEmail
 } = require('../services/markdownFile.service')
 
 const markdownFile = require('../schema/markdownFile')
@@ -652,17 +653,27 @@ class MarkdownController {
      * TODO 通过tag返回与该tag有关的文章
     */
     async returnRecommendByTags (ctx) {
-        console.log('ctx.request.body')
-        console.log(ctx.request.body)
-        const { tags,id } = ctx.request.body
-        console.log("tag1--,tag2--,tag3--")
-        const result = await getRecommendMarkdownFileByTags(tags,id)
-        console.log("result:")
-        console.log(result)
+        const { tags, id } = ctx.request.body
+        const result = await getRecommendMarkdownFileByTags(tags, id)
         ctx.body = {
             code: 200,
             success: true,
             message: "获取推荐文章",
+            result
+        }
+    }
+
+    /* @author icestone , 21:37
+     * @date 2023/6/8
+     * TODO 通过email返回该用户的所有文章
+    */
+    async returnAllMarkdownByEmail (ctx) {
+        const { email = 'admin' } = ctx.request.body
+        const result = await getMarkdownByEmail(email)
+        ctx.body = {
+            code: 200,
+            success: true,
+            message: `获取${ email }的文章`,
             result
         }
     }

@@ -25,6 +25,7 @@ const {
 const {
     userLoginError, userUpdateError, TokenRefreshError, userParamsError
 } = require('../constant/err.type')
+const { getShowInIndexAdminUser } = require('../services/admin.service')
 
 class UserController {
     async register (ctx) {
@@ -211,6 +212,14 @@ class UserController {
             // @date 2023/5/11 , @author icestone
             // TODO 传参错误
             ctx.body = userParamsError
+        } else if (email == "admin") {
+            const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word'])
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: '获取admin用户信息',
+                result
+            }
         } else {
             if (type == null) {
                 const result = await getUserInfoByEmail(email, ['avatar'])

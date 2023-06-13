@@ -1,15 +1,20 @@
 <template>
-  <div class="demo-type" :@click="allowClick? null: goDetail(email)">
+  <div class="demo-type" @click="goDetail(email)" v-if="allowClick">
     <div class="left">
       <el-avatar :src="imgUrl" class="shadow"/>
-      <div class="other">
-      <el-text></el-text>
-      </div>
+    </div>
+  </div>
+  <div class="demo-type" :@click="allowClick? null: goDetail(email)" v-else>
+    <div class="left">
+      <el-avatar :src="imgUrl" class="shadow"/>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const props = defineProps({
   email: {
     type: String,
@@ -23,7 +28,7 @@ const props = defineProps({
 })
 const goDetail = email => {
   if (props.allowClick) {
-    const routeUrl = this.$router.resolve({
+    const routeUrl = router.resolve({
       path: "/user/about",
       query: { email }
     })

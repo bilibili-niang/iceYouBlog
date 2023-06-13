@@ -3,11 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css'
 
 
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import 'bootstrap/dist/js/bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 import 'hover.css'
 

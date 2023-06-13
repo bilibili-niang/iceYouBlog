@@ -85,7 +85,7 @@ class MarkdownFileService {
             })
     }
 
-// 通过文章数据和token记录用户的浏览记录
+    // 通过文章数据和token记录用户的浏览记录
     async historyByToken (res, token) {
         console.error('--------historyByToken--------')
         let verifyToken = jwt.decode(token, salt)
@@ -112,23 +112,23 @@ class MarkdownFileService {
 
     }
 
-// 通过用户邮箱返回用户的文章:
+    // 通过用户邮箱返回用户的文章:
     async getMarkdownByEmail (email) {
-        const res = await markdownFile.findAll({
-            attributes: ['id', 'email', 'description', 'view', 'praise', 'headImg'], where: {
-                email
-            }, raw: true
+        return await markdownFile.findAll({
+            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3',],
+            where: {
+                email,
+                states: {
+                    [Op.gte]: 0
+                },
+            },
+            raw: true,
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ]
         })
-            .then(res => {
-                console.log('成功')
-                // console.log(res)
-            })
-            .catch(e => {
-                console.log('失败')
-                // console.log(e)
-            })
 
-        return res
     }
 
     // 通过传入的id返回首页文章

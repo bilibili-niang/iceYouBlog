@@ -232,6 +232,7 @@ export default {
     display: flex;
     justify-content: center;
     filter: blur(.3rem) grayscale(80%);
+    transition-duration: 1s!important;
 
     img {
       background-size: cover;
@@ -322,6 +323,7 @@ export default {
     &:hover {
       .imgLim {
         filter: blur(0) grayscale(0);
+        max-height: 100vh;
       }
     }
 

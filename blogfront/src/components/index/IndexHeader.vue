@@ -15,19 +15,19 @@
           <el-link href="#/code/codeClips" target="_self">code clips</el-link>
         </li>
         <li class="list-group-item">
-          <el-link href="#/friend/links" target="_self">友链</el-link>
+          <el-link href="#/friend/links" target="_self">友链与留言</el-link>
         </li>
         <li class="list-group-item" v-if="userInfo.is_admin">
           <el-link href="#/admin" target="_self">admin</el-link>
         </li>
         <li class="list-group-item">
-         <Search></Search>
+          <Search></Search>
         </li>
       </ul>
     </div>
     <div class="right">
 
-      <div class="avatarLim">
+      <div class="avatarLim" v-if="loginState">
         <el-popover
             :width="300"
             popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: .1rem;"
@@ -82,7 +82,7 @@ const userInf = ref()
 const loginState = ref()
 const router = useRouter()
 const store = useStore()
-const { userInfo } = store.state.user
+const { userInfo } = store.state.user || false
 console.log(userInfo)
 const init = () => {
   const inf = JSON.parse(localStorage.getItem('userInfo'))
@@ -136,12 +136,12 @@ init()
       display: flex;
       flex-direction: row;
       margin-bottom: 0;
+      flex-wrap: wrap;
 
       li {
         margin-right: 1.3rem;
       }
     }
-
   }
 
   .right {

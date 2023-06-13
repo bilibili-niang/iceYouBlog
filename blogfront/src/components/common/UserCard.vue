@@ -41,6 +41,7 @@ const props = defineProps({
     default: false
   }
 })
+console.log('UserCard组件')
 </script>
 
 <style scoped>

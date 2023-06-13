@@ -21,7 +21,8 @@ const {
     getUpdateSomethingResult,
     returnSetRecommend,
     returnRecommendMarkdown,
-    returnRecommendByTags
+    returnRecommendByTags,
+    returnAllMarkdownByEmail
 } = require('../controller/markdown.controller')
 const {
     hasOperateAdnIds
@@ -100,6 +101,11 @@ router.get("/getRecommend", returnRecommendMarkdown)
  * TODO 根据文章tag获取该页面的推荐文章
 */
 router.post('/getRecommendByTags',returnRecommendByTags)
+/* @author icestone , 21:37
+ * @date 2023/6/8
+ * TODO 获取指定email用户的所有文章
+*/
+router.post('/getUserAllMarkdown',returnAllMarkdownByEmail)
 
 module.exports = router
 
