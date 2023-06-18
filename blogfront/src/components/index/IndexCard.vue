@@ -23,7 +23,7 @@
         </span>
         <el-divider direction="vertical"/>
         <span>
-          <el-button round>view</el-button>
+          <el-button round class="m-r">view</el-button>
           <el-text>
             {{ item.view }}
           </el-text>
@@ -60,19 +60,6 @@ export default {
   },
 
   mounted () {
-    // 倍数
-    // 妈的不好用,太抖了
-    /*const multiple = 5
-    document.querySelectorAll(".indexCard").forEach(item => {
-      item.addEventListener("mousemove", function (e) {
-        let box = item.getBoundingClientRect()
-        let calcX = ( e.clientY - box.y - ( box.height / 2 ) ) / multiple * - 1
-        let calcY = ( e.clientX - box.x - ( box.width / 2 ) ) / multiple * - 1
-        // if (calcY < 30 & calcY > - 30) {
-        // }
-        item.style.transform = "rotateX(" + calcX + "deg) " + "rotateY(" + calcY + "deg)"
-      })
-    })*/
   },
   methods: {
     DateDiffer (Date_end) {
@@ -143,7 +130,7 @@ export default {
   width: 100%;
   overflow: hidden;
   border-radius: .3rem;
-  // 炫酷背景!
+  // 背景
   .bacCover {
     position: absolute;
     z-index: -10;
@@ -160,14 +147,6 @@ export default {
       width: 100%;
       height: 100%;
       opacity: .1;
-      background: radial-gradient(black 3px, transparent 4px),
-      radial-gradient(black 3px, transparent 4px),
-      linear-gradient(#fff 4px, transparent 0),
-      linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
-      linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
-      #fff;
-      background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
-      background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
     }
   }
 
@@ -180,7 +159,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background: rgba(255, 255, 255, 0);
 
     .bottomLim {
       display: flex;
@@ -198,7 +176,6 @@ export default {
   @media (max-width: 1200px) {
     .card-body {
       margin-left: 0 !important;
-      background: rgba(255, 255, 255, .7) !important;
     }
 
     .imgLim {
@@ -208,25 +185,6 @@ export default {
       img {
         opacity: .5;
       }
-    }
-  }
-
-  &:hover {
-    //transform: scale(1.1, 1.1);
-
-    .inner {
-      opacity: 1;
-      background-color: silver;
-      background-image: radial-gradient(circle at 100% 150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
-      radial-gradient(circle at 0 150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
-      radial-gradient(circle at 50% 100%, white 10%, silver 10%, silver 23%, white 23%, white 30%, silver 30%, silver 43%, white 43%, white 50%, silver 50%, silver 63%, white 63%, white 71%, transparent 71%, transparent),
-      radial-gradient(circle at 100% 50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent),
-      radial-gradient(circle at 0 50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent);
-      background-size: 100px 50px !important;
-    }
-
-    .card-body {
-      background: rgba(255, 255, 255, .7);
     }
   }
 }

@@ -9,7 +9,9 @@
           <span class="align-middle">
           <el-text tag="b" size="small">name:</el-text>
             <p>
+              <el-text>
             {{ userInfo.username }}
+              </el-text>
             </p>
           </span>
           <div class="buttonGroup">
@@ -62,7 +64,7 @@
 
     <div class="list">
       <el-tabs class="demo-tabs" v-model="activeName" @tab-click="initHistory">
-        <el-tab-pane label="Article" name="article">
+        <el-tab-pane label="所有文章" name="article">
           <div class="options">
             <el-button @click="open">删除</el-button>
             <el-button @click="setAsRecommend">置顶</el-button>
@@ -119,12 +121,19 @@
             />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="History" name="history">
+
+        <el-tab-pane label="已置顶文章" name="topArticle">
+          <el-text>已置顶文章</el-text>
+          <TopArticle></TopArticle>
+        </el-tab-pane>
+
+        <el-tab-pane label="历史记录" name="history">
           <div class="card" style="width: 100%;" v-for="(item,index) in historyList" :key="index">
             <historyIndexCard :item="item"></historyIndexCard>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="DeletedFile" name="DeletedFile">
+
+        <el-tab-pane label="伪删除的文章" name="DeletedFile">
           <div class="options">
             <el-button @click="recover()">恢复所选文章</el-button>
           </div>
@@ -165,10 +174,11 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { h } from 'vue'
 import IndexCard from "@/components/user/IndexCard.vue"
 import HistoryIndexCard from "@/components/user/HistoryIndexCard.vue"
+import TopArticle from "@/components/user/TopArticle.vue"
 
 export default {
   name: "User",
-  components: { HistoryIndexCard, IndexCard, Avatar },
+  components: { HistoryIndexCard, IndexCard, Avatar, TopArticle },
   data () {
     return {
       userInfo: {},

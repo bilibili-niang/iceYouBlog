@@ -4,7 +4,8 @@ import router from './router'
 import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+// 深色模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
@@ -14,7 +15,7 @@ import 'hover.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /*引入公共样式*/
 import '@/assets/css/reset.less'
-import '@/assets/css/personalize.less'
+import '@/assets/css/dark.less'
 
 // markdown预览组件以及样式
 import VueMarkdownEditor from '@kangc/v-md-editor'

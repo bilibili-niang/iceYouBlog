@@ -1,0 +1,56 @@
+// 个性化css样式
+.hover {
+  transition: all .2s;
+}
+
+.indexCard {
+  transform-style: preserve-3d;
+  perspective: 100px;
+  transform: rotateX(0deg) rotateY(0deg);
+}
+
+@dark-background: #2d2e36;
+@dark-background-card: rgba(45, 46, 54, 0.7);
+// 编辑器背景色,长石灰
+@dark-editor: #363433;
+@dark-editor-inner: #c0c4c3;
+// 远山紫
+@text-color: #ccccd6;
+html.dark {
+  //深色模式
+  body {
+    background: @dark-background !important;
+
+    .card, .avater .list-group-item {
+      background: @dark-background-card !important;
+    }
+
+    .container {
+      .cover {
+        background: @dark-background-card !important;
+      }
+    }
+
+    .recommend .list-group-item {
+      background: @dark-background-card !important;
+    }
+  }
+
+  .v-md-editor {
+    background: @dark-editor !important;
+
+    .github-markdown-body {
+      color: @text-color;
+
+      div.v-md-pre-wrapper, .github-markdown-body:after {
+        color: @text-color;
+        background: @dark-editor-inner !important;
+      }
+    }
+
+    .v-md-textarea-editor textarea {
+      color: @text-color;
+    }
+  }
+}
+

@@ -20,9 +20,9 @@
   </div>
   <div class="index container">
     <div class="left m-r" v-loading="indexList.length==0">
-      <el-switch v-model="value" active-text="list" inactive-text="timeLine"/>
+<!--<el-switch v-model="value" active-text="list" inactive-text="timeLine"/>-->
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
-           :key="index" v-if="value">
+           :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
       <div class="btns m-b" v-if="value">
@@ -38,25 +38,6 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
         />
-      </div>
-      <div class="timeLine" v-if="!value">
-
-        <el-timeline>
-          <el-timeline-item center :timestamp="item.createdAt" placement="top" v-for="(item,index) in indexList"
-                            :key="index">
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.description }}</p>
-            <span class="tags">
-                  <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
-                  <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
-                  <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-              </span>
-            <span>
-                <el-button round @click="goToRead(item.id)">read</el-button>
-              </span>
-          </el-timeline-item>
-        </el-timeline>
-
       </div>
     </div>
     <div class="right">

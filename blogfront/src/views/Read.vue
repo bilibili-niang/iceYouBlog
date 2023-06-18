@@ -8,11 +8,7 @@
       <el-row>
         <el-col :span="19" class="dataContainerLim">
           <div class="dataContainer">
-            <div class="imgLim animation-time">
-              <img :src="markdownData.headImg" alt="" v-if="markdownData.headImg">
-              <img src="/images/cover/1.png" alt="" v-if="!markdownData.headImg">
-              <div class="img"></div>
-            </div>
+            <div class="imgLim animation-time" :style="{'background':'url('+markdownData.headImg+')'}"></div>
             <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
                        :userInf="userInf"></indexCard>
             <div class="articleCon">
@@ -54,6 +50,7 @@
             </el-collapse-item>
           </el-collapse>
         </el-col>
+        <!--推荐-->
         <el-col :span="5" class="right">
           <Recommend v-if="dataExist" :id="id"
                      :tags="[markdownData.tag1,markdownData.tag2,markdownData.tag3]"></Recommend>
@@ -205,11 +202,17 @@ export default {
   created () {
     this.initMarkdownData()
   },
+  mounted () {
+    console.log("document.getElementsByTagName('h4'):")
+    console.log(document.getElementsByTagName('h4'))
+    console.log("document.getElementsByTagName('h5'):")
+    console.log(document.getElementsByTagName('h5'))
+  }
 }
 </script>
 
 <style scoped lang="less">
-@marginTop: 18rem;
+@marginTop: 1rem;
 .read {
   padding-bottom: 10rem;
   display: flex;
@@ -222,24 +225,18 @@ export default {
 
   .imgLim {
     z-index: -10;
-    max-height: 30%;
-    min-height: 20rem;
+    height: 100vh;
     overflow: hidden;
     position: fixed;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     top: 0;
     left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
-    filter: blur(.3rem) grayscale(80%);
-    transition-duration: 1s!important;
-
-    img {
-      background-size: cover;
-      display: flex;
-      width: 100%;
-      height: 100%;
-    }
+    transform: scale(2, 2);
+    filter: blur(1.5rem);
   }
 
   .contentLim {
@@ -302,9 +299,6 @@ export default {
 
   // 大屏
   @media screen and (min-width: 1200px) {
-    /*& {
-      max-width: 1140px;
-    }*/
     .contentLim {
       flex-direction: row;
 
@@ -319,13 +313,6 @@ export default {
     display: flex;
     width: 100%;
     flex-direction: column;
-
-    &:hover {
-      .imgLim {
-        filter: blur(0) grayscale(0);
-        max-height: 100vh;
-      }
-    }
 
     .articleCon {
       display: flex;

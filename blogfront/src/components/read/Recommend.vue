@@ -3,7 +3,7 @@
     <el-tag class="ml-2 m-b m-l" type="info" v-if="markdowns.length>0">推荐文章</el-tag>
     <div class="markdown" v-if="markdowns">
       <!--推荐-->
-      <ul class="list-group  list-group-flush p-small">
+      <ul class="list-group list-group-flush p-small">
         <li class="list-group-item hvr-glow p-none m-b" v-for="(item,index) in markdowns" :key="index">
           <MarkdownCard :item="item"></MarkdownCard>
         </li>

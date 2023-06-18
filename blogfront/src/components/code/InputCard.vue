@@ -1,6 +1,6 @@
 <template>
   <div class="inputCard">
-    <el-button @click="drawer = true">add code</el-button>
+    <el-button @click="drawer = true" class="m-normal">add code</el-button>
     <el-drawer v-model="drawer" title="新增code" size="70%" direction="ttb" :with-header="false">
       <div class="form">
         <div class="des">

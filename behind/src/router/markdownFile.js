@@ -22,7 +22,8 @@ const {
     returnSetRecommend,
     returnRecommendMarkdown,
     returnRecommendByTags,
-    returnAllMarkdownByEmail
+    returnAllMarkdownByEmail,
+    returnUserTopArticle
 } = require('../controller/markdown.controller')
 const {
     hasOperateAdnIds
@@ -107,6 +108,11 @@ router.post('/getRecommendByTags',returnRecommendByTags)
 */
 router.post('/getUserAllMarkdown',returnAllMarkdownByEmail)
 
+/* @author 张嘉凯
+ * @date 2023/6/19 @time
+ * TODO  通过用户email获取该用户的置顶文章
+*/
+router.post('/getTopArticle',returnUserTopArticle)
 module.exports = router
 
 

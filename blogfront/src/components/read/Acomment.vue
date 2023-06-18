@@ -7,7 +7,7 @@
     </div>
     <div class="detail">
       <div class="f-r">
-        <div class="m-r">
+        <div class="m-r m-b">
           <el-tag class="ml-2 m-r" type="info">nickName</el-tag>
           <el-text>
             {{ item.nickName }}
@@ -77,7 +77,6 @@ export default {
   display: flex;
   flex-direction: row;
   border-radius: .5rem;
-  background: #ffffff;
   padding: .3rem;
   margin: .3rem;
 

@@ -1,5 +1,6 @@
 <template>
   <div class="lim container">
+    <div class="cover"></div>
     <div class="left">
       <ul>
         <li class="list-group-item active">
@@ -17,16 +18,15 @@
         <li class="list-group-item">
           <el-link href="#/friend/links" target="_self">友链与留言</el-link>
         </li>
-        <li class="list-group-item" v-if="userInfo.is_admin">
-          <el-link href="#/admin" target="_self">admin</el-link>
-        </li>
+        <!--<li class="list-group-item">
+                  <el-text @click="changeDark()">切换深色/浅色模式</el-text>
+                </li>-->
         <li class="list-group-item">
           <Search></Search>
         </li>
       </ul>
     </div>
     <div class="right">
-
       <div class="avatarLim" v-if="loginState">
         <el-popover
             :width="300"
@@ -36,7 +36,7 @@
             <el-avatar :src="userInf.avatar"/>
           </template>
           <template #default>
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush avater">
               <li class="list-group-item">
                 <div class="avatarLim">
                   <Avatar :imgUrl="userInf.avatar" :email="userInf.email"></Avatar>
@@ -60,13 +60,13 @@
               <li class="list-group-item">
                 <el-link @click="goToUserSearchHistory" target="_blank">搜索记录</el-link>
               </li>
+              <li class="list-group-item" v-if="userInfo.is_admin">
+                <el-link href="#/admin" target="_self">admin</el-link>
+              </li>
             </ul>
           </template>
         </el-popover>
-
-
       </div>
-
     </div>
   </div>
 </template>
@@ -82,8 +82,19 @@ const userInf = ref()
 const loginState = ref()
 const router = useRouter()
 const store = useStore()
+let dark = ref(false)
+
 const { userInfo } = store.state.user || false
 console.log(userInfo)
+// 深色模式
+const changeDark = () => {
+  if (dark.value) {
+    document.querySelector('html').classList.add('dark')
+  } else {
+    document.querySelector('html').classList.remove('dark')
+  }
+  dark.value = !dark.value
+}
 const init = () => {
   const inf = JSON.parse(localStorage.getItem('userInfo'))
   if (JSON.stringify(inf).length > 10) {
@@ -125,6 +136,21 @@ init()
   max-height: 3rem;
   min-height: 0;
   justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  border-radius: .5rem;
+  margin-top: 1rem;
+  padding-top: .3rem;
+
+  .cover {
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    filter: blur(20px);
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+  }
 
   .left {
     display: flex;
@@ -140,6 +166,8 @@ init()
 
       li {
         margin-right: 1.3rem;
+        display: flex;
+        align-items: center;
       }
     }
   }

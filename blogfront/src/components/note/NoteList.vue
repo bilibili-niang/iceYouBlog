@@ -1,15 +1,27 @@
 <template>
   <div class="noteList">
+<!--<code>
+      {{ noteData.allowView }}
+      {{ Boolean(noteData.allowView) }}
+    </code>-->
     <div class="btns">
       <el-button @click="drawer = true">check all</el-button>
       <el-input class="m-r" v-model="noteData.note_title" placeholder="Please input"/>
       <el-button @click="showDrawer = true">share</el-button>
-
       <el-text v-if="noteData.allowView">公开分享</el-text>
       <el-text v-else>没有公开分享</el-text>
 
       <el-button @click="goToShareLink(noteData.id)" v-if="noteData.allowView">check share link
       </el-button>
+
+      <el-select v-model="value" placeholder="Select">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
 
     </div>
     <el-drawer v-model="showDrawer" title="是否分享你的笔记" size="50%">
@@ -50,6 +62,7 @@
           @save="saveNote"
           v-model="noteData.content"
           :disabled-menus="[]"
+          :mode="value"
       ></v-md-editor>
     </div>
     <div class="imageLim">
@@ -61,15 +74,15 @@
 </template>
 
 <script>
-import http from '../../common/api/request';
-import {h} from 'vue';
-import {ElMessage, ElMessageBox} from 'element-plus'
-import NoteListItem from "@/components/note/NoteListItem.vue";
+import http from '../../common/api/request'
+import { h } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import NoteListItem from "@/components/note/NoteListItem.vue"
 
 export default {
   name: "noteList",
-  components: {NoteListItem},
-  data() {
+  components: { NoteListItem },
+  data () {
     return {
       notesList: [],
       title: '',
@@ -80,26 +93,40 @@ export default {
       drawer: false,
       // 分享的弹窗
       showDrawer: false,
-
+      value: 'preview',
+      options: [
+        {
+          value: 'edit',
+          label: 'edit',
+        },
+        {
+          value: 'editable',
+          label: 'editable',
+        },
+        {
+          value: 'preview',
+          label: 'preview',
+        }
+      ]
     }
   },
-  created() {
-    this.initNotesList();
+  created () {
+    this.initNotesList()
   },
   methods: {
     /* @author icestone , 20:24
      * @date 2023/5/16
      * TODO 前往分享链接
     */
-    goToShareLink(id) {
-      console.log(`分享id:${id}`)
+    goToShareLink (id) {
+      console.log(`分享id:${ id }`)
     },
     /* @author icestone , 21:31
      * @date 2023/5/15
      * TODO 点击设置分享权限该文章
     */
-    shareNoteById(id) {
-      console.log(`将要分享的id:${id}`)
+    shareNoteById (id) {
+      console.log(`将要分享的id:${ id }`)
       http.$axios({
         url: '/note/publicNote',
         method: 'POST',
@@ -118,17 +145,17 @@ export default {
 
     },
     // 提交二级笔记的service
-    submitChildrenNote(title, fatherId) {
+    submitChildrenNote (title, fatherId) {
       http.$axios({
         url: '/'
       })
     },
     // 添加子笔记
-    addNewChildrenNote(obj) {
+    addNewChildrenNote (obj) {
       console.log('---addNewChildrenNote---')
       console.log("obj;")
       console.log(obj)
-      ElMessageBox.prompt(`将会在 ${obj.note_title} 下新建笔记`, '新建一个笔记', {
+      ElMessageBox.prompt(`将会在 ${ obj.note_title } 下新建笔记`, '新建一个笔记', {
         confirmButtonText: '就这个了',
         cancelButtonText: '算了',
         inputPattern: /[\u4e00-\u9fa5_a-zA-Z0-9_]{4,10}/,
@@ -137,14 +164,14 @@ export default {
           return true
         }
       })
-          .then(({value}) => {
+          .then(({ value }) => {
             // 通过value和id新建二级笔记
-            const {id: fatherId} = obj;
+            const { id: fatherId } = obj
             console.log(fatherId)
             this.submitChildrenNote(value, fatherId)
             ElMessage({
               type: 'success',
-              message: `Your email is:${value}`,
+              message: `Your email is:${ value }`,
             })
           })
           .catch(() => {
@@ -154,21 +181,21 @@ export default {
             })
           })
     },
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
         grouping: true,
       })
     },
-    getItemId(id) {
-      this.showNote(id);
+    getItemId (id) {
+      this.showNote(id)
     },
     // 检测在按下ctrl+s时进行保存
-    saveNote() {
+    saveNote () {
       console.log('this.noteData')
       console.log(this.noteData)
       http.$axios({
@@ -184,27 +211,27 @@ export default {
       })
           .then(res => {
             console.log(res.message)
-            this.initNotesList();
-            this.alertMessage(res.message, 'success', '#a1c4fd');
+            this.initNotesList()
+            this.alertMessage(res.message, 'success', '#a1c4fd')
           })
           .catch(e => {
             console.log('失败')
             console.log(e)
           })
     },
-    async handleEvent(event) {
+    async handleEvent (event) {
       switch (event.keyCode) {
         case 83:
           event.preventDefault()
           // 阻止直接保存网页
-          event.returnValue = false;
-          this.saveNote();
+          event.returnValue = false
+          this.saveNote()
           break
       }
     },
     // 点击显示该笔记的内容
-    showNote(id) {
-      this.nowId = id;
+    showNote (id) {
+      this.nowId = id
       http.$axios({
         url: '/note/getNote',
         method: 'POST',
@@ -222,8 +249,8 @@ export default {
                * TODO 如果content为null,v-md-editor会报错,这里判断一下
               */
               if (res.result.content == null) {
-                res.result.content = `> type your first title!`;
-                this.noteData = res.result;
+                res.result.content = `> type your first title!`
+                this.noteData = res.result
               } else {
                 this.noteData = res.result
               }
@@ -237,7 +264,7 @@ export default {
 
     },
     // 提交新建的文章
-    submitNewNote() {
+    submitNewNote () {
       console.log('submitNewNote')
       http.$axios({
         url: "/note/addNote",
@@ -254,8 +281,8 @@ export default {
             console.log(res)
             if (res.success) {
               // 成功
-              this.initNotesList();
-              this.title = '';
+              this.initNotesList()
+              this.title = ''
             }
           })
           .catch(e => {
@@ -264,7 +291,7 @@ export default {
           })
 
     },
-    initNotesList() {
+    initNotesList () {
       http.$axios({
         url: '/note/allNotes',
         method: 'POST',
@@ -277,27 +304,27 @@ export default {
             console.log(res.result)
             console.log(res.result.length)
             if (res.success & res.result.length != 0) {
-              this.showRight = true;
-              this.notesList = res.result;
+              this.showRight = true
+              this.notesList = res.result
               // 如果存在id,那么获取一下第一篇note的数据
               if (this.notesList[0].id) {
                 if (this.nowId) {
-                  this.showNote(this.nowId);
+                  this.showNote(this.nowId)
                 } else {
-                  this.showNote(this.notesList[0].id);
+                  this.showNote(this.notesList[0].id)
                 }
               }
             } else {
-              this.alertMessage(res.message, '数据渲染失败咯', '#a1c4fd');
-              this.showRight = false;
+              this.alertMessage(res.message, '数据渲染失败咯', '#a1c4fd')
+              this.showRight = false
             }
           })
     }
   },
-  mounted() {
+  mounted () {
     window.addEventListener('keydown', this.handleEvent)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('keydown', this.handleEvent) // 在页面销毁的时候记得解除
   }
 }

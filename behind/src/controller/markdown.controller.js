@@ -33,7 +33,8 @@ const {
     setRecommendByType,
     getRecommendMarkdownFile,
     getRecommendMarkdownFileByTags,
-    getMarkdownByEmail
+    getMarkdownByEmail,
+    getTopArticleByEmail
 } = require('../services/markdownFile.service')
 
 const markdownFile = require('../schema/markdownFile')
@@ -52,6 +53,7 @@ const {
 const path = require("path")
 const user = require("../schema/user.model")
 const { paramsVerify } = require("../middleware/admin.middleware")
+const { Op } = require('sequelize')
 
 class MarkdownController {
     async newFile (ctx) {
@@ -675,6 +677,28 @@ class MarkdownController {
             success: true,
             message: `获取${ email }的文章`,
             result
+        }
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/6/19 @time
+     * TODO  返回指定用户的置顶文章
+    */
+    async returnUserTopArticle (ctx) {
+        const { email = null } = ctx.request.body
+        if (email) {
+            const result = await getTopArticleByEmail(email, 1)
+            ctx.body = {
+                code: 200,
+                success: true,
+                result
+            }
+        } else {
+            ctx.body = {
+                code: 201,
+                success: false,
+                msg: '没有传入邮箱'
+            }
         }
     }
 }

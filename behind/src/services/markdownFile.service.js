@@ -115,7 +115,7 @@ class MarkdownFileService {
     // 通过用户邮箱返回用户的文章:
     async getMarkdownByEmail (email) {
         return await markdownFile.findAll({
-            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3',],
+            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
             where: {
                 email,
                 states: {
@@ -128,7 +128,6 @@ class MarkdownFileService {
                 ['id', 'DESC']
             ]
         })
-
     }
 
     // 通过传入的id返回首页文章
@@ -531,14 +530,6 @@ class MarkdownFileService {
             ],
             limit: 5
         })
-        /*.then(res => {
-            console.log("res:")
-            console.log(res)
-        })
-        .catch(e => {
-            console.log("e:")
-            console.log(e)
-        })*/
     }
 
     async getRecommendMarkdownFileByTags (tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
@@ -573,6 +564,31 @@ class MarkdownFileService {
             }
         })
     }
+
+    /* @author 张嘉凯
+     * @date 2023/6/19 @time
+     * TODO  获取置顶文章
+    */
+    async getTopArticleByEmail (email, level) {
+        return await markdownFile.findAll({
+            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
+            where: {
+                email,
+                states: {
+                    [Op.gte]: 0
+                },
+                recommendLevel: {
+                    [Op.gte]: level
+                }
+            },
+            raw: true,
+            order: [
+                // 我们从要排序的模型开始排序数组
+                ['id', 'DESC']
+            ]
+        })
+    }
+
 }
 
 module.exports = new MarkdownFileService()

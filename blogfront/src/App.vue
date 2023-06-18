@@ -12,32 +12,33 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       day: true
     }
   },
-  created() {
+  created () {
     // 获取session中的user信息
-    this.$store.commit("getUserInfo");
+    this.$store.commit("getUserInfo")
     console.log('day?')
     if (!this.isDaylight()) {
+      console.log('白天')
       //这里是白天
+      document.querySelector('html').classList.remove('dark')
     } else {
+      console.log('夜晚')
       //这里是夜间
-      this.day = false;
-      const body = document.querySelector('body');
-      body.style.backgroundColor = 'rgba(18,18,18,0)'
+      this.day = false
+      document.querySelector('html').classList.add('dark')
     }
-    console.log(this.day)
   },
   methods: {
-    isDaylight() {
-      const currdate = new Date();
-      if (currdate.getHours() >= 23 || currdate.getHours() < 7) {
-        return true;
+    isDaylight () {
+      const currdate = new Date()
+      if (currdate.getHours() >= 20 || currdate.getHours() < 7) {
+        return true
       } else {
-        return false;
+        return false
       }
     }
   }

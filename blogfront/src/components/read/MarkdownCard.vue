@@ -4,15 +4,16 @@
       <el-tag class="ml-2" type="info">title</el-tag>
       <el-text>{{ item.title }}</el-text>
     </span>
-    <span class="des">
+    <span class="des" v-if="item.description">
       <el-text>
-        <span class="d-inline-block text-truncate" style="max-width: 220px;">{{ item.description }}</span>
+        <span class="d-inline-block text-truncate" style="max-width: 220px;"
+              :title="item.description">{{ item.description }}</span>
       </el-text>
     </span>
     <span class="tags">
-       <markdownTags :tag="item.tag1" v-if="item.tag1"  size="small"></markdownTags>
-       <markdownTags :tag="item.tag2" v-if="item.tag2"  size="small"></markdownTags>
-       <markdownTags :tag="item.tag3" v-if="item.tag3"  size="small"></markdownTags>
+       <markdownTags :tag="item.tag1" v-if="item.tag1" size="small"></markdownTags>
+       <markdownTags :tag="item.tag2" v-if="item.tag2" size="small"></markdownTags>
+       <markdownTags :tag="item.tag3" v-if="item.tag3" size="small"></markdownTags>
     </span>
     <div class="bottom-btns">
       <el-button size="small" round @click="goToRead(item.id)">read</el-button>

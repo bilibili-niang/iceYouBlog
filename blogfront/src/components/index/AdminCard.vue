@@ -20,7 +20,14 @@
         </div>
         <div>
           <el-tag class="ml-2" type="info">githubUrl</el-tag>
-          <el-text class="mx-1">{{ info.githubUrl }}</el-text>
+          <a :href="info.githubUrl" target="_blank">
+            <el-icon>
+              <Link/>
+            </el-icon>
+            <el-text>
+              去看看
+            </el-text>
+          </a>
         </div>
         <div>
           <el-tag class="ml-2" type="info">occupation</el-tag>
@@ -32,28 +39,28 @@
 </template>
 
 <script>
-import http from '@/common/api/request';
-import Avatar from "@/components/common/Avatar.vue";
+import http from '@/common/api/request'
+import Avatar from "@/components/common/Avatar.vue"
 
 export default {
   name: "AdminCard",
-  components: {Avatar},
-  data() {
+  components: { Avatar },
+  data () {
     return {
       info: {}
     }
   },
-  created() {
-    this.getAdminInfo();
+  created () {
+    this.getAdminInfo()
   },
   methods: {
-    getAdminInfo() {
+    getAdminInfo () {
       http.$axios({
         url: '/admin/showInIndexAdminInfo',
         method: 'GET',
       })
           .then(res => {
-            this.info = res.result;
+            this.info = res.result
           })
           .catch(e => {
             console.log(e)

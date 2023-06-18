@@ -2,27 +2,9 @@
   <div class="about container">
     <UserCard :user="user"></UserCard>
     <div class="article" v-if="true">
-      <el-switch v-model="value" active-text="list" inactive-text="timeLine"/>
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in markdownFile"
-           :key="index" v-if="value">
+           :key="index">
         <IndexCard :item="item"></IndexCard>
-      </div>
-      <div class="timeLine" v-if="!value">
-        <el-timeline>
-          <el-timeline-item center :timestamp="item.createdAt" placement="top" v-for="(item,index) in markdownFile"
-                            :key="index">
-            <h5>{{ item.title }}</h5>
-            <p>{{ item.description }}</p>
-            <span class="tags">
-                  <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
-                  <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
-                  <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-              </span>
-            <span>
-                <el-button round @click="goToRead(item.id)">read</el-button>
-              </span>
-          </el-timeline-item>
-        </el-timeline>
       </div>
     </div>
   </div>
@@ -40,7 +22,6 @@ const route = useRoute()
 const email = route.query.email || 'admin'
 let user = ref({})
 let markdownFile = ref({})
-const value = ref(true)
 const router = useRoute()
 
 const initData = async () => {
@@ -65,7 +46,3 @@ const goToRead = (id) => {
 
 initData()
 </script>
-
-<style scoped>
-
-</style>
