@@ -18,9 +18,9 @@
         <li class="list-group-item">
           <el-link href="#/friend/links" target="_self">友链与留言</el-link>
         </li>
-        <!--<li class="list-group-item">
-                  <el-text @click="changeDark()">切换深色/浅色模式</el-text>
-                </li>-->
+        <li class="list-group-item">
+          <div class="light" :class="{ dark: dark==true }" @click="changeDark" title="切换深色/浅色模式"></div>
+        </li>
         <li class="list-group-item">
           <Search></Search>
         </li>
@@ -82,7 +82,7 @@ const userInf = ref()
 const loginState = ref()
 const router = useRouter()
 const store = useStore()
-let dark = ref(false)
+let dark = ref(true)
 
 const { userInfo } = store.state.user || false
 console.log(userInfo)
@@ -93,6 +93,7 @@ const changeDark = () => {
   } else {
     document.querySelector('html').classList.remove('dark')
   }
+  localStorage.setItem('mode',dark.value)
   dark.value = !dark.value
 }
 const init = () => {
@@ -177,6 +178,42 @@ init()
       display: flex;
       flex-direction: column;
     }
+  }
+}
+@hoverShadow: rgba(0, 0, 0, 0.5);
+@bacColor: #ffffff;
+.light {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  box-shadow: 0 0 2rem 12px @hoverShadow;
+  transition-duration: .5s;
+  margin: 0 auto .5rem;
+  background: @bacColor;
+  position: relative;
+
+  &:after {
+    position: absolute;
+    display: flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    content: '';
+    top: 3px;
+    left: 3px;
+    transition-duration: .5s;
+    border-radius: 50%;
+
+  }
+}
+
+.dark {
+  box-shadow: 10px .5rem .5rem @hoverShadow;
+  background: none;
+
+  &:after {
+    border-radius: 50%;
+    box-shadow: 10px 0.5rem 0 0.5rem rgba(0, 0, 0, 0.5);
   }
 }
 </style>

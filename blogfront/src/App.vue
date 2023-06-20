@@ -20,16 +20,25 @@ export default {
   created () {
     // 获取session中的user信息
     this.$store.commit("getUserInfo")
-    console.log('day?')
-    if (!this.isDaylight()) {
-      console.log('白天')
-      //这里是白天
-      document.querySelector('html').classList.remove('dark')
+    // 获取深色/浅色模式的flag
+    const dark = localStorage.getItem('mode') || null
+    if (dark != null) {
+      console.log('有值')
+      if (dark=='true') {
+        document.querySelector('html').classList.add('dark')
+      } else {
+        console.log('移除dark')
+        document.querySelector('html').classList.remove('dark')
+      }
     } else {
-      console.log('夜晚')
-      //这里是夜间
-      this.day = false
-      document.querySelector('html').classList.add('dark')
+      if (!this.isDaylight()) {
+        //这里是白天
+        document.querySelector('html').classList.remove('dark')
+      } else {
+        //这里是夜间
+        this.day = false
+        document.querySelector('html').classList.add('dark')
+      }
     }
   },
   methods: {

@@ -1,5 +1,8 @@
 <template>
   <div class="indexCard hover" id="element">
+    <div class="btns">
+      <el-checkbox v-model="item.checked" border/>
+    </div>
     <div class="bacCover">
       <div class="inner"></div>
     </div>
@@ -29,6 +32,13 @@
           </el-text>
         </span>
         <el-divider direction="vertical"/>
+        <span v-if="item.recommendLevel">
+          <el-button round class="m-r">recommendLevel</el-button>
+          <el-text>
+            {{ item.recommendLevel }}
+          </el-text>
+        </span>
+        <el-divider direction="vertical"/>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
@@ -51,7 +61,10 @@ export default {
   name: "indexCard",
   components: { LazyImg, MarkdownTags },
   props: {
-    item: {}
+    item: {},
+    selectOperate: {
+      type: String
+    }
   },
   data () {
     return {
@@ -111,6 +124,12 @@ export default {
       // @date 2023/5/5 , @author icestone
       // TODO 分页数据更改时数据会更改,再次格式化时间
       this.item.createdAt = timeFormat.timeFormat(newVal.createdAt) || ''
+    },
+    selectOperate (newVal) {
+      console.log('selectOperate 已修改')
+      if (this.item.checked) {
+        console.log(item.id)
+      }
     }
   },
   created () {

@@ -571,7 +571,7 @@ class MarkdownFileService {
     */
     async getTopArticleByEmail (email, level) {
         return await markdownFile.findAll({
-            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
+            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title','recommendLevel'],
             where: {
                 email,
                 states: {

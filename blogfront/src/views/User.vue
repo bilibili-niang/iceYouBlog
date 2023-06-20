@@ -124,7 +124,8 @@
 
         <el-tab-pane label="已置顶文章" name="topArticle">
           <el-text>已置顶文章</el-text>
-          <TopArticle></TopArticle>
+          <el-button @click="getSelect">获取已选</el-button>
+          <TopArticle operate="selectOperate"></TopArticle>
         </el-tab-pane>
 
         <el-tab-pane label="历史记录" name="history">
@@ -150,13 +151,17 @@
             <el-text>
             查看头图
             </el-text>
-          <router-link to="/user/headImg">HeadImg</router-link>
+            <el-text>
+              <a href="/user/headImg">HeadImg</a>
+            </el-text>
           </span>
             <span>
             <el-text>
             我的评论
             </el-text>
-          <router-link to="/user/postedComments">已发布的评论</router-link>
+            <el-text>
+              <a href="/user/postedComments">已发布的评论</a>
+            </el-text>
           </span>
           </dvi>
         </el-tab-pane>
@@ -228,10 +233,18 @@ export default {
           label: 'level 5',
         },
       ],
-      recommendLevel: null
+      recommendLevel: null,
+      selectOperate: ''
     }
   },
   methods: {
+    /* @author 张嘉凯
+     * @date 2023/6/19 @time
+     * TODO  获取已选item
+    */
+    getSelect () {
+      this.selectOperate = 'get'
+    },
     /* @author icestone , 15:46
      * @date 2023/5/20
      * TODO 设置置顶文章
