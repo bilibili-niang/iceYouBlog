@@ -197,6 +197,13 @@ const routes = [
             title: 'Page not found',
         },
         component: () => import('@/views/NotFound.vue')
+    },{
+        path: "/test",
+        name: 'test',
+        meta: {
+            title: 'test',
+        },
+        component: () => import('@/views/Test.vue')
     },
     {
         path: "/",
@@ -205,7 +212,7 @@ const routes = [
 ];
 
 // @date 2023/5/3 , @author icestone
-// TODO 设置路由模式
+// 设置路由模式
 const router = createRouter({
     history: createWebHashHistory(),
     // mode: 'history',
@@ -217,15 +224,15 @@ const router = createRouter({
  * @Description:
  * @author icestone
  * @date 2023/5/3
- * TODO 设置导航守卫
+ * 设置导航守卫
  */
 router.beforeEach((to, from, next) => {
     // @date 2023/5/5 , @author icestone
-    // TODO 判断是否有标题
+    // 判断是否有标题
     if (to.meta.title) {
         document.title = to.meta.title
     }
-    let nextRoute = ['editUser', 'user', 'markdown', 'editMarkdown', 'adminIndex']
+    let nextRoute = ['editUser', 'user', 'markdown', 'editMarkdown', 'adminIndex','test']
     // 是否是登录中
     let userInfo = JSON.stringify(localStorage.getItem('userInfo'))
     // 当前进入的页面是不是需要验证的页面

@@ -68,7 +68,7 @@ export default {
   methods: {
     /* @author icestone , 2:09
      * @date 2023/5/7
-     * TODO 添加tag
+     * 添加tag
     */
     addTag(id) {
       this.$emit('showAlert', this.tags);
@@ -84,13 +84,13 @@ export default {
   },
   created() {
     // @date 2023/5/5 , @author icestone
-    // TODO 第一次创建子组件并接收到值时需要格式化下时间
+    // 第一次创建子组件并接收到值时需要格式化下时间
     this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || '';
   },
   watch: {
     item(newVal) {
       // @date 2023/5/8 , @author icestone
-      // TODO 父组件重新获取数据时,再次格式化时间
+      // 父组件重新获取数据时,再次格式化时间
       this.item.createdAt = timeFormat.timeFormat(newVal.createdAt) || '';
     }
   }

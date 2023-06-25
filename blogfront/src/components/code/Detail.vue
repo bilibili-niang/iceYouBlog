@@ -53,7 +53,7 @@ export default {
   methods: {
     /* @author icestone , 0:39
      * @date 2023/5/20
-     * TODO 前往编辑
+     * 前往编辑
     */
     goToEditCode(id) {
       console.log(`id:${id}`)
@@ -91,7 +91,7 @@ export default {
   created() {
     this.initData();
     // @date 2023/5/5 , @author icestone
-    // TODO 第一次创建子组件并接收到值时需要格式化下时间
+    // 第一次创建子组件并接收到值时需要格式化下时间
     // this.codeClipsData.createdAt = timeFormat.timeFormat(this.codeClipsData.createdAt) || '';
   }
 }

@@ -24,6 +24,11 @@ app.use(async (ctx, next) => {
 //开放html模板的静态目录
 app.use(views(path.join(__dirname, '../static/views/'), {extension: 'html'}))
 app.use(static(path.join(__dirname, '../static')))
+/* @author 张嘉凯
+ * @date 2023/6/21 @time 15:21
+ * 存放文章图片
+*/
+app.use(static(path.join(__dirname, '../static/images/markdown')))
 app.use(template())
 // 接受文件
 /*app.use(koaBody({

@@ -81,6 +81,7 @@ const userValidator = async (ctx, next) => {
 //验证用户传来的token是否有用,以及获取其存储的用户信息
 const auth = async (ctx, next) => {
     console.log('---auth---')
+    console.log(ctx.request)
     //authorization是需要前端在传输时设置的
     const token = ctx.request.header.token || null;
     if (token != null) {

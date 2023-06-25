@@ -93,11 +93,14 @@ const changeDark = () => {
   } else {
     document.querySelector('html').classList.remove('dark')
   }
-  localStorage.setItem('mode',dark.value)
+  localStorage.setItem('mode', dark.value)
   dark.value = !dark.value
 }
 const init = () => {
+
   const inf = JSON.parse(localStorage.getItem('userInfo'))
+  const mode = JSON.parse(localStorage.getItem('mode'))
+  dark.value = Boolean(mode)
   if (JSON.stringify(inf).length > 10) {
     const token = inf.token || ''
     userInf.value = inf
@@ -180,6 +183,7 @@ init()
     }
   }
 }
+
 @hoverShadow: rgba(0, 0, 0, 0.5);
 @bacColor: #ffffff;
 .light {

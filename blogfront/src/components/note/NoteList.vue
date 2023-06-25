@@ -116,14 +116,14 @@ export default {
   methods: {
     /* @author icestone , 20:24
      * @date 2023/5/16
-     * TODO 前往分享链接
+     * 前往分享链接
     */
     goToShareLink (id) {
       console.log(`分享id:${ id }`)
     },
     /* @author icestone , 21:31
      * @date 2023/5/15
-     * TODO 点击设置分享权限该文章
+     * 点击设置分享权限该文章
     */
     shareNoteById (id) {
       console.log(`将要分享的id:${ id }`)
@@ -246,7 +246,7 @@ export default {
             if (res.success) {
               /* @author icestone , 17:20
                * @date 2023/5/15
-               * TODO 如果content为null,v-md-editor会报错,这里判断一下
+               * 如果content为null,v-md-editor会报错,这里判断一下
               */
               if (res.result.content == null) {
                 res.result.content = `> type your first title!`

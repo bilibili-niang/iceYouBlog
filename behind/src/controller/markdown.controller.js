@@ -36,6 +36,10 @@ const {
     getMarkdownByEmail,
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
+const {
+    removeFile,
+    isFileExisted
+} = require('../services/tool.service')
 
 const markdownFile = require('../schema/markdownFile')
 const https = require('https')
@@ -626,11 +630,24 @@ class MarkdownController {
 
     async uploadMarkdownImage (ctx) {
         console.log('---uploadMarkdownImage---')
-        const file = ctx
-        console.log("file")
-        console.log(file)
+        console.log('ctx.request.files.file')
+        const file = ctx.request.files.file
+        console.log("file.path")
+        console.log(file.path)
+        const filePath = file.path.substring(file.path.lastIndexOf('\\') + 1, file.path.length)
+        console.log(filePath)
+        // 文件移动的目标路径
+        const targetPath = path.join(__dirname, `../static/images/markdown/${ filePath }`)
+        await removeFile(file.path, targetPath)
+        //  判断移动后文件是否存在:
+        const success = await isFileExisted(targetPath)
+        console.log(success)
         ctx.body = {
-            code: 200
+            code: 200,
+            msg: '上传图片',
+            result: {
+                filePath,
+            }
         }
     }
 

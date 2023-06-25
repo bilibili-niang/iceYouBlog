@@ -37,7 +37,7 @@ import VueLazyload from 'vue-lazyload'  //引入这个懒加载插件
 import hljs from 'highlight.js'
 
 // @date 2023/5/6 , @author icestone
-// TODO 编辑的组件
+// 编辑的组件
 // 第一种:
 VueMarkdownEditor.use(githubTheme, {
     Hljs: hljs

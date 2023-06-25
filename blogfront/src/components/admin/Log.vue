@@ -52,7 +52,7 @@ export default {
     },
     /* @author icestone , 18:54
      * @date 2023/5/8
-     * TODO 初始化一下数据
+     * 初始化一下数据
     */
     async initData() {
       const length = Object.keys(this.logList).length
@@ -85,7 +85,7 @@ export default {
           },
           data: {
             // @date 2023/5/9 , @author icestone
-            // TODO 跳过的数量,这里根据 logList 的长度计算
+            // 跳过的数量,这里根据 logList 的长度计算
             offset: length
           }
         })
@@ -94,7 +94,7 @@ export default {
                 this.alertMessage(res.message)
               }
               // @date 2023/5/9 , @author icestone
-              // TODO 合并对象
+              // 合并对象
               this.logList.push(...res.result)
               ElMessage({
                 message: res.message,
@@ -109,7 +109,7 @@ export default {
     },
     /* @author icestone , 14:33
      * @date 2023/5/9
-     * TODO 获取log的信息,allCount之类的
+     * 获取log的信息,allCount之类的
     */
     getLogInfo() {
 

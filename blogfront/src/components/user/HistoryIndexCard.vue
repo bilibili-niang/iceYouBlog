@@ -57,7 +57,7 @@ export default {
   },
   created() {
     // @date 2023/5/5 , @author icestone
-    // TODO 第一次创建子组件并接收到值时需要格式化下时间
+    // 第一次创建子组件并接收到值时需要格式化下时间
     this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || '';
   },
   watch: {

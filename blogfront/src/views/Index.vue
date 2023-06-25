@@ -20,7 +20,6 @@
   </div>
   <div class="index container">
     <div class="left m-r" v-loading="indexList.length==0">
-<!--<el-switch v-model="value" active-text="list" inactive-text="timeLine"/>-->
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
@@ -85,17 +84,17 @@ export default {
       window.open(routeUrl.href, '_blank')
     },
     // @date 2023/5/5 , @author icestone
-    // TODO 分页按钮
+    // 分页按钮
     handleCurrentChange (val) {
       let id = this.pageSize2 * val
       if (val == 1) {
         // @date 2023/5/5 , @author icestone
-        // TODO 第一页,跳过为0
+        // 第一页,跳过为0
         id = 0
       } else {
       }
       // @date 2023/5/5 , @author icestone
-      // TODO 请求分页数据
+      // 请求分页数据
       http.$axios({
         url: '/home/',
         method: 'POST',
@@ -122,7 +121,7 @@ export default {
     },
     /* @author icestone , 15:41
      * @date 2023/5/5
-     * TODO 获取首页所有文章的统计
+     * 获取首页所有文章的统计
     */
     initCount () {
       http.$axios({
@@ -164,7 +163,7 @@ export default {
     // 查询分页数据
     this.initData()
     // @date 2023/5/5 , @author icestone
-    // TODO 获取首页所有文章 count
+    // 获取首页所有文章 count
     this.initCount()
   },
 }
@@ -208,7 +207,6 @@ export default {
     min-width: 13rem;
     justify-content: center;
     flex-direction: column;
-
   }
 }
 </style>

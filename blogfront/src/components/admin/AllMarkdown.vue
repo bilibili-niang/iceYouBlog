@@ -38,7 +38,7 @@ export default {
   methods: {
     /* @author icestone , 18:09
      * @date 2023/5/9
-     * TODO 获取选中的item
+     * 获取选中的item
     */
     showSelectedItem() {
       this.indexList.forEach((item, index) => {
@@ -49,7 +49,7 @@ export default {
     },
     /* @author icestone , 18:06
      * @date 2023/5/9
-     * TODO 执行删除
+     * 执行删除
     */
     delSelectedItems() {
       // 获取一下选中
@@ -86,7 +86,7 @@ export default {
     },
     /* @author icestone , 18:06
      * @date 2023/5/9
-     * TODO 删除所选文章,弹窗
+     * 删除所选文章,弹窗
     */
     open() {
       ElMessageBox.confirm(
@@ -141,7 +141,7 @@ export default {
           },
           data: {
             // @date 2023/5/9 , @author icestone
-            // TODO 跳过的数量,这里根据 indexList 的长度计算
+            // 跳过的数量,这里根据 indexList 的长度计算
             id: length,
             limit: 20
           }
@@ -151,7 +151,7 @@ export default {
                 this.alertMessage(res.message)
               }
               // @date 2023/5/9 , @author icestone
-              // TODO 合并对象
+              // 合并对象
               this.indexList.push(...res.result)
               ElMessage({
                 message: res.message,

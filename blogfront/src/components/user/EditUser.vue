@@ -122,7 +122,6 @@ export default {
       console.log('tokenStr')
       console.log(tokenStr)
       localStorage.setItem('userInfo', tokenStr);
-
     },
     // 上传之前的callback
     beforeAvatarUpload() {

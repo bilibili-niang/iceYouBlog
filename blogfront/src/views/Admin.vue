@@ -115,7 +115,7 @@ export default {
   methods: {
     /* @author icestone , 18:15
      * @date 2023/5/17
-     * TODO 操作admin用户
+     * 操作admin用户
     */
     operateAdminUser(email, operate) {
       console.log("operateAdminUser")
@@ -145,7 +145,7 @@ export default {
     },
     /* @author icestone , 17:56
      * @date 2023/5/17
-     * TODO 获取所有admin的信息
+     * 获取所有admin的信息
     */
     getAllAdminUserInfo() {
       http.$axios({

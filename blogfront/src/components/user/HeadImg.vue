@@ -44,7 +44,7 @@ const store = useStore();
 import http from '@/common/api/request'
 
 // @date 2023/5/28 , @author icestone
-// TODO 存放头图的list
+// 存放头图的list
 const imgList = ref([]);
 const token = store.state.user.userInfo.token;
 // 预览图的list,这里应该存放的全是url
@@ -82,7 +82,7 @@ const getUserAllHeadImg = () => {
 
 /* @author icestone , 17:44
  * @date 2023/5/28
- * TODO 图片上传
+ * 图片上传
 */
 const uploadSuccess = async () => {
   console.log('handleAvatarSuccess')
@@ -98,7 +98,7 @@ const uploadSuccess = async () => {
 }
 /* @author icestone , 17:45
  * @date 2023/5/28
- * TODO 图片上传之前的回调
+ * 图片上传之前的回调
 */
 const beforeAvatarUpload = (rawFile) => {
   console.log("rawFile")

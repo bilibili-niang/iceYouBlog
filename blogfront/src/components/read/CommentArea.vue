@@ -36,7 +36,7 @@ export default {
   methods: {
     /* @author icestone , 16:09
  * @date 2023/5/11
- * TODO 获取与该文章有关的评论
+ * 获取与该文章有关的评论
 */
     getAllComment (id) {
       http.$axios({

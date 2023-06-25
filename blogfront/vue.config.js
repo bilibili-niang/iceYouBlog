@@ -35,9 +35,9 @@ module.exports = defineConfig({
             //打包环境去掉console.log等
             /* @author icestone , 17:22
              * @date 2023/5/15
-             * TODO 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
+             * 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
             */
-            new UglifyJsPlugin({
+            /*new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
                         //warnings: false, 注释不然打包会报错如图下图
@@ -46,7 +46,7 @@ module.exports = defineConfig({
                         pure_funcs: ['console.log'], //移除console.log
                     },
                 },
-            })
+            })*/
         ],
 
         output: {

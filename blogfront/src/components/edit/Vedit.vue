@@ -1,5 +1,6 @@
 <template>
   <div class="vEdit">
+    <upload :action="action" :data="token" :result="getResult"></upload>
     <v-md-editor
         :include-level="[3,4,5]"
         @save="drawer = true"
@@ -54,16 +55,18 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
-import {ElMessage} from "element-plus";
-import {h} from "vue";
+import http from "@/common/api/request"
+import { ElMessage } from "element-plus"
+import { h } from "vue"
+import upload from '@/components/common/imgUpload.vue'
 
 export default {
   name: "Vedit",
-  created() {
-    this.initMarkdownData();
+  created () {
+    this.initMarkdownData()
   },
-  data() {
+  components: { upload },
+  data () {
     return {
       id: 0,
       markdownData: {
@@ -87,30 +90,38 @@ type you first line code
         customToolbar1: {
           title: '基础工具栏',
           icon: 'v-md-icon-tip',
-          action(editor) {
+          action (editor) {
             editor.insert(function (selected) {
-              const prefix = '(((';
-              const suffix = ')))';
-              const placeholder = '请输入文本';
-              const content = selected || placeholder;
+              const prefix = '((('
+              const suffix = ')))'
+              const placeholder = '请输入文本'
+              const content = selected || placeholder
 
               return {
-                text: `${prefix}${content}${suffix}`,
+                text: `${ prefix }${ content }${ suffix }`,
                 selected: content,
-              };
-            });
+              }
+            })
           },
         },
+      },
+      action: '/file/markdownImages',
+      token: {
+        token: JSON.parse(localStorage.getItem('userInfo')) == null ? '' : JSON.parse(localStorage.getItem('userInfo')).token
       }
     }
   },
   methods: {
-    // 监听图片的点击
-    setHeadImg(url) {
-      this.markdownData.headImg = url;
+    // 监听图片上传返回数据
+    getResult (res) {
+      console.log(res)
     },
-    selectHeadImg() {
-      this.headImgDrawer = true;
+    // 监听图片的点击
+    setHeadImg (url) {
+      this.markdownData.headImg = url
+    },
+    selectHeadImg () {
+      this.headImgDrawer = true
       //   获取头图
       http.$axios({
         url: '/user/headImg',
@@ -123,7 +134,7 @@ type you first line code
             console.log("res:")
             console.log(res)
             if (res.success) {
-              this.headImgList = res.result;
+              this.headImgList = res.result
               this.previewImgList = this.headImgList.map(item => {
                 return item.url
               })
@@ -140,35 +151,35 @@ type you first line code
     },
     /* @author icestone , 14:49
     * @date 2023/5/11
-    * TODO 上传图片
+    * 上传图片
    */
-    handleUploadImage(event, insertImage, files) {
+    handleUploadImage (event, insertImage, files) {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
-      console.log("files");
-      console.log(files);
-      let form = new FormData();
-      form.append('file', files);
+      console.log("files")
+      console.log(files)
+      let form = new FormData()
+      form.append('file', files)
       // 回显
       insertImage({
         url: '/images/2.png',
         desc: '回显图片名称',
         // width: 'auto',
         // height: 'auto',
-      });
+      })
     },
     /* @author icestone , 16:05
      * @date 2023/5/6
-     * TODO 通过id获取初始化数据
+     * 通过id获取初始化数据
     */
-    initMarkdownData() {
-      this.id = this.$route.query.id || '0';
+    initMarkdownData () {
+      this.id = this.$route.query.id || '0'
       // @date 2023/5/8 , @author icestone
-      // TODO 没有传入id,为新建文章
+      // 没有传入id,为新建文章
       if (this.id == 0) {
 
       } else {
         // @date 2023/5/8 , @author icestone
-        // TODO 修改,则请求文章数据
+        // 修改,则请求文章数据
         http.$axios({
           url: '/markdownFile/getData',
           method: 'POST',
@@ -180,7 +191,7 @@ type you first line code
           }
         })
             .then(res => {
-              this.markdownData = res.result;
+              this.markdownData = res.result
             })
             .catch(e => {
               this.alertMessage(e)
@@ -189,11 +200,11 @@ type you first line code
 
     },
     // @date 2023/5/6 , @author icestone
-    // TODO 点击确认提交后执行
-    submit() {
+    // 点击确认提交后执行
+    submit () {
       if (this.id == 0) {
         // @date 2023/5/8 , @author icestone
-        // TODO 新建文章
+        // 新建文章
         http.$axios({
           url: '/new/markdown',
           method: 'POST',
@@ -203,9 +214,9 @@ type you first line code
           data: this.markdownData
         })
             .then(res => {
-              this.drawer = false;
+              this.drawer = false
               if (res.success) {
-                this.alertMessage(res.message);
+                this.alertMessage(res.message)
               }
             })
             .catch(e => {
@@ -224,11 +235,11 @@ type you first line code
           }
         })
             .then(res => {
-              this.drawer = false;
+              this.drawer = false
               if (res.success) {
                 this.alertMessage('数据更新', 'success', '#a1c4fd')
                 // 成功,再次请求下数据
-                this.initMarkdownData();
+                this.initMarkdownData()
               }
             })
             .catch(e => {
@@ -236,12 +247,12 @@ type you first line code
             })
       }
     },
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
       })
     },

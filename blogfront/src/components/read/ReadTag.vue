@@ -98,7 +98,7 @@ export default {
     },
     /* @author icestone , 18:05
      * @date 2023/5/5
-     * TODO 初始化获取查询的tag
+     * 初始化获取查询的tag
     */
     initData() {
       const {tag1 = '', tag2 = '', tag3 = ''} = this.$route.query;
@@ -121,7 +121,7 @@ export default {
                 this.aboutMarkdownIsNull = true;
               }
               // @date 2023/5/8 , @author icestone
-              // TODO 格式化时间
+              // 格式化时间
               this.resultData.map(item => {
                 item.createdAt = timeFormat.timeFormat(item.createdAt) || '';
               })

@@ -71,7 +71,7 @@ export default {
   methods: {
     /* @author icestone , 16:02
      * @date 2023/5/6
-     * TODO 前往实验性功能的编辑
+     * 前往实验性功能的编辑
     */
     gotoEditExperiment (id) {
       const routeUrl = this.$router.resolve({

@@ -206,7 +206,7 @@ export default {
       allCount: 0,
       disabled: false,
       // @date 2023/5/20 , @author icestone
-      // TODO 展示设置文章推荐等级的抽屉
+      // 展示设置文章推荐等级的抽屉
       showRecommendLevel: false,
       options: [
         {
@@ -240,14 +240,14 @@ export default {
   methods: {
     /* @author 张嘉凯
      * @date 2023/6/19 @time
-     * TODO  获取已选item
+     *  获取已选item
     */
     getSelect () {
       this.selectOperate = 'get'
     },
     /* @author icestone , 15:46
      * @date 2023/5/20
-     * TODO 设置置顶文章
+     * 设置置顶文章
     */
     subMitRecommend () {
       http.$axios({
@@ -274,13 +274,13 @@ export default {
     },
     /* @author icestone , 15:26
      * @date 2023/5/20
-     * TODO 显示设置置顶文章的可选等级
+     * 显示设置置顶文章的可选等级
     */
     setAsRecommend () {
       // 获取一下选中
       this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
-      // TODO 选择id不为0才展开
+      // 选择id不为0才展开
       if (this.selectedItem.length != 0) {
         this.showRecommendLevel = true
       } else {
@@ -289,12 +289,12 @@ export default {
     },
     /* @author icestone , 23:52
      * @date 2023/5/15
-     * TODO 分页按钮
+     * 分页按钮
     */
     handleCurrentChange (val) {
       let id = this.pageSize2 * val
       // @date 2023/5/15 , @author icestone
-      // TODO   请求数据
+      //   请求数据
       http.$axios({
         url: '/markdownFile/getUserArticle',
         method: 'POST',
@@ -310,7 +310,7 @@ export default {
             console.log('请求的数据')
             console.log(res)
             // @date 2023/5/16 , @author icestone
-            // TODO 如果返回的有数据:
+            // 如果返回的有数据:
             if (Boolean(res.result.rows.length)) {
               this.alertMessage(res.message)
               this.articleList = res.result.rows
@@ -334,21 +334,21 @@ export default {
     },
     /* @author icestone , 14:19
      * @date 2023/5/7
-     * TODO 将传入的id存储到 selectedList 中
+     * 将传入的id存储到 selectedList 中
     */
     addChecked (item, id) {
       // @date 2023/5/7 , @author icestone
-      // TODO 如果存在该id,弹出指定id
+      // 如果存在该id,弹出指定id
       if (this.selectedList.indexOf(id) != - 1) {
         this.selectedList.splice(this.selectedList.indexOf(id))
       } else {
         // @date 2023/5/7 , @author icestone
-        // TODO 如果 selectedList 的长度大于等于3,已满,替换掉第一个
+        // 如果 selectedList 的长度大于等于3,已满,替换掉第一个
         if (this.selectedList.length >= 3) {
           this.selectedList.splice(0, 1, id)
         } else {
           // @date 2023/5/7 , @author icestone
-          // TODO 未满,增加
+          // 未满,增加
           this.selectedList.push(id)
         }
       }
@@ -356,7 +356,7 @@ export default {
 
     /* @author icestone , 13:30
      * @date 2023/5/7
-     * TODO 提交选中的tags
+     * 提交选中的tags
     */
     submitTags: function () {
       const tags = []
@@ -390,7 +390,7 @@ export default {
     },
     /* @author icestone , 15:31
      * @date 2023/5/7
-     * TODO 接收子组件传给父组件的值
+     * 接收子组件传给父组件的值
     */
     getShowAlert (val) {
       this.currentInfo = val
@@ -400,7 +400,7 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 初始化获取用户已删除的文章数据
+     * 初始化获取用户已删除的文章数据
      */
     async getDeletedFiles () {
       // 发起请求,
@@ -430,14 +430,14 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/4
-     * TODO 恢复所选的文章
+     * 恢复所选的文章
      */
     async recover () {
       // @date 2023/5/4 , @author icestone
-      // TODO 清空一下所选的id数组
+      // 清空一下所选的id数组
       this.selectedItem = []
       // @date 2023/5/4 , @author icestone
-      // TODO 获取删除文章中所选择的id
+      // 获取删除文章中所选择的id
       this.deletedFile.forEach((item, index) => {
         if (item.checked) {
           this.selectedItem.push(item.id)
@@ -461,7 +461,7 @@ export default {
               console.log(res)
               this.alertMessage(res.message)
               // @date 2023/5/5 , @author icestone
-              // TODO 重新获取数据
+              // 重新获取数据
               this.getDeletedFiles()
             })
             .catch(e => {
@@ -477,13 +477,13 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/4
-     * TODO 伪删除所选文章
+     * 伪删除所选文章
      */
     open () {
       // 获取一下选中
       this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
-      // TODO 选中才会显示
+      // 选中才会显示
       if (this.selectedItem.length != 0) {
         ElMessageBox.confirm(
             '确定要删除吗?',
@@ -511,7 +511,7 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 伪删除文章
+     * 伪删除文章
      */
     delSelectedItems () {
       http.$axios({
@@ -533,10 +533,10 @@ export default {
               message: res.message,
             })
             // @date 2023/5/3 , @author icestone
-            // TODO 删除之后重新获取数据
+            // 删除之后重新获取数据
             this.getUserArticle()
             // @date 2023/5/5 , @author icestone
-            // TODO 将所有的选中取消
+            // 将所有的选中取消
             this.articleList.map(item => {
               item.checked = false
             })
@@ -551,7 +551,7 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/4
-     * TODO 获取选中的item,存储在 selectedItem 中
+     * 获取选中的item,存储在 selectedItem 中
      */
     showSelectedItem () {
       this.articleList.forEach((item, index) => {
@@ -577,7 +577,7 @@ export default {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 点击不同的选项卡
+     * 点击不同的选项卡
      */
     async initHistory (tab, event) {
       this.selectedItem = []
@@ -653,7 +653,7 @@ export default {
               // articleList数据
               this.articleList = res.result.rows
               // @date 2023/5/15 , @author icestone
-              // TODO 所有文章的数量,用作分页
+              // 所有文章的数量,用作分页
               this.allCount = res.result.count
               this.articleList.map(item => {
                 item.checked = false
