@@ -30,6 +30,7 @@
             :hide-on-click-modal="true"
             :close-on-press-escape="true"
         />
+        <el-button text @click="open(item.url)">删除</el-button>
       </div>
     </div>
 
@@ -37,18 +38,46 @@
 </template>
 
 <script setup>
-import {useStore} from "vuex";
-import {onMounted, ref,} from 'vue';
-import {ElMessage} from 'element-plus'
-const store = useStore();
+import { useStore } from "vuex"
+import { onMounted, ref, } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import http from '@/common/api/request'
+
+const api = require('@/common/api')
+
+const store = useStore()
+const open = (e) => {
+  ElMessageBox.confirm(
+      '确定删除该图片吗',
+      'Warning',
+      {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        console.log('确认')
+        api.operateImage('del', e)
+        ElMessage({
+          type: 'success',
+          message: 'Delete completed',
+        })
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'info',
+          message: 'Delete canceled',
+        })
+      })
+}
 
 // @date 2023/5/28 , @author icestone
 // 存放头图的list
-const imgList = ref([]);
-const token = store.state.user.userInfo.token;
+const imgList = ref([])
+const token = store.state.user.userInfo.token
 // 预览图的list,这里应该存放的全是url
-const previewImgList = ref([]);
+const previewImgList = ref([])
 console.log(store.state.user.userInfo)
 
 onMounted(() => {
@@ -66,7 +95,7 @@ const getUserAllHeadImg = () => {
         console.log("res:")
         console.log(res)
         if (res.success) {
-          imgList.value = res.result;
+          imgList.value = res.result
           previewImgList.value = imgList.value.map(item => {
             return item.url
           })
@@ -94,7 +123,7 @@ const uploadSuccess = async () => {
       token: true
     },
   })
-  getUserAllHeadImg();
+  getUserAllHeadImg()
 }
 /* @author icestone , 17:45
  * @date 2023/5/28

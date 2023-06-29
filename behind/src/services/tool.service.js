@@ -102,15 +102,15 @@ class ToolService {
      * 移动文件 绝对路径,绝对路径
     */
     async removeFile (path, targetPath) {
-       let flag=null;
-        await fs.rename(path, targetPath,(err)=>{
-           if(err){
-               flag=false;
-               console.log(err)
-           }else {
-               flag=true
-           }
-       })
+        let flag = null
+        await fs.rename(path, targetPath, (err) => {
+            if (err) {
+                flag = false
+                console.log(err)
+            } else {
+                flag = true
+            }
+        })
         return flag
     }
 
@@ -118,22 +118,19 @@ class ToolService {
      * @date 2023/6/21 @time 17:19
      * 判断文件是否存在
     */
+
     /* 判断文件是否存在的函数
 *@path_way, 文件路径
  */
     async isFileExisted (path_way) {
-        return new Promise((resolve, reject) => {
-            fs.access(path_way, (err) => {
-                if (err) {
-                    reject(false);//"不存在"
-                } else {
-                    resolve(true);//"存在"
-                }
-            })
+        fs.access(path_way, (err) => {
+            if (err) {
+                return false
+            } else {
+                return true
+            }
         })
     };
-
-
 }
 
 module.exports = new ToolService()

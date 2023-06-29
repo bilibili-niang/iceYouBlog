@@ -567,7 +567,7 @@ class MarkdownFileService {
 
     /* @author 张嘉凯
      * @date 2023/6/19 @time
-     * TODO  获取置顶文章
+     * 获取置顶文章
     */
     async getTopArticleByEmail (email, level) {
         return await markdownFile.findAll({

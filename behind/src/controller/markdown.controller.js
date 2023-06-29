@@ -37,8 +37,7 @@ const {
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
 const {
-    removeFile,
-    isFileExisted
+    removeFile
 } = require('../services/tool.service')
 
 const markdownFile = require('../schema/markdownFile')
@@ -606,7 +605,7 @@ class MarkdownController {
     */
     async getUpdateSomethingResult (ctx) {
         // @date 2023/5/7 , @author icestone
-        // TODO 获取需要的 data
+        // 获取需要的 data
         const { operate = null, id = null, tags = null } = ctx.request.body
         // @date 2023/5/7 , @author icestone
         // TODO 根据不同的operate进行操作
@@ -639,9 +638,9 @@ class MarkdownController {
         // 文件移动的目标路径
         const targetPath = path.join(__dirname, `../static/images/markdown/${ filePath }`)
         await removeFile(file.path, targetPath)
-        //  判断移动后文件是否存在:
-        const success = await isFileExisted(targetPath)
-        console.log(success)
+        // TODO 判断移动后文件是否存在:
+        // const success = await isFileExisted(targetPath)
+        // console.log(success)
         ctx.body = {
             code: 200,
             msg: '上传图片',

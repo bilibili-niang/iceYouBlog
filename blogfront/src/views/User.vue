@@ -152,7 +152,7 @@
             查看头图
             </el-text>
             <el-text>
-              <a href="/user/headImg">HeadImg</a>
+              <a href="#/user/headImg">HeadImg</a>
             </el-text>
           </span>
             <span>
@@ -160,7 +160,7 @@
             我的评论
             </el-text>
             <el-text>
-              <a href="/user/postedComments">已发布的评论</a>
+              <a href="#/user/postedComments">已发布的评论</a>
             </el-text>
           </span>
           </dvi>

@@ -50,7 +50,7 @@ class AdminService {
         // TODO 设置admin展示在首页
         if (operate == 'showInIndex') {
             // @date 2023/5/18 , @author icestone
-            // TODO 展示在首页的只能有一个,现将其他admin用户的 showInIndex 设为0
+            // 展示在首页的只能有一个,现将其他admin用户的 showInIndex 设为0
             await user.update({
                 showInIndex: '0'
             }, {

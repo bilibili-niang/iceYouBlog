@@ -1,6 +1,6 @@
 <template>
   <div class="vEdit">
-    <upload :action="action" :data="token" :result="getResult"></upload>
+    <upload :action="action" :data="token" @result="getResult"></upload>
     <v-md-editor
         :include-level="[3,4,5]"
         @save="drawer = true"
@@ -114,7 +114,11 @@ type you first line code
   methods: {
     // 监听图片上传返回数据
     getResult (res) {
+      console.log('成功返回的值:')
       console.log(res)
+      if (res) {
+        this.markdownData.content = this.markdownData.content + `![](/${ res.filePath })`
+      }
     },
     // 监听图片的点击
     setHeadImg (url) {

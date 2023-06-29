@@ -64,7 +64,7 @@ const cryptPassword = async (ctx, next) => {
 const userValidator = async (ctx, next) => {
     console.log('---userValidator---')
     const {username = '', password = ''} = ctx.request.body
-    console.log(ctx.request.body)
+    // console.log(ctx.request.body)
     //	合法性
     if (!username || !password) {
         ctx.body = {
@@ -80,8 +80,6 @@ const userValidator = async (ctx, next) => {
 
 //验证用户传来的token是否有用,以及获取其存储的用户信息
 const auth = async (ctx, next) => {
-    console.log('---auth---')
-    console.log(ctx.request)
     //authorization是需要前端在传输时设置的
     const token = ctx.request.header.token || null;
     if (token != null) {
