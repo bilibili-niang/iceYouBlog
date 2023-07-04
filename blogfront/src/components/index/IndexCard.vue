@@ -10,7 +10,7 @@
       <el-text tag="b" size="large">
         <h5>{{ item.title }}</h5>
       </el-text>
-      <el-text>{{ item.createdAt }} {{ oldData }}天之前的文章</el-text>
+      <el-text>{{ item.updatedAt }} - 最后修改于{{ oldData }}天之前</el-text>
       <el-text>{{ item.description }}</el-text>
       <!--goToDetail-->
       <div class="bottomLim">
@@ -32,13 +32,13 @@
           </el-text>
         </span>
         <el-divider direction="vertical"/>
-        <span v-if="item.recommendLevel">
+        <span v-if="item.recommendLevel>1">
           <el-button round class="m-r">recommendLevel</el-button>
           <el-text>
             {{ item.recommendLevel }}
           </el-text>
-        </span>
         <el-divider direction="vertical"/>
+        </span>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
@@ -65,9 +65,9 @@ export default {
     selectOperate: {
       type: String
     },
-    showOperate:{
-      type:Boolean,
-      default:false
+    showOperate: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -127,20 +127,19 @@ export default {
     item (newVal) {
       // @date 2023/5/5 , @author icestone
       // 分页数据更改时数据会更改,再次格式化时间
-      this.item.createdAt = timeFormat.timeFormat(newVal.createdAt) || ''
+      this.item.updatedAt = timeFormat.timeFormat(newVal.updatedAt) || ''
     },
     selectOperate (newVal) {
-      console.log('selectOperate 已修改')
       if (this.item.checked) {
         console.log(item.id)
       }
     }
   },
   created () {
-    this.DateDiffer(this.item.createdAt)
+    this.DateDiffer(this.item.updatedAt)
     // @date 2023/5/5 , @author icestone
     // 第一次创建子组件并接收到值时需要格式化下时间
-    this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || ''
+    this.item.updatedAt = timeFormat.timeFormat(this.item.updatedAt) || ''
   },
 }
 </script>

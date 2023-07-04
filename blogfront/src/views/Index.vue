@@ -1,23 +1,4 @@
 <template>
-  <!-- content goes here -->
-  <div class="btns m-b">
-    <!--<el-button class="m-l" @click="drawer = true">
-          关于
-        </el-button>
-        <el-drawer
-            v-model="drawer"
-            title="I am the title"
-            direction="ttb"
-            :with-header="false">
-          测试账户:
-          admin
-          密码:
-          admin
-          <br>
-          关于项目:
-          <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">github地址</el-link>
-        </el-drawer>-->
-  </div>
   <div class="index container">
     <div class="left m-r" v-loading="indexList.length==0">
       <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"

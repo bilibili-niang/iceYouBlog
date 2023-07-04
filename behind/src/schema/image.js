@@ -5,14 +5,34 @@ const image = seq.define('markdown_images', {
     email: {
         type: DataTypes.STRING,
         allowNull: true,
-        comment: '拥有者邮箱',
-        defaultValue: 'adminEmail'
+        comment: '拥有者邮箱'
     },
     url: {
         type: DataTypes.STRING,
         allowNull: true,
-        comment: '图片的url',
-        defaultValue: '/images/headImg/defaultHeadImg.png'
+        comment: '图片的url'
+    },
+    type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: '图片的用处',
+        defaultValue: 'blog'
+    },
+    userEmail:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: '图片上传的用户',
+        defaultValue: 'userEmail'
+    },
+    fullPath:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: '图片的完整路径',
+    },
+    markdownId:{
+        type: DataTypes.STRING,
+        allowNull: true,
+        comment: '图片被使用的文章id'
     }
 })
 

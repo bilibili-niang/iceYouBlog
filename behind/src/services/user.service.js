@@ -170,6 +170,16 @@ class UserService {
         })
     }
 
+    async updateUserAvatar (email, avatar) {
+        return await user.update({
+            avatar
+        }, {
+            where: {
+                email
+            }
+        })
+    }
+
     // 通过email更新用户头像
     async updateAvatarByEmail (email, imgpath) {
         return await user.update({
@@ -221,7 +231,7 @@ class UserService {
 
     /* @author icestone , 16:50
      * @date 2023/5/11
-     * TODO 通过传入的 email 查询指定字段
+     * 通过传入的 email 查询指定字段
     */
     async getUserInfoByEmail (email, attr = []) {
         return await user.findOne({
@@ -250,12 +260,13 @@ class UserService {
 
     /* @author icestone , 17:47
      * @date 2023/5/28
-     * TODO 通过email和图片路径写入 头图
+     *  通过email和图片路径写入 头图
     */
     async createHeadImgByEmail (email, url) {
         return await image.create({
-            email, url
-        })
+                email, url
+            }
+        )
     }
 
     /* @author icestone , 14:45

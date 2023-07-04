@@ -18,12 +18,16 @@
             <div class="descriptions" :title="item.description">{{ item.description }}</div>
           </el-text>
         </div>
+        <div class="time">
+          <markdownTags tag="更新时间" :click="false" v-if="item.tag1"></markdownTags>
+          <el-text> {{ timeFormat(item.updatedAt) }} - 更新于{{ DateDiffer(item.updatedAt) }}天之前</el-text>
+        </div>
         <div class="btns">
           <el-button round @click="goToRead(item.id)" class="m-r">read</el-button>
-          <span class="tags" v-if="item.recommendLevel">
-        <el-tag class="ml-2" type="info">recommendLevel</el-tag>
-        <el-tag class="ml-2" type="info" v-if="item.recommendLevel">{{ item.recommendLevel }}</el-tag>
-        </span>
+          <!--<span class="tags" v-if="item.recommendLevel">
+                    <el-tag class="ml-2" type="info">recommendLevel</el-tag>
+                    <el-tag class="ml-2" type="info" v-if="item.recommendLevel">{{ item.recommendLevel }}</el-tag>
+                  </span>-->
         </div>
         <span class="tags">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
@@ -40,6 +44,7 @@
 <script>
 import http from '@/common/api/request'
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
+import timeFormat from "@/common/filter/time"
 
 export default {
   name: "Recommend",
@@ -50,15 +55,28 @@ export default {
     }
   },
   methods: {
+    DateDiffer (Date_end) {
+      //date1结束时间
+      let date1 = new Date(Date_end)
+      //date2当前时间
+      let date2 = new Date()
+      date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
+      date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
+      const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
+      const diffDate = diff / ( 24 * 60 * 60 * 1000 )  //计算当前时间与结束时间之间相差天数
+      return diffDate
+    },
+    timeFormat(time){
+      return timeFormat.timeFormat(time)
+    },
     getRecommendData () {
       http.$axios({
         url: '/markdownFile/getRecommend',
         method: 'GET',
       })
           .then(res => {
-            console.log("res:")
-            console.log(res)
             this.markdownList = res.result
+            console.log(this.markdownList)
           })
           .catch(e => {
             console.log("e:")

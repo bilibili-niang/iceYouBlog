@@ -1,6 +1,6 @@
 <template>
   <div class="vEdit">
-    <upload :action="action" :data="token" @result="getResult"></upload>
+    <upload :action="action" :data="data" @result="getResult"></upload>
     <v-md-editor
         :include-level="[3,4,5]"
         @save="drawer = true"
@@ -106,8 +106,9 @@ type you first line code
         },
       },
       action: '/file/markdownImages',
-      token: {
-        token: JSON.parse(localStorage.getItem('userInfo')) == null ? '' : JSON.parse(localStorage.getItem('userInfo')).token
+      data: {
+        // token: JSON.parse(localStorage.getItem('userInfo')) == null ? '' : JSON.parse(localStorage.getItem('userInfo')).token,
+        markdownId: this.id
       }
     }
   },

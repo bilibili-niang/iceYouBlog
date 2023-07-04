@@ -40,7 +40,7 @@ class MarkdownFileService {
         const offset = ( pageNum - 1 ) * pageSize
         // const {count, rows} = await markdownFile.findAndCountAll({offset: offset, limit: pageSize * 1});
         return await markdownFile.findAndCountAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'updatedAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             offset: offset,
             limit: pageSize * 1,
             where: {
@@ -132,10 +132,8 @@ class MarkdownFileService {
 
     // 通过传入的id返回首页文章
     async getHomeIndexListById (id, limit = 20) {
-        console.log('---getHomeIndexListById---')
-        console.log(`id:${ id },limit:${ limit }`)
         return await markdownFile.findAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'updatedAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
                 states: {
                     [Op.gte]: 0
@@ -518,7 +516,7 @@ class MarkdownFileService {
     */
     async getRecommendMarkdownFile () {
         return await markdownFile.findAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel','updatedAt'],
             where: {
                 recommendLevel: {
                     [Op.gt]: 1
@@ -526,7 +524,8 @@ class MarkdownFileService {
             },
             order: [
                 // 我们从要排序的模型开始排序数组
-                ['id', 'DESC']
+                ['id', 'DESC'],
+                ['updatedAt', 'ASC']
             ],
             limit: 5
         })

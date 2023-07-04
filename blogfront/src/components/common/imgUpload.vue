@@ -24,7 +24,9 @@ import { reactive } from 'vue'
 
 const emit = defineEmits(["result"])
 const success = (res) => {
-  emit("result", res.result)
+  if (res.success) {
+    emit("result", res.result)
+  }
 }
 
 const token = reactive({
@@ -66,5 +68,6 @@ const beforeRemove = (uploadFile, uploadFiles) => {
   top: 10px;
   left: 10px;
   border-radius: .5rem;
+  z-index: 99;
 }
 </style>

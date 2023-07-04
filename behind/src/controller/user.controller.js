@@ -11,7 +11,8 @@ const {
     createHeadImgByEmail,
     getUserInfoByEmail,
     getUserHeadImg,
-    getUserAllComments
+    getUserAllComments,
+    updateUserAvatar
 } = require('../services/user.service')
 
 const {
@@ -181,6 +182,9 @@ class UserController {
         const basename = path.basename(file.path)
         const imgPath = '/' + basename
         const result = await createHeadImgByEmail(ctx.state.user.email, imgPath)
+        await updateUserAvatar(ctx.state.user.email,imgPath)
+        console.log('返回的用户头像:')
+        console.log(result.dataValues)
         ctx.body = {
             code: 200,
             success: true,

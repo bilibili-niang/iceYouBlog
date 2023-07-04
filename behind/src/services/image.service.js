@@ -15,6 +15,16 @@ class ImageService {
 
     }
 
+// 写入图片上传记录
+    async saveImageInfo (fullPath, userEmail, markdownId,type='blog') {
+        await image.create({
+            fullPath,
+            type,
+            userEmail,
+            markdownId
+        })
+    }
+
 }
 
 module.exports = new ImageService()

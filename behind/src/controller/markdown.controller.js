@@ -37,9 +37,11 @@ const {
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
 const {
-    removeFile
+    removeFile,
+    checkImgType
 } = require('../services/tool.service')
 
+const { saveImageInfo } = require('../services/image.service')
 const markdownFile = require('../schema/markdownFile')
 const https = require('https')
 const { salt } = require('../config/default')
@@ -54,9 +56,8 @@ const {
     logHistoryByEmail
 } = require('../services/history.service')
 const path = require("path")
-const user = require("../schema/user.model")
 const { paramsVerify } = require("../middleware/admin.middleware")
-const { Op } = require('sequelize')
+const fs = require('fs')
 
 class MarkdownController {
     async newFile (ctx) {
@@ -268,15 +269,12 @@ class MarkdownController {
 
     // 通过前端传来的id,返回文章数据,无法指定数据条数,每次返回20条
     async returnHomeListById (ctx) {
-        console.log("---returnHomeListById---")
         let { id = - 1, limit = 20 } = ctx.request.body
-        console.log(`获取的跳过数量:${ id },获取的分页数量:${ limit }`)
         id = parseInt(id) - 1
         id = id > 0 ? id : 0
         // @date 2023/5/5 , @author icestone
-        // TODO id 为跳过的数量,limit 为查询数量
+        // id 为跳过的数量,limit 为查询数量
         const result = await getHomeIndexListById(id, limit)
-
         ctx.body = {
             code: 200,
             success: true,
@@ -628,24 +626,36 @@ class MarkdownController {
     */
 
     async uploadMarkdownImage (ctx) {
-        console.log('---uploadMarkdownImage---')
-        console.log('ctx.request.files.file')
         const file = ctx.request.files.file
-        console.log("file.path")
-        console.log(file.path)
         const filePath = file.path.substring(file.path.lastIndexOf('\\') + 1, file.path.length)
-        console.log(filePath)
-        // 文件移动的目标路径
-        const targetPath = path.join(__dirname, `../static/images/markdown/${ filePath }`)
-        await removeFile(file.path, targetPath)
-        // TODO 判断移动后文件是否存在:
-        // const success = await isFileExisted(targetPath)
-        // console.log(success)
-        ctx.body = {
-            code: 200,
-            msg: '上传图片',
-            result: {
-                filePath,
+        if (checkImgType(file.path)) {
+            // 是图片
+            // 文件移动的目标路径
+            const targetPath = path.join(__dirname, `../static/images/markdown/${ filePath }`)
+            await removeFile(file.path, targetPath)
+            // @date 2023/6/30 @time 14:27 , @author 张嘉凯
+            // 将图片和用户邮箱写入数据库
+            await saveImageInfo(targetPath, ctx.state.user.email, 1)
+            // TODO 判断移动后文件是否存在:
+            // const success = await isFileExisted(targetPath)
+            // console.log(success)
+            ctx.body = {
+                code: 200,
+                msg: '上传图片',
+                success: true,
+                result: {
+                    filePath,
+                }
+            }
+        } else {
+            console.log('删除文件')
+            fs.unlinkSync(file.path)
+            // 不是图片
+            ctx.body = {
+                code: 200,
+                success: false,
+                msg: '你上传的不是图片',
+                result: {}
             }
         }
     }
@@ -655,8 +665,9 @@ class MarkdownController {
      * TODO 获取推荐文章
     */
     async returnRecommendMarkdown (ctx) {
-        const result = await getRecommendMarkdownFile()
-        console.log("result:")
+        console.log('returnRecommendMarkdown--->')
+        const result = await getRecommendMarkdownFile();
+        console.log('获取的推荐文章:')
         console.log(result)
         ctx.body = {
             code: 200,

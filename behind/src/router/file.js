@@ -25,7 +25,7 @@ router.post('/markdownImages', auth, uploadMarkdownImage)
 
 /* @author icestone , 17:46
  * @date 2023/5/28
- * TODO 用户上传头图
+ * 用户上传头图
 */
 router.post('/headImg', authBybody, updateUserAvatar)
 

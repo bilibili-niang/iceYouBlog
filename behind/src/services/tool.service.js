@@ -120,8 +120,8 @@ class ToolService {
     */
 
     /* 判断文件是否存在的函数
-*@path_way, 文件路径
- */
+    *@path_way, 文件路径
+     */
     async isFileExisted (path_way) {
         fs.access(path_way, (err) => {
             if (err) {
@@ -131,6 +131,21 @@ class ToolService {
             }
         })
     };
+
+    /* @author 张嘉凯
+     * @date 2023/6/30 @time 16:29
+     *  判断文件名字是不是图片
+    */
+    checkImgType (name) {
+        console.log('!/\\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name)')
+        console.log(!/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name))
+        //用文件名name后缀判断文件类型，可用size属性判断文件大小不能超过500k ， 前端直接判断的好处，免去服务器的压力。
+        if (!/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 module.exports = new ToolService()
