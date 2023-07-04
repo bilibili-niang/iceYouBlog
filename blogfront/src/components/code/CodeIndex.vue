@@ -7,8 +7,10 @@
         <el-button @click="showZoomCard=false">close</el-button>
         <ZoomCard :item="nowItem[0]"></ZoomCard>
       </div>
-      <ul v-else class="list-group list-group-flush" v-for="(item,index) in codeList" :key="index">
-        <IndexCard :item="item" :zoomFun="zoom"></IndexCard>
+      <ul v-else class="list-group list-group-flush">
+        <div class="lim" v-for="(item,index) in codeList" :key="index">
+          <IndexCard :item="item" :zoomFun="zoom"></IndexCard>
+        </div>
       </ul>
     </div>
   </div>
@@ -97,6 +99,12 @@ export default {
 
     .list-group {
       animation: fadeIn .3s;
+      background: none;
+
+      .lim {
+        display: flex;
+        width: 100%;
+      }
 
       .list-group-item {
         border-radius: 0.5rem;

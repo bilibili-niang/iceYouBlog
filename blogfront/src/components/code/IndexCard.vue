@@ -1,6 +1,5 @@
 <template>
   <li class="indexCard list-group-item  hvr-glow">
-    <el-divider content-position="left">id:{{ item.id }}</el-divider>
     <el-row>
       <el-tag class="ml-2" type="info">title</el-tag>
       <el-text>{{ item.title }}</el-text>
@@ -81,8 +80,12 @@ export default {
 
 <style scoped lang="less">
 .list-group-item {
+  background: rgba(255, 255, 255, .2);
   padding: .3rem;
   margin-bottom: .3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
   div.el-row {
     margin-bottom: .3rem;
