@@ -16,7 +16,6 @@ import userApi from '@/common/api/user'
 import { ref } from 'vue'
 import UserCard from '@/components/common/UserCard.vue'
 import IndexCard from '@/components/index/IndexCard.vue'
-import MarkdownTags from '@/components/common/MarkdownTags.vue'
 
 const route = useRoute()
 const email = route.query.email || 'admin'

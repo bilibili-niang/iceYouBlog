@@ -22,20 +22,10 @@
               <el-text tag="b" size="small">发布时间:</el-text>
               <el-text tag="b" size="small">{{ markdownData.createdAt }}</el-text>
             </p>
-          </div>
-          <div class="options" v-if="showEditBtn">
-            <el-button @click="gotoEditExperiment(markdownData.id)">前往编辑</el-button>
-          </div>
-
-          <div class="dataAndViews">
-            <div class="viewAdnTags">
-              <p class="icon">
-                <el-icon>
-                  <View/>
-                </el-icon>
-                <el-text tag="b" size="small">{{ markdownData.view }}</el-text>
-              </p>
-            </div>
+            <p class="icon">
+              <el-text tag="b" size="small">浏览量:</el-text>
+              <el-text tag="b" size="small">{{ markdownData.view }}</el-text>
+            </p>
           </div>
         </div>
         <span class="tags">
@@ -46,6 +36,9 @@
         <div class="desLim" v-if="markdownData.description">
           <el-tag class="ml-2" type="info">description</el-tag>
           <el-text>{{ markdownData.description }}</el-text>
+        </div>
+        <div class="options" v-if="showEditBtn">
+          <el-button @click="gotoEditExperiment(markdownData.id)">前往编辑</el-button>
         </div>
       </div>
     </div>
@@ -103,15 +96,6 @@ export default {
 
       .info {
         margin-left: 0.3rem;
-      }
-
-      .dataAndViews {
-        margin: .3rem;
-
-        p {
-          display: flex;
-          align-items: center;
-        }
       }
     }
 

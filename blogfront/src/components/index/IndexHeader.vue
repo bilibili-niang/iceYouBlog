@@ -97,7 +97,6 @@ const changeDark = () => {
   dark.value = !dark.value
 }
 const init = () => {
-
   const inf = JSON.parse(localStorage.getItem('userInfo'))
   const mode = JSON.parse(localStorage.getItem('mode'))
   dark.value = Boolean(mode)

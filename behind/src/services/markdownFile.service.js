@@ -115,7 +115,7 @@ class MarkdownFileService {
     // 通过用户邮箱返回用户的文章:
     async getMarkdownByEmail (email) {
         return await markdownFile.findAll({
-            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
+            attributes: ['id', 'email', 'description', 'updatedAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
             where: {
                 email,
                 states: {

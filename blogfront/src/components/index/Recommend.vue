@@ -66,8 +66,23 @@ export default {
       const diffDate = diff / ( 24 * 60 * 60 * 1000 )  //计算当前时间与结束时间之间相差天数
       return diffDate
     },
-    timeFormat(time){
+    timeFormat (time) {
       return timeFormat.timeFormat(time)
+    },
+    //property是你需要排序传入的key,bol为true时是升序，false为降序
+    dateData (property, bol) {
+      return function (a, b) {
+        var value1 = a[property]
+        var value2 = b[property]
+        if (bol) {
+          // 升序
+          return Date.parse(value1) - Date.parse(value2)
+        } else {
+          // 降序
+          return Date.parse(value2) - Date.parse(value1)
+        }
+
+      }
     },
     getRecommendData () {
       http.$axios({
@@ -76,7 +91,7 @@ export default {
       })
           .then(res => {
             this.markdownList = res.result
-            console.log(this.markdownList)
+            this.markdownList.sort(this.dateData('updatedAt',false))
           })
           .catch(e => {
             console.log("e:")

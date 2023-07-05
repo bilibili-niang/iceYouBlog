@@ -24,130 +24,115 @@
       <AdminCard></AdminCard>
       <Recommend></Recommend>
     </div>
-
   </div>
 </template>
 
-<script>
+<script setup>
 import http from '@/common/api/request'
 import filters from '@/common/filter/time'
 import { ElMessage } from 'element-plus'
-import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import IndexCard from "@/components/index/IndexCard.vue"
 import AdminCard from "@/components/index/AdminCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
-  name: "Index",
-  components: { Recommend, AdminCard, IndexCard, MarkdownTags },
-  data () {
-    return {
-      indexList: [],
-      nav_show: '',
-      windowHeight: '',
-      allCount: '',
-      disabled: false,
-      small: false,
-      background: false,
-      pageSize2: 10,
-      currentPage2: 1,
-      drawer: false,
-      value: true
-    }
-  },
-  methods: {
-    // 跳转阅读
-    goToRead (id) {
-      const routeUrl = this.$router.resolve({
-        path: "/read",
-        query: { id }
-      })
-      window.open(routeUrl.href, '_blank')
-    },
+let indexList = ref([])
+let allCount = ref('')
+let disabled = ref(false)
+let small = ref(false)
+let background = ref(false)
+let value = ref(true)
+let pageSize2 = ref(10)
+let currentPage2 = ref(1)
+
+const router = useRouter()
+// 跳转阅读
+const goToRead = (id) => {
+  const routeUrl = router.resolve({
+    path: "/read",
+    query: { id }
+  })
+  window.open(routeUrl.href, '_blank')
+}
+
+// 分页按钮
+const handleCurrentChange = (val) => {
+  let id = pageSize2.value * val
+  if (val == 1) {
     // @date 2023/5/5 , @author icestone
-    // 分页按钮
-    handleCurrentChange (val) {
-      let id = this.pageSize2 * val
-      if (val == 1) {
-        // @date 2023/5/5 , @author icestone
-        // 第一页,跳过为0
-        id = 0
-      } else {
-      }
-      // @date 2023/5/5 , @author icestone
-      // 请求分页数据
-      http.$axios({
-        url: '/home/',
-        method: 'POST',
-        data: {
-          id,
-          limit: this.pageSize2
+    // 第一页,跳过为0
+    id = 0
+  } else {
+  }
+  // @date 2023/5/5 , @author icestone
+  // 请求分页数据
+  http.$axios({
+    url: '/home/',
+    method: 'POST',
+    data: {
+      id,
+      limit: pageSize2.value
+    }
+  })
+      .then(res => {
+        if (res.result.length > 0) {
+          alertMessage(res.message)
+          indexList.value = res.result
+        } else {
+          alertMessage("你到达了未知领域")
+          this.indexList = []
         }
       })
-          .then(res => {
-            if (res.result.length > 0) {
-              this.alertMessage(res.message)
-              this.indexList = res.result
-            } else {
-              this.alertMessage("你到达了未知领域")
-              this.indexList = []
-            }
-          })
-          .catch(e => {
-            this.alertMessage(e)
-          })
-    },
-    handleSizeChange (val) {
-      // console.log(`${val} items per page`)
-    },
-    /* @author icestone , 15:41
-     * @date 2023/5/5
-     * 获取首页所有文章的统计
-    */
-    initCount () {
-      http.$axios({
-        url: "/markdownFile/allCounts",
-        method: 'GET',
+      .catch(e => {
+        alertMessage(e)
       })
-          .then(res => {
-            this.allCount = res.result
-          })
-          .catch(e => {
-            this.alertMessage(e)
-          })
-    },
-    alertMessage (title, type) {
-      ElMessage({
-        message: title,
-        grouping: true,
-        type: 'success',
-      })
-    },
-    timeFormat () {
-      this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
-    },
-    // 获取首页数据
-    initData () {
-      http.$axios({
-        url: '/home/'
-      })
-          .then(res => {
-            this.alertMessage(res.message)
-            this.indexList = res.result.rows || []
-          })
-          .catch(e => {
-            this.alertMessage(e)
-          })
-    },
-  },
-  created () {
-    // 查询分页数据
-    this.initData()
-    // @date 2023/5/5 , @author icestone
-    // 获取首页所有文章 count
-    this.initCount()
-  },
 }
+/* @author icestone , 15:41
+ * @date 2023/5/5
+ * 获取首页所有文章的统计
+*/
+const initCount = () => {
+  http.$axios({
+    url: "/markdownFile/allCounts",
+    method: 'GET',
+  })
+      .then(res => {
+        allCount.value = res.result
+      })
+      .catch(e => {
+        alertMessage(e)
+      })
+}
+
+const alertMessage = (title, type) => {
+  ElMessage({
+    message: title,
+    grouping: true,
+    type: 'success',
+  })
+}
+
+const timeFormat = (data) => {
+  return filters.timeFormat(data)
+}
+const initData = () => {
+  http.$axios({
+    url: '/home/'
+  })
+      .then(res => {
+        alertMessage(res.message)
+        indexList.value = res.result.rows || []
+      })
+      .catch(e => {
+        alertMessage(e)
+      })
+}
+// 查询分页数据
+initData()
+// @date 2023/5/5 , @author icestone
+// 获取首页所有文章 count
+initCount()
 </script>
 
 <style scoped lang="less">
