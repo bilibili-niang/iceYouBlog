@@ -20,7 +20,6 @@
               ></v-md-editor>
             </div>
           </div>
-
           <el-collapse v-model="activeName" accordion class="m-t">
             <el-collapse-item title="友善地评论" name="1">
               <div class="commentUserInf m-b f-c">
@@ -336,6 +335,15 @@ export default {
 
   .el-collapse {
     width: 100%;
+    border-radius: .3rem;
+    overflow: hidden;
+
+    /deep/ .el-collapse-item__header, .el-collapse-item__wrap {
+      padding-left: .5rem;
+      .el-collapse-item__content{
+        padding: .3rem;
+      }
+    }
 
     .el-row {
       align-items: center;

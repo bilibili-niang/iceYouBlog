@@ -1,14 +1,14 @@
 <template>
   <div class="lim">
     <div v-if="message" class="detailList">
-      <span class="m-l m-b">
-        <el-tag class="ml-2" type="info">title</el-tag>
+      <span class="m-b">
+        <el-tag type="info" class="m-r">title</el-tag>
         <el-text>
           {{ resData.title }}
         </el-text>
       </span>
       <span class="tags">
-        <el-tag class="ml-2" type="info">tags</el-tag>
+        <el-tag type="info">tags</el-tag>
         <markdownTags :tag="resData.tag1" v-if="resData.tag1"></markdownTags>
         <markdownTags :tag="resData.tag2" v-if="resData.tag2"></markdownTags>
         <markdownTags :tag="resData.tag3" v-if="resData.tag3"></markdownTags>
@@ -24,8 +24,6 @@
         </el-collapse-item>
     </el-collapse>
       </span>
-
-
     </div>
     <div v-else>
       <el-text>
@@ -80,6 +78,8 @@ initData(props.id)
     .tags {
       display: flex;
       flex-direction: row;
+      margin-left: 0;
+      align-items: center;
     }
 
     .content, .el-collapse {

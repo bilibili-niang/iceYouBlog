@@ -1,4 +1,4 @@
-const {commentNotAllow, commentIdParameterNotAllow} = require("../constant/err.type");
+const { commentNotAllow, commentIdParameterNotAllow, commentError, commentUserError } = require("../constant/err.type")
 const {
     addComment,
     getCommentById
@@ -6,13 +6,14 @@ const {
 const {
     getUserInfoByEmail
 } = require('../services/user.service')
+const commendS = require('../services/comment.service')
 
 class CommentController {
     /* @author icestone , 14:07
      * @date 2023/5/11
      * TODO 创建评论
     */
-    async returnAddCommentResult(ctx) {
+    async returnAddCommentResult (ctx) {
         const {
             id = 0,
             type = 'blog',
@@ -20,7 +21,7 @@ class CommentController {
             user = {
                 name: '无名之辈'
             }
-        } = ctx.request.body;
+        } = ctx.request.body
 
         // @date 2023/5/10 , @author icestone
         // TODO content,id 不为空才写入
@@ -28,7 +29,7 @@ class CommentController {
             if (ctx.state.user) {
                 // @date 2023/5/10 , @author icestone
                 // TODO 有用户
-                const result = await addComment(id, type, content, ctx.state.user.username, ctx.state.user.email);
+                const result = await addComment(id, type, content, ctx.state.user.username, ctx.state.user.email)
                 ctx.body = {
                     code: 200,
                     success: true,
@@ -40,7 +41,7 @@ class CommentController {
                 console.log('传入的用户名:')
                 console.log(user.name)
                 // 无用户登录
-                const result = await addComment(id, type, content, user.name);
+                const result = await addComment(id, type, content, user.name)
                 ctx.body = {
                     code: 200,
                     success: true,
@@ -51,7 +52,7 @@ class CommentController {
         } else {
             // @date 2023/5/10 , @author icestone
             // TODO 报错,内容与id为空
-            ctx.body = commentNotAllow;
+            ctx.body = commentNotAllow
         }
     }
 
@@ -59,17 +60,14 @@ class CommentController {
      * @date 2023/5/11
      * TODO 返回评论
     */
-    async returnAllCommentsById(ctx) {
-        console.log("---returnAllCommentsById---")
-        console.log("ctx.request.body")
-        console.log(ctx.request.body)
-        const {id = 0} = ctx.request.body;
+    async returnAllCommentsById (ctx) {
+        const { id = 0 } = ctx.request.body
         if (id == 0) {
             // @date 2023/5/11 , @author icestone
-            // TODO 传参错误
-            ctx.body = commentIdParameterNotAllow;
+            // 传参错误
+            ctx.body = commentIdParameterNotAllow
         } else {
-            let result = await getCommentById(id);
+            let result = await getCommentById(id)
             ctx.body = {
                 code: 200,
                 success: true,
@@ -80,6 +78,35 @@ class CommentController {
 
     }
 
+    /* @author 张嘉凯
+     * @date 2023/7/7 @time 12:39
+     *  更新
+    */
+    async returnUpdate (ctx) {
+        const { data = null } = ctx.request.body
+        console.log(data)
+        if (data) {
+            const { id = null, content = null } = data
+            if (id && content) {
+                const commentInfo = await commendS.getInfo(id, ['email'])
+                if (commentInfo[0].email === ctx.state.user.email) {
+                    const result = await commendS.updateById(id, content)
+                    ctx.body = {
+                        code: 200,
+                        success: true,
+                        message: '评论修改',
+                        result
+                    }
+                } else {
+                    ctx.body = commentUserError
+                }
+            } else {
+                ctx.body = commentError
+            }
+        } else {
+            ctx.body = commentError
+        }
+    }
 }
 
-module.exports = new CommentController();
+module.exports = new CommentController()

@@ -1,14 +1,14 @@
-const comment = require("../schema/comment");
-const {getUserInfoByEmail} = require("./user.service");
+const comment = require("../schema/comment")
+const { getUserInfoByEmail } = require("./user.service")
 
 class CommentService {
     /* @author icestone , 14:15
      * @date 2023/5/11
      * TODO 根据传参创建评论
     */
-    async addComment(id, type, content, nickName = '无名之辈', email) {
+    async addComment (id, type, content, nickName = '无名之辈', email) {
         console.log('nickName')
-        console.log(nickName);
+        console.log(nickName)
         return await comment.create({
             from: id,
             type,
@@ -20,9 +20,9 @@ class CommentService {
 
     /* @author icestone , 14:16
      * @date 2023/5/11
-     * TODO 根据关联id返回评论,这里需要查询的id是from字段
+     * 根据关联id返回评论,这里需要查询的id是from字段
     */
-    async getCommentById(id, attr = ['id', 'nickName', 'email', 'webSite', 'content', 'type']) {
+    async getCommentById (id, attr = ['id', 'nickName', 'email', 'webSite', 'content', 'type']) {
         return await comment.findAll({
             attributes: attr,
             where: {
@@ -36,6 +36,32 @@ class CommentService {
         })
     }
 
+    /* @author 张嘉凯
+     * @date 2023/7/7 @time 14:15
+     *  更新
+    */
+    async updateById (id, content) {
+        return await comment.update({
+            content
+        }, {
+            where: {
+                id
+            }
+        })
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/7 @time 14:48
+     *  通过id获取评论信息
+    */
+    async getInfo (id, attributes) {
+        return await comment.findAll({
+            attributes,
+            where: { id },
+            raw: true
+        })
+    }
+
 }
 
-module.exports = new CommentService();
+module.exports = new CommentService()

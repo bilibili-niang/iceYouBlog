@@ -41,6 +41,7 @@ watch(props, (nweProps) => {
 <style scoped lang="less">
 .recommend {
   overflow: hidden;
+  border-radius: .3rem;
 
   .markdown {
     display: flex;

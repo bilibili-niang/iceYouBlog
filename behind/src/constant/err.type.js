@@ -165,12 +165,24 @@ module.exports = {
         success: false,
         result: ''
     },
-    noteAuthNotAllow:{
+    noteAuthNotAllow: {
         code: '11002',
         message: "note操作权不够",
         success: false,
         result: ''
+    },
+// 关于评论相关
+    commentError: {
+        code: '113001',
+        message: '评论错误',
+        success: false,
+        result: ''
+    },
+    commentUserError:{
+        code: '113002',
+        message: '评论用户错误',
+        success: false,
+        result: ''
     }
-
 
 }

@@ -4,12 +4,13 @@ const fileNameAndPath = __filename
 const history = require('../schema/history')
 const { salt } = require('../config/default')
 const jwt = require('jsonwebtoken')
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
+const tool = require('../services/tool.service')
 
 class MarkdownFileService {
     /* @author icestone , 16:14
      * @date 2023/5/8
-     * TODO 初始化 markdownFile 用的,用于返回第一条文章数据
+     * 初始化 markdownFile 用的,用于返回第一条文章数据
     */
     async initMarkdownFile () {
         return await markdownFile.findOne({
@@ -516,7 +517,7 @@ class MarkdownFileService {
     */
     async getRecommendMarkdownFile () {
         return await markdownFile.findAll({
-            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel','updatedAt'],
+            attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel', 'updatedAt'],
             where: {
                 recommendLevel: {
                     [Op.gt]: 1
@@ -565,12 +566,43 @@ class MarkdownFileService {
     }
 
     /* @author 张嘉凯
+     * @date 2023/7/6 @time 15:06
+     * 根据id随机获取文章
+    */
+    async getRandomMarkdownFileById (id, limit = 5, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+        let idList = await markdownFile.findAll({
+            attributes: ['id'],
+            where: {
+                states: {
+                    [Op.gte]: 0
+                },
+                recommendLevel: {
+                    // 推荐等级小于等于1的
+                    [Op.lte]: 1
+                }
+            },
+            raw: true
+        })
+        idList=tool.getLimitIds(idList,limit);
+
+        return await markdownFile.findAll({
+            attributes: attr,
+            where:{
+                [Op.or]: [
+                    { id: idList}
+                ]
+            },
+            limit
+        })
+    }
+
+    /* @author 张嘉凯
      * @date 2023/6/19 @time
      * 获取置顶文章
     */
     async getTopArticleByEmail (email, level) {
         return await markdownFile.findAll({
-            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title','recommendLevel'],
+            attributes: ['id', 'email', 'description', 'createdAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title', 'recommendLevel'],
             where: {
                 email,
                 states: {

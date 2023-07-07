@@ -2,20 +2,23 @@
   <div class="lim container">
     <ul class="list-group list-group-flush">
       <li class="list-group-item hvr-glow m-t" :key="index" v-for="(item,index) in commendList">
-        <span  class="m-r">
-          <el-tag class="ml-2" type="info">createdAt</el-tag>
+        <span class="m-r">
+          <el-tag type="info" class="m-r">createdAt</el-tag>
           <el-text>{{ filter.timeFormat(item.createdAt) }}</el-text>
         </span>
         <span class="m-r">
-          <el-tag class="ml-2" type="info">文章id</el-tag>
+          <el-tag type="info" class="m-r">文章id</el-tag>
           <el-text>{{ item.from }}</el-text>
         </span>
-        <span class="detailLim">
-          <detail :id="item.from" type="blog"></detail>
-        </span>
         <span class="content m-t">
-          <el-tag class="mx-1">评论内容</el-tag>
+          <el-tag class="m-r">评论内容</el-tag>
           <el-text>{{ item.content }}</el-text>
+        </span>
+        <span class="detailLim m-t">
+        <el-button>
+          <el-link :href="'#/read?id='+item.from" target="_blank">read</el-link>
+        </el-button>
+          <!--<detail :id="item.from" type="blog"></detail>-->
         </span>
       </li>
     </ul>
@@ -25,10 +28,9 @@
 <script setup>
 import http from '@/common/api/request'
 import { useStore } from 'vuex'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import router from '@/router'
 import timeFormat from "@/common/filter/time"
-import Detail from '@/components/user/commend/Detail.vue'
 
 const store = useStore()
 let commendList = ref([])
@@ -85,6 +87,12 @@ initData()
   .detailLim {
     display: flex;
     width: 100%;
+  }
+}
+
+.dark {
+  .list-group-item {
+    background: rgba(255, 255, 255, .3);
   }
 }
 </style>

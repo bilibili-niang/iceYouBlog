@@ -17,8 +17,8 @@ const {
 
 class AdminController {
     // 返回所有友链
-    async returnAllFriendLinks(ctx) {
-        const result = await getAllFriendLinks();
+    async returnAllFriendLinks (ctx) {
+        const result = await getAllFriendLinks()
 
         ctx.body = {
             code: 200,
@@ -29,11 +29,11 @@ class AdminController {
     }
 
     // 增
-    async returnAddResult(ctx) {
-        const {form} = ctx.request.body;
+    async returnAddResult (ctx) {
+        const { form } = ctx.request.body
         console.log("form:")
         console.log(form)
-        const result = await getAddResult(form);
+        const result = await getAddResult(form)
         ctx.body = {
             code: 200,
             success: true,
@@ -45,11 +45,11 @@ class AdminController {
 
     // @date 2023/5/8 , @author icestone
     // TODO 返回log
-    async returnLogs(ctx) {
+    async returnLogs (ctx) {
         console.log('---returnLogs---')
-        const {offset = 0} = ctx.request.body;
-        console.log(`offset:${offset}`)
-        const result = await getLogs(offset);
+        const { offset = 0 } = ctx.request.body
+        console.log(`offset:${ offset }`)
+        const result = await getLogs(offset)
         ctx.body = {
             code: 200,
             success: true,
@@ -62,12 +62,12 @@ class AdminController {
      * @date 2023/5/9
      * TODO 对文章进行操作
     */
-    async operateMarkdown(ctx) {
+    async operateMarkdown (ctx) {
         const {
             operate = '',
             ids = ''
-        } = ctx.request.body;
-        console.log(`ids:${ids},operate:${operate}`)
+        } = ctx.request.body
+        console.log(`ids:${ ids },operate:${ operate }`)
         if (operate == 'del') {
             console.log('删除')
             const result = await getDeleteResult(ids, ctx.state.user.email)
@@ -85,9 +85,9 @@ class AdminController {
  * @date 2023/5/17
  * TODO 返回admin用户的列表
 */
-    async returnAllAdminUser(ctx) {
+    async returnAllAdminUser (ctx) {
         paramsVerify
-        const result = await getAllAdminUserInfo();
+        const result = await getAllAdminUserInfo()
         ctx.body = {
             code: 200,
             success: true,
@@ -101,7 +101,7 @@ class AdminController {
      * TODO 对admin用户进行操作
     */
 
-    async returnOperateResult(ctx) {
+    async returnOperateResult (ctx) {
         const paramsRes = paramsVerify({
             email: {
                 allowNull: false,
@@ -131,8 +131,8 @@ class AdminController {
      * @date 2023/5/18
      * TODO 返回展示在index页面的admin用户信息
     */
-    async returnIndexAdmin(ctx) {
-        const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word']);
+    async returnIndexAdmin (ctx) {
+        const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word'])
         ctx.body = {
             code: 200,
             success: true,
@@ -140,6 +140,22 @@ class AdminController {
             result
         }
     }
+
+    /* @author 张嘉凯
+     * @date 2023/7/5 @time 15:26
+     * 修改配置信息
+    */
+    async returnConfig (ctx) {
+        const {
+            registerFlag
+        } = ctx.request.body
+        console.log('registerFlag')
+        console.log(registerFlag)
+        ctx.body = {
+            code: 200,
+            success: true
+        }
+    }
 }
 
-module.exports = new AdminController();
+module.exports = new AdminController()

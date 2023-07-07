@@ -37,10 +37,13 @@ export default {
             })
     }
 }
+const token = JSON.parse(localStorage.getItem('userInfo')) == null ? "" : JSON.parse(localStorage.getItem('userInfo')).token
 
 function post (url, params) {
     return new Promise((resolve, reject) => {
-        axios.post(url, params).then(response => {
+        axios.post(url, params, {
+            headers: { 'token': token }
+        }).then(response => {
             resolve(response.data)
         }, err => {
             reject(err)

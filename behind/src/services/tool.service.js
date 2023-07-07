@@ -141,10 +141,27 @@ class ToolService {
         console.log(!/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name))
         //用文件名name后缀判断文件类型，可用size属性判断文件大小不能超过500k ， 前端直接判断的好处，免去服务器的压力。
         if (!/\.(jpg|jpeg|png|GIF|JPG|PNG)$/.test(name)) {
-            return false;
+            return false
         } else {
-            return true;
+            return true
         }
+    }
+
+    // 从其中获取随机个数据,并返回数组
+    getLimitIds (arr, count) {
+        let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index   //只是声明变量的方式, 也可以分开写
+        while (i -- > min) {
+            //这里的+1 是因为上面i--的操作  所以要加回来
+            index = Math.floor(( i + 1 ) * Math.random())
+            //即值交换
+            temp = shuffled[index]
+            shuffled[index] = shuffled[i]
+            shuffled[i] = temp
+        }
+        const ids = shuffled.slice(min)
+        return ids.map(item => {
+            return item.id
+        })
     }
 }
 

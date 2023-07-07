@@ -13,13 +13,13 @@ const router = new Router({prefix: '/home'})
 
 /* @author icestone , 15:31
  * @date 2023/5/5
- * TODO 获取/查询makrkdown首页
+ * 获取/查询makrkdown首页
 */
 router.get('/', returnHomeList)
 
 /* @author icestone , 15:32
  * @date 2023/5/5
- * TODO 首页分页查询
+ * 首页分页查询
 */
 router.post('/', returnHomeListById)
 
@@ -27,7 +27,7 @@ router.post('/', returnHomeListById)
  * @Description:
  * @author icestone
  * @date 2023/5/5
- * TODO 点赞
+ * 点赞
  */
 router.post('/support', ifAuth, returnSupportResult)
 

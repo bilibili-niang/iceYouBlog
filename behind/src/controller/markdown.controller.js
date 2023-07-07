@@ -36,6 +36,7 @@ const {
     getMarkdownByEmail,
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
+const markdownS=require('../services/markdownFile.service')
 const {
     removeFile,
     checkImgType
@@ -120,7 +121,7 @@ class MarkdownController {
             ctx.body = notExistFile
         } else {
             // @date 2023/5/8 , @author icestone
-            // TODO token存在,写入历史记录
+            // token存在,写入历史记录
             if (token) {
                 console.log('存在token')
                 historyByToken(res, token)
@@ -254,7 +255,7 @@ class MarkdownController {
         const result = await getAllUserMarkdownFiles(ctx.state.user.email, limit, id)
         if (( await result ).length == 0) {
             // @date 2023/5/10 , @author icestone
-            // TODO 为空,用户没有文章
+            // 为空,用户没有文章
             ctx.body = userDontHaveArticle
         } else {
             // 有文章
@@ -361,7 +362,7 @@ class MarkdownController {
             // 通过 markdownData 查询该文章的email是否为该 ctx.state.user 中的email
             const email = await getUserEmailByMarkdownId(markdownData.id)
             // @date 2023/5/7 , @author icestone
-            // TODO token中的email与该文章的email一致,可以修改
+            // token中的email与该文章的email一致,可以修改
             if (ctx.state.user.email == email.email) {
                 const res = await updateMarkdownByEmail(markdownData)
                 console.log("res[0]")
@@ -445,7 +446,7 @@ class MarkdownController {
         console.log('传入的ids:')
         console.log(ctx.state.ids)
         // @date 2023/5/5 , @author icestone
-        // TODO 这里查询的是没有被删除的普通文章
+        // 这里查询的是没有被删除的普通文章
         const idsResult = await getMarkdownFileDetailById(ctx.state.ids, attr)
         console.log('查询的ids信息:')
         console.log(idsResult)
@@ -453,7 +454,7 @@ class MarkdownController {
          * @Description:
          * @author icestone
          * @date 2023/5/3
-         * TODO 获取ids中email和当前操作用户email相同的id,后续进行删除
+         * 获取ids中email和当前操作用户email相同的id,后续进行删除
          */
         const ableOperatelIds = idsResult.map((item) => {
             if (item.email == email) {
@@ -466,7 +467,7 @@ class MarkdownController {
              * @Description:
              * @author icestone
              * @date 2023/5/3
-             * TODO 传入数组伪删除,此时可能有为 undefined 的值
+             * 传入数组伪删除,此时可能有为 undefined 的值
              */
             const result = await getDeleteResult(ableOperatelIds, ctx.state.user.email)
             // 传参正确,可以删除
@@ -478,13 +479,13 @@ class MarkdownController {
             }
         } else if (ctx.state.operate == 'recover') {
             // @date 2023/5/5 , @author icestone
-            // TODO 这里应该查询的是被删除的文章数据
+            // 这里应该查询的是被删除的文章数据
             const idsResult = await getAlreadyDetailById(ctx.state.ids, attr)
             /**
              * @Description:
              * @author icestone
              * @date 2023/5/5
-             * TODO 过滤
+             * 过滤
              */
             const ableOperatelIds = idsResult.map((item) => {
                 if (item.email == email) {
@@ -526,12 +527,12 @@ class MarkdownController {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 返回文章总数,用作分页
+     * 返回文章总数,用作分页
      */
     async returnAllCounts (ctx) {
         const result = await getAllCounts()
         // @date 2023/5/5 , @author icestone
-        // TODO 分页处理,返回前端的直接是处理好的多少页
+        // 分页处理,返回前端的直接是处理好的多少页
         /*if (parseInt(result.count / 20) < result.count) {
             result.count = parseInt(result.count / 20) + 1;
         } else {
@@ -547,7 +548,7 @@ class MarkdownController {
 
     /* @author icestone , 2:47
      * @date 2023/5/7
-     * TODO 返回该用户的所有文章tag
+     * 返回该用户的所有文章tag
     */
     async returnAllTags (ctx) {
         const result = await getAllTagsByEmail(ctx.state.user.email)
@@ -561,7 +562,7 @@ class MarkdownController {
 
     /* @author icestone , 15:11
      * @date 2023/5/20
-     * TODO 将制定type设置为推荐
+     * 将制定type设置为推荐
     */
     async returnSetRecommend (ctx) {
         console.log('ctx.request.body')
@@ -580,7 +581,7 @@ class MarkdownController {
         }, ctx)
 
         // @date 2023/5/20 , @author icestone
-        // TODO 参数验证通过
+        // 参数验证通过
         if (paramsRes == 0) {
             console.log("ctx.request.body.level:")
             console.log(ctx.request.body.level)
@@ -599,17 +600,17 @@ class MarkdownController {
 
     /* @author icestone , 15:46
      * @date 2023/5/7
-     * TODO 根据前端传来的 operate 操作符,更新某些列
+     * 根据前端传来的 operate 操作符,更新某些列
     */
     async getUpdateSomethingResult (ctx) {
         // @date 2023/5/7 , @author icestone
         // 获取需要的 data
         const { operate = null, id = null, tags = null } = ctx.request.body
         // @date 2023/5/7 , @author icestone
-        // TODO 根据不同的operate进行操作
+        // 根据不同的operate进行操作
         if (operate == 'updateTags' & tags != null & id != null) {
             // @date 2023/5/7 , @author icestone
-            // TODO 更新 tag
+            // 更新 tag
             const result = await UpdateSomething(operate, tags, id)
             ctx.body = {
                 code: 200,
@@ -622,7 +623,7 @@ class MarkdownController {
 
     /* @author icestone , 15:16
      * @date 2023/5/11
-     * TODO markdown图片的上传
+     * markdown图片的上传
     */
 
     async uploadMarkdownImage (ctx) {
@@ -636,7 +637,7 @@ class MarkdownController {
             // @date 2023/6/30 @time 14:27 , @author 张嘉凯
             // 将图片和用户邮箱写入数据库
             await saveImageInfo(targetPath, ctx.state.user.email, 1)
-            // TODO 判断移动后文件是否存在:
+            // 判断移动后文件是否存在:
             // const success = await isFileExisted(targetPath)
             // console.log(success)
             ctx.body = {
@@ -662,11 +663,11 @@ class MarkdownController {
 
     /* @author icestone , 16:58
      * @date 2023/5/20
-     * TODO 获取推荐文章
+     * 获取推荐文章
     */
     async returnRecommendMarkdown (ctx) {
         console.log('returnRecommendMarkdown--->')
-        const result = await getRecommendMarkdownFile();
+        const result = await getRecommendMarkdownFile()
         console.log('获取的推荐文章:')
         console.log(result)
         ctx.body = {
@@ -679,17 +680,29 @@ class MarkdownController {
 
     /* @author icestone , 16:09
      * @date 2023/5/31
-     * TODO 通过tag返回与该tag有关的文章
+     * 通过tag返回与该tag有关的文章
     */
     async returnRecommendByTags (ctx) {
         const { tags, id } = ctx.request.body
-        const result = await getRecommendMarkdownFileByTags(tags, id)
-        ctx.body = {
-            code: 200,
-            success: true,
-            message: "获取推荐文章",
-            result
+        const str = tags.join('')
+        if (str.length == 0) {
+            const result = await markdownS.getRandomMarkdownFileById(id, 5)
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: "获取随机推荐文章",
+                result
+            }
+        } else {
+            const result = await markdownS.getRecommendMarkdownFileByTags(tags, id)
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: "获取推荐文章",
+                result
+            }
         }
+
     }
 
     /* @author icestone , 21:37
@@ -709,7 +722,7 @@ class MarkdownController {
 
     /* @author 张嘉凯
      * @date 2023/6/19 @time
-     * TODO  返回指定用户的置顶文章
+     *  返回指定用户的置顶文章
     */
     async returnUserTopArticle (ctx) {
         const { email = null } = ctx.request.body

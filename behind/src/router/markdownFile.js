@@ -74,13 +74,13 @@ router.post('/deletedFile', auth, returnDeletedFiles)
  * @Description:
  * @author icestone
  * @date 2023/5/5
- * TODO 获取首页所有条目总数
+ * 获取首页所有条目总数
  */
 router.get('/allCounts', returnAllCounts)
 
 /* @author icestone , 2:46
  * @date 2023/5/7
- * TODO 获取该用户的所有文章tag
+ * 获取该用户的所有文章tag
 */
 
 router.post('/getAllTags', auth, returnAllTags)
@@ -112,7 +112,6 @@ router.post('/getUserAllMarkdown',returnAllMarkdownByEmail)
  * @date 2023/6/19 @time
  * 通过用户email获取该用户的置顶文章
 */
-router.post('/getTopArticle',returnUserTopArticle)
 module.exports = router
 
 

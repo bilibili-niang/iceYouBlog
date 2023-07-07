@@ -5,6 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = defineConfig({
     transpileDependencies: true,
+    publicPath:'/',
     //代理
     devServer: {
         // 指定项目启动时的默认端口号

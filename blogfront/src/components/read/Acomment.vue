@@ -26,59 +26,89 @@
           </el-text>
         </div>
       </div>
-
       <v-md-editor
           left-toolbar=""
           :include-level="[3,4]"
-          mode="preview"
-          v-model="item.content"></v-md-editor>
+          :mode="editMod"
+          v-model="copyItem.content"></v-md-editor>
+      <div v-if="email===item.email" class="m-b m-t options">
+        <el-button @click="editMod=editMod==='editable'?'preview':'editable'">
+          编辑
+        </el-button>
+        <el-button @click="save" v-if="editMod=='editable'">save</el-button>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import http from "@/common/api/request"
 import Avatar from "@/components/common/Avatar.vue"
+import markdown from '@/common/api/markdownFiles'
+
+const fun = require('@/hook/function')
 
 export default {
   name: "Acomment",
   components: { Avatar },
   props: {
-    item: {}
+    item: {},
+    email: ''
   },
   data () {
     return {
-      avatar: '/images/avatars/defaultAvatar.png'
+      avatar: '/images/avatars/defaultAvatar.png',
+      editMod: 'preview',
+      copyItem: ''
+    }
+  },
+  methods: {
+    async save () {
+      const res = await markdown.updateComment({ data: this.copyItem })
+      if (res.success) {
+        this.$emit('refresh', true)
+        this.editMod = 'preview'
+        fun.alert(res.message,'成功辣')
+      } else {
+        fun.alert(res.message,'失败辣')
+      }
     }
   },
   created () {
     const email = this.item.email || null
     if (email) {
-      http.$axios({
-        url: "/user/getUserInfoByEmail/",
-        method: 'POST',
-        data: {
-          email
-        }
-      })
+      markdown.getUserInfo({ email })
           .then(res => {
             this.avatar = res.result.avatar
           })
 
     } else {
     }
+    this.copyItem = this.item
   },
 
 }
 </script>
 
 <style scoped lang="less">
+.dark {
+  .aComment {
+    background: rgba(0, 0, 0, .3);
+  }
+}
+
 .aComment {
   display: flex;
   flex-direction: row;
   border-radius: .5rem;
   padding: .3rem;
   margin: .3rem;
+
+  &:hover {
+    .options {
+      opacity: 1;
+    }
+  }
 
   .avatar {
     display: flex;
@@ -87,6 +117,11 @@ export default {
 
   .detail {
     flex: 1;
+  }
+
+  .options {
+    opacity: 0;
+    transition-duration: .3s;
   }
 }
 

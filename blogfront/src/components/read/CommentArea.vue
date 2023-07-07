@@ -7,75 +7,78 @@
     </div>
     <div class="commentList" v-if="!commentFlag">
       <div v-for="(item,index) in commentList" :key="index">
-        <Acomment :item="item"></Acomment>
+        <Acomment :item="item" :email="email" @refresh="getRefreshFlag"></Acomment>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import http from "@/common/api/request"
 import Acomment from "@/components/read/Acomment.vue"
+import { reactive, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
-export default {
-  name: "CommentArea",
-  components: { Acomment },
-  props: {
-    id: 0,
-    refresh: {
-      type: Boolean
-    }
+const email = useStore().state.user.userInfo.email
+
+console.log('email')
+console.log(email)
+const props = defineProps({
+  id: {
+    default: 0
   },
-  data () {
-    return {
-      // 关于该文章的评论
-      commentList: [],
-      commentFlag: true,
-    }
-  },
-  methods: {
-    /* @author icestone , 16:09
- * @date 2023/5/11
- * 获取与该文章有关的评论
+  refresh: {
+    type: Boolean
+  }
+})
+// 关于该文章的评论
+let commentList = reactive([])
+let commentFlag = ref(true)
+let oldId = ref()
+
+/* @author icestone , 16:09
+* @date 2023/5/11
+* 获取与该文章有关的评论
 */
-    getAllComment (id) {
-      http.$axios({
-        url: '/comment/getCommentById',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-        data: {
-          id,
+const getAllComment = () => {
+  http.$axios({
+    url: '/comment/getCommentById',
+    method: 'POST',
+    headers: {
+      token: true
+    },
+    data: {
+      id: oldId.value,
+    }
+  })
+      .then(res => {
+        commentList = res.result
+        if (commentList.length) {
+          commentFlag.value = false
         }
       })
-          .then(res => {
-            this.commentList = res.result
-            if (this.commentList.length) {
-              this.commentFlag = false
-            }
-          })
-          .catch(e => {
-            console.log("e:")
-            console.log(e)
-          })
-    },
-  },
-  created () {
-    this.getAllComment(this.id)
-  },
-  watch: {
-    id (newVal) {
-      this.oldId = newVal
-      console.log('子组件的id发生变化')
-      this.getAllComment(this.oldId)
-    },
-    // 评论状态发生改变,获取下评论数据
-    refresh (newVal) {
-      this.getAllComment(this.id)
-    }
-  }
+      .catch(e => {
+        console.log("e:")
+        console.log(e)
+      })
 }
+
+/* @author 张嘉凯
+ * @date 2023/7/7 @time 14:31
+ *  评论成功,再次获取刷新数据
+*/
+const getRefreshFlag = (val) => {
+  getAllComment()
+}
+watch(() => props.id, (newVal) => {
+  oldId.value = newVal
+  getAllComment()
+})
+watch(() => props.refresh, (newVal) => {
+  getAllComment()
+})
+oldId.value = props.id
+getAllComment()
 </script>
 
 <style scoped>

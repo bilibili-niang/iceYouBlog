@@ -37,7 +37,7 @@
           <el-tag class="ml-2" type="info">description</el-tag>
           <el-text>{{ markdownData.description }}</el-text>
         </div>
-        <div class="options" v-if="showEditBtn">
+        <div class="options m-t" v-if="showEditBtn">
           <el-button @click="gotoEditExperiment(markdownData.id)">前往编辑</el-button>
         </div>
       </div>
