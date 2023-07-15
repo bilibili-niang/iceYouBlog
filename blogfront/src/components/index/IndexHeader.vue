@@ -9,7 +9,8 @@
         <li class="list-group-item" v-if="!loginState">
           <el-link href="#/login" target="_blank">login</el-link>
         </li>
-        <li class="list-group-item" v-if="!loginState">
+        <!--配置为1才开启注册-->
+        <li class="list-group-item" v-if="!loginState&&store.state.config.registerFlag=='1'">
           <el-link href="#/register" target="_blank">register</el-link>
         </li>
         <li class="list-group-item">
@@ -85,7 +86,7 @@ const store = useStore()
 let dark = ref(true)
 
 const { userInfo } = store.state.user || false
-console.log(userInfo)
+
 // 深色模式
 const changeDark = () => {
   if (dark.value) {
@@ -107,6 +108,8 @@ const init = () => {
       loginState.value = true
     }
   }
+  // 获取配置
+  store.commit('initConfig')
 }
 const goToUserInf = () => {
   const routeUrl = router.resolve({
@@ -129,6 +132,7 @@ const goToUserSearchHistory = () => {
   })
   window.open(routeUrl.href, '_blank')
 }
+
 init()
 </script>
 <style lang="less" scoped>

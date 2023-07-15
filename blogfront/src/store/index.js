@@ -1,7 +1,8 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
+import admin from '@/common/api/admin'
 
 const store = createStore({
-    state() {
+    state () {
         return {
             user: {
                 //登录状态
@@ -9,26 +10,34 @@ const store = createStore({
                 // 用户信息:用户的头像,用户昵称
                 userInfo: {}
             },
+            // 配置信息
+            config: {
+                registerFlag: "0"
+            }
         }
     },
     mutations: {
-        increment(state) {
-            state.count++
+        increment (state) {
+            state.count ++
         },
-        getUserInfo(state) {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        getUserInfo (state) {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'))
             if (userInfo) {
-                state.user.loginStatus = true;
-                state.user.userInfo = userInfo;
+                state.user.loginStatus = true
+                state.user.userInfo = userInfo
             } else {
-
             }
-
         },
-        CHANGE_META_INFO(state, metaInfo) {
-            state.metaInfo = metaInfo;
+        async initConfig (state) {
+            const res = await admin.getConfig()
+            if (res.success) {
+                state.config = res.result[0]
+            }
+        },
+        CHANGE_META_INFO (state, metaInfo) {
+            state.metaInfo = metaInfo
         }
     }
 })
 
-export default store;
+export default store

@@ -16,8 +16,10 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import api from '@/common/api'
 import admin from '@/common/api/admin'
+import { useStore } from 'vuex'
+
+const fun = require('@/hook/function')
 
 const registerValue = ref('')
 const registerFlag = [
@@ -31,15 +33,21 @@ const registerFlag = [
   },
 ]
 watch(registerValue, async () => {
-  console.log('值改变了')
-  console.log(api)
-    const res = await admin.postConfig({
+
+  const res = await admin.postConfig({
     registerFlag: registerValue.value
   })
-
+  console.log('值改变了')
   console.log(res)
+  if (res.success) {
+    fun.alert(res.message)
+  }
 })
-
+const store = useStore()
+const initConfig = () => {
+  registerValue.value = store.state.config.registerFlag
+}
+initConfig()
 
 </script>
 

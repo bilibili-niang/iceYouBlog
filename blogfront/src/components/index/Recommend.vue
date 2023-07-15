@@ -8,33 +8,21 @@
       <!--推荐文章-->
       <div class="markdownLim card p-normal m-b border-radius-normal hvr-glow" v-for="(item,index) in markdownList"
            :key="index">
-        <div>
-          <el-tag class="ml-2" type="info">title</el-tag>
+        <div class="title">
           <el-text class="mx-1">{{ item.title }}</el-text>
         </div>
-        <div v-if="item.description">
-          <el-tag class="ml-2" type="info">description</el-tag>
-          <el-text class="mx-1">
-            <div class="descriptions" :title="item.description">{{ item.description }}</div>
-          </el-text>
-        </div>
-        <div class="time">
+        <div class="time bottomDetail">
           <markdownTags tag="更新时间" :click="false" v-if="item.tag1"></markdownTags>
           <el-text> {{ timeFormat(item.updatedAt) }} - 更新于{{ DateDiffer(item.updatedAt) }}天之前</el-text>
         </div>
-        <div class="btns">
+        <div class="btns bottomDetail">
           <el-button round @click="goToRead(item.id)" class="m-r">read</el-button>
-          <!--<span class="tags" v-if="item.recommendLevel">
-                    <el-tag class="ml-2" type="info">recommendLevel</el-tag>
-                    <el-tag class="ml-2" type="info" v-if="item.recommendLevel">{{ item.recommendLevel }}</el-tag>
-                  </span>-->
         </div>
-        <span class="tags">
+        <span class="tags bottomDetail">
             <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
             <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
           </span>
-
       </div>
     </div>
 
@@ -91,7 +79,7 @@ export default {
       })
           .then(res => {
             this.markdownList = res.result
-            this.markdownList.sort(this.dateData('updatedAt',false))
+            this.markdownList.sort(this.dateData('updatedAt', false))
           })
           .catch(e => {
             console.log("e:")
@@ -131,27 +119,80 @@ export default {
       display: flex;
       width: 100%;
       margin-bottom: .3rem;
+      height: 9rem;
+      border-top-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+      transition: .3s;
+
+      &:hover {
+        border-top-left-radius: 2rem !important;
+        border-bottom-right-radius: 2rem !important;
+        z-index: 9999;
+
+        .title {
+          top: 5px !important;
+
+          span {
+            overflow-x: hidden;
+            font-size: 15px !important;
+          }
+        }
+
+        .bottomDetail {
+          opacity: 1 !important;
+          left: 5px !important;
+        }
+
+        .tags {
+          bottom: 2px !important;
+        }
+
+        .btns {
+          bottom: 35px !important;
+        }
+
+        .time {
+          bottom: 65px !important;
+        }
+      }
+
+      .title {
+        position: absolute;
+        top: 45%;
+        transition: .3s;
+
+        span {
+          font-size: 25px;
+          transition: .3s;
+          line-height: 20px;
+        }
+      }
+
+      .bottomDetail {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        opacity: 1;
+      }
+
+      .tags {
+        transition: .8s;
+      }
+
+      .btns {
+        transition: .6s;
+      }
+
+      .time {
+        transition: .2s;
+      }
 
       .btns {
         flex-direction: row;
         display: flex;
       }
-
-      .descriptions {
-        //整体超出部分隐藏
-        overflow: hidden;
-        //文本超出部分以...形式展示，同第一行样式代码
-        text-overflow: ellipsis;
-        //display 块级元素展示
-        display: -webkit-box;
-        //设置文本行数为2行
-        -webkit-line-clamp: 2;
-        //设置文本行数为2行
-        line-clamp: 2;
-        //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-        -webkit-box-orient: vertical;
-      }
     }
   }
+
 }
 </style>

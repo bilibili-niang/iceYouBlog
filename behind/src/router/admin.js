@@ -1,15 +1,15 @@
 //用户模块
 const Router = require('koa-router')
-const router = new Router({prefix: '/admin'})
+const router = new Router({ prefix: '/admin' })
 const {
     isAdmin
 } = require('../middleware/admin.middleware')
 
-const adminC=require('../controller/admin.controller')
+const adminC = require('../controller/admin.controller')
 
-const {auth} = require("../middleware/user.middleware");
+const { auth } = require("../middleware/user.middleware")
 
-router.post('/friendLinks', adminC.returnAllFriendLinks);
+router.post('/friendLinks', adminC.returnAllFriendLinks)
 
 router.post('/addLinks', isAdmin, adminC.returnAddResult)
 
@@ -18,12 +18,6 @@ router.post('/addLinks', isAdmin, adminC.returnAddResult)
  * log的分页查询
 */
 router.post('/getLogs', auth, isAdmin, adminC.returnLogs)
-
-/* @author icestone , 14:35
- * @date 2023/5/9
- * 获取log的总览信息之类的,allCount
-*/
-// router.post('/LogInfo',)
 
 router.post('/markdownOperate', auth, isAdmin, adminC.operateMarkdown)
 
@@ -41,6 +35,12 @@ router.get('/showInIndexAdminInfo', adminC.returnIndexAdmin)
  * @date 2023/7/5 @time 15:28
  *  更新配置信息
 */
-router.post('/config',  adminC.returnConfig)
+router.post('/config', auth, isAdmin, adminC.returnConfig)
+
+/* @author 张嘉凯
+ * @date 2023/7/7 @time 15:46
+ *  获取配置信息
+*/
+router.post('/getconfig', adminC.getConfig)
 
 module.exports = router

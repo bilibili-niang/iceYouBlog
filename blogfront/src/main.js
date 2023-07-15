@@ -13,6 +13,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import animated from 'animate.css'
 
 import 'hover.css'
+import '@/assets/js/common'
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /*引入公共样式*/

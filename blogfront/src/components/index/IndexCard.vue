@@ -17,8 +17,8 @@
         <span>
           <el-button round @click="goToRead(item.id)">read</el-button>
         </span>
-        <el-divider direction="vertical"/>
-        <!--<span @click="support(item.id)">
+        <!--<el-divider direction="vertical"/>
+        <span @click="support(item.id)">
                   <el-button round circle>赞</el-button>
                    <el-text>
                     {{ item.praise }}

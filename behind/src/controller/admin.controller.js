@@ -15,6 +15,8 @@ const {
     paramsVerify
 } = require('../middleware/admin.middleware')
 
+const adminS = require('../services/admin.service')
+
 class AdminController {
     // 返回所有友链
     async returnAllFriendLinks (ctx) {
@@ -147,13 +149,33 @@ class AdminController {
     */
     async returnConfig (ctx) {
         const {
+            // 是否开启注册
             registerFlag
         } = ctx.request.body
-        console.log('registerFlag')
-        console.log(registerFlag)
+
+        const result = await adminS.updateConfig({
+            registerFlag
+        })
+
         ctx.body = {
             code: 200,
-            success: true
+            success: true,
+            message: '修改配置',
+            result
+        }
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/7 @time 15:46
+     *  获取配置信息
+    */
+    async getConfig (ctx) {
+        const result = await adminS.getConfig()
+        ctx.body = {
+            code: 200,
+            message: '获取配置信息',
+            success: true,
+            result
         }
     }
 }

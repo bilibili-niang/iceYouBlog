@@ -1,7 +1,7 @@
 const {defineConfig} = require('@vue/cli-service')
-const webpack = require("webpack");
+// const webpack = require("webpack");
 //打包配置自动忽略console.log等
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = defineConfig({
     transpileDependencies: true,
@@ -27,12 +27,12 @@ module.exports = defineConfig({
     },
     configureWebpack: {
         plugins: [
-            new webpack.ProvidePlugin({
+           /* new webpack.ProvidePlugin({
                 $: 'jquery',
                 jQuery: 'jquery',
                 'window.jQuery': 'jquery',
                 Popper: ['popper.js', 'default']
-            }),
+            }),*/
             //打包环境去掉console.log等
             /* @author icestone , 17:22
              * @date 2023/5/15
