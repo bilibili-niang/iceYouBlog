@@ -1,7 +1,7 @@
 const {defineConfig} = require('@vue/cli-service')
 // const webpack = require("webpack");
 //打包配置自动忽略console.log等
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = defineConfig({
     transpileDependencies: true,

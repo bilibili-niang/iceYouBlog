@@ -11,17 +11,16 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import userApi from '@/common/api/user'
 import { ref } from 'vue'
 import UserCard from '@/components/common/UserCard.vue'
 import IndexCard from '@/components/index/IndexCard.vue'
 
-const route = useRoute()
+const route = useRouter()
 const email = route.query.email || 'admin'
 let user = ref({})
 let markdownFile = ref({})
-const router = useRoute()
 
 const initData = async () => {
   const res = await userApi.getUserInfoByEmail({

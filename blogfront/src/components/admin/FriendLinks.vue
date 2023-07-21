@@ -1,21 +1,21 @@
 <template>
   <div class="friendLinks">
-    <div class="card hvr-glow" v-for="(item,index) in links" :key="index">
+    <div class="card hvr-glow" v-for="(item, index) in links" :key="index">
       <el-text tag="b" size="large">{{ item.title }}</el-text>
       <div class="lim">
-            <span>
-              <el-button round>id</el-button>
-               <el-text>
-                {{ item.id }}
-              </el-text>
-            </span>
         <span>
-              <el-button round>
-                <el-link :href="item.url" target="_blank">url</el-link>
-              </el-button>
-               <el-text>{{ item.url }}</el-text>
-            </span>
-        <el-image style="width: 100px; height: 100px" :src="item.img" :fit="fit"/>
+          <el-button round>id</el-button>
+          <el-text>
+            {{ item.id }}
+          </el-text>
+        </span>
+        <span>
+          <el-button round>
+            <el-link :href="item.url" target="_blank">url</el-link>
+          </el-button>
+          <el-text>{{ item.url }}</el-text>
+        </span>
+        <el-image style="width: 100px; height: 100px" :src="item.img" :fit="fit" />
       </div>
     </div>
     <!--下面添加三个空白的是为样式考虑-->

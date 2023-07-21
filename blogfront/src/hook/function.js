@@ -5,7 +5,7 @@ class Function {
     alert = (msg, title = 'info') => {
         ElNotification({
             title: `${ title }`,
-            message: h('i', { style: 'color: teal' }, `${ msg }`),
+            message: h('i', { style: 'color: #7a7374' }, `${ msg }`),
         })
     }
 }

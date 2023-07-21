@@ -1,6 +1,7 @@
 const log = require('../schema/logTools')
 const user = require('../schema/user.model')
 const config = require('../schema/config')
+const connection = require('../db/seq')
 
 class AdminService {
     async getLogs (offset = 0) {
@@ -105,6 +106,24 @@ class AdminService {
         } else {
             return await config.create(params)
         }
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/20 @time 17:16
+     * 获取指定数据库信息
+    */
+    async getTableConfig (tableName) {
+        console.log('tableName--->')
+        console.log(tableName)
+        let detail = {}
+        // const res = await connection.query(`SELECT COUNT(*) AS total FROM ${ tableName }`)
+        const res = await connection.query(`SELECT * FROM ${ tableName }`)
+        // detail.totalData = res[0][0].total
+        detail.totalData = res
+
+
+
+        return await detail
     }
 
     /* @author 张嘉凯

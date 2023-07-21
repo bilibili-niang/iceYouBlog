@@ -5,20 +5,22 @@
         <Avatar :imgUrl="userInfoStore.userInfo.avatar"></Avatar>
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{ userInfoStore.userInfo.username }}</h5>
-        <p class="card-text">admin用户</p>
+        <div class="detail">
+          <el-text>{{ userInfoStore.userInfo.username }}</el-text>
+          <el-text>admin用户</el-text>
+        </div>
       </div>
     </div>
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
       <el-tab-pane label="friendLinks" name="friendLinks">
-        <FriendLinks :links="friendLinks"></FriendLinks>
+        <FriendLinks :links="friendLinks" v-if="activeName === 'friendLinks'"></FriendLinks>
       </el-tab-pane>
-      <el-tab-pane label="Config" name="second">
-        <Config></Config>
+      <el-tab-pane label="Config" name="config">
+        <Config v-if="activeName === 'config'" />
       </el-tab-pane>
       <el-tab-pane label="Role" name="third">Role</el-tab-pane>
       <el-tab-pane label="others" name="fourth">
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" v-if="activeName === 'fourth'">
           <li class="list-group-item">
             <el-text class="mx-1">log查看</el-text>
             <el-button>
@@ -31,10 +33,9 @@
               <el-link href="#/admin/allMarkdown" target="_blank">allMarkdown</el-link>
             </el-button>
           </li>
-
           <li class="list-group-item">
             <el-text>选择需要展示的admin账户</el-text>
-            <div class="user" v-for="(item,index) in allAdminList" :key="index">
+            <div class="user" v-for="(item, index) in allAdminList" :key="index">
               <el-row>
                 <el-col :span="8">
                   <Avatar :imgUrl="item.avatar"></Avatar>
@@ -79,20 +80,19 @@
                 </el-col>
               </el-row>
               <div class="uerOptions">
-                <el-button @click="operateAdminUser(item.email,'showInIndex')">setAsIndexUser</el-button>
+                <el-button @click="operateAdminUser(item.email, 'showInIndex')">setAsIndexUser</el-button>
               </div>
             </div>
           </li>
         </ul>
       </el-tab-pane>
     </el-tabs>
-
   </div>
 </template>
 
 <script setup>
+import fun from '@/hook/function'
 import Avatar from '@/components/common/Avatar.vue'
-import { ElMessage } from 'element-plus'
 import { computed, h, reactive, ref } from 'vue'
 import FriendLinks from '@/components/admin/FriendLinks.vue'
 import http from "@/common/api/request"
@@ -100,14 +100,14 @@ import Config from '@/components/admin/Config.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-let isAdmin = ref(false)
-let friendLinks = reactive([])
-const activeName = 'friendLinks'
+
+let friendLinks = ref()
+let activeName = ref('friendLinks')
 
 // 存放所有的admin用户信息
 let allAdminList = reactive({})
 const store = useStore()
-const router=useRouter()
+const router = useRouter()
 
 const userInfoStore = computed(() => {
   return store.state.user
@@ -119,8 +119,6 @@ const userInfoStore = computed(() => {
  * 操作admin用户
 */
 const operateAdminUser = (email, operate) => {
-  console.log("operateAdminUser")
-  console.log(`email:${ email },operate:${ operate }`)
   http.$axios({
     url: '/admin/operateUser',
     method: 'POST',
@@ -132,22 +130,13 @@ const operateAdminUser = (email, operate) => {
       operate
     }
   })
-      .then(res => {
-        alertMessage(res.message)
-      })
-      .catch(e => {
-        console.log("e:")
-        console.log(e)
-      })
-}
-const alertMessage = (title, sub, color) => {
-  const useColor = color || 'red'
-  ElMessage({
-    message: h('p', null, [
-      h('span', null, title),
-      h('i', { style: `color: ${ useColor }` }, sub),
-    ]),
-  })
+    .then(res => {
+      fun.alert(res.message)
+    })
+    .catch(e => {
+      console.log("e:")
+      console.log(e)
+    })
 }
 
 /* @author icestone , 17:56
@@ -162,13 +151,13 @@ const getAllAdminUserInfo = () => {
       token: true
     }
   })
-      .then(res => {
-        allAdminList = res.result
-      })
-      .catch(e => {
-        console.log("e:")
-        console.log(e)
-      })
+    .then(res => {
+      allAdminList = res.result
+    })
+    .catch(e => {
+      console.log("e:")
+      console.log(e)
+    })
 }
 const initLinks = () => {
   // 请求友链信息
@@ -179,26 +168,26 @@ const initLinks = () => {
       token: true
     }
   })
-      .then(res => {
-        alertMessage(res.message)
-        if (res.success) {
-          friendLinks = res.result
-        } else {
-          console.log('error')
-        }
-      })
-      .catch(e => {
-        console.log("e:")
-        console.log(e)
-      })
+    .then(res => {
+      fun.alert(res.message)
+      if (res.success) {
+        friendLinks.value = res.result
+      } else {
+        console.log('error')
+      }
+    })
+    .catch(e => {
+      console.log("e:")
+      console.log(e)
+    })
 }
 const handleClick =
-    (tab, event) => {
-      console.log(tab.props.name)
-      if (tab.props.name == 'friendLinks') {
-        initFriendLinks()
-      }
+  (tab, event) => {
+    console.log(tab.props.name)
+    if (tab.props.name == 'friendLinks') {
+      initFriendLinks()
     }
+  }
 
 const initFriendLinks = () => {
   if (JSON.stringify(friendLinks).length > 10) {
@@ -221,20 +210,20 @@ const initData = () => {
         token: true
       }
     })
-        .then(res => {
-          alertMessage(res.message)
-          isAdmin = res.result
-          if (!res.result) {
-            // 非admin用户
-            // 重定向
-            router.push('/login')
-          } else {
-          }
-        })
-        .catch(e => {
-          console.log("e:")
-          console.log(e)
-        })
+      .then(res => {
+        fun.alert(res.message)
+        isAdmin = res.result
+        if (!res.result) {
+          // 非admin用户
+          // 重定向
+          router.push('/login')
+        } else {
+        }
+      })
+      .catch(e => {
+        console.log("e:")
+        console.log(e)
+      })
 
   } else {
     // 重定向
@@ -242,8 +231,8 @@ const initData = () => {
   }
 }
 
-initData()
 initLinks()
+initData()
 getAllAdminUserInfo()
 
 </script>
@@ -271,4 +260,11 @@ getAllAdminUserInfo()
   }
 }
 
+.card-body {
+  .detail {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start
+  }
+}
 </style>

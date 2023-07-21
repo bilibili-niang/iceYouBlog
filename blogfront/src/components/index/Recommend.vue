@@ -160,6 +160,7 @@ export default {
         position: absolute;
         top: 45%;
         transition: .3s;
+        width: 100%;
 
         span {
           font-size: 25px;

@@ -41,6 +41,10 @@ router.post('/config', auth, isAdmin, adminC.returnConfig)
  * @date 2023/7/7 @time 15:46
  *  获取配置信息
 */
-router.post('/getconfig', adminC.getConfig)
+router.post('/getconfig',auth, isAdmin, adminC.getConfig)
+
+// 获取当前数据库所有表信息
+router.post('/database', auth, isAdmin,adminC.getDatabaseInfo)
+
 
 module.exports = router

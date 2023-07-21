@@ -26,6 +26,9 @@
               <el-text tag="b" size="small">浏览量:</el-text>
               <el-text tag="b" size="small">{{ markdownData.view }}</el-text>
             </p>
+            <p class="icon">
+              <slot></slot>
+            </p>
           </div>
         </div>
         <span class="tags">

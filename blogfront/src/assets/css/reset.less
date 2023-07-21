@@ -3,6 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .container {
   overflow-y: hidden;
   word-wrap: break-word;
@@ -78,13 +79,13 @@ div {
 
 // 下面是markdown文章的显示样式
 .hoverStyle {
-  transition: 0.2s;
+  transition: .5s;
   border-radius: 0.5rem;
 
   &:hover {
     /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
-    box-shadow: 0 0 15px 2px #918f8f; /*盒子阴影*/
-    transition: all 0.2s; /*持续时间*/
+    box-shadow: 0 0 15px 2px #918f8f;
+    /*盒子阴影*/
   }
 }
 
@@ -134,15 +135,18 @@ div {
 }
 
 // 自定义hover样式:
-.hover-around-shadow:hover {
-  margin-top: 0; /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
-  box-shadow: 0 0 15px 2px #918f8f; /*盒子阴影*/
-  transition: all 0.2s; /*持续时间*/
+.hover-around-shadow {
+  .animation-time();
+  box-shadow: 0 0 0 0  rgba(144, 140, 140,1);
+  &:hover {
+    margin-top: 0;
+    box-shadow: 0 0 15px 2px rgba(144, 140, 140,0);
+  }
 }
 
 // 动画持续时间
 .animation-time {
-  transition: 0.2s;
+  transition: .4s;
 }
 
 
@@ -243,4 +247,3 @@ div.el-input__wrapper {
 button {
   max-height: 2rem;
 }
-

@@ -20,10 +20,10 @@
           <el-link href="#/friend/links" target="_self">友链与留言</el-link>
         </li>
         <li class="list-group-item">
-          <div class="light" :class="{ dark: dark==true }" @click="changeDark" title="切换深色/浅色模式"></div>
+          <Search></Search>
         </li>
         <li class="list-group-item">
-          <Search></Search>
+          <div class="light" :class="{ dark: dark==true }" @click="changeDark" title="切换深色/浅色模式"></div>
         </li>
       </ul>
     </div>

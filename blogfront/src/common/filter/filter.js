@@ -8,11 +8,19 @@ export let numberUnify = data => {
 }
 
 // 字符串大写
-export let stringUpperCase = value => {
-    console.log(value)
-    console.log("stringUpperCase")
+const stringUpperCase=(value)=>{
     if (!value) return ''
     value = value.toString()
     return value.toUpperCase()
+}
+
+// 统计字数
+const wordCount=(str)=>{
+    return [...str].length;
+}
+
+export default {
+    stringUpperCase,
+    wordCount
 }
 

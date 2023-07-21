@@ -1,23 +1,13 @@
 <template>
   <div class="index container">
-    <div class="left m-r" v-loading="indexList.length==0">
-      <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item,index) in indexList"
-           :key="index">
+    <div class="left m-r" v-loading="indexList.length == 0">
+      <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item, index) in indexList" :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
       <div class="btns m-b" v-if="value">
-        <el-pagination
-            v-model:current-page="currentPage2"
-            v-model:page-size="pageSize2"
-            :page-sizes="[10, 20, 30, 40]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
-            layout="sizes, prev, pager, next"
-            :total="allCount"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[10, 20, 30, 40]"
+          :small="small" :disabled="disabled" :background="background" layout="sizes, prev, pager, next" :total="allCount"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </div>
     <div class="right">
@@ -30,12 +20,13 @@
 <script setup>
 import http from '@/common/api/request'
 import filters from '@/common/filter/time'
-import { ElMessage } from 'element-plus'
+import fun from '@/hook/function'
 import IndexCard from "@/components/index/IndexCard.vue"
 import AdminCard from "@/components/index/AdminCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import markdownApi from '@/common/api/markdownFiles'
 
 let indexList = ref([])
 let allCount = ref('')
@@ -75,42 +66,26 @@ const handleCurrentChange = (val) => {
       limit: pageSize2.value
     }
   })
-      .then(res => {
-        if (res.result.length > 0) {
-          alertMessage(res.message)
-          indexList.value = res.result
-        } else {
-          alertMessage("你到达了未知领域")
-          this.indexList = []
-        }
-      })
-      .catch(e => {
-        alertMessage(e)
-      })
+    .then(res => {
+      if (res.result.length > 0) {
+        fun.alert(res.message)
+        indexList.value = res.result
+      } else {
+        fun.alert("你到达了未知领域")
+        this.indexList = []
+      }
+    })
+    .catch(e => {
+      fun.alert(e)
+    })
 }
 /* @author icestone , 15:41
  * @date 2023/5/5
  * 获取首页所有文章的统计
 */
-const initCount = () => {
-  http.$axios({
-    url: "/markdownFile/allCounts",
-    method: 'GET',
-  })
-      .then(res => {
-        allCount.value = res.result
-      })
-      .catch(e => {
-        alertMessage(e)
-      })
-}
-
-const alertMessage = (title, type) => {
-  ElMessage({
-    message: title,
-    grouping: true,
-    type: 'success',
-  })
+const initCount = async () => {
+  const res = await markdownApi.initCount()
+  allCount.value = res.result
 }
 
 const timeFormat = (data) => {
@@ -120,13 +95,13 @@ const initData = () => {
   http.$axios({
     url: '/home/'
   })
-      .then(res => {
-        alertMessage(res.message)
-        indexList.value = res.result.rows || []
-      })
-      .catch(e => {
-        alertMessage(e)
-      })
+    .then(res => {
+      fun.alert(res.message, 'success')
+      indexList.value = res.result.rows || []
+    })
+    .catch(e => {
+      fun.alert(e)
+    })
 }
 // 查询分页数据
 initData()
@@ -144,8 +119,10 @@ initCount()
   min-height: 90vh;
   justify-content: center;
   flex-wrap: wrap;
+
   @media (max-width: 1200px) {
     flex-direction: column-reverse !important;
+
     .left {
       width: 100% !important;
     }
@@ -163,6 +140,11 @@ initCount()
     max-width: 100%;
     width: 75%;
     min-width: 21rem;
+
+    .card {
+      border-bottom-right-radius: 1.5rem;
+      border-top-left-radius: 1.5rem;
+    }
   }
 
   .right {

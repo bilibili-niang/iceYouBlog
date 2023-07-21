@@ -224,8 +224,6 @@ class UserService {
             },
             raw: true
         })
-        console.log('查询的res:')
-        console.log(res)
         return Boolean(res[0].is_admin)
     }
 

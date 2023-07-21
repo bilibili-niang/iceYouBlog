@@ -9,7 +9,9 @@
       <el-text>{{ item.description }}</el-text>
     </el-row>
 
-    <div class="text">
+    <div class="text animation-time" :class="{ showAll: showFlag==true }">
+      <div class="coverMask animation-time" @click="showFlag=!showFlag" title="点击显示全部代码"></div>
+
       <v-md-editor
           :include-level="[3,4]"
           v-model="item.content"
@@ -33,6 +35,7 @@ import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import timeFormat from "@/common/filter/time"
 import { ElMessage } from "element-plus"
 import { h } from "vue"
+import fun from '@/hook/function'
 
 export default {
   name: "IndexCard",
@@ -41,9 +44,14 @@ export default {
     item: {},
     zoomFun: { type: Function }
   },
+  data () {
+    return {
+      showFlag: false
+    }
+  },
   methods: {
     handleCopyCodeSuccess () {
-      this.alertMessage("复制成功")
+      fun.alert('复制成功','success')
     },
     alertMessage (title, sub, color) {
       const useColor = color || 'red'
@@ -93,6 +101,35 @@ export default {
 
   .tags {
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .text {
+    max-height: 10vh;
+    overflow: hidden;
+    position: relative;
+
+    .coverMask {
+      opacity: 1;
+      position: absolute;
+      display: flex;
+      width: 100%;
+      height: 50%;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .5);
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 1));
+      z-index: 3;
+    }
+  }
+
+  .showAll {
+    max-height: 100vh !important;
+
+    .coverMask {
+      opacity: 0;
+      bottom: -100% !important;
+    }
   }
 }
 </style>

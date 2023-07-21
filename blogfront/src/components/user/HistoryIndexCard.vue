@@ -1,7 +1,7 @@
 <template>
   <div class="historyIndexCard">
     <div class="card-body">
-      <el-text tag="b" size="large">{{ item.title }}</el-text>
+      <el-text tag="b">{{ item.title }}</el-text>
       <el-text>{{ item.createdAt }}</el-text>
       <el-text>{{ item.description }}</el-text>
       <!--goToDetail-->
@@ -10,13 +10,13 @@
           <el-button round @click="goToRead(item.id)">read</el-button>
         </span>
         <el-divider direction="vertical"/>
-        <span>
+        <span v-if="item.view">
           <el-button round>view</el-button>
           <el-text>
             {{ item.view }}
           </el-text>
+          <el-divider direction="vertical"/>
         </span>
-        <el-divider direction="vertical"/>
         <span>
           <el-button round>id</el-button>
            <el-text>
@@ -32,6 +32,7 @@
       </div>
     </div>
   </div>
+  <hr>
 </template>
 
 <script>

@@ -1,4 +1,4 @@
-import { post } from '@/common/api/request'
+import { get, post } from '@/common/api/request'
 
 
 export default {
@@ -16,5 +16,9 @@ export default {
 // 通过email获取个人信息
     async getUserInfo(params){
         return post('/user/getUserInfoByEmail/',params)
+    },
+    // 获取首页数据
+    async initCount(params){
+        return get('/markdownFile/allCounts')
     }
 }

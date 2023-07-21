@@ -1,23 +1,22 @@
 <template>
   <div class="read container">
-    <div v-if="!dataExist">
+    <el-text v-if="!dataExist">
       文章不存在或已被删除
-    </div>
+    </el-text>
     <!--文章存在-->
     <div class="contentLim" v-if="dataExist">
       <el-row>
         <el-col :span="19" class="dataContainerLim">
           <div class="dataContainer">
-            <div class="imgLim animation-time" :style="{'background':'url('+markdownData.headImg+')'}"></div>
+            <div class="imgLim animation-time" :style="{ 'background': 'url(' + markdownData.headImg + ')' }"></div>
             <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
-                       :userInf="userInf"></indexCard>
+              :userInf="userInf">
+              <el-text tag="b" size="small">当前字数:</el-text>
+              <el-text tag="b" size="small">{{ wordCount }}</el-text>
+            </indexCard>
             <div class="articleCon">
-              <v-md-editor
-                  :include-level="[3,4]"
-                  v-model="markdownData.content"
-                  mode="preview"
-                  @copy-code-success="handleCopyCodeSuccess"
-              ></v-md-editor>
+              <v-md-editor :include-level="[3, 4]" v-model="markdownData.content" mode="preview"
+                @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
             </div>
           </div>
           <el-collapse v-model="activeName" accordion class="m-t">
@@ -28,8 +27,8 @@
                     <el-tag class="ml-2" type="info" cal>你的名字</el-tag>
                   </el-col>
                   <el-col :span="20">
-                    <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
-                    <el-input v-model="userInf.username" placeholder="Please input name" v-else/>
+                    <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email" />
+                    <el-input v-model="userInf.username" placeholder="Please input name" v-else />
                   </el-col>
                 </el-row>
                 <el-row>
@@ -37,12 +36,12 @@
                     <el-tag class="ml-2" type="info">你的url</el-tag>
                   </el-col>
                   <el-col :span="20">
-                    <el-input v-model="commentUser.url" placeholder="Please input url"/>
+                    <el-input v-model="commentUser.url" placeholder="Please input url" />
                   </el-col>
                 </el-row>
               </div>
               <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
-                       type="blog"></comment>
+                type="blog"></comment>
             </el-collapse-item>
             <el-collapse-item title="评论区" name="2">
               <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
@@ -51,8 +50,8 @@
         </el-col>
         <!--推荐-->
         <el-col :span="5" class="right">
-          <Recommend v-if="dataExist" :id="id"
-                     :tags="[markdownData.tag1,markdownData.tag2,markdownData.tag3]"></Recommend>
+          <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]">
+          </Recommend>
           <div class="otherOperates">
           </div>
         </el-col>
@@ -71,31 +70,33 @@ import IndexCard from "@/components/read/IndexCard.vue"
 import comment from "@/components/read/Comment.vue"
 import CommentArea from "@/components/read/CommentArea.vue"
 import Recommend from '@/components/read/Recommend.vue'
+import filter from '@/common/filter/filter'
+import fun from '@/hook/function'
 
 export default {
   name: "Read",
   methods: {
-    refresh (val) {
+    refresh(val) {
       // 评论发表成功
       if (val) {
         this.refreshFlag = !this.refreshFlag
       }
     },
-    handleCopyCodeSuccess (code) {
-      this.alertMessage("复制成功")
+    handleCopyCodeSuccess(code) {
+      fun.alert("复制成功")
     },
     /* @author icestone , 16:02
      * @date 2023/5/6
      * 前往实验性功能的编辑
     */
-    gotoEditExperiment (id) {
+    gotoEditExperiment(id) {
       const routeUrl = this.$router.resolve({
         path: "/edit/vMdEditor",
         query: { id }
       })
       window.open(routeUrl.href, '_blank')
     },
-    showEdit () {
+    showEdit() {
       const email = JSON.parse(localStorage.getItem('userInfo')) || ""
       if (!Boolean(email)) {
         // 没有email时
@@ -105,20 +106,11 @@ export default {
         }
       }
     },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
-    },
-    timeFormat (data) {
+    timeFormat(data) {
       this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
     },
     // 通过id获取初始化数据
-    initMarkdownData () {
+    initMarkdownData() {
       this.id = this.$route.query.id || '0'
       http.$axios({
         url: '/markdownFile/getData',
@@ -130,39 +122,41 @@ export default {
           id: this.id,
         }
       })
-          .then(
-              res => {
-                // 不成功
-                if (!res.success) {
-                  this.dataExist = !this.dataExist
-                  this.alertMessage('加载不出来了', '你达到了不存在的领域')
-                } else {
-                  this.dataExist = true
-                  const flag = JSON.stringify(res.result).length < 3 ? false : true
-                  if (flag) {
-                    // 即将渲染的文章数据
-                    this.markdownData = res.result
-                    this.timeFormat()
-                    const content = res.result.content || 'null'
-                    if (content.length > 10) {
-                      // 文章数据存在时渲染
-                      this.article = res.result.content
-                    }
-                    this.userInf = res.userInf
-                    this.timeFormat()
-                    this.alertMessage('load success', 'success', '#a1c4fd')
-                    this.showEdit()
-                  } else {
-                    // 失败
-                    this.dataExist = false
-                    this.alertMessage('加载不出来了', '文章不存在或需要从原来的博客网站爬取,可以试试刷新')
-                  }
+        .then(
+          res => {
+            // 不成功
+            if (!res.success) {
+              this.dataExist = !this.dataExist
+              fun.alert('加载不出来了', '你达到了不存在的领域')
+            } else {
+              this.dataExist = true
+              const flag = JSON.stringify(res.result).length < 3 ? false : true
+              if (flag) {
+                // 即将渲染的文章数据
+                this.markdownData = res.result
+                this.timeFormat()
+                const content = res.result.content || 'null'
+                if (content.length > 10) {
+                  // 文章数据存在时渲染
+                  this.article = res.result.content
                 }
+                this.userInf = res.userInf
+                this.timeFormat()
+                fun.alert('load success', 'success', '#a1c4fd')
+                this.showEdit()
+              } else {
+                // 失败
+                this.dataExist = false
+                fun.alert('加载不出来了', '文章不存在或需要从原来的博客网站爬取,可以试试刷新')
               }
-          )
-          .catch(e => {
-            this.alertMessage(e)
-          })
+              // 统计字数
+              this.wordCount = filter.wordCount(this.markdownData.content)
+            }
+          }
+        )
+        .catch(e => {
+          fun.alert(e)
+        })
     },
   },
   components: {
@@ -172,7 +166,7 @@ export default {
     MarkdownTags,
     comment
   },
-  data () {
+  data() {
     return {
       markdownData: {},
       userInf: {},
@@ -195,13 +189,14 @@ export default {
         idNum: '',
         parAddress: '',
         parCategory: 0
-      }
+      },
+      wordCount: ''
     }
   },
-  created () {
+  created() {
     this.initMarkdownData()
   },
-  mounted () {
+  mounted() {
     console.log("document.getElementsByTagName('h4'):")
     console.log(document.getElementsByTagName('h4'))
     console.log("document.getElementsByTagName('h5'):")
@@ -212,6 +207,7 @@ export default {
 
 <style scoped lang="less">
 @marginTop: 1rem;
+
 .read {
   padding-bottom: 10rem;
   display: flex;
@@ -338,9 +334,11 @@ export default {
     border-radius: .3rem;
     overflow: hidden;
 
-    /deep/ .el-collapse-item__header, .el-collapse-item__wrap {
+    /deep/ .el-collapse-item__header,
+    .el-collapse-item__wrap {
       padding-left: .5rem;
-      .el-collapse-item__content{
+
+      .el-collapse-item__content {
         padding: .3rem;
       }
     }

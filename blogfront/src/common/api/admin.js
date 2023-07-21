@@ -1,4 +1,4 @@
-import { post } from './request'
+import { post,get } from './request'
 
 export default {
     async postConfig (params) {
@@ -6,5 +6,8 @@ export default {
     },
     async getConfig () {
         return post('/admin/getconfig')
+    },
+    async getDatabases(){
+        return post('/admin/database')
     }
 }

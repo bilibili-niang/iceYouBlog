@@ -52,5 +52,16 @@ function post (url, params) {
         })
     })
 }
+function get (url, params) {
+    return new Promise((resolve, reject) => {
+        axios.get(url, params).then(response => {
+            resolve(response.data)
+        }, err => {
+            reject(err)
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
 
-export { post }
+export { post , get}

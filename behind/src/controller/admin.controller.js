@@ -16,6 +16,8 @@ const {
 } = require('../middleware/admin.middleware')
 
 const adminS = require('../services/admin.service')
+// 数据库操作
+const connection = require('../db/seq')
 
 class AdminController {
     // 返回所有友链
@@ -150,18 +152,34 @@ class AdminController {
     async returnConfig (ctx) {
         const {
             // 是否开启注册
-            registerFlag
+            registerFlag = null,
+            table = null
         } = ctx.request.body
-
-        const result = await adminS.updateConfig({
-            registerFlag
-        })
-
-        ctx.body = {
-            code: 200,
-            success: true,
-            message: '修改配置',
-            result
+        let result = ''
+        // 修改注册状态
+        if (registerFlag) {
+            result = await adminS.updateConfig({
+                registerFlag
+            })
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: '修改配置',
+                result
+            }
+        }
+        /* @author 张嘉凯
+         * @date 2023/7/20 @time 17:24
+         * 获取指定数据表格信息
+        */
+        if (table) {
+            result = await adminS.getTableConfig(table)
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: '修改配置',
+                result
+            }
         }
     }
 
@@ -176,6 +194,22 @@ class AdminController {
             message: '获取配置信息',
             success: true,
             result
+        }
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/20 @time 14:07
+     * 获取所有数据表信息
+    */
+    async getDatabaseInfo (ctx) {
+        console.log('getDatabaseInfo--->')
+        const databases = await connection.query("SHOW TABLES", {})
+        const tables = databases[0].map(table => table["Tables_in_markdownfile"])
+        ctx.body = {
+            result: { tables },
+            code: 200,
+            success: true,
+            message: '返回数据库信息成功'
         }
     }
 }
