@@ -153,7 +153,9 @@ class AdminController {
         const {
             // 是否开启注册
             registerFlag = null,
-            table = null
+            table = null,
+            // 备份
+            backupTable = null
         } = ctx.request.body
         let result = ''
         // 修改注册状态
@@ -164,7 +166,7 @@ class AdminController {
             ctx.body = {
                 code: 200,
                 success: true,
-                message: '修改配置',
+                message: '修改注册状态',
                 result
             }
         }
@@ -177,10 +179,25 @@ class AdminController {
             ctx.body = {
                 code: 200,
                 success: true,
-                message: '修改配置',
+                message: '获取指定数据表格信息',
                 result
             }
         }
+        /* @author 张嘉凯
+         * @date 2023/7/21 @time 14:22
+         * 备份数据表
+        */
+        if (backupTable) {
+            result = await adminS.bakupTable(backupTable)
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: '备份数据表成功',
+                result
+            }
+        }
+
+
     }
 
     /* @author 张嘉凯
@@ -209,7 +226,7 @@ class AdminController {
             result: { tables },
             code: 200,
             success: true,
-            message: '返回数据库信息成功'
+            message: '获取所有数据表信息'
         }
     }
 }

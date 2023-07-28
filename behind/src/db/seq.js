@@ -8,7 +8,8 @@ console.log(databaseConfig)
 const seq = new Sequelize(databaseConfig.name, databaseConfig.user, databaseConfig.pwd, {
     host: databaseConfig.host,
     dialect: 'mysql',
-    port: databaseConfig.host
+    port: databaseConfig.host,
+    charset: 'utf8mb4' // 设置字符集为utf8mb4
 })
 
 async function test() {

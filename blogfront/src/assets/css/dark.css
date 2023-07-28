@@ -1,0 +1,41 @@
+.hover {
+  transition: all 0.2s;
+}
+.indexCard {
+  transform-style: preserve-3d;
+  perspective: 100px;
+  transform: rotateX(0deg) rotateY(0deg);
+}
+html.dark .list-group-item:not('.breadcrumbbreadcrumb') {
+  background: rgba(45, 46, 54, 0.7) !important;
+}
+html.dark body {
+  background: #2d2e36 !important;
+}
+html.dark body .card,
+html.dark body .avater .list-group-item {
+  background: rgba(45, 46, 54, 0.7) !important;
+}
+html.dark body .container .cover {
+  background: rgba(45, 46, 54, 0.7) !important;
+}
+html.dark body .recommend .list-group-item {
+  background: rgba(45, 46, 54, 0.7) !important;
+}
+html.dark .v-md-editor {
+  background: #363433 !important;
+}
+html.dark .v-md-editor .github-markdown-body {
+  color: #ccccd6;
+}
+html.dark .v-md-editor .github-markdown-body div.v-md-pre-wrapper,
+html.dark .v-md-editor .github-markdown-body .github-markdown-body:after {
+  color: #ccccd6;
+  background: #c0c4c3 !important;
+}
+html.dark .v-md-editor .v-md-textarea-editor textarea {
+  color: #ccccd6;
+}
+html.dark blockquote p {
+  color: #ccccd6;
+}

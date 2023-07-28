@@ -1,5 +1,12 @@
 <template>
   <li class="indexCard list-group-item  hvr-glow">
+    <div class="close" v-if="showFlag">
+      <div class="btns" @click="fun.alert('点击关闭')" title="点击关闭">
+        <el-icon>
+          <CloseBold />
+        </el-icon>
+      </div>
+    </div>
     <el-row>
       <el-tag class="ml-2" type="info">title</el-tag>
       <el-text>{{ item.title }}</el-text>
@@ -8,16 +15,10 @@
       <el-tag class="ml-2" type="info">description</el-tag>
       <el-text>{{ item.description }}</el-text>
     </el-row>
-
-    <div class="text animation-time" :class="{ showAll: showFlag==true }">
-      <div class="coverMask animation-time" @click="showFlag=!showFlag" title="点击显示全部代码"></div>
-
-      <v-md-editor
-          :include-level="[3,4]"
-          v-model="item.content"
-          mode="preview"
-          @copy-code-success="handleCopyCodeSuccess"
-      ></v-md-editor>
+    <div class="text" :class="{ showAll: showFlag == true }">
+      <div class="coverMask" @click="showFlag = !showFlag" title="点击显示全部代码"></div>
+      <v-md-editor :include-level="[3, 4]" v-model="item.content" mode="preview"
+        @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
     </div>
     <div class="tags">
       <el-button class="m-r m-t" round @click="zoomFun(item.id)">放大看看</el-button>
@@ -33,8 +34,6 @@
 <script>
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import timeFormat from "@/common/filter/time"
-import { ElMessage } from "element-plus"
-import { h } from "vue"
 import fun from '@/hook/function'
 
 export default {
@@ -44,26 +43,17 @@ export default {
     item: {},
     zoomFun: { type: Function }
   },
-  data () {
+  data() {
     return {
       showFlag: false
     }
   },
   methods: {
-    handleCopyCodeSuccess () {
-      fun.alert('复制成功','success')
-    },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
+    handleCopyCodeSuccess() {
+      fun.alert('复制成功', 'success')
     },
     // 点击后跳转详情
-    goToRead (id) {
+    goToRead(id) {
       const routeUrl = this.$router.resolve({
         path: "/code/detail",
         query: { id }
@@ -72,13 +62,13 @@ export default {
     },
   },
   watch: {
-    item (newVal) {
+    item(newVal) {
       // @date 2023/5/5 , @author icestone
       // 分页数据更改时数据会更改,再次格式化时间
       this.item.createdAt = timeFormat.timeFormat(newVal.createdAt) || ''
     }
   },
-  created () {
+  created() {
     // @date 2023/5/5 , @author icestone
     // 第一次创建子组件并接收到值时需要格式化下时间
     this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || ''
@@ -94,6 +84,28 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  .close {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem;
+    display: flex;
+    width: 2.3rem;
+    height: 2.3rem;
+    transition: 0.5s;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 0 #918f8f;
+
+    .el-icon {
+      font-size: 1.3rem !important;
+    }
+
+    &:hover {
+      box-shadow: 0 0 15px 2px #918f8f;
+    }
+  }
 
   div.el-row {
     margin-bottom: .3rem;
@@ -108,6 +120,7 @@ export default {
     max-height: 10vh;
     overflow: hidden;
     position: relative;
+    transition-duration: 1.3s;
 
     .coverMask {
       opacity: 1;
@@ -117,9 +130,11 @@ export default {
       height: 50%;
       bottom: 0;
       left: 0;
-      background: rgba(0, 0, 0, .5);
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 1));
       z-index: 3;
+      transition-duration: 1.4s;
+      border-top-left-radius: 50%;
+      border-top-right-radius: 50%;
     }
   }
 
@@ -128,7 +143,10 @@ export default {
 
     .coverMask {
       opacity: 0;
-      bottom: -100% !important;
+      z-index: -1;
+      scale: 10;
+      top: 25%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     }
   }
 }

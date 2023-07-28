@@ -53,6 +53,7 @@ const goToRead = (id) => {
     margin-left: .5rem;
     margin-right: .5rem;
     border-radius: .3rem;
+    border-bottom: 1px dashed rgba(255,255,255,.7);
 
     .desList {
         display: flex;

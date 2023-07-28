@@ -76,12 +76,17 @@ div {
 .hover {
   .hoverStyle();
 }
+// 按钮组
+.btns,.el-text{
+  width: 100%;
+  margin-top: .1rem;
+  margin-bottom: .1rem;
+}
 
 // 下面是markdown文章的显示样式
 .hoverStyle {
   transition: .5s;
   border-radius: 0.5rem;
-
   &:hover {
     /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
     box-shadow: 0 0 15px 2px #918f8f;

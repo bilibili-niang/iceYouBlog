@@ -14,10 +14,19 @@
           <el-option v-for="item in table" :key="item" :label="item" :value="item" />
         </el-select>
       </div>
-      <el-text>
-        当前选择的value:{{ tableValue }}
-      </el-text>
-      <div class="allData">
+      <div class="btns" v-if="tableValue">
+        <el-text>
+          当前选择的value: {{ tableValue }}
+        </el-text>
+        <div class="selection-item" v-if="databaseDetail.totalData">
+          <el-text>当前所选数据库有{{ databaseDetail.totalData[0].length }}条数据</el-text>
+        </div>
+
+        <el-button roun @click="backup">备份</el-button>
+
+
+      </div>
+      <div class="allData" v-if="tableValue">
         <el-text>所有数据:</el-text>
         <div class="markdownfiles" v-if="tableValue == 'markdownfiles'">
           <template v-for="(item) in databaseDetail.totalData[0]">
@@ -32,9 +41,9 @@
         </div>
 
         <div class="others" v-else>
-          <code>
-                        {{ databaseDetail }}
-                      </code>
+          <code v-if="databaseDetail.totalData">
+                                        {{ databaseDetail.totalData[0] }}
+                                      </code>
           <!-- <template v-for="(item) in databaseDetail.totalData[0]">
             <el-text>
               {{ item }}
@@ -53,8 +62,7 @@ import { useStore } from 'vuex'
 import { reactive } from 'vue';
 import historyIndexCard from '@/components/user/HistoryIndexCard.vue'
 import markdownCard from '@/components/admin/config/markdownCard.vue'
-
-const fun = require('@/hook/function')
+import fun from '@/hook/function';
 
 const registerValue = ref('')
 const registerFlag = [
@@ -99,8 +107,15 @@ const initConfig = async () => {
   // 获取所有的数据库
   const res = await admin.getDatabases()
   table.value = res.result.tables
+  fun.alert(res.message)
 }
 
+const backup = async () => {
+  const res = await admin.postConfig({
+    backupTable: tableValue.value
+  })
+  fun.alert(res.message)
+}
 
 initConfig()
 </script>
@@ -111,6 +126,16 @@ initConfig()
   flex-direction: column;
 
   .btns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .el-text {
+      width: 100%;
+    }
+  }
+
+  .selection {
     display: flex;
     flex-direction: column;
   }

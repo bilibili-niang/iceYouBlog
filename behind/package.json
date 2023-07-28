@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/main.js",
     "start": "node src/main.js",
-    "pm2":"pm2 start npm src/main.js"
+    "pm2": "pm2 start npm src/main.js"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +33,8 @@
     "nodemailer": "^6.7.5",
     "sequelize": "^6.19.0",
     "static-resource-plugin": "^1.0.6",
-    "turndown": "^7.1.1"
+    "turndown": "^7.1.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "jimp": "^0.22.7",

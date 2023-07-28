@@ -4,11 +4,11 @@
     <InputCard v-if="userInfoStore.loginStatus"></InputCard>
     <div class="cardsLim">
       <div class="codeZoomCard" v-if="showZoomCard">
-        <el-button @click="showZoomCard=false">close</el-button>
+        <el-button @click="showZoomCard = false">close</el-button>
         <ZoomCard :item="nowItem[0]"></ZoomCard>
       </div>
       <ul v-else class="list-group list-group-flush">
-        <div class="lim" v-for="(item,index) in codeList" :key="index">
+        <div class="lim" v-for="(item, index) in codeList" :key="index">
           <IndexCard :item="item" :zoomFun="zoom"></IndexCard>
         </div>
       </ul>
@@ -18,16 +18,15 @@
 
 <script>
 import InputCard from '@/components/code/InputCard.vue'
-import http from '@/common/api/request'
-import { ElMessage } from 'element-plus'
-import { h } from 'vue'
 import IndexCard from '@/components/code/IndexCard.vue'
 import ZoomCard from "@/components/code/ZoomCard.vue"
 import CodeSearch from '@/components/code/codeSearch.vue'
+import fun from '@/hook/function'
+import markdownFiles from '@/common/api/markdownFiles'
 
 export default {
   name: "CodeIndex",
-  data () {
+  data() {
     return {
       codeList: [],
       showDelFlag: false,
@@ -36,7 +35,7 @@ export default {
     }
   },
   computed: {
-    userInfoStore () {
+    userInfoStore() {
       return this.$store.state.user
     }
   },
@@ -46,45 +45,36 @@ export default {
      * @date 2023/5/19
      * 代码card放大看看
     */
-    zoom (val) {
+    zoom(val) {
       console.log(val)
       this.showZoomCard = true
       console.log(this.codeList)
       this.nowItem = this.codeList.filter(item => {
         return item.id == val
       })
-
-
     },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
-    },
-
-    async initCodeClips () {
+    async initCodeClips() {
       // 发起请求
-      await http.$axios({
-        url: '/code/getCodeClips',
-        method: 'GET'
-      }).then(res => {
-        this.alertMessage(res.message)
-        if (res.success) {
-          this.historyList = res.result
-          this.codeList = res.result
-        } else {
-        }
-      })
-          .catch(e => {
-            this.alertMessage(e)
-          })
+      const res = await markdownFiles.getCodeClipsList()
+      fun.alert(res.message, 'success:' + res.success)
+
+      this.historyList = res.result
+      this.codeList = res.result
+
+      // await http.$axios({
+      //   url: '/code/getCodeClips',
+      //   method: 'GET'
+      // }).then(res => {
+      //   fun.alert(res.message)
+      //   if (res.success) {
+      //     this.historyList = res.result
+      //     this.codeList = res.result
+      //   } else {
+      //   }
+      // })
     }
   },
-  created () {
+  created() {
     this.initCodeClips()
   }
 }
@@ -144,6 +134,7 @@ export default {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
