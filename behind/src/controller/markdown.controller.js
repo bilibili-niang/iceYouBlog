@@ -36,7 +36,7 @@ const {
     getMarkdownByEmail,
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
-const markdownS=require('../services/markdownFile.service')
+const markdownS = require('../services/markdownFile.service')
 const {
     removeFile,
     checkImgType
@@ -739,6 +739,21 @@ class MarkdownController {
                 success: false,
                 msg: '没有传入邮箱'
             }
+        }
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/31 @time 9:01
+     * 计算并返回文章的阅读量
+     * 默认返回网站的所有阅读量
+    */
+    async returnAllviews (ctx) {
+        const result = await markdownS.getViews()
+
+        ctx.body = {
+            message: '获取浏览量统计',
+            success: true,
+            result
         }
     }
 }

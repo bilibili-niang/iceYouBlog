@@ -3,12 +3,12 @@ const user = require('../schema/user.model')
 const config = require('../schema/config')
 const connection = require('../db/seq')
 const fs = require('fs')
-const xlsx = require('xlsx');
+const xlsx = require('xlsx')
 
 class AdminService {
-    async getLogs(offset = 0) {
+    async getLogs (offset = 0) {
         console.log('---getLogs---')
-        console.log(`offset:${offset}`)
+        console.log(`offset:${ offset }`)
         return await log.findAll({
             order: [
                 // 我们从要排序的模型开始排序数组
@@ -24,7 +24,7 @@ class AdminService {
      * @date 2023/5/17
      * 返回指定的所有admin信息
     */
-    async getAllAdminUserInfo(attr = ['id', 'email', 'username', 'avatar', 'occupation', 'word']) {
+    async getAllAdminUserInfo (attr = ['id', 'email', 'username', 'avatar', 'occupation', 'word']) {
         return await user.findAll({
             attributes: attr,
             where: {
@@ -39,9 +39,9 @@ class AdminService {
      * 对admin用户进行操作,
      *  这里通过了参数验证,operate不会为空
     */
-    async operateUser(email, operate = null) {
+    async operateUser (email, operate = null) {
         console.log(`---operateUser---`)
-        console.log(`将要修改的email':${email}`)
+        console.log(`将要修改的email':${ email }`)
         // @date 2023/5/18 , @author icestone
         // 设置admin展示在首页
         if (operate == 'showInIndex') {
@@ -67,7 +67,7 @@ class AdminService {
      * @date 2023/5/18
      * 获取展示在index页面的admin用户信息:
     */
-    async getShowInIndexAdminUser(attr = []) {
+    async getShowInIndexAdminUser (attr = []) {
         return await user.findOne({
             attributes: attr,
             where: {
@@ -81,7 +81,7 @@ class AdminService {
      * @date 2023/7/7 @time 15:36
      *  更新配置信息
     */
-    async updateConfig(params) {
+    async updateConfig (params) {
         const oneRow = await config.findOne({
             where: {
                 id: 1
@@ -106,53 +106,56 @@ class AdminService {
      * @date 2023/7/20 @time 17:16
      * 获取指定数据库信息
     */
-    async getTableConfig(tableName) {
+    async getTableConfig (tableName) {
         console.log('tableName--->')
         console.log(tableName)
         let detail = {}
         const res = await connection.query(`SELECT *
-                                            FROM ${tableName}`)
+                                            FROM ${ tableName }`)
         detail.totalData = res
-        return await detail
+        return detail
     }
 
     /* @author 张嘉凯
      * @date 2023/7/21 @time 14:28
      * 数据表备份导出
     */
-    async bakupTable(tableName) {
-        const [rows, fields] = await connection.query(`SELECT * FROM ${tableName}`, {});
+    async bakupTable (tableName) {
+        const [rows, fields] = await connection.query(`SELECT *
+                                                       FROM ${ tableName }`, {})
 
-        const worksheet = xlsx.utils.json_to_sheet(rows);
-        const workbook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        const worksheet = xlsx.utils.json_to_sheet(rows)
+        const workbook = xlsx.utils.book_new()
+        xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
         try {
-            xlsx.writeFile(workbook, `./src/backup/${tableName}.xlsx`);
-            console.log('文件写入成功');
-            return true;
+            xlsx.writeFile(workbook, `./src/backup/${ tableName }.xlsx`)
+            console.log('文件写入成功')
+            return true
         } catch (error) {
-            console.error('文件写入失败:', error);
-            this.backupTOJson(tableName);
-            return false;
+            console.error('文件写入失败:', error)
+            this.backupTOJson(tableName)
+            return false
         }
     }
+
     /**
      * admin.service
      * Created At: 2023-07-21 15:47
      * Description: 数据库备份为json
      */
-    async backupTOJson(tableName) {
-        const [rows, fields] = await connection.query(`SELECT * FROM ${tableName}`, {});
+    async backupTOJson (tableName) {
+        const [rows, fields] = await connection.query(`SELECT *
+                                                       FROM ${ tableName }`, {})
         // 将查询结果转换为JSON格式
-        const jsonData = JSON.stringify(rows);// 将JSON数据写入文件
-        fs.writeFile(`./src/backup/${tableName}.json`, jsonData, (error) => {
+        const jsonData = JSON.stringify(rows)// 将JSON数据写入文件
+        fs.writeFile(`./src/backup/${ tableName }.json`, jsonData, (error) => {
             if (error) {
-                console.error('json写入文件失败:', error);
+                console.error('json写入文件失败:', error)
             } else {
-                console.log('json文件写入成功');
+                console.log('json文件写入成功')
             }
-        });
+        })
 
     }
 
@@ -161,7 +164,7 @@ class AdminService {
      * @date 2023/7/7 @time 15:47
      *  获取
     */
-    async getConfig() {
+    async getConfig () {
         return await config.findAll({ raw: true })
     }
 

@@ -1,8 +1,8 @@
 import images from '@/common/api/images'
+import markdownFileApi from './markdownFiles'
+import user from './user'
+import admin from './admin'
 
-const markdownFileApi = require('./markdownFiles')
-const user = require('./user')
-const admin = require('./admin')
 export default {
     ...markdownFileApi,
     ...user,

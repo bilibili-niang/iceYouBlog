@@ -27,6 +27,20 @@ export default {
      */
     async getCodeClipsList() {
         return get('/code/getCodeClips')
+    },
+    /* @author 张嘉凯
+     * @date 2023/7/31 @time 13:39
+     * 获取浏览量
+    */
+    async getViews(){
+        return post('/home/allviews')
+    },
+    /* @author 张嘉凯
+     * @date 2023/7/31 @time 13:40
+     * 获取首页数据
+    */
+    async getHomeData(){
+        return get('/home')
     }
 
 }

@@ -259,7 +259,7 @@ class MarkdownFileService {
 
     /* @author icestone , 23:45
      * @date 2023/5/15
-     * TODO 通过用户邮箱返回用户所有文章分页数据的接口,
+     *  通过用户邮箱返回用户所有文章分页数据的接口,
      *  邮箱,返回数量,跳过条数
     */
     async getAllUserMarkdownFiles (email, limit = 20, id = 0) {
@@ -313,7 +313,7 @@ class MarkdownFileService {
      * @Description:
      * @author icestone
      * @date 2023/5/3
-     * TODO 伪删除
+     *  伪删除
      */
     async getDeleteResult (ids, email = 'demo@emaml') {
         await insertLog({
@@ -332,7 +332,7 @@ class MarkdownFileService {
      * @Description:
      * @author icestone
      * @date 2023/5/4
-     * TODO 通过email获取用户的已删除文章
+     *  通过email获取用户的已删除文章
      */
     async getDeletedFiles (email) {
         return await markdownFile.findAll({
@@ -349,7 +349,7 @@ class MarkdownFileService {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 通过id恢复指定文章
+     *  通过id恢复指定文章
      */
     async getRecoverResult (ids, email) {
         await insertLog({
@@ -368,7 +368,7 @@ class MarkdownFileService {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 通过ids获取已被删除的文章的信息
+     *  通过ids获取已被删除的文章的信息
      */
     async getAlreadyDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3']) {
         return await markdownFile.findAll({
@@ -385,11 +385,11 @@ class MarkdownFileService {
      * @Description:
      * @author icestone
      * @date 2023/5/5
-     * TODO 获取首页文章总数量,用作
+     *  获取首页文章总数量,用作
      */
     async getAllCounts () {
         // @date 2023/5/5 , @author icestone
-        // TODO 查询 states 大于0的数据
+        //  查询 states 大于0的数据
         return await markdownFile.findAndCountAll({
             attributes: ['id'],
             where: {
@@ -403,7 +403,7 @@ class MarkdownFileService {
 
     /* @author icestone , 18:40
      * @date 2023/5/5
-     * TODO 查询与传入的tag相关的数据
+     *  查询与传入的tag相关的数据
     */
     async getAboutMarkdown (tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
         const processedTags = []
@@ -444,7 +444,7 @@ class MarkdownFileService {
 
     /* @author icestone , 2:48
      * @date 2023/5/7
-     * TODO 通过email返回该用户的所有文章tag
+     *  通过email返回该用户的所有文章tag
     */
     async getAllTagsByEmail (email) {
         let result = await markdownFile.findAll({
@@ -479,7 +479,7 @@ class MarkdownFileService {
 
     /* @author icestone , 15:50
      * @date 2023/5/7
-     * TODO 更新操作,这里的 data 传入的应该是对象
+     *  更新操作,这里的 data 传入的应该是对象
     */
     async UpdateSomething (operate, data, id) {
         console.log('---UpdateSomething---')
@@ -497,7 +497,7 @@ class MarkdownFileService {
 
     /* @author icestone , 15:13
      * @date 2023/5/20
-     * TODO 根据传入的不同类型将其设置为推荐
+     *  根据传入的不同类型将其设置为推荐
      *  传入 ids,需要置顶的文章id,数组,level 置顶等级
     */
     async setRecommendByType (ids, level) {
@@ -513,7 +513,7 @@ class MarkdownFileService {
 
     /* @author icestone , 17:00
      * @date 2023/5/20
-     * TODO 返回推荐文章
+     *  返回推荐文章
     */
     async getRecommendMarkdownFile () {
         return await markdownFile.findAll({
@@ -583,13 +583,13 @@ class MarkdownFileService {
             },
             raw: true
         })
-        idList=tool.getLimitIds(idList,limit);
+        idList = tool.getLimitIds(idList, limit)
 
         return await markdownFile.findAll({
             attributes: attr,
-            where:{
+            where: {
                 [Op.or]: [
-                    { id: idList}
+                    { id: idList }
                 ]
             },
             limit
@@ -618,6 +618,22 @@ class MarkdownFileService {
                 ['id', 'DESC']
             ]
         })
+    }
+
+    /* @author 张嘉凯
+     * @date 2023/7/31 @time 9:39
+     * 获取浏览量
+    */
+    async getViews () {
+        let count = 0
+        const result = await markdownFile.findAndCountAll({
+            attributes: ['view'],
+            raw: true
+        })
+        result.rows.map(item => {
+            count += parseInt(item.view)
+        })
+        return count
     }
 
 }
