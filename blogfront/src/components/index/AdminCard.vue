@@ -19,11 +19,10 @@
           <el-text class="mx-1">{{ info.word }}</el-text>
         </div>
         <div>
-          <el-tag class="ml-2" type="info">githubUrl</el-tag>
+          <el-text>
+            githubUrl
+          </el-text>
           <a :href="info.githubUrl" target="_blank">
-            <el-icon>
-              <Link/>
-            </el-icon>
             <el-text>
               去看看
             </el-text>

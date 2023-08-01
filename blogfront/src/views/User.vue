@@ -113,7 +113,6 @@
                 :page-sizes="[10, 20, 30, 40]"
                 small="small"
                 :disabled="disabled"
-                background="false"
                 layout="sizes, prev, pager, next"
                 :total="allCount"
                 @size-change="handleSizeChange"

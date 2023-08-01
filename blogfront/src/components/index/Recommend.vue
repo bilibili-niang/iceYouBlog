@@ -114,78 +114,17 @@ export default {
     flex-wrap: wrap;
 
     .markdownLim {
-      overflow: hidden;
-      position: relative;
       display: flex;
       width: 100%;
       margin-bottom: .3rem;
-      height: 9rem;
-      border-top-left-radius: 1rem;
-      border-bottom-right-radius: 1rem;
-      transition: .3s;
-
-      &:hover {
-        border-top-left-radius: 2rem !important;
-        border-bottom-right-radius: 2rem !important;
-        z-index: 9999;
-
-        .title {
-          top: 5px !important;
-
-          span {
-            overflow-x: hidden;
-            font-size: 15px !important;
-          }
-        }
-
-        .bottomDetail {
-          opacity: 1 !important;
-          left: 5px !important;
-        }
-
-        .tags {
-          bottom: 2px !important;
-        }
-
-        .btns {
-          bottom: 35px !important;
-        }
-
-        .time {
-          bottom: 65px !important;
-        }
-      }
 
       .title {
-        position: absolute;
-        top: 45%;
-        transition: .3s;
         width: 100%;
 
         span {
           font-size: 25px;
-          transition: .3s;
           line-height: 20px;
         }
-      }
-
-      .bottomDetail {
-        position: absolute;
-        bottom: -50px;
-        left: 0;
-        opacity: 1;
-      }
-
-      .tags {
-        transition: .8s;
-      }
-
-      .btns {
-        transition: .6s;
-      }
-
-      .time {
-        transition: .2s;
       }
 
       .btns {
@@ -194,6 +133,5 @@ export default {
       }
     }
   }
-
 }
 </style>

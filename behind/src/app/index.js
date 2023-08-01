@@ -8,7 +8,7 @@ const parameter = require('koa-parameter')
 const template = require('koa-html-template')
 // const Static = require('static-resource-plugin')
 const static = require('koa-static')
-const views = require('koa-views')
+// const views = require('koa-views')
 const app = new koa()
 const errHandler = require('./errHadnler')
 const path = require('path')
@@ -22,7 +22,7 @@ app.use(async (ctx, next) => {
 });
 
 //开放html模板的静态目录
-app.use(views(path.join(__dirname, '../static/views/'), {extension: 'html'}))
+app.use(static(path.join(__dirname, '../static/views/'), {extension: 'html'}))
 app.use(static(path.join(__dirname, '../static')))
 /* @author 张嘉凯
  * @date 2023/6/21 @time 15:21

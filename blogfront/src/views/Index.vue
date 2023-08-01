@@ -1,15 +1,14 @@
 <template>
   <div class="index container">
     <div class="left m-r" v-loading="indexList.length == 0">
-      <div class="card hvr-glow border-radius-small" style="width: 100%;" v-for="(item, index) in indexList"
+      <div class="card" style="width: 100%;" v-for="(item, index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
       <div class="btns m-b" v-if="value">
         <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[10, 20, 30, 40]"
                        :small="small" :disabled="disabled" :background="background" layout="sizes, prev, pager, next"
-                       :total="allCount"
-                       @size-change="handleSizeChange" @current-change="handleCurrentChange"/>
+                       :total="allCount" @current-change="handleCurrentChange"/>
       </div>
     </div>
     <div class="right">
@@ -25,13 +24,13 @@ import fun from '@/hook/function'
 import IndexCard from "@/components/index/IndexCard.vue"
 import AdminCard from "@/components/index/AdminCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import markdownApi from '@/common/api/markdownFiles'
 import api from '@/common/api/index'
 
-let indexList = ref([])
-let allCount = ref('')
+let indexList = reactive([])
+let allCount = ref(0)
 let disabled = ref(false)
 let small = ref(false)
 let background = ref(false)
@@ -52,7 +51,7 @@ const goToRead = (id) => {
 // 分页按钮
 const handleCurrentChange = (val) => {
   let id = pageSize2.value * val
-  if (val == 1) {
+  if (val === 1) {
     // @date 2023/5/5 , @author icestone
     // 第一页,跳过为0
     id = 0
@@ -60,25 +59,17 @@ const handleCurrentChange = (val) => {
   }
   // @date 2023/5/5 , @author icestone
   // 请求分页数据
-  /*http.$axios({
-    url: '/home/',
-    method: 'POST',
-    data: {
-      id,
-      limit: pageSize2.value
-    }
-  })*/
-  api.getHomeData({
+  api.postHomeData({
     id,
     limit: pageSize2.value
   })
       .then(res => {
         if (res.result.length > 0) {
+          indexList = res.result
           fun.alert(res.message)
-          indexList.value = res.result
         } else {
           fun.alert("你到达了未知领域")
-          this.indexList = []
+          indexList = []
         }
       })
       .catch(e => {
@@ -91,7 +82,7 @@ const handleCurrentChange = (val) => {
 */
 const initCount = async () => {
   const res = await markdownApi.initCount()
-  allCount.value = res.result
+  allCount.value = parseInt(res.result)
 }
 
 const timeFormat = (data) => {
@@ -101,7 +92,7 @@ const initData = () => {
   api.getHomeData()
       .then(res => {
         fun.alert(res.message, 'success')
-        indexList.value = res.result.rows || []
+        indexList = res.result.rows || []
       })
       .catch(e => {
         fun.alert(e)
