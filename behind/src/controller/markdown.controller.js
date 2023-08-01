@@ -32,7 +32,6 @@ const {
     UpdateSomething,
     setRecommendByType,
     getRecommendMarkdownFile,
-    getRecommendMarkdownFileByTags,
     getMarkdownByEmail,
     getTopArticleByEmail
 } = require('../services/markdownFile.service')
@@ -64,13 +63,8 @@ class MarkdownController {
     async newFile (ctx) {
         const { authorization } = ctx.request.header
         const token = authorization.replace('Bearer ', '')
-        // console.log('demo token:')
-        // const token = authorization
         //解析token
         const { username, userEmail } = jwt.verify(token, JWT_SECRET)
-        /*console.log('用户信息:')
-       console.log(username, userEmail)*/
-        // console.log('表表单数据:')
         const requestData = ctx.request.body
         console.log("requestData:")
         console.log(requestData)
@@ -90,19 +84,6 @@ class MarkdownController {
             success: true,
             message: '查询首页数据',
             result
-        }
-    }
-
-    async returnAllIndexData (ctx) {
-        const res = await markdownFile.findAll({}, function (err, result) {
-            if (err) {
-                console.log(err)
-            } else {
-                console.log(result)
-            }
-        })
-        ctx.body = {
-            code: 200, message: '查询首页数据', result: res
         }
     }
 
@@ -323,20 +304,6 @@ class MarkdownController {
                 // 2表示该文章为原创,不需要爬取
                 hasOriginal: 2
             })
-            /*.then(res => {
-                console.log('success')
-                flag = !flag;
-                /!*ctx.body = {
-                    code: 200, msg: '成功success为true,反之false', success: true, result: {res: res.dataValues}
-                }*!/
-            })
-            .catch(e => {
-                console.log('error')
-                console.log(e)
-                /!*ctx.body = {
-                    code: 200, msg: '成功success为true,反之false', success: false, result: {}
-                }*!/
-            });*/
 
             if (JSON.stringify(res).length > 5) {
                 // success
