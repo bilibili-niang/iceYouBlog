@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "generate-sitemap": "vue-router-sitemap -o dist/sitemap.xml"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",

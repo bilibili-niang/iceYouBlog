@@ -4,6 +4,20 @@ const {defineConfig} = require('@vue/cli-service')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = defineConfig({
+    chainWebpack: (config) => {
+        config.plugin('sitemap').use(require('@vue/cli-plugin-sitemap').default, [
+            {
+                // 将其替换为您的网站URL
+                baseURL: 'https://your-website.com',
+                routes: () => {
+                    // 这里返回一个包含所有路由路径的数组
+                    // 根据您的项目结构和路由配置进行相应的修改
+                    const routes = require('./src/router').default.options.routes;
+                    return routes.map((route) => route.path);
+                },
+            },
+        ]);
+    },
     transpileDependencies: true,
     publicPath:'/',
     //代理
