@@ -80,6 +80,7 @@ const handleCurrentChange = (val) => {
  * @date 2023/5/5
  * 获取首页所有文章的统计
 */
+
 const initCount = async () => {
   const res = await markdownApi.initCount()
   allCount.value = parseInt(res.result)

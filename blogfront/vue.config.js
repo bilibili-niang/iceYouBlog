@@ -1,11 +1,12 @@
-const {defineConfig} = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service')
 // const webpack = require("webpack");
 //打包配置自动忽略console.log等
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = defineConfig({
+    productionSourceMap: false,
     transpileDependencies: true,
-    publicPath:'/',
+    publicPath: '/',
     //代理
     devServer: {
         // 指定项目启动时的默认端口号
@@ -27,18 +28,12 @@ module.exports = defineConfig({
     },
     configureWebpack: {
         plugins: [
-           /* new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery',
-                'window.jQuery': 'jquery',
-                Popper: ['popper.js', 'default']
-            }),*/
             //打包环境去掉console.log等
             /* @author icestone , 17:22
              * @date 2023/5/15
              * 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
             */
-            /*new UglifyJsPlugin({
+            new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
                         //warnings: false, 注释不然打包会报错如图下图
@@ -47,7 +42,7 @@ module.exports = defineConfig({
                         pure_funcs: ['console.log'], //移除console.log
                     },
                 },
-            })*/
+            })
         ],
 
         output: {

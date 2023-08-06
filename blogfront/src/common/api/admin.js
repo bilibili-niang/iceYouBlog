@@ -9,5 +9,12 @@ export default {
     },
     async getDatabases(){
         return post('/admin/database')
+    },
+    /* @author 张嘉凯
+     * @date 2023/8/2 @time 15:50
+     * 获取展示在首页的admin用户信息
+    */
+    async getAdminInfo () {
+        return get('/admin/showInIndexAdminInfo')
     }
 }

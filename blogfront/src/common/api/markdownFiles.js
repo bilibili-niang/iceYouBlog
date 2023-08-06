@@ -44,6 +44,13 @@ export default {
     },
     async postHomeData (params) {
         return post('/home', params)
+    },
+    /* @author 张嘉凯
+     * @date 2023/8/2 @time 15:41
+     * 获取所有浏览量
+    */
+    async getAllViews (params) {
+        return post('/home/allviews', params)
     }
 
 }

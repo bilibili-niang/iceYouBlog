@@ -19,6 +19,10 @@
           <el-text class="mx-1">{{ info.word }}</el-text>
         </div>
         <div>
+          <el-tag class="ml-2" type="info">浏览量</el-tag>
+          <el-text class="mx-1">{{ view }}</el-text>
+        </div>
+        <div>
           <el-text>
             githubUrl
           </el-text>
@@ -37,36 +41,23 @@
   </div>
 </template>
 
-<script>
-import http from '@/common/api/request'
+<script setup>
 import Avatar from "@/components/common/Avatar.vue"
+import { reactive, ref } from 'vue'
+import api from '@/common/api'
 
-export default {
-  name: "AdminCard",
-  components: { Avatar },
-  data () {
-    return {
-      info: {}
-    }
-  },
-  created () {
-    this.getAdminInfo()
-  },
-  methods: {
-    getAdminInfo () {
-      http.$axios({
-        url: '/admin/showInIndexAdminInfo',
-        method: 'GET',
-      })
-          .then(res => {
-            this.info = res.result
-          })
-          .catch(e => {
-            console.log(e)
-          })
-    }
-  }
+let info = reactive({})
+
+let view = ref('')
+const getAdminInfo = async () => {
+  const res = await api.getAdminInfo()
+  info = res.result
+  const views = await api.getAllViews()
+  view.value = views.result
 }
+
+getAdminInfo()
+
 </script>
 
 <style scoped lang="less">
