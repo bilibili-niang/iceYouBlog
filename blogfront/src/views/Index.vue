@@ -1,5 +1,15 @@
 <template>
   <div class="index container">
+    <hr>
+    ice-card:
+    <iceCard>
+      <ice-text>"万里云间戍，立马剑门关。",</ice-text>
+      <ice-text>"乱山极目无际，直北是长安。",</ice-text>
+      <ice-text>"人苦百年涂炭，鬼哭三边锋镝，天道久应还。",</ice-text>
+      <ice-text>"手写留屯奏，炯炯寸心丹。",</ice-text>
+    </iceCard>
+    <ice-button>测试</ice-button>
+    <hr>
     <div class="left m-r" v-loading="indexList.length == 0">
       <div class="card" style="width: 100%;" v-for="(item, index) in indexList"
            :key="index">
@@ -109,7 +119,8 @@ initCount()
 <style scoped lang="less">
 .index {
   display: flex;
-  flex-direction: row;
+  //flex-direction: row;
+  flex-direction: column;
   padding-top: 3rem;
   padding-bottom: 10rem;
   min-height: 90vh;

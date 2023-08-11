@@ -1,7 +1,7 @@
 <template>
   <div class="lim">
     <div class="card hvr-glow">
-      <Avatar :imgUrl="user.avatar" allowClick=false></Avatar>
+      <Avatar :imgUrl="user.avatar" :allowClick=false></Avatar>
       <div class="card-body">
         <div>
           <el-tag class="ml-2" type="user">username</el-tag>

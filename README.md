@@ -23,7 +23,7 @@
 
 - vue3
 - elementui plus
-- bootstrap5
+- icepro(手搓的一个ui库,[地址](http://icepro.icestone.work/doc/button))
 
 前端使用路由守卫进行权限管理
 

@@ -1,48 +1,51 @@
 <template>
-  <div class="indexCard hover" id="element">
-    <div class="btns" v-if="showOperate">
-      <el-checkbox v-model="item.checked" border/>
-    </div>
-    <div class="bacCover">
-      <div class="inner"></div>
-    </div>
-    <div class="card-body">
-      <div class="contentTitle">
-        <el-text tag="b" size="large">
-          <h6 class="title animation-time">{{ item.title }}</h6>
-        </el-text>
-        <div>
-          <el-text>{{ item.updatedAt }} - 最后修改于{{ oldData }}天之前</el-text>
-          <el-text>{{ item.description }}</el-text>
+  <div class="indexCard" id="element">
+
+    {{ item }}
+
+    <!--<div class="btns" v-if="showOperate">
+          <el-checkbox v-model="item.checked" border/>
         </div>
-      </div>
-      <!--goToDetail-->
-      <div class="bottomLim">
-        <span class="tags">
-          <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
-          <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
-          <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-        </span>
-        <el-divider direction="vertical" class="animation-time"/>
-        <span class="animation-time">
-          <el-button round @click="goToRead(item.id)">read</el-button>
-        </span>
-        <el-divider direction="vertical" class="animation-time"/>
-        <span class="animation-time">
-          <el-button round class="m-r">view</el-button>
-          <el-text>
-            {{ item.view }}
-          </el-text>
-        </span>
-        <el-divider v-if="item.recommendLevel > 1" direction="vertical" class="animation-time"/>
-        <span v-if="item.recommendLevel > 1" class="animation-time">
-          <el-button round class="m-r">recommendLevel</el-button>
-          <el-text>
-            {{ item.recommendLevel }}
-          </el-text>
-        </span>
-      </div>
-    </div>
+        <div class="bacCover">
+          <div class="inner"></div>
+        </div>
+        <div class="card-body">
+          <div class="contentTitle">
+            <el-text tag="b" size="large">
+              <h6 class="title animation-time">{{ item.title }}</h6>
+            </el-text>
+            <div>
+              <el-text>{{ item.updatedAt }} - 最后修改于{{ oldData }}天之前</el-text>
+              <el-text>{{ item.description }}</el-text>
+            </div>
+          </div>
+          &lt;!&ndash;goToDetail&ndash;&gt;
+          <div class="bottomLim">
+            <span class="tags">
+              <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
+              <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
+              <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
+            </span>
+            <el-divider direction="vertical" class="animation-time"/>
+            <span class="animation-time">
+              <el-button round @click="goToRead(item.id)">read</el-button>
+            </span>
+            <el-divider direction="vertical" class="animation-time"/>
+            <span class="animation-time">
+              <el-button round class="m-r">view</el-button>
+              <el-text>
+                {{ item.view }}
+              </el-text>
+            </span>
+            <el-divider v-if="item.recommendLevel > 1" direction="vertical" class="animation-time"/>
+            <span v-if="item.recommendLevel > 1" class="animation-time">
+              <el-button round class="m-r">recommendLevel</el-button>
+              <el-text>
+                {{ item.recommendLevel }}
+              </el-text>
+            </span>
+          </div>
+        </div>-->
   </div>
 </template>
 
@@ -180,9 +183,6 @@ export default {
 }
 
 .indexCard {
-  padding-bottom: 1.5rem;
-  border-bottom-right-radius: .3rem;
-  border-top-left-radius: .3rem;
   overflow: hidden;
 
   .contentTitle {
