@@ -2,6 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 // const webpack = require("webpack");
 //打包配置自动忽略console.log等
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const path = require('path')
 
 module.exports = defineConfig({
     productionSourceMap: false,
@@ -16,7 +17,6 @@ module.exports = defineConfig({
         proxy: {
             '/': {
                 ws: false,
-                // target: "http://icestone.top:8090",
                 target: "http://localhost:89",
                 changeOrigin: true,
                 pathRewrite: {
@@ -27,6 +27,12 @@ module.exports = defineConfig({
         // proxy: 'http://localhost:8090'
     },
     configureWebpack: {
+        resolve: {
+            symlinks: false,
+            alias: {
+                vue: path.resolve('./node_modules/vue')
+            }
+        },
         plugins: [
             //打包环境去掉console.log等
             /* @author icestone , 17:22
@@ -44,7 +50,6 @@ module.exports = defineConfig({
                 },
             })*/
         ],
-        // external: ['vue'],
         output: {
             libraryExport: '../behind/src/static'
         },

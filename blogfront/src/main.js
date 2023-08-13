@@ -59,7 +59,7 @@ app.use(store)
 app.use(ElementPlus)
 
 // app.use(icepro)
-// icepro.install(app)
+icepro.install(app)
 
 console.log(app._context.components.ElButton)
 console.log(app._context.components.iceCard)

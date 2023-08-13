@@ -1,16 +1,15 @@
 import { createApp } from 'vue'
 import router from "./router"
-import icepro from 'icepro'
-import 'icepro/src/assets/common.less'
+import 'icepro/docs/style.css'
+import icepro from 'icepro/docs/icepro'
 
 import App from './App.vue'
 
 const app = createApp(App)
 
 
-
+icepro.install(app)
 
 app
-    .use(icepro)
     .use(router)
     .mount('#app')
