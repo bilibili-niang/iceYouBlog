@@ -1,11 +1,10 @@
 <template>
   <div class="index container">
-    <hr>
-    ice-button:
-    <split></split>
-    <ice-button>按鈕</ice-button>
-    <hr>
-    <div class="left m-r" v-loading="indexList.length == 0">
+    <div class="right">
+      <!--      <AdminCard></AdminCard>-->
+      <Recommend></Recommend>
+    </div>
+    <div class="left m-r">
       <div class="card" style="width: 100%;" v-for="(item, index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
@@ -16,10 +15,6 @@
                        :total="allCount" @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <div class="right">
-      <AdminCard></AdminCard>
-      <Recommend></Recommend>
-    </div>
   </div>
 </template>
 
@@ -27,7 +22,6 @@
 import filters from '@/common/filter/time'
 import fun from '@/hook/function'
 import IndexCard from "@/components/index/IndexCard.vue"
-import AdminCard from "@/components/index/AdminCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'

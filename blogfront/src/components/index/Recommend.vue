@@ -2,30 +2,17 @@
   <div class="recommend">
     <!--推荐-->
     <div class="markdown" v-if="markdownList">
-      <div class="btns m-b">
-        <el-tag>文章推荐</el-tag>
+      <div class="btns">
+        <ice-tag :color="niujiaohui">文章推荐</ice-tag>
       </div>
       <!--推荐文章-->
-      <div class="markdownLim card p-normal m-b border-radius-normal hvr-glow" v-for="(item,index) in markdownList"
-           :key="index">
-        <div class="title">
-          <el-text class="mx-1">{{ item.title }}</el-text>
-        </div>
-        <div class="time bottomDetail">
-          <markdownTags tag="更新时间" :click="false" v-if="item.tag1"></markdownTags>
-          <el-text> {{ timeFormat(item.updatedAt) }} - 更新于{{ DateDiffer(item.updatedAt) }}天之前</el-text>
-        </div>
-        <div class="btns bottomDetail">
-          <el-button round @click="goToRead(item.id)" class="m-r">read</el-button>
-        </div>
-        <span class="tags bottomDetail">
-            <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
-            <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
-            <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-          </span>
+      <div class="markdownLim">
+        <template v-for="(item,index) in markdownList"
+                  :key="index">
+          <IndexCard :item="item"></IndexCard>
+        </template>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -33,10 +20,11 @@
 import http from '@/common/api/request'
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import timeFormat from "@/common/filter/time"
+import IndexCard from '@/components/index/IndexCard.vue'
 
 export default {
   name: "Recommend",
-  components: { MarkdownTags },
+  components: { IndexCard, MarkdownTags },
   data () {
     return {
       markdownList: ''
@@ -106,31 +94,22 @@ export default {
   flex-direction: column;
   max-width: 100%;
 
-  .markdown {
+  .btns {
+    width: fit-content;
+  }
+
+  .markdownLim {
     display: flex;
+    flex-direction: row;
     width: 100%;
-    max-width: 100%;
-    flex-direction: column;
     flex-wrap: wrap;
 
-    .markdownLim {
-      display: flex;
-      width: 100%;
-      margin-bottom: .3rem;
+    .indexCard {
+      width: 50%;
+    }
 
-      .title {
-        width: 100%;
-
-        span {
-          font-size: 25px;
-          line-height: 20px;
-        }
-      }
-
-      .btns {
-        flex-direction: row;
-        display: flex;
-      }
+    /deep/ .ice-card {
+      //width: 45%;
     }
   }
 }

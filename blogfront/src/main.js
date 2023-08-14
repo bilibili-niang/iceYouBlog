@@ -13,10 +13,10 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import '@/assets/css/reset.less'
 import '@/assets/css/dark.less'
 // 导入less
-import 'icepro/docs/style.css'
-import icepro from 'icepro/docs/icepro'
-// import "icepro/src/assets/common.less"
-// import icepro from 'icepro'
+// import 'icepro/docs/style.css'
+// import icepro from 'icepro/docs/icepro'
+import "icepro/src/assets/common.less"
+import icepro from 'icepro'
 // markdown预览组件以及样式
 import VueMarkdownEditor from '@kangc/v-md-editor'
 import '@kangc/v-md-editor/lib/style/base-editor.css'

@@ -1,8 +1,45 @@
 <template>
   <div class="indexCard" id="element">
 
-    {{ item }}
+    <ice-card>
+      <template v-slot:header>
+        <ice-title>
+          {{ item.title }}
+        </ice-title>
+        <ice-button @click="goToRead(item.id)">read</ice-button>
+      </template>
+      <template v-slot:body>
+        <div class="ice-column">
+          <ice-text v-if="item.description">
+            <ice-tag color="niujiaohui">description</ice-tag>
+            {{ item.description }}
+          </ice-text>
+          <ice-text v-if="item.view">
+            <ice-tag color="niujiaohui">view</ice-tag>
+            {{ item.view }}
+          </ice-text>
+          <ice-text>
+            <ice-tag color="niujiaohui">updatedAt</ice-tag>
+            {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
+          </ice-text>
+          <ice-text>
+            <ice-tag :tag="item.tag1" v-if="item.tag1" color="niujiaohui">
+              tags:
+            </ice-tag>
+            <ice-tag :tag="item.tag1" v-if="item.tag1" color="niujiaohui">
+              {{ item.tag1 }}
+            </ice-tag>
+            <ice-tag :tag="item.tag2" v-if="item.tag2" color="niujiaohui">
+              {{ item.tag2 }}
+            </ice-tag>
+            <ice-tag :tag="item.tag3" v-if="item.tag3" color="niujiaohui">
+              {{ item.tag3 }}
+            </ice-tag>
 
+          </ice-text>
+        </div>
+      </template>
+    </ice-card>
     <!--<div class="btns" v-if="showOperate">
           <el-checkbox v-model="item.checked" border/>
         </div>
@@ -207,5 +244,9 @@ export default {
     position: absolute;
     bottom: 0;
   }
+}
+
+/deep/ .ice-text {
+  justify-content: flex-start;
 }
 </style>
