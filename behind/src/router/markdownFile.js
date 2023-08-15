@@ -7,7 +7,7 @@ const {
 const {
     auth
 } = require('../middleware/user.middleware')
-const {Validator} = require('../middleware/public.middleware')
+const { Validator } = require('../middleware/public.middleware')
 
 const {
     getMarkdownDataById,
@@ -22,14 +22,14 @@ const {
     returnSetRecommend,
     returnRecommendMarkdown,
     returnRecommendByTags,
-    returnAllMarkdownByEmail,
-    returnUserTopArticle
+    returnAllMarkdownByEmail
 } = require('../controller/markdown.controller')
+const markdownC = require('../controller/markdown.controller')
 const {
     hasOperateAdnIds
 } = require('../middleware/markdown.middleware')
 
-const router = new Router({prefix: '/markdownFile'})
+const router = new Router({ prefix: '/markdownFile' })
 
 //文章的新建
 router.post('/new', auth,
@@ -58,6 +58,11 @@ router.post('/getUserArticle', auth, returnUserAllArticle)
 
 // 搜索
 router.post('/search', returnSearchResult)
+
+/**
+ * 获取用户置顶文章
+ */
+router.post('/getTopArticle', markdownC.returnUserTopArticle)
 
 /**
  * @Description:
@@ -101,12 +106,12 @@ router.get("/getRecommend", returnRecommendMarkdown)
  * @date 2023/5/31
  * 根据文章tag获取该页面的推荐文章
 */
-router.post('/getRecommendByTags',returnRecommendByTags)
+router.post('/getRecommendByTags', returnRecommendByTags)
 /* @author icestone , 21:37
  * @date 2023/6/8
  * 获取指定email用户的所有文章
 */
-router.post('/getUserAllMarkdown',returnAllMarkdownByEmail)
+router.post('/getUserAllMarkdown', returnAllMarkdownByEmail)
 
 /* @author 张嘉凯
  * @date 2023/6/19 @time

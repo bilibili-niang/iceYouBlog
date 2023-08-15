@@ -11,78 +11,34 @@
       <template v-slot:body>
         <div class="ice-column">
           <ice-text v-if="item.description">
-            <ice-tag color="niujiaohui">description</ice-tag>
+            <ice-tag>description</ice-tag>
             {{ item.description }}
           </ice-text>
           <ice-text v-if="item.view">
-            <ice-tag color="niujiaohui">view</ice-tag>
+            <ice-tag>view</ice-tag>
             {{ item.view }}
           </ice-text>
           <ice-text>
-            <ice-tag color="niujiaohui">updatedAt</ice-tag>
+            <ice-tag>updatedAt</ice-tag>
             {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
           </ice-text>
           <ice-text>
-            <ice-tag :tag="item.tag1" v-if="item.tag1" color="niujiaohui">
+            <ice-tag>
               tags:
             </ice-tag>
-            <ice-tag :tag="item.tag1" v-if="item.tag1" color="niujiaohui">
+            <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1">
               {{ item.tag1 }}
-            </ice-tag>
-            <ice-tag :tag="item.tag2" v-if="item.tag2" color="niujiaohui">
+            </ice-link>
+            <ice-link :tag="item.tag2" v-if="item.tag2" :href="'#/read/readTag?tag1='+item.tag2">
               {{ item.tag2 }}
-            </ice-tag>
-            <ice-tag :tag="item.tag3" v-if="item.tag3" color="niujiaohui">
+            </ice-link>
+            <ice-link :tag="item.tag3" v-if="item.tag3" :href="'#/read/readTag?tag1='+item.tag3">
               {{ item.tag3 }}
-            </ice-tag>
-
+            </ice-link>
           </ice-text>
         </div>
       </template>
     </ice-card>
-    <!--<div class="btns" v-if="showOperate">
-          <el-checkbox v-model="item.checked" border/>
-        </div>
-        <div class="bacCover">
-          <div class="inner"></div>
-        </div>
-        <div class="card-body">
-          <div class="contentTitle">
-            <el-text tag="b" size="large">
-              <h6 class="title animation-time">{{ item.title }}</h6>
-            </el-text>
-            <div>
-              <el-text>{{ item.updatedAt }} - 最后修改于{{ oldData }}天之前</el-text>
-              <el-text>{{ item.description }}</el-text>
-            </div>
-          </div>
-          &lt;!&ndash;goToDetail&ndash;&gt;
-          <div class="bottomLim">
-            <span class="tags">
-              <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
-              <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
-              <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-            </span>
-            <el-divider direction="vertical" class="animation-time"/>
-            <span class="animation-time">
-              <el-button round @click="goToRead(item.id)">read</el-button>
-            </span>
-            <el-divider direction="vertical" class="animation-time"/>
-            <span class="animation-time">
-              <el-button round class="m-r">view</el-button>
-              <el-text>
-                {{ item.view }}
-              </el-text>
-            </span>
-            <el-divider v-if="item.recommendLevel > 1" direction="vertical" class="animation-time"/>
-            <span v-if="item.recommendLevel > 1" class="animation-time">
-              <el-button round class="m-r">recommendLevel</el-button>
-              <el-text>
-                {{ item.recommendLevel }}
-              </el-text>
-            </span>
-          </div>
-        </div>-->
   </div>
 </template>
 
@@ -109,8 +65,14 @@ export default {
       oldData: ''
     }
   },
-
   methods: {
+    jumpTag (tag) {
+      const routeUrl = this.$router.resolve({
+        path: "/read/readTag",
+        query: { tag }
+      })
+      window.open(routeUrl.href, '_blank')
+    },
     DateDiffer (Date_end) {
       //date1结束时间
       let date1 = new Date(Date_end)
@@ -136,11 +98,6 @@ export default {
       // @date 2023/5/5 , @author icestone
       // 分页数据更改时数据会更改,再次格式化时间
       this.item.updatedAt = timeFormat.timeFormat(newVal.updatedAt) || ''
-    },
-    selectOperate (newVal) {
-      if (this.item.checked) {
-        console.log(item.id)
-      }
     }
   },
   created () {
