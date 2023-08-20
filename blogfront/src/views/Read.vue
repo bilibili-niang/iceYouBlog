@@ -8,7 +8,7 @@
       <el-row>
         <el-col :span="19" class="dataContainerLim">
           <div class="dataContainer">
-            <div class="imgLim animation-time" :style="{ 'background': 'url(' + markdownData.headImg + ')' }"></div>
+            <!--<div class="imgLim animation-time" :style="{ 'background': 'url(' + markdownData.headImg + ')' }"></div>-->
             <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
                        :userInf="userInf">
               <el-text tag="b" size="small">当前字数:</el-text>
