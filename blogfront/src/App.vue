@@ -23,11 +23,9 @@ export default {
     // 获取深色/浅色模式的flag
     const dark = localStorage.getItem('mode') || null
     if (dark != null) {
-      console.log('有值')
       if (dark=='true') {
         document.querySelector('html').classList.add('dark')
       } else {
-        console.log('移除dark')
         document.querySelector('html').classList.remove('dark')
       }
     } else {

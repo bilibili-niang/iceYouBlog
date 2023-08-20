@@ -3,7 +3,7 @@
     <!--推荐-->
     <div class="markdown" v-if="markdownList">
       <div class="btns">
-        <ice-tag :color="niujiaohui">文章推荐</ice-tag>
+        <ice-tag>文章推荐</ice-tag>
       </div>
       <!--推荐文章-->
       <div class="markdownLim">
@@ -11,6 +11,9 @@
                   :key="index">
           <IndexCard :item="item"></IndexCard>
         </template>
+        <div class="indexCard"></div>
+        <div class="indexCard"></div>
+        <div class="indexCard"></div>
       </div>
     </div>
   </div>
@@ -94,22 +97,17 @@ export default {
   flex-direction: column;
   max-width: 100%;
 
-  .btns {
-    width: fit-content;
-  }
-
   .markdownLim {
     display: flex;
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
 
     .indexCard {
-      width: 50%;
-    }
-
-    /deep/ .ice-card {
-      //width: 45%;
+      width: 49%;
+      box-sizing: border-box;
     }
   }
 }

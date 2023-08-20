@@ -1,14 +1,14 @@
 <template>
-  <div class="index container">
+  <div class="index">
     <div class="right">
-      <!--      <AdminCard></AdminCard>-->
+      <!--<AdminCard></AdminCard>-->
       <Recommend></Recommend>
     </div>
-    <div class="left m-r">
-      <div class="card" style="width: 100%;" v-for="(item, index) in indexList"
+    <div class="left m-r ice-row">
+      <template class="card" v-for="(item, index) in indexList"
            :key="index">
         <IndexCard :item="item"></IndexCard>
-      </div>
+      </template>
       <div class="btns m-b" v-if="value">
         <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[10, 20, 30, 40]"
                        :small="small" :disabled="disabled" :background="background" layout="sizes, prev, pager, next"
@@ -108,17 +108,13 @@ initCount()
 <style scoped lang="less">
 .index {
   display: flex;
-  //flex-direction: row;
   flex-direction: column;
-  padding-top: 3rem;
-  padding-bottom: 10rem;
   min-height: 90vh;
   justify-content: center;
+  margin: 3rem 10%;
   flex-wrap: wrap;
 
   @media (max-width: 1200px) {
-    flex-direction: column-reverse !important;
-
     .left {
       width: 100% !important;
     }
@@ -130,17 +126,13 @@ initCount()
 
   .left {
     min-height: 70vh;
-    padding-left: .3rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     max-width: 100%;
-    width: 75%;
     min-width: 21rem;
-
-    .card {
-      border-bottom-right-radius: 1.5rem;
-      border-top-left-radius: 1.5rem;
-    }
+    justify-content: space-between;
+    margin-top: 1rem;
   }
 
   .right {

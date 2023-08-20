@@ -1,8 +1,8 @@
 <template>
   <div class="read container">
-    <el-text v-if="!dataExist">
+    <ice-text v-if="!dataExist">
       文章不存在或已被删除
-    </el-text>
+    </ice-text>
     <!--文章存在-->
     <div class="contentLim" v-if="dataExist">
       <el-row>
@@ -192,10 +192,10 @@ export default {
     this.initMarkdownData()
   },
   mounted () {
-    console.log("document.getElementsByTagName('h4'):")
-    console.log(document.getElementsByTagName('h4'))
-    console.log("document.getElementsByTagName('h5'):")
-    console.log(document.getElementsByTagName('h5'))
+    /*    console.log("document.getElementsByTagName('h4'):")
+        console.log(document.getElementsByTagName('h4'))
+        console.log("document.getElementsByTagName('h5'):")
+        console.log(document.getElementsByTagName('h5'))*/
   }
 }
 </script>

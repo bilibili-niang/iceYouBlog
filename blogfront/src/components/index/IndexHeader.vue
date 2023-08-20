@@ -22,7 +22,9 @@
       </li>
       <li class="list-item">
         <div class="light" :class="{ dark: dark==true }" @click="changeDark" title="切换深色/浅色模式">
-          切换模式
+          <ice-button>
+            {{ dark ? 'light' : 'dark' }}
+          </ice-button>
         </div>
       </li>
     </ul>
@@ -76,7 +78,9 @@ const { userInfo } = store.state.user || false
 const changeDark = () => {
   if (dark.value) {
     document.querySelector('html').classList.add('dark')
+    document.querySelector('html').classList.remove('light')
   } else {
+    document.querySelector('html').classList.add('light')
     document.querySelector('html').classList.remove('dark')
   }
   localStorage.setItem('mode', dark.value)
@@ -119,9 +123,21 @@ const goToUserSearchHistory = () => {
 }
 
 init()
+changeDark()
 </script>
 <style lang="less" scoped>
-.list-item {
-  margin: 0 1rem;
+.lim {
+  max-width: 75%;
+  margin: 0 auto;
+
+  .list-item {
+    margin: 0 1rem;
+  }
+}
+
+.avatarLim {
+  .ice-row {
+    flex-wrap: wrap;
+  }
 }
 </style>

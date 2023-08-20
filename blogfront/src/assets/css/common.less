@@ -1,0 +1,28 @@
+@import "../../../node_modules/icepro/src/assets/variables";
+
+html.light {
+  background-color: @bac;
+  transition: .5s;
+}
+
+html.dark {
+  background-color: @fontColor-bleak;
+  transition: .5s;
+}
+
+.card {
+  border-radius: @radio-n;
+  padding: @p-large;
+}
+
+.light {
+  .card {
+    background: @bac;
+  }
+}
+
+.dark {
+  .card {
+    background: @bac-dark;
+  }
+}

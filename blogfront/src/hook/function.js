@@ -3,6 +3,7 @@ const { h } = require('vue')
 
 class Function {
     alert = (msg, title = 'info') => {
+        // iceMessage(msg)
         ElNotification({
             title: `${ title }`,
             message: h('i', { style: 'color: #7a7374' }, `${ msg }`),

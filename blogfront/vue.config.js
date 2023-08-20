@@ -39,7 +39,7 @@ module.exports = defineConfig({
              * @date 2023/5/15
              * 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
             */
-            /*new UglifyJsPlugin({
+            new UglifyJsPlugin({
                 uglifyOptions: {
                     compress: {
                         //warnings: false, 注释不然打包会报错如图下图
@@ -48,7 +48,7 @@ module.exports = defineConfig({
                         pure_funcs: ['console.log'], //移除console.log
                     },
                 },
-            })*/
+            })
         ],
         output: {
             libraryExport: '../behind/src/static'

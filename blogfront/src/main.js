@@ -11,7 +11,7 @@ import '@/assets/js/common'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /*引入公共样式*/
 import '@/assets/css/reset.less'
-import '@/assets/css/dark.less'
+import '@/assets/css/common.less'
 // 导入less
 // import 'icepro/docs/style.css'
 // import icepro from 'icepro/docs/icepro'
@@ -60,9 +60,6 @@ app.use(ElementPlus)
 
 // app.use(icepro)
 icepro.install(app)
-
-console.log(app._context.components.ElButton)
-console.log(app._context.components.iceCard)
 
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

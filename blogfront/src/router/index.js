@@ -190,7 +190,7 @@ const routes = [
             },
         ],
     },
-    , {
+    {
         path: "/test",
         name: 'test',
         meta: {

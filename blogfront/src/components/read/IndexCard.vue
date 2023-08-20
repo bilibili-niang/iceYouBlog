@@ -1,10 +1,8 @@
 <template>
   <div class="indexCard">
-    <div class="card hvr-glow">
+    <div class="card">
       <div class="card-body">
-        <el-text tag="b" size="large">
-          <h5>{{ markdownData.title }}</h5>
-        </el-text>
+        <ice-title size="l">{{ markdownData.title }}</ice-title>
         <div class="userInfoDetail">
           <div class="imgLLim">
             <Avatar :imgUrl="userInf.avatar" :email="userInf.email"></Avatar>
@@ -32,9 +30,20 @@
           </div>
         </div>
         <span class="tags">
-          <markdownTags :tag="markdownData.tag1" v-if="markdownData.tag1"></markdownTags>
-          <markdownTags :tag="markdownData.tag2" v-if="markdownData.tag2"></markdownTags>
-          <markdownTags :tag="markdownData.tag3" v-if="markdownData.tag3"></markdownTags>
+            <ice-button>tags</ice-button>
+            <ice-link :tag="markdownData.tag1" v-if="markdownData.tag1"
+                      :href="'#/read/readTag?tag1='+markdownData.tag1">
+              {{ markdownData.tag1 }}
+            </ice-link>
+
+            <ice-link :tag="markdownData.tag2" v-if="markdownData.tag2"
+                      :href="'#/read/readTag?tag1='+markdownData.tag2">
+              {{ markdownData.tag2 }}
+            </ice-link>
+            <ice-link :tag="markdownData.tag3" v-if="markdownData.tag3"
+                      :href="'#/read/readTag?tag1='+markdownData.tag3">
+              {{ markdownData.tag3 }}
+            </ice-link>
         </span>
         <div class="desLim" v-if="markdownData.description">
           <el-tag class="ml-2" type="info">description</el-tag>
@@ -81,40 +90,18 @@ export default {
 </script>
 
 <style scoped lang="less">
-.indexCard {
-  border-radius: .5rem;
-
-  .card {
-    width: 100%;
-  }
-
-  .card-body {
+@media (min-width: 1200px) {
+  .userInfoDetail {
     display: flex;
-    flex-direction: column;
-
-    .userInfoDetail {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .info {
-        margin-left: 0.3rem;
-      }
-    }
-
-    .tags {
-      margin-left: 0;
-    }
-  }
-
-  .desLim {
-    .el-text {
-      margin-left: .3rem;
-    }
-  }
-
-  b, i {
-    margin-right: 0.3rem;
+    flex-direction: row;
   }
 }
+
+@media (max-width: 1200px) {
+  .userInfoDetail {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 </style>

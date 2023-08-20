@@ -7,7 +7,7 @@
     <span class="des" v-if="item.description">
       <el-text>
         <span class="d-inline-block text-truncate" style="max-width: 220px;"
-              :title="item.description">{{ item.description }}</span>
+              :title="item.description">{{ splitStr(item.description) }}</span>
       </el-text>
     </span>
     <span class="tags">
@@ -36,6 +36,16 @@ const goToRead = (id) => {
       id
     }
   })
+}
+/**
+ * 切割字符串,保留前面30个字
+ */
+const splitStr = (str) => {
+  if (str.length > 30) {
+    return str.substring(0, 60) + '...'
+  } else {
+    return str
+  }
 }
 
 </script>

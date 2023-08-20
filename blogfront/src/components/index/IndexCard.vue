@@ -1,6 +1,5 @@
 <template>
-  <div class="indexCard" id="element">
-
+  <div class="indexCard">
     <ice-card>
       <template v-slot:header>
         <ice-title>
@@ -11,20 +10,20 @@
       <template v-slot:body>
         <div class="ice-column">
           <ice-text v-if="item.description">
-            <ice-tag>description</ice-tag>
+            <ice-tag>描述</ice-tag>
             {{ item.description }}
           </ice-text>
           <ice-text v-if="item.view">
-            <ice-tag>view</ice-tag>
+            <ice-tag>浏览量</ice-tag>
             {{ item.view }}
           </ice-text>
           <ice-text>
-            <ice-tag>updatedAt</ice-tag>
+            <ice-tag>更新时间</ice-tag>
             {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
           </ice-text>
           <ice-text>
             <ice-tag>
-              tags:
+              tags
             </ice-tag>
             <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1">
               {{ item.tag1 }}
@@ -110,100 +109,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-.indexCard {
-  z-index: 100;
-  position: relative;
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  border-radius: .3rem;
-
-  // 背景
-  .bacCover {
-    position: absolute;
-    z-index: -10;
-    display: flex;
+@media (max-width: 1200px) {
+  .indexCard {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-    transition-duration: .5s;
-
-    .inner {
-      transition-duration: .5s;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      opacity: .1;
-    }
-  }
-
-  .card-body {
-    padding-left: .3rem;
-    padding-right: .3rem;
-    border-radius: 0;
-    transition: .5s;
-    padding-top: 0.35rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    .bottomLim {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-
-      span {
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
-
-  // 小屏
-  @media (max-width: 1200px) {
-    .card-body {
-      margin-left: 0 !important;
-    }
-
-    .imgLim {
-      width: 100% !important;
-      height: 100%;
-
-      img {
-        opacity: .5;
-      }
-    }
   }
 }
 
-.indexCard {
-  overflow: hidden;
-
-  .contentTitle {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    .title {
-      font-size: 1.7rem;
-      line-height: 1.7rem;
-    }
-
-    .other {
-      top: 150px;
-      display: flex;
-      flex-direction: column;
-      width: 95%;
-    }
+@media (min-width: 1200px) {
+  .indexCard {
+    width: 49%;
   }
-
-  .bottomLim {
-    position: absolute;
-    bottom: 0;
-  }
-}
-
-/deep/ .ice-text {
-  justify-content: flex-start;
 }
 </style>
