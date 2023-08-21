@@ -111,7 +111,7 @@ initCount()
   flex-direction: column;
   min-height: 90vh;
   justify-content: center;
-  margin: 3rem 10%;
+  margin: 3rem 1rem;
   flex-wrap: wrap;
 
   @media (max-width: 1200px) {

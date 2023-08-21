@@ -9,9 +9,11 @@
       </template>
       <template v-slot:body>
         <div class="ice-column">
-          <ice-text v-if="item.description">
-            <ice-tag>描述</ice-tag>
-            {{ item.description }}
+          <ice-text>
+            <div v-if="item.description" class="ice-column">
+              <ice-tag>描述</ice-tag>
+              {{ item.description }}
+            </div>
           </ice-text>
           <ice-text v-if="item.view">
             <ice-tag>浏览量</ice-tag>
@@ -22,9 +24,6 @@
             {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
           </ice-text>
           <ice-text>
-            <ice-tag>
-              tags
-            </ice-tag>
             <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1">
               {{ item.tag1 }}
             </ice-link>
