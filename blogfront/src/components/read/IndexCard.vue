@@ -32,16 +32,16 @@
         <span class="tags">
             <ice-button>tags</ice-button>
             <ice-link :tag="markdownData.tag1" v-if="markdownData.tag1"
-                      :href="'#/read/readTag?tag1='+markdownData.tag1">
+                      :href="'read/readTag?tag1='+markdownData.tag1">
               {{ markdownData.tag1 }}
             </ice-link>
 
             <ice-link :tag="markdownData.tag2" v-if="markdownData.tag2"
-                      :href="'#/read/readTag?tag1='+markdownData.tag2">
+                      :href="'read/readTag?tag1='+markdownData.tag2">
               {{ markdownData.tag2 }}
             </ice-link>
             <ice-link :tag="markdownData.tag3" v-if="markdownData.tag3"
-                      :href="'#/read/readTag?tag1='+markdownData.tag3">
+                      :href="'read/readTag?tag1='+markdownData.tag3">
               {{ markdownData.tag3 }}
             </ice-link>
         </span>

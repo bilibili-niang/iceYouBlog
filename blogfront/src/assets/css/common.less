@@ -18,11 +18,20 @@ html.dark {
 .light {
   .card {
     background: @bac;
+
+  }
+
+  .v-md-editor__main, .github-markdown-body div, .line-numbers-mode:after {
+    background: @bac !important;
   }
 }
 
 .dark {
   .card {
-    background: @bac-dark;
+    background: @bac-dark-bleak;
+  }
+
+  .v-md-editor__main, .github-markdown-body div, .line-numbers-mode:after {
+    background: @bac-dark-bleak !important;
   }
 }

@@ -310,7 +310,6 @@ export default {
       flex-direction: column;
       margin-top: .3rem;
       z-index: 3;
-      background: #ffffff;
       border-radius: 0.5rem;
 
       :deep .github-markdown-body {
