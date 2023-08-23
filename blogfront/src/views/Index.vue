@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <canvas id="three"></canvas>
+  </div>
   <div class="index outLim">
     <div class="right">
       <AdminCard></AdminCard>
@@ -23,10 +26,11 @@ import filters from '@/common/filter/time'
 import fun from '@/hook/function'
 import IndexCard from "@/components/index/IndexCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import markdownApi from '@/common/api/markdownFiles'
 import api from '@/common/api/index'
+// import * as THREE from 'three'
 
 let indexList = reactive([])
 let allCount = ref(0)
@@ -46,6 +50,10 @@ const goToRead = (id) => {
   })
   window.open(routeUrl.href, '_blank')
 }
+onMounted(()=>{
+  // const scene = new THREE.Scene()
+  // scene.background = new THREE.Color('#eee')
+})
 
 // 分页按钮
 const handleCurrentChange = (val) => {

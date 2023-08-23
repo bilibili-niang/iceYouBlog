@@ -1,6 +1,6 @@
 <template>
   <div class="indexCard">
-    <ice-card>
+    <ice-card :border="false">
       <template v-slot:header>
         <ice-title>
           {{ item.title }}

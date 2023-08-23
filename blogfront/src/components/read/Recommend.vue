@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import markdownApi from '@/common/api/markdownFiles'
+import api from '@/common/api'
 import MarkdownCard from '@/components/read/MarkdownCard.vue'
 
 const props = defineProps({
@@ -25,10 +25,8 @@ const data = ref({})
 const markdowns = ref([])
 
 watch(props, (nweProps) => {
-  markdownApi.getRecommendByTags({ tags: nweProps.tags, id: nweProps.id })
+  api.getRecommendByTags({ tags: nweProps.tags, id: nweProps.id })
       .then(res => {
-        console.log("res:")
-        console.log(res)
         markdowns.value = res.result
       })
       .catch(e => {

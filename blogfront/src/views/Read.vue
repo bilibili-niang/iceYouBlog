@@ -41,7 +41,7 @@
             </div>
             <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
                      type="blog"></comment>
-            <span>评论区</span>
+            <ice-text>评论区</ice-text>
             <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
           </el-collapse>
         </el-col>

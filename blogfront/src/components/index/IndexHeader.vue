@@ -32,7 +32,7 @@
     <div class="avatarLim" v-if="loginState">
       <ul class="ice-row">
         <li class="list-item">
-          <el-avatar :src="userInf.avatar" :email="userInf.email"/>
+          <ice-avatar :src="userInf.avatar"></ice-avatar>
         </li>
         <li class="list-item">
           <el-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</el-link>
@@ -62,7 +62,7 @@
 
 <script setup>
 import { useStore } from "vuex"
-import { ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Search from '@/components/common/Search.vue'
 
@@ -121,6 +121,9 @@ const goToUserSearchHistory = () => {
   })
   window.open(routeUrl.href, '_blank')
 }
+onMounted(()=>{
+
+})
 
 init()
 changeDark()

@@ -2,27 +2,25 @@
   <div class="lim">
     <ice-card :border="false">
       <template v-slot:header>
-        <ice-title size="l">
+        <ice-text size="s">
           {{ item.title }}
-        </ice-title>
-        <ice-button @click="goToRead(item.id)">read</ice-button>
+        </ice-text>
+        <ice-button @click="goToRead(item.id)" size="s">read</ice-button>
       </template>
       <template v-slot:body>
         <ice-text size="s">
-          <div>
-            {{ splitStr(item.description) }}
-          </div>
+            {{ des }}
         </ice-text>
         <ice-text>
-          <ice-tag v-if="item.tag1">
+          <ice-link v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1" size="s">
             {{ item.tag1 }}
-          </ice-tag>
-          <ice-tag v-if="item.tag2">
+          </ice-link>
+          <ice-link v-if="item.tag2" :href="'#/read/readTag?tag1='+item.tag2" size="s">
             {{ item.tag2 }}
-          </ice-tag>
-          <ice-tag v-if="item.tag3">
+          </ice-link>
+          <ice-link v-if="item.tag3" :href="'#/read/readTag?tag1='+item.tag3" size="s">
             {{ item.tag3 }}
-          </ice-tag>
+          </ice-link>
         </ice-text>
       </template>
     </ice-card>
@@ -31,7 +29,8 @@
 
 <script setup>
 import { useRouter } from "vue-router"
-
+import { onMounted, ref } from 'vue'
+import fun from '@/hook/function'
 const props = defineProps(['item'])
 const router = useRouter()
 
@@ -44,22 +43,11 @@ const goToRead = (id) => {
     }
   })
 }
-/**
- * 切割字符串,保留前面30个字
- */
-const splitStr = (str) => {
-  console.log(str.length)
-  try {
 
-    if (str.length > 30) {
-      return str.substring(0, 30) + '...'
-    } else {
-      return str
-    }
-  } catch (e) {
-    console.log(str)
-  }
-}
+let des=ref('')
+onMounted(()=>{
+  des.value=fun.splice(props.item.description)
+})
 
 </script>
 <style scoped lang="less">
