@@ -1,12 +1,12 @@
 <template>
-  <div class="index">
+  <div class="index outLim">
     <div class="right">
-      <!--<AdminCard></AdminCard>-->
+      <AdminCard></AdminCard>
       <Recommend></Recommend>
     </div>
     <div class="left m-r ice-row">
       <template class="card" v-for="(item, index) in indexList"
-           :key="index">
+                :key="index">
         <IndexCard :item="item"></IndexCard>
       </template>
       <div class="btns m-b" v-if="value">
@@ -111,10 +111,12 @@ initCount()
   flex-direction: column;
   min-height: 90vh;
   justify-content: center;
-  margin: 3rem 1rem;
+  margin: 0 auto;
   flex-wrap: wrap;
 
+  // 小屏
   @media (max-width: 1200px) {
+
     .left {
       width: 100% !important;
     }
@@ -122,6 +124,9 @@ initCount()
     .recommend {
       display: none;
     }
+  }
+  @media (min-width: 1200px) {
+
   }
 
   .left {

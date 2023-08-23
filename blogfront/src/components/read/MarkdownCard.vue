@@ -1,29 +1,36 @@
 <template>
   <div class="lim">
-    <span>
-      <el-tag class="ml-2" type="info">title</el-tag>
-      <el-text>{{ item.title }}</el-text>
-    </span>
-    <span class="des" v-if="item.description">
-      <el-text>
-        <span class="d-inline-block text-truncate" style="max-width: 220px;"
-              :title="item.description">{{ splitStr(item.description) }}</span>
-      </el-text>
-    </span>
-    <span class="tags">
-       <markdownTags :tag="item.tag1" v-if="item.tag1" size="small"></markdownTags>
-       <markdownTags :tag="item.tag2" v-if="item.tag2" size="small"></markdownTags>
-       <markdownTags :tag="item.tag3" v-if="item.tag3" size="small"></markdownTags>
-    </span>
-    <div class="bottom-btns">
-      <el-button size="small" round @click="goToRead(item.id)">read</el-button>
-    </div>
+    <ice-card :border="false">
+      <template v-slot:header>
+        <ice-title size="l">
+          {{ item.title }}
+        </ice-title>
+        <ice-button @click="goToRead(item.id)">read</ice-button>
+      </template>
+      <template v-slot:body>
+        <ice-text size="s">
+          <div>
+            {{ splitStr(item.description) }}
+          </div>
+        </ice-text>
+        <ice-text>
+          <ice-tag v-if="item.tag1">
+            {{ item.tag1 }}
+          </ice-tag>
+          <ice-tag v-if="item.tag2">
+            {{ item.tag2 }}
+          </ice-tag>
+          <ice-tag v-if="item.tag3">
+            {{ item.tag3 }}
+          </ice-tag>
+        </ice-text>
+      </template>
+    </ice-card>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router"
-import MarkdownTags from '@/components/common/MarkdownTags.vue'
 
 const props = defineProps(['item'])
 const router = useRouter()
@@ -41,10 +48,16 @@ const goToRead = (id) => {
  * 切割字符串,保留前面30个字
  */
 const splitStr = (str) => {
-  if (str.length > 30) {
-    return str.substring(0, 60) + '...'
-  } else {
-    return str
+  console.log(str.length)
+  try {
+
+    if (str.length > 30) {
+      return str.substring(0, 30) + '...'
+    } else {
+      return str
+    }
+  } catch (e) {
+    console.log(str)
   }
 }
 

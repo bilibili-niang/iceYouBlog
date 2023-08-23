@@ -1,5 +1,5 @@
 <template>
-  <div class="lim">
+  <div class="lim outLim">
     <ul class="ice-row">
       <li class="list-item">
         <el-link href="/" target="_self">index</el-link>
@@ -127,7 +127,6 @@ changeDark()
 </script>
 <style lang="less" scoped>
 .lim {
-  max-width: 75%;
   margin: 0 auto;
 
   .list-item {
