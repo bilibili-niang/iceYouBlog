@@ -1,5 +1,5 @@
 <template>
-  <div class="indexCard">
+  <div class="indexCard" :ref="randomRef">
     <ice-card :border="false">
       <template v-slot:header>
         <ice-title>
@@ -40,6 +40,9 @@
   </div>
 </template>
 
+<script setup>
+
+</script>
 <script>
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import timeFormat from "@/common/filter/time"
@@ -60,7 +63,8 @@ export default {
   },
   data () {
     return {
-      oldData: ''
+      oldData: '',
+      randomRef: Math.random() * 1000
     }
   },
   methods: {
@@ -90,6 +94,14 @@ export default {
       })
       window.open(routeUrl.href, '_blank')
     },
+    isInViewPortOfOne (el) {
+      // viewPortHeight 兼容所有浏览器写法
+      const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+      const offsetTop = el.offsetTop
+      const scrollTop = document.documentElement.scrollTop
+      const top = offsetTop - scrollTop
+      return top <= viewPortHeight
+    }
   },
   watch: {
     item (newVal) {
@@ -103,14 +115,17 @@ export default {
     // @date 2023/5/5 , @author icestone
     // 第一次创建子组件并接收到值时需要格式化下时间
     this.item.updatedAt = timeFormat.timeFormat(this.item.updatedAt) || ''
-  },
+  }
 }
 </script>
 
 <style scoped lang="less">
+
+
+// 小屏
 @media (max-width: 1200px) {
   .indexCard {
-    width: 100%;
+    flex: 1;
   }
 }
 
@@ -119,4 +134,5 @@ export default {
     width: 49%;
   }
 }
+
 </style>

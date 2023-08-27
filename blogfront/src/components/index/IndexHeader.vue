@@ -1,59 +1,61 @@
 <template>
   <div class="lim outLim">
-    <ul class="ice-row">
+    <ul class="ice-row list">
       <li class="list-item">
-        <el-link href="/" target="_self">index</el-link>
+        <ice-link href="/" target="_self">index</ice-link>
       </li>
-      <li class="list-item" v-if="!loginState">
-        <el-link href="#/login" target="_blank">login</el-link>
+      <li v-if="!loginState" class="list-item">
+        <ice-link href="#/login" target="_blank">login</ice-link>
       </li>
       <!--配置为1才开启注册-->
-      <li class="list-item" v-if="!loginState&&store.state.config.registerFlag=='1'">
-        <el-link href="#/register" target="_blank">register</el-link>
+      <li v-if="!loginState&&store.state.config.registerFlag=='1'" class="list-item">
+        <ice-link href="#/register" target="_blank">register</ice-link>
       </li>
       <li class="list-item">
-        <el-link href="#/code/codeClips" target="_self">code clips</el-link>
+        <ice-link href="#/code/codeClips" target="_self">code clips</ice-link>
       </li>
       <li class="list-item">
-        <el-link href="#/friend/links" target="_self">友链与留言</el-link>
+        <ice-link href="#/friend/links" target="_self">友链与留言</ice-link>
       </li>
       <li class="list-item">
         <Search></Search>
       </li>
       <li class="list-item">
-        <div class="light" :class="{ dark: dark==true }" @click="changeDark" title="切换深色/浅色模式">
-          <ice-button>
+        <div :class="{ dark: dark==true }" class="light" title="切换深色/浅色模式" @click="changeDark">
+          <ice-text>
             {{ dark ? 'light' : 'dark' }}
-          </ice-button>
+          </ice-text>
         </div>
       </li>
     </ul>
-    <br>
-    <div class="avatarLim" v-if="loginState">
-      <ul class="ice-row">
+    <div v-if="loginState" class="avatarLim">
+      <ul class="ice-row list">
         <li class="list-item">
           <ice-avatar :src="userInf.avatar"></ice-avatar>
         </li>
         <li class="list-item">
-          <el-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</el-link>
+          <ice-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</ice-link>
         </li>
         <li class="list-item">
-          <el-link @click="goToUserInf" target="_blank">{{ userInf.username }}的主页</el-link>
+          <ice-link target="_blank" @click="goToUserInf">{{ userInf.username }}的主页</ice-link>
         </li>
         <li class="list-item">
-          <el-link href="#/noteList" target="_blank">我的笔记列表</el-link>
+          <ice-link href="#/noteList" target="_blank">我的笔记列表</ice-link>
         </li>
         <li class="list-item">
-          <el-link href="#/new/blog" target="_blank">新建blog</el-link>
+          <ice-link href="#/new/blog" target="_blank">新建blog</ice-link>
         </li>
         <li class="list-item">
-          <el-link @click="goToUserHistory" target="_blank">历史记录</el-link>
+          <ice-link target="_blank" @click="goToUserHistory">历史记录</ice-link>
         </li>
         <li class="list-item">
-          <el-link @click="goToUserSearchHistory" target="_blank">搜索记录</el-link>
+          <ice-link target="_blank" @click="goToUserSearchHistory">搜索记录</ice-link>
         </li>
-        <li class="list-item" v-if="userInfo.is_admin">
-          <el-link href="#/admin" target="_self">admin</el-link>
+        <li v-if="userInfo.is_admin" class="list-item">
+          <ice-link href="#/admin" target="_self">admin</ice-link>
+        </li>
+        <li v-if="userInfo" class="list-item">
+          <ice-text @clic="out">out</ice-text>
         </li>
       </ul>
     </div>
@@ -62,7 +64,7 @@
 
 <script setup>
 import { useStore } from "vuex"
-import { nextTick, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Search from '@/components/common/Search.vue'
 
@@ -71,8 +73,12 @@ const loginState = ref()
 const router = useRouter()
 const store = useStore()
 let dark = ref(true)
-
+console.log(store.state.user.userInfo)
 const { userInfo } = store.state.user || false
+
+const out = () => {
+  localStorage.removeItem('userInfo')
+}
 
 // 深色模式
 const changeDark = () => {
@@ -121,7 +127,7 @@ const goToUserSearchHistory = () => {
   })
   window.open(routeUrl.href, '_blank')
 }
-onMounted(()=>{
+onMounted(() => {
 
 })
 
@@ -142,4 +148,47 @@ changeDark()
     flex-wrap: wrap;
   }
 }
+
+
+.outLim {
+  // 小屏
+  @media (max-width: 1200px) {
+    max-width: 100vw;
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 70vw;
+  }
+}
+
+ul.list {
+  flex-wrap: wrap;
+  li{
+    margin: 0!important;
+  }
+}
+
+/*ul.list {
+  li:nth-child(1n+1) {
+    opacity: 0;
+    height: 0;
+    transition: .5s;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    li:nth-child(1n+1) {
+      opacity: 1;
+      height: fit-content;
+    }
+  }
+}
+
+ul.list:nth-child(1) {
+  height: 2rem;
+}
+
+ul.list:nth-child(2) {
+  height: 6rem;
+}*/
 </style>
