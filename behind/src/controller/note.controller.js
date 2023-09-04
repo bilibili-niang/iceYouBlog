@@ -114,7 +114,7 @@ class NoteController {
 
     /* @author icestone , 19:56
      * @date 2023/5/16
-     * TODO 公开某个note
+     * 公开某个note
     */
     async returnUserPublicNoteResult(ctx) {
         console.log(`当前note的用户信息:`)

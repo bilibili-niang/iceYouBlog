@@ -23,13 +23,13 @@ const historyByIdAndToken = async (ctx, next) => {
  * @Description:
  * @author icestone
  * @date 2023/5/4
- * TODO 判断传参是否有 operate
+ *  判断传参是否有 operate
  */
 const hasOperateAdnIds = async (ctx, next) => {
     const {operate = 'no', ids = null} = ctx.request.body;
     if (operate != "no" & ids != null) {
         // @date 2023/5/4 , @author icestone
-        // TODO 存在operate,挂载
+        //  存在operate,挂载
         ctx.state.operate = operate;
         ctx.state.ids = ids;
         await next();

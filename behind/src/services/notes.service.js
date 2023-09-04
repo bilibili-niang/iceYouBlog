@@ -96,7 +96,7 @@ class NotesService {
 
     /* @author icestone , 20:04
      * @date 2023/5/16
-     * TODO 通过id,指定字段查询该note的信息
+     *  通过id,指定字段查询该note的信息
     */
     async getNoteUserInfoById(id, attr = ['email']) {
         return await notes.findOne({
@@ -110,7 +110,7 @@ class NotesService {
 
     /* @author icestone , 20:13
  * @date 2023/5/16
- * TODO 更改note权限为公开
+ *  更改note权限为公开
 */
     async changeNoteViewAuth(id) {
         return await notes.update({

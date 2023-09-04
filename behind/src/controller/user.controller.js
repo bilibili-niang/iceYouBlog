@@ -30,10 +30,10 @@ const { getShowInIndexAdminUser } = require('../services/admin.service')
 
 class UserController {
     async register (ctx) {
-        //TODO: 1.获取数据
+        // 1.获取数据
         // console.log(ctx.request.body)
         const { username, password, email } = ctx.request.body || ''
-        //TODO: 2.操作数据库
+        // 2.操作数据库
         let result = await createUser(username, password, email, ctx.request.body.oldPwd)
         // 失败即为undefined,因为用户名或密码重复
         console.log('注册返回的信息:')
@@ -57,7 +57,7 @@ class UserController {
 
     /* @author icestone , 17:02
      * @date 2023/5/8
-     * TODO 登录逻辑
+     * 登录逻辑
     */
     async login (ctx) {
         console.log("---login---")
@@ -207,14 +207,14 @@ class UserController {
 
     /* @author icestone , 17:12
      * @date 2023/5/11
-     * TODO
+     *
     */
     async returnUserInfoByEmail (ctx) {
         console.log('---returnUserInfoByEmail---')
         const { email = null, type = null } = ctx.request.body
         if (email == null) {
             // @date 2023/5/11 , @author icestone
-            // TODO 传参错误
+            // 传参错误
             ctx.body = userParamsError
         } else if (email == "admin") {
             const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word'])
@@ -261,7 +261,7 @@ class UserController {
 
     /* @author icestone , 14:44
      * @date 2023/6/4
-     * TODO 返回该用户的评论
+     * 返回该用户的评论
     */
     async returnUserAllPostedCommented (ctx) {
         const result = await getUserAllComments(ctx.state.user.email, 'blog')

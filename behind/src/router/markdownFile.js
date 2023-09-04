@@ -49,7 +49,7 @@ router.post('/update', auth, getUpdateResult)
 
 /* @author icestone , 15:45
  * @date 2023/5/7
- * TODO 更新某些条目
+ * 更新某些条目
 */
 router.post('/updateSomething', auth, getUpdateSomethingResult)
 
@@ -68,7 +68,7 @@ router.post('/getTopArticle', markdownC.returnUserTopArticle)
  * @Description:
  * @author icestone
  * @date 2023/5/4
- * TODO 前端对文章进行删除或改变状态,这里是根据传来的 operate 判断是需要删除还是恢复
+ * 前端对文章进行删除或改变状态,这里是根据传来的 operate 判断是需要删除还是恢复
  */
 router.post('/operate', auth, hasOperateAdnIds, returnOperateResult)
 

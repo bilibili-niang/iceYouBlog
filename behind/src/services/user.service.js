@@ -8,7 +8,7 @@ const comment = require('../schema/comment')
 class UserService {
     /* @author icestone , 16:32
      * @date 2023/5/8
-     * TODO 初始化user
+     *  初始化user
     */
     async initUserRes () {
         return await user.findOne({
@@ -57,7 +57,7 @@ class UserService {
 
     /* @author icestone , 16:40
      * @date 2023/5/8
-     * TODO 创建admin用户
+     *  创建admin用户
     */
     async initAdminUser () {
         const password = md5('admin' + md5Key)
@@ -205,13 +205,13 @@ class UserService {
 
     /* @author icestone , 14:45
      * @date 2023/5/9
-     * TODO 通过传入的 id 查询用户信息
+     *  通过传入的 id 查询用户信息
     */
     async getIsAdminById (username) {
         console.log(`传入的email:${ username }`)
         /* @author icestone , 14:59
          * @date 2023/5/9
-         * TODO
+         *
          *  如果为admin:
          * [ { is_admin: 1 } ]
          *  如果不是admin:
@@ -243,7 +243,7 @@ class UserService {
 
     /* @author icestone , 17:21
      * @date 2023/5/27
-     * TODO 根据email返回用户的头图
+     *  根据email返回用户的头图
     */
     async getUserHeadImg (email) {
         // return await
@@ -269,7 +269,7 @@ class UserService {
 
     /* @author icestone , 14:45
      * @date 2023/6/4
-     * TODO 查询指定email发表的所有评论,默认查询type为blog的
+     *  查询指定email发表的所有评论,默认查询type为blog的
     */
     async getUserAllComments (email, type = 'blog') {
         return await comment.findAll({

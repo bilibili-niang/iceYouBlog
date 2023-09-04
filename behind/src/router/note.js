@@ -32,7 +32,7 @@ router.post('/newSecondNote', auth, returnSecondResult)
 
 /* @author icestone , 19:55
  * @date 2023/5/16
- * TODO 公开当前note
+ *  公开当前note
 */
 router.post('/publicNote', auth, haveNoteId, isOwner, returnUserPublicNoteResult)
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="read outLim">
+  <div class="read container">
     <ice-text v-if="!dataExist">
       文章不存在或已被删除
     </ice-text>

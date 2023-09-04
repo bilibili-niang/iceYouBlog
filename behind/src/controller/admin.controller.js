@@ -48,7 +48,7 @@ class AdminController {
     }
 
     // @date 2023/5/8 , @author icestone
-    // TODO 返回log
+    // 返回log
     async returnLogs (ctx) {
         console.log('---returnLogs---')
         const { offset = 0 } = ctx.request.body
@@ -64,7 +64,7 @@ class AdminController {
 
     /* @author icestone , 18:20
      * @date 2023/5/9
-     * TODO 对文章进行操作
+     * 对文章进行操作
     */
     async operateMarkdown (ctx) {
         const {
@@ -87,7 +87,7 @@ class AdminController {
 
     /* @author icestone , 17:32
  * @date 2023/5/17
- * TODO 返回admin用户的列表
+ * 返回admin用户的列表
 */
     async returnAllAdminUser (ctx) {
         paramsVerify
@@ -102,7 +102,7 @@ class AdminController {
 
     /* @author icestone , 18:37
      * @date 2023/5/17
-     * TODO 对admin用户进行操作
+     * 对admin用户进行操作
     */
 
     async returnOperateResult (ctx) {
@@ -133,7 +133,7 @@ class AdminController {
 
     /* @author icestone , 15:47
      * @date 2023/5/18
-     * TODO 返回展示在index页面的admin用户信息
+     * 返回展示在index页面的admin用户信息
     */
     async returnIndexAdmin (ctx) {
         const result = await getShowInIndexAdminUser(['id', 'email', 'username', 'avatar', 'occupation', 'githubUrl', 'word'])

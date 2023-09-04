@@ -11,7 +11,7 @@ const commendS = require('../services/comment.service')
 class CommentController {
     /* @author icestone , 14:07
      * @date 2023/5/11
-     * TODO 创建评论
+     * 创建评论
     */
     async returnAddCommentResult (ctx) {
         const {
@@ -24,11 +24,11 @@ class CommentController {
         } = ctx.request.body
 
         // @date 2023/5/10 , @author icestone
-        // TODO content,id 不为空才写入
+        // content,id 不为空才写入
         if (content && id) {
             if (ctx.state.user) {
                 // @date 2023/5/10 , @author icestone
-                // TODO 有用户
+                // 有用户
                 const result = await addComment(id, type, content, ctx.state.user.username, ctx.state.user.email)
                 ctx.body = {
                     code: 200,
@@ -51,14 +51,14 @@ class CommentController {
             }
         } else {
             // @date 2023/5/10 , @author icestone
-            // TODO 报错,内容与id为空
+            // 报错,内容与id为空
             ctx.body = commentNotAllow
         }
     }
 
     /* @author icestone , 14:08
      * @date 2023/5/11
-     * TODO 返回评论
+     * 返回评论
     */
     async returnAllCommentsById (ctx) {
         const { id = 0 } = ctx.request.body

@@ -10,7 +10,7 @@ const {
 class AdminMiddleware {
     /* @author icestone , 14:36
      * @date 2023/5/9
-     * TODO 用户是否为admin用户的中间件
+     *  用户是否为admin用户的中间件
     */
     async isAdmin(ctx, next) {
         console.log('---isAdmin---')
@@ -33,7 +33,7 @@ class AdminMiddleware {
 
     /* @author icestone , 10:02
      * @date 2023/5/18
-     * TODO 验证参数
+     *  验证参数
      * 验证成功返回0,反之不成功
     */
     paramsVerify(verify, ctx) {
@@ -43,19 +43,19 @@ class AdminMiddleware {
         keys.map(item => {
             const type = verify[item].type || null;
             // @date 2023/5/18 , @author icestone
-            // TODO 动态获取
+            //  动态获取
             // user 从 ctx.state.user 上获取
             if (type == 'user') {
                 const nowVal = ctx.state.user[item]
                 if (!nowVal) {
                     // @date 2023/5/18 , @author icestone
-                    // TODO 如果目标不存在
+                    //  如果目标不存在
                     if (verify[item].allowNull || null) {
                         // @date 2023/5/18 , @author icestone
-                        // TODO 如果允许不存在
+                        //  如果允许不存在
                     } else {
                         // @date 2023/5/18 , @author icestone
-                        // TODO 如果不允许不存在,报错
+                        //  如果不允许不存在,报错
                         console.log("传参错误")
                         flag = {
                             code: 300,
@@ -72,10 +72,10 @@ class AdminMiddleware {
                 console.log(verify[item])
                 if (!nowVal) {
                     // @date 2023/5/18 , @author icestone
-                    // TODO 如果目标不存在
+                    //  如果目标不存在
                     if (verify[item].allowNull || false == false) {
                         // @date 2023/5/18 , @author icestone
-                        // TODO 如果允许不存在
+                        //  如果允许不存在
                         console.log('不允许为空')
                         console.log(`nowVal:${nowVal}`)
                         if (nowVal == null) {
@@ -90,7 +90,7 @@ class AdminMiddleware {
                         }
                     } else {
                         // @date 2023/5/18 , @author icestone
-                        // TODO 如果不允许不存在,报错
+                        //  如果不允许不存在,报错
                         console.log("传参错误")
                         flag = {
                             code: 300,

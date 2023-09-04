@@ -16,12 +16,12 @@ let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '
 
 /* @author icestone , 16:20
  * @date 2023/5/8
- * TODO 通过数据查询初始化一些数据库
+ *  通过数据查询初始化一些数据库
 */
 async function initDataBase() {
     console.log('---initDataBase---')
     // @date 2023/5/8 , @author icestone
-    // TODO 获取username为admin的信息,如果没有,说明不存在,需要创建一个,并为其赋值
+    //  获取username为admin的信息,如果没有,说明不存在,需要创建一个,并为其赋值
     const userRes = await initUserRes();
     if (userRes == null) {
         console.log(initAdminUser());
@@ -39,7 +39,7 @@ async function initDataBase() {
 
 
     // @date 2023/5/8 , @author icestone
-    // TODO 初始化文章
+    //  初始化文章
     const markdownFileRes = await initMarkdownFile();
     console.log('markdownFileRes')
     console.log(markdownFileRes)
@@ -68,7 +68,7 @@ async function initDataBase() {
 
 app.listen(server.port, () => {
     // @date 2023/5/8 , @author icestone
-    // TODO 这里需要初始化确认一下数据库
+    //  这里需要初始化确认一下数据库
     initDataBase()
     insertLog({
         time: date,

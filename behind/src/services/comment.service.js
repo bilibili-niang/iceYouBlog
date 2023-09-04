@@ -4,7 +4,7 @@ const { getUserInfoByEmail } = require("./user.service")
 class CommentService {
     /* @author icestone , 14:15
      * @date 2023/5/11
-     * TODO 根据传参创建评论
+     *  根据传参创建评论
     */
     async addComment (id, type, content, nickName = '无名之辈', email) {
         console.log('nickName')

@@ -46,13 +46,13 @@ router.post('/isAdmin', auth, returnUserIsAdmin)
 router.post('/getUserInfoByEmail', returnUserInfoByEmail)
 /* @author icestone , 17:17
  * @date 2023/5/27
- * TODO 获取用户头图
+ *  获取用户头图
 */
 router.post('/headImg', auth, returnUserHeadImg)
 
 /* @author icestone , 14:43
  * @date 2023/6/4
- * TODO 根据email获取该用户的所有评论
+ *  根据email获取该用户的所有评论
 */
 router.post('/getUserAllPostedComments', auth, returnUserAllPostedCommented)
 

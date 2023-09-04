@@ -30,7 +30,7 @@
     </ul>
     <div v-if="loginState" class="avatarLim">
       <ul class="ice-row list">
-        <li class="list-item">
+        <li class="list-item avatar">
           <ice-avatar :src="userInf.avatar"></ice-avatar>
         </li>
         <li class="list-item">
