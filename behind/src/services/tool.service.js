@@ -1,14 +1,13 @@
 const https = require('https')
 const cheerio = require('cheerio')
-const markdownFile = require('../schema/markdownFile')
 const TurndownService = require('turndown')
-const jwt = require('jsonwebtoken')
-const { salt } = require('../config/default')
-const { tokenNotExist } = require('../constant/err.type')
 const fs = require('fs')
+const { initUserRes, initAdminUser } = require('./user.service')
+const { insertLog } = require('./log.service')
+const { initMarkdownFile, createMarkdownFile } = require('./markdownFile.service')
 let turndownService = new TurndownService()
 
-var option = {
+const option = {
     rejectUnauthorized: false,
     hostname: 'blog.csdn.net',
     path: '/ice_stone_kai/article/details/110456464',
@@ -163,6 +162,60 @@ class ToolService {
             return item.id
         })
     }
+
+    /**
+     * 服务启动时的数据库初始化
+     */
+    async initDataBase (fileNameAndPath, date) {
+        // @date 2023/5/8 , @author icestone
+        //  获取username为admin的信息,如果没有,说明不存在,需要创建一个,并为其赋值
+        const userRes = await initUserRes()
+        if (userRes == null) {
+            console.log(initAdminUser())
+            await insertLog({
+                time: date,
+                ip: 'localhost',
+                logType: 'database init',
+                detail: 'User 数据库初始化了一下',
+                userId: 'root',
+                fileNameAndPath
+            })
+        } else {
+            console.log('User 不用初始化')
+        }
+
+        // @date 2023/5/8 , @author icestone
+        //  初始化文章
+        const markdownFileRes = await initMarkdownFile()
+        /*console.log('markdownFileRes')
+        console.log(markdownFileRes)*/
+        /**
+         * 如果没有文章,则创建一个
+         */
+        if (markdownFileRes == null) {
+            await createMarkdownFile('adminEmail', {
+                title: 'Hello World',
+                description: '',
+                tag1: 'tag1',
+                tag2: 'tag2',
+                tag3: 'tag3',
+                audit: '1',
+                content: `> hello world!`
+            })
+            await insertLog({
+                time: date,
+                ip: 'localhost',
+                logType: 'database init',
+                detail: 'markdownFile get init',
+                userId: 'root',
+                fileNameAndPath
+            })
+        } else {
+            console.log('markdownFile No initialization is required')
+        }
+
+    }
+
 }
 
 module.exports = new ToolService()

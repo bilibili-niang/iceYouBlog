@@ -37,14 +37,16 @@ async function initDataBase() {
         console.log('User 不用初始化')
     }
 
-
     // @date 2023/5/8 , @author icestone
     //  初始化文章
     const markdownFileRes = await initMarkdownFile();
-    console.log('markdownFileRes')
-    console.log(markdownFileRes)
+    /*console.log('markdownFileRes')
+    console.log(markdownFileRes)*/
+    /**
+     * 如果没有文章,则创建一个
+     */
     if (markdownFileRes == null) {
-        createMarkdownFile('adminEmail', {
+        await createMarkdownFile('adminEmail', {
             title: 'Hello World',
             description: '',
             tag1: 'tag1',
@@ -53,24 +55,24 @@ async function initDataBase() {
             audit: '1',
             content: `> hello world!`
         })
-        insertLog({
+        await insertLog({
             time: date,
             ip: 'localhost',
             logType: 'database init',
-            detail: 'markdownFile 数据库初始化了一下',
+            detail: 'markdownFile get init',
             userId: 'root',
             fileNameAndPath
         });
     } else {
-        console.log('markdownFile 不用初始化')
+        console.log('markdownFile No initialization is required')
     }
 }
 
-app.listen(server.port, () => {
+app.listen(server.port, async () => {
     // @date 2023/5/8 , @author icestone
     //  这里需要初始化确认一下数据库
-    initDataBase()
-    insertLog({
+    await initDataBase()
+    await insertLog({
         time: date,
         ip: 'localhost',
         logType: 'server start',
@@ -78,5 +80,5 @@ app.listen(server.port, () => {
         userId: 'root',
         fileNameAndPath
     });
-    console.log(`server is running at 127.0.0.1:${server.port}`)
+    console.log(`server is running at 127.0.0.1:${ server.port }`)
 })

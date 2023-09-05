@@ -58,6 +58,7 @@ const {
 const path = require("path")
 const { paramsVerify } = require("../middleware/admin.middleware")
 const fs = require('fs')
+const { Sequelize } = require('sequelize')
 
 class MarkdownController {
     async newFile (ctx) {
@@ -722,6 +723,34 @@ class MarkdownController {
             success: true,
             result
         }
+    }
+
+    /**
+     * 查询并处理所有的tags
+     * @param ctx
+     * @return {Promise<void>}
+     */
+    async getAllTags (ctx) {
+        const result = await markdownS.getAllTags()
+        ctx.body = {
+            message: '获取所有tags',
+            success: true,
+            result
+        }
+    }
+
+    /**
+     * 获取随机的一篇文章数据
+     * @return {Promise<void>}
+     */
+    async getRandomOne (ctx) {
+        const result = await markdownS.returnRandomOne()
+        ctx.body = {
+            message: '随机返回一条数据',
+            success: true,
+            result
+        }
+
     }
 }
 

@@ -113,10 +113,17 @@ router.post('/getRecommendByTags', returnRecommendByTags)
 */
 router.post('/getUserAllMarkdown', returnAllMarkdownByEmail)
 
-/* @author 张嘉凯
- * @date 2023/6/19 @time
- * 通过用户email获取该用户的置顶文章
-*/
+/**
+ * 查询所有tag
+ */
+router.get('/tags', markdownC.getAllTags)
+
+/**
+ * 获取随机的一篇文章数据
+ */
+router.get('/random', markdownC.getRandomOne)
+
+
 module.exports = router
 
 
