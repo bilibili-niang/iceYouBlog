@@ -58,7 +58,7 @@ const {
 const path = require("path")
 const { paramsVerify } = require("../middleware/admin.middleware")
 const fs = require('fs')
-const { Sequelize } = require('sequelize')
+
 
 class MarkdownController {
     async newFile (ctx) {
@@ -77,7 +77,6 @@ class MarkdownController {
 
     //返回首页的二十条数据
     async returnHomeList (ctx) {
-        console.log('/home/')
         const { pageNum = 1, pageSize = 20 } = ctx.request.query
         const result = await getHomeIndexList(pageNum, pageSize)
         ctx.body = {
@@ -89,8 +88,7 @@ class MarkdownController {
     }
 
     // 通过id查询文章
-    async getMarkdownDataById (ctx) {
-        console.log('---getMarkdownDataById---')
+    getMarkdownDataById = async function (ctx) {
         // 浏览量自增
         await viewIncreaseById(ctx.request.body.id)
         // 通过用户token写入历史记录
@@ -113,7 +111,6 @@ class MarkdownController {
             const userInf = await getUserInfoByEmail(ownerEmail, ['email', 'username', 'is_admin', 'avatar', 'occupation', 'githubUrl', 'word'])
             if (res[0].url) {
                 if (!res[0].content) {
-                    console.log('content为空,爬取')
                     let config = {
                         html: '', json: {}
                     }
@@ -167,7 +164,6 @@ class MarkdownController {
                     }
                 }
             } else {
-                console.log('没有url,可以直接返回')
                 ctx.body = {
                     code: 200,
                     message: '查询单个文章数据',
@@ -744,13 +740,22 @@ class MarkdownController {
      * @return {Promise<void>}
      */
     async getRandomOne (ctx) {
-        const result = await markdownS.returnRandomOne()
-        ctx.body = {
-            message: '随机返回一条数据',
-            success: true,
-            result
+        let result = await markdownS.returnRandomOne()
+        if (!result.content) {
+            // 数据为空,需要爬取
+            const res = await markdownS.getDataByUrl(result.url, result.id)
+            ctx.body = {
+                message: '随机返回一条数据',
+                success: true,
+                result: res
+            }
+        } else {
+            ctx.body = {
+                message: '随机返回一条数据',
+                success: true,
+                result
+            }
         }
-
     }
 }
 

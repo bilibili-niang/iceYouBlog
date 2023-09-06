@@ -6,6 +6,11 @@ const { salt } = require('../config/default')
 const jwt = require('jsonwebtoken')
 const { Op, Sequelize } = require('sequelize')
 const tool = require('../services/tool.service')
+const https = require('https')
+const cheerio = require('cheerio')
+const TurndownService = require('turndown')
+let turndownService = new TurndownService()
+
 
 class MarkdownFileService {
     /* @author icestone , 16:14
@@ -298,7 +303,6 @@ class MarkdownFileService {
 
     // 通过id返回该文章的一些数据,默认这里用于展示在用户的浏览记录,但也可以自定义查询信息
     async getMarkdownFileDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg']) {
-        console.log('---getMarkdownFileDetailById---')
         return await markdownFile.findAll({
             attributes: attr,
             where: {
@@ -638,8 +642,8 @@ class MarkdownFileService {
     /**
      * 获取所有tags
      * @param email
-     * @return {Promise<{[p: number]: *, some(predicate: (value: *, index: number, array: *[]) => unknown, thisArg?: any): boolean, keys(): IterableIterator<number>, values(): IterableIterator<*>, shift(): *, pop(): *, slice(start?: number, end?: number): *[], find: {<S extends *>(predicate: (this:void, value: *, index: number, obj: *[]) => value is S, thisArg?: any): (S | undefined), (predicate: (value: *, index: number, obj: *[]) => unknown, thisArg?: any): *}, flat<A, D=1 extends number>(this:A, depth?: D): FlatArray<A, D>[], join(separator?: string): string, reduceRight: {(callbackfn: (previousValue: *, currentValue: *, currentIndex: number, array: *[]) => *): *, (callbackfn: (previousValue: *, currentValue: *, currentIndex: number, array: *[]) => *, initialValue: *): *, <U>(callbackfn: (previousValue: U, currentValue: *, currentIndex: number, array: *[]) => U, initialValue: U): U}, copyWithin(target: number, start: number, end?: number): this, indexOf(searchElement: *, fromIndex?: number): number, every: {<S extends *>(predicate: (value: *, index: number, array: *[]) => value is S, thisArg?: any): this is S[], (predicate: (value: *, index: number, array: *[]) => unknown, thisArg?: any): boolean}, map<U>(callbackfn: (value: *, index: number, array: *[]) => U, thisArg?: any): U[], reduce: {(callbackfn: (previousValue: *, currentValue: *, currentIndex: number, array: *[]) => *): *, (callbackfn: (previousValue: *, currentValue: *, currentIndex: number, array: *[]) => *, initialValue: *): *, <U>(callbackfn: (previousValue: U, currentValue: *, currentIndex: number, array: *[]) => U, initialValue: U): U}, [Symbol.iterator](): IterableIterator<*>, splice: {(start: number, deleteCount?: number): *[], (start: number, deleteCount: number, ...items: *[]): *[]}, forEach(callbackfn: (value: *, index: number, array: *[]) => void, thisArg?: any): void, length: number, includes(searchElement: *, fromIndex?: number): boolean, concat: {(...items: ConcatArray<*>): *[], (...items: *[]): *[]}, sort(compareFn?: (a: *, b: *) => number): this, fill(value: *, start?: number, end?: number): this, reverse(): *[], push(...items: *[]): number, [Symbol.unscopables](): {copyWithin: boolean, entries: boolean, fill: boolean, find: boolean, findIndex: boolean, keys: boolean, values: boolean}, findIndex(predicate: (value: *, index: number, obj: *[]) => unknown, thisArg?: any): number, flatMap<U, This=undefined>(callback: (this:This, value: *, index: number, array: *[]) => (ReadonlyArray<U> | U), thisArg?: This): U[], filter: {<S extends *>(predicate: (value: *, index: number, array: *[]) => value is S, thisArg?: any): S[], (predicate: (value: *, index: number, array: *[]) => unknown, thisArg?: any): *[]}, lastIndexOf(searchElement: *, fromIndex?: number): number, entries(): IterableIterator<[number, *]>, at: {(index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *, (index: number): *}, toString(): string, unshift(...items: *[]): number, toLocaleString(): string}>}
-     */
+     * @return {promise}
+     * */
     async getAllTags () {
         let result = await markdownFile.findAll({
             attributes: ['tag1', 'tag2', 'tag3'],
@@ -675,6 +679,7 @@ class MarkdownFileService {
      * @return {Promise<void>}
      */
     async returnRandomOne () {
+        // 这里已经限定 states 大于0
         return await markdownFile.findOne({
             where: {
                 states: {
@@ -682,6 +687,53 @@ class MarkdownFileService {
                 }
             },
             order: [Sequelize.literal('rand()')]
+        })
+
+    }
+
+    /**
+     * 通过url对文章进行爬取
+     * @param url{string} 需要爬取的url
+     * @param id{number} 需要写入的id
+     */
+    getDataByUrl (url, id) {
+        return new Promise((resolve, reject) => {
+            let config = {
+                html: '',
+                json: {}
+            }
+            https.get(url, res => {
+                res.on('data', function (chunk) {
+                    config.html += chunk
+                })
+                res.on('end', async () => {
+                    // 传入 cheerio
+                    const $ = cheerio.load(config.html)
+                    const ele = $("#content_views")
+                    config.html = ele.html()
+                    try {
+                        config.html = turndownService.turndown(config.html)
+                    } catch (e) {
+                        console.log(e)
+                    }
+                    await markdownFile.update({ content: config.html }, { where: { id } })
+                        .then(async res => {
+                            let result
+                            result = await markdownFile.findAll({
+                                // attributes: ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg','content'],
+                                where: {
+                                    id
+                                },
+                                raw: true
+                            })
+                            resolve(result[0])
+                        })
+                        .catch(e => {
+                            resolve(null)
+                        })
+
+                })
+            })
         })
     }
 

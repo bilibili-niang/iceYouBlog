@@ -64,7 +64,7 @@ const markdownFile = seq.define('markdownFile', {
     source: {
         type: DataTypes.STRING,
         allowNull: true,
-        comment: '文章来源,如果是来自于其他王章,则从其他网站上爬取'
+        comment: '文章来源,如果是来自于其他网站,则从其他网站上爬取'
     },
     url: {
         type: DataTypes.STRING,
