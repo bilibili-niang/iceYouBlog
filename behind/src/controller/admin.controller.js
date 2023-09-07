@@ -18,6 +18,9 @@ const {
 const adminS = require('../services/admin.service')
 // 数据库操作
 const connection = require('../db/seq')
+// import errType from '../constant/err.type'
+const errType = require('../constant/err.type')
+
 
 class AdminController {
     // 返回所有友链
@@ -72,7 +75,7 @@ class AdminController {
             ids = ''
         } = ctx.request.body
         console.log(`ids:${ ids },operate:${ operate }`)
-        if (operate == 'del') {
+        if (operate === 'del') {
             console.log('删除')
             const result = await getDeleteResult(ids, ctx.state.user.email)
             ctx.body = {
@@ -117,7 +120,7 @@ class AdminController {
                 default: null,
             }
         }, ctx)
-        if (paramsRes == 0) {
+        if (paramsRes === 0) {
             const result = await operateUser(ctx.request.body.email, ctx.request.body.operate)
             ctx.body = {
                 code: 200,
@@ -219,16 +222,43 @@ class AdminController {
      * 获取所有数据表信息
     */
     async getDatabaseInfo (ctx) {
-        console.log('getDatabaseInfo--->')
         const databases = await connection.query("SHOW TABLES", {})
-        const tables = databases[0].map(table => table["Tables_in_markdownfile"])
+        // 数据表的key
+        const tableKey = Object.keys(databases[0][0])[0]
+        const tables = databases[0].map(table => table[tableKey])
+        const tablesDetail = await Promise.all(databases[0].map(table => adminS.getTableInfo(table[tableKey])))
+        const tableObj = {}
+        tables.map((item, index) => {
+            tableObj[item] = tablesDetail[index][0][0]
+        })
         ctx.body = {
-            result: { tables },
+            result: { ...tableObj },
             code: 200,
             success: true,
             message: '获取所有数据表信息'
         }
     }
+
+    /**
+     * 获取指定数据表信息
+     */
+    async getSelectInfo (ctx) {
+        const { tableName = null } = ctx.request.body
+        console.log(tableName)
+        if (!tableName) {
+            ctx.body = errType.userParamsError
+        } else {
+            const result = await adminS.getTableInfo(tableName)
+
+            ctx.body = {
+                code: 200,
+                message: '返回指定表信息',
+                result
+            }
+        }
+
+    }
+
 }
 
 module.exports = new AdminController()

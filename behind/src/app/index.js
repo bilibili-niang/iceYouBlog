@@ -10,19 +10,18 @@ const template = require('koa-html-template')
 const static = require('koa-static')
 // const views = require('koa-views')
 const app = new koa()
-const errHandler = require('./errHadnler')
 const path = require('path')
 
 // 跨域
 app.use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin', '*');
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type');
-    ctx.set('Access-Control-Allow-Methods', 'POST');
-    await next();
-});
+    ctx.set('Access-Control-Allow-Origin', '*')
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type')
+    ctx.set('Access-Control-Allow-Methods', 'POST')
+    await next()
+})
 
 //开放html模板的静态目录
-app.use(static(path.join(__dirname, '../static/views/'), {extension: 'html'}))
+app.use(static(path.join(__dirname, '../static/views/'), { extension: 'html' }))
 app.use(static(path.join(__dirname, '../static')))
 /* @author 张嘉凯
  * @date 2023/6/21 @time 15:21
@@ -57,7 +56,6 @@ app.use(koabody({
 }))
 
 
-
 app.use(parameter(app))
 
 //开放静态资源路径
@@ -66,7 +64,9 @@ app.use(koaStatic(path.join(__dirname, '../upload')))
 app.use(router.routes())
 
 //统一的错误处理:
-app.on('error', errHandler)
+app.on('error', () => {
+    console.log('错误统一处理')
+})
 
 // 导出:
-module.exports = app;
+module.exports = app

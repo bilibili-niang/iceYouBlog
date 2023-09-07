@@ -1,10 +1,10 @@
-const {JsonWebTokenError, adminError} = require('../constant/err.type');
-const jwt = require('jsonwebtoken');
-const {salt} = require('../config/default');
+const { JsonWebTokenError, adminError } = require('../constant/err.type')
+const jwt = require('jsonwebtoken')
+const { salt } = require('../config/default')
 const {
     getUserisAdminByEmail,
     getIsAdminById
-} = require('../services/user.service');
+} = require('../services/user.service')
 
 
 class AdminMiddleware {
@@ -12,20 +12,19 @@ class AdminMiddleware {
      * @date 2023/5/9
      *  用户是否为admin用户的中间件
     */
-    async isAdmin(ctx, next) {
-        console.log('---isAdmin---')
-        const token = ctx.request.header.token || null;
+    async isAdmin (ctx, next) {
+        const token = ctx.request.header.token || null
         if (token.length <= 10) {
-            ctx.body = JsonWebTokenError;
+            ctx.body = JsonWebTokenError
             return
         } else {
-            const {username = null} = jwt.decode(token, salt);
-            const isAdminFlag = await getIsAdminById(username);
+            const { username = null } = jwt.decode(token, salt)
+            const isAdminFlag = await getIsAdminById(username)
             if (isAdminFlag) {
                 // admin用户
-                await next();
+                await next()
             } else {
-                ctx.body = adminError;
+                ctx.body = adminError
                 return
             }
         }
@@ -36,12 +35,12 @@ class AdminMiddleware {
      *  验证参数
      * 验证成功返回0,反之不成功
     */
-    paramsVerify(verify, ctx) {
+    paramsVerify (verify, ctx) {
         console.log("---paramsVerify---")
-        const keys = Object.keys(verify);
-        let flag = 0;
+        const keys = Object.keys(verify)
+        let flag = 0
         keys.map(item => {
-            const type = verify[item].type || null;
+            const type = verify[item].type || null
             // @date 2023/5/18 , @author icestone
             //  动态获取
             // user 从 ctx.state.user 上获取
@@ -56,7 +55,6 @@ class AdminMiddleware {
                     } else {
                         // @date 2023/5/18 , @author icestone
                         //  如果不允许不存在,报错
-                        console.log("传参错误")
                         flag = {
                             code: 300,
                             message: "传参参数错误",
@@ -66,10 +64,7 @@ class AdminMiddleware {
                     }
                 }
             } else {
-                const nowVal = ctx.request.body[item] || null;
-                console.log(`nowVal:${nowVal}`)
-                console.log(`verify[item]:`)
-                console.log(verify[item])
+                const nowVal = ctx.request.body[item] || null
                 if (!nowVal) {
                     // @date 2023/5/18 , @author icestone
                     //  如果目标不存在
@@ -77,7 +72,7 @@ class AdminMiddleware {
                         // @date 2023/5/18 , @author icestone
                         //  如果允许不存在
                         console.log('不允许为空')
-                        console.log(`nowVal:${nowVal}`)
+                        console.log(`nowVal:${ nowVal }`)
                         if (nowVal == null) {
                             console.log('目标值为空,但是不允许,报错')
                             flag = {
@@ -103,8 +98,8 @@ class AdminMiddleware {
                 }
             }
         })
-        return flag;
+        return flag
     }
 }
 
-module.exports = new AdminMiddleware();
+module.exports = new AdminMiddleware()

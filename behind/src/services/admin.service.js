@@ -7,8 +7,6 @@ const xlsx = require('xlsx')
 
 class AdminService {
     async getLogs (offset = 0) {
-        console.log('---getLogs---')
-        console.log(`offset:${ offset }`)
         return await log.findAll({
             order: [
                 // 我们从要排序的模型开始排序数组
@@ -107,12 +105,8 @@ class AdminService {
      * 获取指定数据库信息
     */
     async getTableConfig (tableName) {
-        console.log('tableName--->')
-        console.log(tableName)
         let detail = {}
-        const res = await connection.query(`SELECT *
-                                            FROM ${ tableName }`)
-        detail.totalData = res
+        detail.totalData = await connection.query(`SELECT * FROM ${ tableName }`)
         return detail
     }
 
@@ -121,9 +115,7 @@ class AdminService {
      * 数据表备份导出
     */
     async bakupTable (tableName) {
-        const [rows, fields] = await connection.query(`SELECT *
-                                                       FROM ${ tableName }`, {})
-
+        const [rows, fields] = await connection.query(`SELECT * FROM ${ tableName }`, {})
         const worksheet = xlsx.utils.json_to_sheet(rows)
         const workbook = xlsx.utils.book_new()
         xlsx.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
@@ -148,7 +140,7 @@ class AdminService {
         const [rows, fields] = await connection.query(`SELECT *
                                                        FROM ${ tableName }`, {})
         // 将查询结果转换为JSON格式
-        const jsonData = JSON.stringify(rows)// 将JSON数据写入文件
+        const jsonData = JSON.stringify(rows)
         fs.writeFile(`./src/backup/${ tableName }.json`, jsonData, (error) => {
             if (error) {
                 console.error('json写入文件失败:', error)
@@ -167,6 +159,14 @@ class AdminService {
     async getConfig () {
         return await config.findAll({ raw: true })
     }
+
+    /**
+     * 通过表名获取指定表信息
+     */
+    async getTableInfo (table) {
+        return await connection.query(`SELECT COUNT(*) FROM ${ table }`, {})
+    }
+
 
 }
 

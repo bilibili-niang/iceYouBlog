@@ -20,7 +20,7 @@ module.exports = {
     },
     userParamsError: {
         code: '10005',
-        message: '获取用户信息传参错误',
+        message: '传参错误',
         success: false,
         result: ''
     },
