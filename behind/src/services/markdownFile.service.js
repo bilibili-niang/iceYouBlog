@@ -485,9 +485,6 @@ class MarkdownFileService {
      *  更新操作,这里的 data 传入的应该是对象
     */
     async UpdateSomething (operate, data, id) {
-        console.log('---UpdateSomething---')
-        console.log("data:")
-        console.log(data)
         return await markdownFile.update(
             data,
             {

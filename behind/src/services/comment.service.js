@@ -1,5 +1,4 @@
 const comment = require("../schema/comment")
-const { getUserInfoByEmail } = require("./user.service")
 
 class CommentService {
     /* @author icestone , 14:15
@@ -7,8 +6,7 @@ class CommentService {
      *  根据传参创建评论
     */
     async addComment (id, type, content, nickName = '无名之辈', email) {
-        console.log('nickName')
-        console.log(nickName)
+
         return await comment.create({
             from: id,
             type,

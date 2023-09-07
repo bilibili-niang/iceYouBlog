@@ -64,7 +64,7 @@ app.use(koaStatic(path.join(__dirname, '../upload')))
 app.use(router.routes())
 
 //统一的错误处理:
-app.on('error', () => {
+app.on('error', (ctx) => {
     console.log('错误统一处理')
 })
 

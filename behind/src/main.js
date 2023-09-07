@@ -60,7 +60,8 @@ async function initDataBase () {
             fileNameAndPath
         })
     } else {
-        console.log('markdownFile No initialization is required')
+        // 指定数据库不为空,不用输出信息
+        // console.log('markdownFile No initialization is required')
     }
 }
 
