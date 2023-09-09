@@ -68,10 +68,14 @@ class MarkdownFileService {
     // 传入id,浏览量自增1
     async viewIncreaseById (id) {
         markdownFile.increment(['view'], {
-            where: {
-                id
+                where: {
+                    id
+                }
+            }, {
+                // view 自增 不更新 updatedAt 字段
+                silent: true
             }
-        })
+        )
             .then(res => {
                 // console.log('成功')
                 // console.log(res)
@@ -302,7 +306,7 @@ class MarkdownFileService {
     }
 
     // 通过id返回该文章的一些数据,默认这里用于展示在用户的浏览记录,但也可以自定义查询信息
-    async getMarkdownFileDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg']) {
+    async getMarkdownFileDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg', 'updatedAt']) {
         return await markdownFile.findAll({
             attributes: attr,
             where: {
@@ -408,7 +412,7 @@ class MarkdownFileService {
      * @date 2023/5/5
      *  查询与传入的tag相关的数据
     */
-    async getAboutMarkdown (tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+    async getAboutMarkdown (tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         const processedTags = []
         console.log('查询的tag:')
         console.log(tags)
@@ -532,7 +536,7 @@ class MarkdownFileService {
         })
     }
 
-    async getRecommendMarkdownFileByTags (tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+    async getRecommendMarkdownFileByTags (tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         const processedTags = []
         tags.forEach((item) => {
             if (item.length > 0) {
@@ -569,7 +573,7 @@ class MarkdownFileService {
      * @date 2023/7/6 @time 15:06
      * 根据id随机获取文章
     */
-    async getRandomMarkdownFileById (id, limit = 5, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3']) {
+    async getRandomMarkdownFileById (id, limit = 5, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         let idList = await markdownFile.findAll({
             attributes: ['id'],
             where: {

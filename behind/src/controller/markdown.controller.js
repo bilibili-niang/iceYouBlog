@@ -95,7 +95,7 @@ class MarkdownController {
         const token = ctx.request.header.token || ''
         // 不存在时返回id为0的文章
         const id = ctx.request.body.id || 0
-        const res = await getMarkdownFileDetailById(id, ['url', 'email', 'id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'content', 'headImg'])
+        const res = await getMarkdownFileDetailById(id, ['url', 'email', 'id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'content', 'headImg', 'updatedAt'])
         if (!res.length) {
             // 该文章数据不存在,返回错误信息:
             ctx.body = notExistFile
@@ -103,12 +103,11 @@ class MarkdownController {
             // @date 2023/5/8 , @author icestone
             // token存在,写入历史记录
             if (token) {
-                console.log('存在token')
                 historyByToken(res, token)
             } else {
             }
             const ownerEmail = res[0].email || ''
-            const userInf = await getUserInfoByEmail(ownerEmail, ['email', 'username', 'is_admin', 'avatar', 'occupation', 'githubUrl', 'word'])
+            const userInf = await getUserInfoByEmail(ownerEmail, ['email', 'username', 'is_admin', 'avatar', 'occupation', 'githubUrl', 'word', 'updatedAt'])
             if (res[0].url) {
                 if (!res[0].content) {
                     let config = {
@@ -141,7 +140,7 @@ class MarkdownController {
                         })
                     })
                     const res2 = await markdownFile.findAll({
-                        attributes: { exclude: ['createdAt', 'updatedAt', 'source', 'states', 'headImg'] },
+                        attributes: { exclude: ['createdAt', 'source', 'states', 'headImg'] },
                         raw: true,
                         where: { id }
                     })
@@ -153,7 +152,6 @@ class MarkdownController {
                         userInf: userInf
                     }
                 } else {
-                    console.log('文章数据不为空,直接返回')
                     // 获取文章创建者的avatar,occupation(职业)
                     ctx.body = {
                         code: 200,
@@ -195,8 +193,6 @@ class MarkdownController {
             sequenceSize = sequenceSize < 20 ? 20 : sequenceSize
             // 不能大于50
             sequenceSize = sequenceSize > 50 ? 20 : sequenceSize
-            console.log("sequence,sequenceSize:")
-            console.log(sequence, sequenceSize)
 
             // const email = ctx.request.user.email || '';
             const email = user.email || ''
@@ -225,7 +221,6 @@ class MarkdownController {
 
     // 返回用户文章分页接口
     async returnUserAllArticle (ctx) {
-        console.log('---returnUserAllArticle---')
         const {
             limit = 20,
             id = 0
@@ -756,6 +751,24 @@ class MarkdownController {
                 result
             }
         }
+    }
+
+    /**
+     * 判断是否传入了id/markdown内容,id优先,如果传入了id,那么根据id返回html文本
+     * @param ctx
+     * @return {Promise<void>}
+     */
+    async returnMarkdown (ctx) {
+        const { id = null, data } = ctx.request.body
+        if (id) {
+
+        } else {
+            console.log(data)
+        }
+        ctx.body = {
+            code: 200
+        }
+
     }
 }
 

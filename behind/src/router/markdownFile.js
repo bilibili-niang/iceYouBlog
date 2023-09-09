@@ -123,6 +123,11 @@ router.get('/tags', markdownC.getAllTags)
  */
 router.get('/random', markdownC.getRandomOne)
 
+/**
+ * 将指定id/markdown转为html内容
+ */
+router.post('/transformToHtml',markdownC.returnMarkdown)
+
 
 module.exports = router
 

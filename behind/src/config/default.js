@@ -17,3 +17,4 @@ module.exports = {
     PICTURE_PATH: 'upload',
 
 }
+
