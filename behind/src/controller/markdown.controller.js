@@ -760,13 +760,17 @@ class MarkdownController {
      */
     async returnMarkdown (ctx) {
         const { id = null, data } = ctx.request.body
+        let result = ''
         if (id) {
-
+            result = await markdownS.getMarkdownContentById(id)
         } else {
             console.log(data)
         }
         ctx.body = {
-            code: 200
+            code: 200,
+            message: '获取markdown内容',
+            result,
+            success:true
         }
 
     }

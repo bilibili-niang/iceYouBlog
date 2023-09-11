@@ -10,7 +10,32 @@ const https = require('https')
 const cheerio = require('cheerio')
 const TurndownService = require('turndown')
 let turndownService = new TurndownService()
+const hljs = require('highlight')
 
+const MarkdownIt = require('markdown-it')
+
+md = new MarkdownIt({
+    // 在源码中启用 HTML 标签
+    html: true,
+    // 转换段落里的 '\n' 到 <br>。
+    breaks: true,
+    langPrefix: 'language-',
+    linkify: true,
+    // 启用一些语言中立的替换 + 引号美化
+    typographer: true,
+    highlight: function (str, lang) {
+        // if (lang && hljs.getLanguage(lang)) {
+        if (lang) {
+            try {
+                return '<pre class="hljs"><code>' +
+                    hljs.highlight(lang, str, true).value +
+                    '</code></pre>'
+            } catch (__) {
+            }
+        }
+        return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
+    }
+})
 
 class MarkdownFileService {
     /* @author icestone , 16:14
@@ -44,7 +69,6 @@ class MarkdownFileService {
     // 获取首页数据/分页数据
     async getHomeIndexList (pageNum, pageSize) {
         const offset = ( pageNum - 1 ) * pageSize
-        // const {count, rows} = await markdownFile.findAndCountAll({offset: offset, limit: pageSize * 1});
         return await markdownFile.findAndCountAll({
             attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'updatedAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             offset: offset,
@@ -689,7 +713,6 @@ class MarkdownFileService {
             },
             order: [Sequelize.literal('rand()')]
         })
-
     }
 
     /**
@@ -736,6 +759,27 @@ class MarkdownFileService {
                 })
             })
         })
+    }
+
+    /**
+     * 通过id获取文章的markdown并转为html
+     * @param id
+     */
+    async getMarkdownContentById (id) {
+        const data = await markdownFile.findOne({
+            where: {
+                id
+            }
+        })
+        let html = ''
+        try {
+            if (data.content) {
+                html = md.render(data.content)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+        return html
     }
 
 }
