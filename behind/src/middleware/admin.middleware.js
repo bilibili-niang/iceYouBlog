@@ -16,7 +16,7 @@ class AdminMiddleware {
         const token = ctx.request.header.token || null
         if (token.length <= 10) {
             ctx.body = JsonWebTokenError
-            return
+
         } else {
             const { username = null } = jwt.decode(token, salt)
             const isAdminFlag = await getIsAdminById(username)
@@ -25,7 +25,7 @@ class AdminMiddleware {
                 await next()
             } else {
                 ctx.body = adminError
-                return
+
             }
         }
     }
@@ -36,7 +36,6 @@ class AdminMiddleware {
      * 验证成功返回0,反之不成功
     */
     paramsVerify (verify, ctx) {
-        console.log("---paramsVerify---")
         const keys = Object.keys(verify)
         let flag = 0
         keys.map(item => {
@@ -71,10 +70,7 @@ class AdminMiddleware {
                     if (verify[item].allowNull || false == false) {
                         // @date 2023/5/18 , @author icestone
                         //  如果允许不存在
-                        console.log('不允许为空')
-                        console.log(`nowVal:${ nowVal }`)
                         if (nowVal == null) {
-                            console.log('目标值为空,但是不允许,报错')
                             flag = {
                                 code: 300,
                                 message: "传参参数错误",
@@ -86,7 +82,6 @@ class AdminMiddleware {
                     } else {
                         // @date 2023/5/18 , @author icestone
                         //  如果不允许不存在,报错
-                        console.log("传参错误")
                         flag = {
                             code: 300,
                             message: "传参参数错误",

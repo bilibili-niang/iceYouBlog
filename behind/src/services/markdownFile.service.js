@@ -19,11 +19,12 @@ md = new MarkdownIt({
     html: true,
     // 转换段落里的 '\n' 到 <br>。
     breaks: true,
+    xhtmlOut: true,
     langPrefix: 'language-',
     linkify: true,
     // 启用一些语言中立的替换 + 引号美化
     typographer: true,
-    highlight: function (str, lang) {
+    /*highlight: function (str, lang) {
         // if (lang && hljs.getLanguage(lang)) {
         if (lang) {
             try {
@@ -34,7 +35,7 @@ md = new MarkdownIt({
             }
         }
         return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>'
-    }
+    }*/
 })
 
 class MarkdownFileService {

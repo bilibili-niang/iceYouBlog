@@ -8,8 +8,9 @@ const eventC = require('../controller/events.controller.js')
 // 新增今日
 router.post('/addTodayEvent', userM.auth, eventC.addEvent)
 
-router.post('/test', (ctx) => {
+router.post('/list',userM.auth,eventC.getList)
 
+router.post('/test', (ctx) => {
     ctx.body = {
         code: 200,
         success: true,

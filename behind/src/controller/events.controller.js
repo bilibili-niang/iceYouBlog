@@ -39,6 +39,13 @@ class EventsController {
             }
         }
     }
+
+// 分页查询
+    async getList (ctx) {
+
+
+    }
+
 }
 
 module.exports = new EventsController()

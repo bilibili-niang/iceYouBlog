@@ -8,7 +8,7 @@ class EventsService {
         params.userId = user.id
         if (op === 'add') {
             delete params.id
-            return await event.create(params)
+            return event.create(params)
         } else if (op === 'update') {
             // 改
             if (!params.id) {
