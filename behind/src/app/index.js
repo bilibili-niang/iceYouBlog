@@ -60,6 +60,7 @@ app.use(parameter(app))
 
 //开放静态资源路径
 app.use(koaStatic(path.join(__dirname, '../upload')))
+app.use(koaStatic(path.join(__dirname, '../bonus')))
 //挂载
 app.use(router.routes())
 
