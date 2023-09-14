@@ -1,5 +1,8 @@
 <template>
   <div class="lim outLim">
+
+
+    <!--基础菜单-->
     <ul class="ice-row list">
       <li class="list-item">
         <ice-link href="/" target="_self">index</ice-link>
@@ -15,19 +18,18 @@
         <ice-link href="#/code/codeClips" target="_self">code clips</ice-link>
       </li>
       <li class="list-item">
-        <ice-link href="#/friend/links" target="_self">友链与留言</ice-link>
+        <ice-link href="#/friend/links" target="_self">友链</ice-link>
       </li>
       <li class="list-item">
         <Search></Search>
       </li>
       <li class="list-item">
-        <div :class="{ dark: dark==true }" class="light" title="切换深色/浅色模式" @click="changeDark">
-          <ice-text>
-            {{ dark ? 'light' : 'dark' }}
-          </ice-text>
-        </div>
+        <ice-link :disabled="true" :class="{ dark: dark==true }"
+                  @click="changeDark"> {{ dark ? 'light' : 'dark' }}
+        </ice-link>
       </li>
     </ul>
+
     <div v-if="loginState" class="avatarLim">
       <ul class="ice-row list">
         <li class="list-item avatar">
@@ -73,7 +75,6 @@ const loginState = ref()
 const router = useRouter()
 const store = useStore()
 let dark = ref(true)
-console.log(store.state.user.userInfo)
 const { userInfo } = store.state.user || false
 
 const out = () => {
@@ -135,7 +136,10 @@ init()
 changeDark()
 </script>
 <style lang="less" scoped>
+@import "../../assets/css/variables.less";
+
 .lim {
+  z-index: 10;
   margin: 0 auto;
 
   .list-item {
@@ -149,6 +153,19 @@ changeDark()
   }
 }
 
+@media (max-width: 1200px) {
+  .lim {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: @bac;
+  }
+}
+
+@media (min-width: 1200px) {
+
+}
+
 
 .outLim {
   // 小屏
@@ -158,37 +175,16 @@ changeDark()
 
   @media (min-width: 1200px) {
     max-width: 70vw;
+    margin-bottom: 5rem;
   }
 }
 
 ul.list {
   flex-wrap: wrap;
-  li{
-    margin: 0!important;
+
+  li {
+    margin: 0 !important;
   }
 }
 
-/*ul.list {
-  li:nth-child(1n+1) {
-    opacity: 0;
-    height: 0;
-    transition: .5s;
-    white-space: nowrap;
-  }
-
-  &:hover {
-    li:nth-child(1n+1) {
-      opacity: 1;
-      height: fit-content;
-    }
-  }
-}
-
-ul.list:nth-child(1) {
-  height: 2rem;
-}
-
-ul.list:nth-child(2) {
-  height: 6rem;
-}*/
 </style>

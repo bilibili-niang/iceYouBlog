@@ -1,15 +1,15 @@
 <template>
   <div class="index container">
     <div class="right">
-      <AdminCard></AdminCard>
+      <!--      <AdminCard></AdminCard>-->
       <Recommend></Recommend>
     </div>
     <div class="left m-r ice-row">
-      <template class="card" v-for="(item, index) in indexList"
-                :key="index">
+      <div class="card" v-for="(item, index) in indexList"
+           :key="index">
         <IndexCard :item="item"></IndexCard>
-      </template>
-      <div class="btns m-b" v-if="value">
+      </div>
+      <div class="btns m-b" v-if="indexList">
         <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[10, 20, 30, 40]"
                        :small="small" :disabled="disabled" :background="background" layout="sizes, prev, pager, next"
                        :total="allCount" @current-change="handleCurrentChange"/>
@@ -80,8 +80,7 @@ const handleCurrentChange = (val) => {
         fun.alert(e)
       })
 }
-/* @author icestone , 15:41
- * @date 2023/5/5
+/*
  * 获取首页所有文章的统计
 */
 
@@ -96,7 +95,7 @@ const timeFormat = (data) => {
 const initData = () => {
   api.getHomeData()
       .then(res => {
-        fun.alert(res.message, 'success')
+        // fun.alert(res.message, 'success')
         indexList = res.result.rows || []
       })
       .catch(e => {
@@ -105,7 +104,6 @@ const initData = () => {
 }
 // 查询分页数据
 initData()
-// @date 2023/5/5 , @author icestone
 // 获取首页所有文章 count
 initCount()
 watch(indexList, (newVal, oldVal) => {
@@ -128,9 +126,23 @@ watch(indexList, (newVal, oldVal) => {
 
   // 小屏
   @media (max-width: 1200px) {
-
     .left {
-      width: 100% !important;
+      overflow: hidden;
+      margin: 0 !important;
+
+      .indexCard {
+        max-width: 100% !important;
+        box-sizing: border-box;
+
+        /deep/ .ice-card, .ice-row {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+
+    .right {
+      display: none !important;
     }
 
     .recommend {
@@ -147,9 +159,13 @@ watch(indexList, (newVal, oldVal) => {
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 100%;
-    min-width: 21rem;
+    width: 100%;
     justify-content: space-between;
-    margin-top: 1rem;
+    box-sizing: border-box;
+
+    .card {
+      width: 100%;
+    }
   }
 
   .right {

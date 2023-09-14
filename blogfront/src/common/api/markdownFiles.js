@@ -51,6 +51,15 @@ export default {
     */
     async getAllViews (params) {
         return post('/home/allviews', params)
+    },
+
+    /**
+     * 通过关键字查询文章
+     * @param params
+     * @return {Promise<unknown>}
+     */
+    async searchByKey (params) {
+        return post('/markdownFile/search', params)
     }
 
 }

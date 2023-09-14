@@ -41,97 +41,70 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import timeFormat from '@/common/filter/time'
+import { useRouter } from 'vue-router'
 
-</script>
-<script>
-import MarkdownTags from "@/components/common/MarkdownTags.vue"
-import timeFormat from "@/common/filter/time"
-import LazyImg from '@/components/common/LazyImg.vue'
-
-export default {
-  name: "indexCard",
-  components: { LazyImg, MarkdownTags },
-  props: {
-    item: {},
-    selectOperate: {
-      type: String
-    },
-    showOperate: {
-      type: Boolean,
-      default: false
-    }
+const props = defineProps({
+  item: {},
+  selectOperate: {
+    type: String
   },
-  data () {
-    return {
-      oldData: '',
-      randomRef: Math.random() * 1000
-    }
-  },
-  methods: {
-    jumpTag (tag) {
-      const routeUrl = this.$router.resolve({
-        path: "/read/readTag",
-        query: { tag }
-      })
-      window.open(routeUrl.href, '_blank')
-    },
-    DateDiffer (Date_end) {
-      //date1结束时间
-      let date1 = new Date(Date_end)
-      //date2当前时间
-      let date2 = new Date()
-      date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
-      date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
-      const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
-      const diffDate = diff / ( 24 * 60 * 60 * 1000 )  //计算当前时间与结束时间之间相差天数
-      this.oldData = diffDate
-    },
-    // 跳转阅读
-    goToRead (id) {
-      const routeUrl = this.$router.resolve({
-        path: "/read",
-        query: { id }
-      })
-      window.open(routeUrl.href, '_blank')
-    },
-    isInViewPortOfOne (el) {
-      // viewPortHeight 兼容所有浏览器写法
-      const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-      const offsetTop = el.offsetTop
-      const scrollTop = document.documentElement.scrollTop
-      const top = offsetTop - scrollTop
-      return top <= viewPortHeight
-    }
-  },
-  watch: {
-    item (newVal) {
-      // @date 2023/5/5 , @author icestone
-      // 分页数据更改时数据会更改,再次格式化时间
-      this.item.updatedAt = timeFormat.timeFormat(newVal.updatedAt) || ''
-    }
-  },
-  created () {
-    this.DateDiffer(this.item.updatedAt)
-    // @date 2023/5/5 , @author icestone
-    // 第一次创建子组件并接收到值时需要格式化下时间
-    this.item.updatedAt = timeFormat.timeFormat(this.item.updatedAt) || ''
+  showOperate: {
+    type: Boolean,
+    default: false
   }
+})
+
+const oldData = ref('')
+
+const randomRef = Math.random() * 1000
+
+const DateDiffer = (Date_end) => {
+  //date1结束时间
+  let date1 = new Date(Date_end)
+  //date2当前时间
+  let date2 = new Date()
+  date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
+  date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
+  const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
+  const diffDate = diff / ( 24 * 60 * 60 * 1000 )  //计算当前时间与结束时间之间相差天数
+  oldData.value = diffDate
 }
+
+
+const router = useRouter()
+// 跳转阅读
+const goToRead = (id) => {
+  const routeUrl = router.resolve({
+    path: "/read",
+    query: { id }
+  })
+  window.open(routeUrl.href, '_blank')
+}
+const init = () => {
+  DateDiffer(props.item.updatedAt)
+  // 第一次创建子组件并接收到值时需要格式化下时间
+  props.item.updatedAt = timeFormat.timeFormat(props.item.updatedAt) || ''
+}
+init()
 </script>
 
 <style scoped lang="less">
-
+.indexCard {
+  overflow: hidden;
+}
 
 // 小屏
 @media (max-width: 1200px) {
   .indexCard {
-    flex: 1;
+    max-width: 100%;
+
   }
 }
 
 @media (min-width: 1200px) {
   .indexCard {
-    width: 49%;
   }
 }
 

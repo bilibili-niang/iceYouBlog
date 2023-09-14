@@ -106,7 +106,7 @@ export default {
     box-sizing: border-box;
 
     .indexCard {
-      width: 49%;
+      width: 100%;
       box-sizing: border-box;
     }
   }

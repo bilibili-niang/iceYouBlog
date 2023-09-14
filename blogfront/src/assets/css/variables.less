@@ -1,0 +1,120 @@
+// 颜色参考 http://zhongguose.com/#qianshibai
+// less变量
+
+@btn-skyblue: var(--color);
+@btn-skyblue-bleak: var(--color-bleak);
+@btn-skyblue-none: rgba(69, 159, 251, 0);
+// 主题颜色
+@themeColor: @btn-skyblue;
+// 檀紫
+@themeActiveColor: rgba(56, 25, 36, 1);
+@themeColor-bleak: @btn-skyblue-bleak;
+@themeColor-bleak-bleak: @fontColor-bleak-bleak;
+// 主题色翻转
+@themeColorReversal: @btn-hoverColor;
+@themeColorNone: @btn-skyblue-none;
+// 链接文字激活样式
+@themeColorActive: @dangerColor-bleak;
+@themeBackgroundColor: @fontColor-bleak-bleak;
+
+// 枫叶红
+// danger
+@dangerColor: rgba(194, 31, 48, 1);
+@dangerColor-bleak: rgba(194, 31, 48, .5);
+
+// success
+// 美蝶绿
+@successColor: rgba(18, 170, 156, 1);
+@successColor-bleak: rgba(18, 170, 156, .5);
+
+// ready
+//星蓝
+@startColor: rgba(22, 97, 171, 1);
+@startColor-bleak: rgba(22, 97, 171, .5);
+
+@btn-hoverColor: #ffffff;
+@borderColor: rgba(69, 159, 251, .5);
+@padding: .3rem;
+// 字体大小
+@fontSize-s-su: .5rem;
+@fontSize-s: .5rem;
+@fontSize-n: .75rem;
+@fontSize-l: 1rem;
+@fontSize-l-su: 1.1rem;
+
+// line height
+@lineHeight-s: 1rem;
+@lineHeight-n: 1.2rem;
+@lineHeight-l: 1.5rem;
+
+//font weight
+@fontWeight-s: 400;
+@fontWeight-n: 500;
+@fontWeight-l: bold;
+@fontWeight-l-su: bolder;
+
+// @radio: .3rem;
+@radio-s: .1rem;
+@radio-n: .2em;
+@radio-l: .3rem;
+
+// padding的尺寸变量
+@p-small: .1rem;
+@p-normal: .3rem;
+@p-large: .4rem;
+@p-large-su: .7rem;
+
+// margin的尺寸变量
+@m-small: .1rem;
+@m-normal: .3rem;
+@m-large: .7rem;
+
+// 字体颜色
+// 主题字体颜色,锌灰
+html.light {
+  --color: rgba(122, 115, 116, 1);
+  --color-bleak: rgba(122, 115, 116, 1);
+  --bac: rgb(255, 255, 255);
+  --bac-bleak: rgba(255, 255, 255, .5);
+}
+
+// 深色模式
+html.dark {
+  --color: rgba(218, 212, 203, 1);
+  --color-bleak: rgba(218, 212, 203, .6);
+  --bac: rgb(31, 32, 36);
+  --bac-bleak: rgba(31, 32, 36, .5);
+}
+
+@fontColor: var(--color);
+@fontColor-bleak: rgba(45, 46, 54, .5);
+@fontColor-bleak-bleak: rgba(45, 46, 54, .1);
+@fontColor-none: rgba(45, 46, 54, 0);
+// 芡食白
+@fontColor-light: rgba(226, 225, 228, 1);
+
+@fonColor-dark: @fontColor;
+@fonColor-dark-bleak: rgba(45, 46, 54, .1);
+
+// 布局变量
+@padding-layout-small: 5rem;
+@padding-layout-normal: 7rem;
+@padding-layout-large: 10rem;
+@padding-layout-large-su: 15rem;
+
+// button hover
+// hover shadow length
+@hoverLength-n: .5rem;
+// blur length
+@hoverBlurLength: .7rem;
+
+// 动画过渡时间
+@time-s: .2s;
+@time-n: .3s;
+@time-l: .5s;
+
+
+// light/dark
+@bac: var(--bac);
+@bac-dark: var(--bac);
+@bac-dark-bleak: rgba(255, 255, 255, .1);

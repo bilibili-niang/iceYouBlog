@@ -1,94 +1,68 @@
 <template>
   <div class="search">
-    <el-link @click="drawer = true">搜索</el-link>
+    <ice-link @click="drawer = true" :disabled="true">搜索</ice-link>
     <br>
     <el-drawer v-model="drawer" direction="ttb" size="70%" title="搜索一下" :with-header="false">
-      <el-input v-model="key" placeholder="Please input search key"/>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item hover-around-shadow animation-time" v-for="(item,index) in searchResult"
+      <div class="searchLim ice-column">
+        <ice-input class="input" v-model="key" placeholder="开始搜索!"></ice-input>
+        <ice-button @click="getResultByKey">search</ice-button>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item" v-for="(item,index) in searchResult"
             :key="index">
           <el-divider content-position="left">{{ item.title }}</el-divider>
-          <el-text tag="b" size="small" class="title-left-sm">描述:</el-text>
+          <ice-text tag="b" size="small" class="title-left-sm">描述:</ice-text>
           <br>
           <el-text>{{ item.description }}</el-text>
           <br>
-          <el-button round @click="goToRead(item.id)">read</el-button>
+          <ice-button round @click="goToRead(item.id)">read</ice-button>
         </li>
       </ul>
     </el-drawer>
   </div>
 </template>
 
-<script>
-import http from '../../common/api/request'
-import { ElMessage } from 'element-plus'
-import { h } from 'vue'
+<script setup>
 
-export default {
-  name: "Search",
-  data () {
-    return {
-      drawer: false,
-      key: '',
-      searchResult: ''
-    }
-  },
-  methods: {
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
-    },
-    // 跳转阅读
-    goToRead (id) {
-      const routeUrl = this.$router.resolve({
-        path: "/read",
-        query: { id }
-      })
-      window.open(routeUrl.href, '_blank')
-    },
-    getResultByKey (key) {
-      http.$axios({
-        url: '/markdownFile/search',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-        data: {
-          key
-        }
-      })
-          .then(res => {
-            if (res.result.length == 0) {
-              // 没有搜索结果
-              this.alertMessage('没有搜索结果', '换个词搜索试试?', 'rgba(255,0,0,0.5)')
-            } else {
-              // 有搜索结果
-              this.searchResult = res.result
-            }
-          })
-          .catch(e => {
-            console.log('失败:')
-            console.log(e)
-          })
-    }
-  },
-  watch: {
-    key (item1, item2) {
-      // item1为新值，item2为旧值
-      this.getResultByKey(item1)
-    }
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import api from '@/common/api'
+
+const key = ref('')
+const searchResult = ref('')
+const getResultByKey = async () => {
+  const res = await api.searchByKey({
+    key: key.value
+  })
+
+  if (res.result.length == 0) {
+    // 没有搜索结果
+    console.log('没有搜索结果')
+  } else {
+    // 有搜索结果
+    searchResult.value = res.result
   }
+
 }
+
+const router = useRouter()
+const goToRead = (id) => {
+  const routeUrl = router.resolve({
+    path: "/read",
+    query: { id }
+  })
+  window.open(routeUrl.href, '_blank')
+}
+
+const drawer = ref(false)
+
+
 </script>
 
 <style scoped lang="less">
 .search {
   position: relative;
+  z-index: 5;
 
   :deep .el-drawer__body {
     padding: 1rem;

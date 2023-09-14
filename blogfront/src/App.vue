@@ -1,7 +1,7 @@
 <template>
   <IndexHeader></IndexHeader>
   <router-view :key="$route.fullPath"/>
-  <div class="footer animation-time">
+  <div class="footer animation-time" v-if="false">
     <el-link href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</el-link>
     <div>
       powered by:
@@ -23,7 +23,7 @@ export default {
     // 获取深色/浅色模式的flag
     const dark = localStorage.getItem('mode') || null
     if (dark != null) {
-      if (dark=='true') {
+      if (dark == 'true') {
         document.querySelector('html').classList.add('dark')
       } else {
         document.querySelector('html').classList.remove('dark')
@@ -55,6 +55,7 @@ export default {
 #app {
   display: flex;
   flex-direction: column;
+  max-height: 90vh;
 }
 
 .footer {
