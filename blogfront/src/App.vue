@@ -75,4 +75,11 @@ export default {
     opacity: 0.8;
   }
 }
+
+@media (max-width: 1200px) {
+  #app {
+    padding-top: 3rem;
+  }
+}
+
 </style>

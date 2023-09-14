@@ -199,6 +199,14 @@ const routes = [
         component: () => import('@/views/Test.vue')
     },
     {
+        path: "/bonus",
+        name: 'bonus',
+        meta: {
+            title: 'bonus',
+        },
+        component: () => import('@/views/bonus.vue')
+    },
+    {
         path: '/404',
         name: 'NotFound',
         meta: {

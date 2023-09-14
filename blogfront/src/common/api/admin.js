@@ -1,4 +1,4 @@
-import { post,get } from './request'
+import { post, get } from './request'
 
 export default {
     async postConfig (params) {
