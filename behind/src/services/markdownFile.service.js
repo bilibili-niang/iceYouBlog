@@ -10,9 +10,8 @@ const https = require('https')
 const cheerio = require('cheerio')
 const TurndownService = require('turndown')
 let turndownService = new TurndownService()
-const hljs = require('highlight')
-
 const MarkdownIt = require('markdown-it')
+
 
 md = new MarkdownIt({
     // 在源码中启用 HTML 标签

@@ -50,5 +50,4 @@ router.post('/database', auth, isAdmin, adminC.getDatabaseInfo)
 
 router.post('/select',auth,isAdmin,adminC.getSelectInfo)
 
-
 module.exports = router

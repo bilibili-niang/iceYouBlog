@@ -256,7 +256,6 @@ class AdminController {
                 result
             }
         }
-
     }
 
 }

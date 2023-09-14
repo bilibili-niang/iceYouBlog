@@ -27,6 +27,8 @@ const {
     userLoginError, userUpdateError, TokenRefreshError, userParamsError
 } = require('../constant/err.type')
 const { getShowInIndexAdminUser } = require('../services/admin.service')
+const errType = require('../constant/err.type')
+const axios = require('axios')
 
 class UserController {
     async register (ctx) {
@@ -182,7 +184,7 @@ class UserController {
         const basename = path.basename(file.path)
         const imgPath = '/' + basename
         const result = await createHeadImgByEmail(ctx.state.user.email, imgPath)
-        await updateUserAvatar(ctx.state.user.email,imgPath)
+        await updateUserAvatar(ctx.state.user.email, imgPath)
         console.log('返回的用户头像:')
         console.log(result.dataValues)
         ctx.body = {
@@ -271,6 +273,41 @@ class UserController {
             message: '返回指定email的所有评论',
             result
         }
+    }
+
+
+    /**
+     * 微信用户登录
+     */
+    async miniLogin (ctx) {
+        const { code = null } = ctx.request.body
+
+        if (!code) {
+            ctx.body = errType.userParamsError
+        } else {
+            // 通过微信服务器获取用户openId
+            const res = await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
+                params: {
+                    appid: 'wxe8c43d9db3e1333a',
+                    js_code: 'js_code',
+                    grant_typ: code
+                }
+            })
+                .then(res => {
+                    console.log("res:")
+                    console.log(res.data)
+                })
+                .catch(e => {
+                    console.log("e:")
+                    console.log(e)
+                })
+
+            ctx.body = {
+                code: 200,
+                message: '用户登录~~~~~~~~~~~~~'
+            }
+        }
+
     }
 
 }

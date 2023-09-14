@@ -16,7 +16,7 @@ const { md5Key, salt } = require('../config/default')
 
 //验证登录
 const verifyLogin = async (ctx, next) => {
-//	1.根据用户名查询用户是否存在,不存在则报错:
+    //	1.根据用户名查询用户是否存在,不存在则报错:
     let password = ctx.request.body.password || ''
     password = md5(password + md5Key)
     ctx.request.body.password = md5(password + md5Key)
@@ -77,7 +77,11 @@ const auth = async (ctx, next) => {
     const token = ctx.request.header.token || null
     if (token != null) {
         ctx.state.user = jwt.decode(token, salt)
-        await next()
+        if (!ctx.state.user) {
+            ctx.body = tokenNotExist
+        } else {
+            await next()
+        }
     } else {
         ctx.body = tokenNotExist
     }

@@ -14,6 +14,8 @@ const {
     returnUserAllPostedCommented
 } = require('../controller/user.controller')
 
+const userC = require('../controller/user.controller')
+
 const {
     //验证用户是否存在
     verifyLogin,
@@ -56,5 +58,10 @@ router.post('/headImg', auth, returnUserHeadImg)
 */
 router.post('/getUserAllPostedComments', auth, returnUserAllPostedCommented)
 
+
+/**
+ * 微信用户登录接口
+ */
+router.post('/miniLogin', userC.miniLogin)
 
 module.exports = router
