@@ -71,9 +71,8 @@ export default {
       id: 0,
       markdownData: {
         content: `> hello world!
-
-type you first line code
-`,
+          type you first line code
+          `,
         title: '请输入你的标题',
         description: '这是我新建的文章',
         tag1: '',
@@ -107,7 +106,6 @@ type you first line code
       },
       action: '/file/markdownImages',
       data: {
-        // token: JSON.parse(localStorage.getItem('userInfo')) == null ? '' : JSON.parse(localStorage.getItem('userInfo')).token,
         markdownId: this.id
       }
     }
@@ -180,7 +178,7 @@ type you first line code
       this.id = this.$route.query.id || '0'
       // @date 2023/5/8 , @author icestone
       // 没有传入id,为新建文章
-      if (this.id == 0) {
+      if (this.id === 0) {
 
       } else {
         // @date 2023/5/8 , @author icestone

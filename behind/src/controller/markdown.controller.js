@@ -279,8 +279,6 @@ class MarkdownController {
             // ctx.form = form;
             // const form = ctx.request.body;
             let flag = false
-            console.log("form:")
-            console.log(form)
             const res = await markdownFile.create({
                 email: ctx.state.user.email || 'admin@email',
                 title: form.title,
@@ -303,7 +301,7 @@ class MarkdownController {
             }
             ctx.body = {
                 code: 200,
-                msg: '成功success为true,反之false',
+                message: '成功success为true,反之false',
                 success: flag,
                 res: {
                     result: res
@@ -324,11 +322,10 @@ class MarkdownController {
             // token中的email与该文章的email一致,可以修改
             if (ctx.state.user.email == email.email) {
                 const res = await updateMarkdownByEmail(markdownData)
-                console.log("res[0]")
-                console.log(res[0])
                 ctx.body = {
                     code: 200,
                     success: true,
+                    res
                 }
             } else {
                 // 并非发布者的邮箱
@@ -347,10 +344,9 @@ class MarkdownController {
         const token = ctx.request.header.token || null
         if (token && key != 'null') {
             const { email = null } = jwt.decode(token, salt)
-            console.log("email:")
-            console.log(email)
+
             if (email) {
-                console.log('用户存在,写入历史')
+
                 await insertSearchHistory(email, key)
             }
         }
@@ -370,12 +366,12 @@ class MarkdownController {
 
     // 点赞
     async returnSupportResult (ctx) {
-        console.log('---returnSupportResult---')
+
         const { id = 0 } = ctx.request.body
         if (ctx.state.user != null) {
             // 存在用户
             // 写入记录
-            console.log('有用户登录,写入点赞记录')
+
             await logHistoryByEmail(id, ctx.state.user.email)
             const result = await supportIncrease(id)
             ctx.body = {
@@ -398,17 +394,15 @@ class MarkdownController {
 
     // 对文章进行操作
     async returnOperateResult (ctx) {
-        console.log('---returnOperateResult---')
+
         const { email } = ctx.state.user
         // 根据ids查询文章的email信息是否属于该操作用户
         const attr = ['id', 'email']
-        console.log('传入的ids:')
-        console.log(ctx.state.ids)
+
         // @date 2023/5/5 , @author icestone
         // 这里查询的是没有被删除的普通文章
         const idsResult = await getMarkdownFileDetailById(ctx.state.ids, attr)
-        console.log('查询的ids信息:')
-        console.log(idsResult)
+
         /**
          * @Description:
          * @author icestone
@@ -452,9 +446,7 @@ class MarkdownController {
                 } else {
                 }
             })
-            console.log("---operate revover---")
-            console.log('ableOperatelIds')
-            console.log(ableOperatelIds)
+
             const result = await getRecoverResult(ableOperatelIds, ctx.state.user.email)
             ctx.body = {
                 code: 200,
@@ -470,7 +462,7 @@ class MarkdownController {
 
     // 获取用户已删除的文章
     async returnDeletedFiles (ctx) {
-        console.log('returnDeletedFiles')
+
         const { email } = ctx.state.user
 
         const result = await getDeletedFiles(email)
@@ -524,8 +516,7 @@ class MarkdownController {
      * 将制定type设置为推荐
     */
     async returnSetRecommend (ctx) {
-        console.log('ctx.request.body')
-        console.log(ctx.request.body)
+
         // const result = await setRecommendByType()
         const paramsRes = paramsVerify({
             ids: {
@@ -541,9 +532,8 @@ class MarkdownController {
 
         // @date 2023/5/20 , @author icestone
         // 参数验证通过
-        if (paramsRes == 0) {
-            console.log("ctx.request.body.level:")
-            console.log(ctx.request.body.level)
+        if (paramsRes === 0) {
+
             const result = await setRecommendByType(ctx.request.body.ids, ctx.request.body.level)
             ctx.body = {
                 code: 200,
@@ -608,7 +598,7 @@ class MarkdownController {
                 }
             }
         } else {
-            console.log('删除文件')
+
             fs.unlinkSync(file.path)
             // 不是图片
             ctx.body = {
@@ -625,10 +615,9 @@ class MarkdownController {
      * 获取推荐文章
     */
     async returnRecommendMarkdown (ctx) {
-        console.log('returnRecommendMarkdown--->')
+
         const result = await getRecommendMarkdownFile()
-        console.log('获取的推荐文章:')
-        console.log(result)
+
         ctx.body = {
             code: 200,
             success: true,
@@ -764,13 +753,13 @@ class MarkdownController {
         if (id) {
             result = await markdownS.getMarkdownContentById(id)
         } else {
-            console.log(data)
+
         }
         ctx.body = {
             code: 200,
             message: '获取markdown内容',
             result,
-            success:true
+            success: true
         }
 
     }
