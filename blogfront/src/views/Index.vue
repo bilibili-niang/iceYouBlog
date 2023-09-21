@@ -1,7 +1,7 @@
 <template>
   <div class="index container">
     <div class="right">
-      <!--      <AdminCard></AdminCard>-->
+      <!-- <AdminCard></AdminCard>-->
       <Recommend></Recommend>
     </div>
     <div class="left m-r ice-row">
@@ -23,7 +23,7 @@ import filters from '@/common/filter/time'
 import fun from '@/hook/function'
 import IndexCard from "@/components/index/IndexCard.vue"
 import Recommend from "@/components/index/Recommend.vue"
-import { onMounted, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import markdownApi from '@/common/api/markdownFiles'
 import api from '@/common/api/index'
@@ -47,10 +47,6 @@ const goToRead = (id) => {
   })
   window.open(routeUrl.href, '_blank')
 }
-onMounted(() => {
-  // const scene = new THREE.Scene()
-  // scene.background = new THREE.Color('#eee')
-})
 
 // 分页按钮
 const handleCurrentChange = (val) => {

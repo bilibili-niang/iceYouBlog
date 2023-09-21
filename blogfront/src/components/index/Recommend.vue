@@ -2,19 +2,26 @@
   <div class="recommend">
     <!--推荐-->
     <div class="markdown" v-if="markdownList">
-      <div class="btns">
-        <ice-tag>文章推荐</ice-tag>
-      </div>
-      <!--推荐文章-->
-      <div class="markdownLim">
-        <template v-for="(item,index) in markdownList"
-                  :key="index">
-          <IndexCard :item="item"></IndexCard>
+      <ice-card :border="false">
+        <template v-slot:header>
         </template>
-        <div class="indexCard"></div>
-        <div class="indexCard"></div>
-        <div class="indexCard"></div>
-      </div>
+        <template v-slot:body>
+          <ice-tag>文章推荐↓点击下面展开</ice-tag>
+        </template>
+        <template v-slot:bottom>
+          <!--推荐文章-->
+          <div class="markdownLim">
+            <template v-for="(item,index) in markdownList"
+                      :key="index">
+              <IndexCard :item="item"></IndexCard>
+            </template>
+            <div class="indexCard"></div>
+            <div class="indexCard"></div>
+            <div class="indexCard"></div>
+          </div>
+        </template>
+      </ice-card>
+
     </div>
   </div>
 </template>

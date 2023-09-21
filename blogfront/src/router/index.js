@@ -191,20 +191,24 @@ const routes = [
         ],
     },
     {
+        path: "/bonus",
+        name: 'bonus',
+        children: [
+            {
+                path: '/bonus/',
+                name: "bonusIndex",
+                meta: { title: "bonusIndex" },
+                component: () => import('@/views/bonus/index/index.vue')
+            }
+        ]
+    },
+    {
         path: "/test",
         name: 'test',
         meta: {
             title: 'test',
         },
         component: () => import('@/views/Test.vue')
-    },
-    {
-        path: "/bonus",
-        name: 'bonus',
-        meta: {
-            title: 'bonus',
-        },
-        component: () => import('@/views/bonus.vue')
     },
     {
         path: '/404',

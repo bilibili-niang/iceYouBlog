@@ -1,43 +1,41 @@
 <template>
   <div class="readTag container">
-    <el-divider content-position="left">关于标签: {{ tag.tag1 }}
+    <ice-divider content-position="left">关于标签: {{ tag.tag1 }}
       <div v-if="tag.tag2">{{ tag.tag2 }},</div>
       <div v-if="tag.tag3">{{ tag.tag3 }}</div>
       的信息
-    </el-divider>
-    <div class="card animation-time hover-around-shadow" style="width: 100%;" v-for="(item,index) in resultData"
+    </ice-divider>
+    <div class="card" style="width: 100%;" v-for="(item,index) in resultData"
          :key="index">
       <div class="card-body">
-        <el-text tag="b" size="large">{{ item.title }}</el-text>
-        <el-text>{{ item.createdAt }}</el-text>
-        <el-text>{{ item.description }}</el-text>
+        <ice-text tag="b" size="large">{{ item.title }}</ice-text>
+        <ice-text>{{ item.createdAt }}</ice-text>
+        <ice-text>{{ item.description }}</ice-text>
         <!--goToDetail-->
         <div class="bottomLim">
         <span>
-          <el-button round @click="goToRead(item.id)">read</el-button>
+          <ice-button round @click="goToRead(item.id)">read</ice-button>
         </span>
-          <el-divider direction="vertical"/>
-          <span @click="support(item.id)">
-          <el-button round circle>赞</el-button>
-           <el-text>
+          <ice-divider direction="vertical"/>
+          <span>
+          <ice-button round circle>赞</ice-button>
+           <ice-text>
             {{ item.praise }}
-          </el-text>
+          </ice-text>
         </span>
-          <el-divider direction="vertical"/>
           <span>
-          <el-button round>view</el-button>
-          <el-text>
+          <ice-button round>view</ice-button>
+          <ice-text>
             {{ item.view }}
-          </el-text>
+          </ice-text>
         </span>
-          <el-divider direction="vertical"/>
           <span>
-          <el-button round>id</el-button>
-           <el-text>
+          <ice-button round>id</ice-button>
+           <ice-text>
             {{ item.id }}
-          </el-text>
+          </ice-text>
         </span>
-          <el-divider direction="vertical"/>
+          <ice-divider direction="vertical"/>
           <span class="tags">
             <markdownTags :tag="item.tag1" :click="false" v-if="item.tag1"></markdownTags>
             <markdownTags :tag="item.tag2" :click="false" v-if="item.tag2"></markdownTags>
@@ -47,7 +45,7 @@
       </div>
     </div>
     <div v-if="aboutMarkdownIsNull">
-      <el-text>没有与之相关的文章</el-text>
+      <ice-text>没有与之相关的文章</ice-text>
     </div>
 
   </div>
@@ -55,19 +53,19 @@
 
 <script>
 import http from '@/common/api/request'
-import {ElMessage} from "element-plus";
-import {h} from "vue";
-import IndexCard from "@/components/index/IndexCard.vue";
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
-import timeFormat from "@/common/filter/time";
+import { ElMessage } from "element-plus"
+import { h } from "vue"
+import IndexCard from "@/components/index/IndexCard.vue"
+import MarkdownTags from "@/components/common/MarkdownTags.vue"
+import timeFormat from "@/common/filter/time"
 
 export default {
   name: "ReadTag",
-  components: {MarkdownTags, IndexCard},
-  created() {
-    this.initData();
+  components: { MarkdownTags, IndexCard },
+  created () {
+    this.initData()
   },
-  data() {
+  data () {
     return {
       tag: {
         tag1: null,
@@ -80,19 +78,19 @@ export default {
   },
   methods: {
     // 跳转阅读
-    goToRead(id) {
+    goToRead (id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: {id}
-      });
-      window.open(routeUrl.href, '_blank');
+        query: { id }
+      })
+      window.open(routeUrl.href, '_blank')
     },
-    alertMessage(title, sub, color) {
-      const useColor = color || 'red';
+    alertMessage (title, sub, color) {
+      const useColor = color || 'red'
       ElMessage({
         message: h('p', null, [
           h('span', null, title),
-          h('i', {style: `color: ${useColor}`}, sub),
+          h('i', { style: `color: ${ useColor }` }, sub),
         ]),
       })
     },
@@ -100,11 +98,11 @@ export default {
      * @date 2023/5/5
      * 初始化获取查询的tag
     */
-    initData() {
-      const {tag1 = '', tag2 = '', tag3 = ''} = this.$route.query;
-      this.tag.tag1 = tag1;
-      this.tag.tag2 = tag2;
-      this.tag.tag3 = tag3;
+    initData () {
+      const { tag1 = '', tag2 = '', tag3 = '' } = this.$route.query
+      this.tag.tag1 = tag1
+      this.tag.tag2 = tag2
+      this.tag.tag3 = tag3
 
       if (this.tag) {
         http.$axios({
@@ -115,15 +113,15 @@ export default {
           }
         })
             .then(res => {
-              this.resultData = res.result;
+              this.resultData = res.result
               if (res.result.length == 0) {
                 // 没有文章信息
-                this.aboutMarkdownIsNull = true;
+                this.aboutMarkdownIsNull = true
               }
               // @date 2023/5/8 , @author icestone
               // 格式化时间
               this.resultData.map(item => {
-                item.createdAt = timeFormat.timeFormat(item.createdAt) || '';
+                item.createdAt = timeFormat.timeFormat(item.createdAt) || ''
               })
             })
             .catch(e => {

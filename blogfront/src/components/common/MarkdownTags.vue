@@ -1,9 +1,9 @@
 <template>
   <div class="markdownTags">
-    <el-link :href="href" target="_blank" :underline="false" v-if="click">
+    <ice-link :href="href" target="_blank" :underline="false" v-if="click">
       <el-tag :size="size">{{ tag }}</el-tag>
-    </el-link>
-    <el-tag v-if="!click">{{ tag }}</el-tag>
+    </ice-link>
+    <ice-tag v-if="!click">{{ tag }}</ice-tag>
   </div>
 </template>
 
