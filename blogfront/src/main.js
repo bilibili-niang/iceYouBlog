@@ -7,7 +7,6 @@ import 'element-plus/dist/index.css'
 // 深色模式
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'hover.css'
-import '@/assets/js/common'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 /*引入公共样式*/
 import '@/assets/css/reset.less'

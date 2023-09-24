@@ -21,6 +21,7 @@
         <ice-link href="#/friend/links" target="_self">友链</ice-link>
       </li>
       <li class="list-item">
+        <ice-link disabled></ice-link>
         <Search></Search>
       </li>
       <li class="list-item">
@@ -33,7 +34,7 @@
     <div v-if="loginState" class="avatarLim">
       <ul class="ice-row list">
         <li class="list-item avatar">
-          <ice-avatar :src="userInf.avatar"></ice-avatar>
+          <!--          <ice-avatar :src="userInf.avatar"></ice-avatar>-->
         </li>
         <li class="list-item">
           <ice-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</ice-link>
@@ -57,7 +58,7 @@
           <ice-link href="#/admin" target="_self">admin</ice-link>
         </li>
         <li v-if="userInfo" class="list-item">
-          <ice-text @clic="out">out</ice-text>
+          <ice-link @clic="out" disabled>out</ice-link>
         </li>
       </ul>
     </div>
