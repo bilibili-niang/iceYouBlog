@@ -1,23 +1,29 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [
     {
         path: '/',
         name: 'index',
-        meta: { title: "首页" },
+        meta: {title: "首页"},
         component: () => import('@/views/Index.vue')
     },
     {
         path: '/login',
         name: 'login',
-        meta: { title: "登录" },
+        meta: {title: "登录"},
         component: () => import('@/views/Login.vue')
     },
     {
         path: '/register',
         name: 'register',
-        meta: { title: "注册" },
+        meta: {title: "注册"},
         component: () => import('../views/Register.vue')
+    },
+    {
+        path: '/search',
+        name: 'search',
+        meta: {title: "搜索"},
+        component: () => import('../views/search/index.vue')
     },
     {
         path: '/read',
@@ -26,13 +32,13 @@ const routes = [
             {
                 path: '/read',
                 name: 'readIndex',
-                meta: { title: "阅读文章" },
+                meta: {title: "阅读文章"},
                 component: () => import('@/views/Read.vue')
             },
             {
                 path: '/read/readTag',
                 name: "ReadTag",
-                meta: { title: "关于此标签的数据" },
+                meta: {title: "关于此标签的数据"},
                 component: () => import('@/components/read/ReadTag.vue')
             }
         ],
@@ -40,30 +46,30 @@ const routes = [
     {
         path: '/user',
         name: 'user',
-        meta: { title: "用户" },
+        meta: {title: "用户"},
         children: [
             {
                 path: '/user/',
                 name: 'user',
-                meta: { title: "用户" },
+                meta: {title: "用户"},
                 component: () => import('../views/User.vue'),
             },
             {
                 path: '/user/headImg',
                 name: 'headImg',
-                meta: { title: "头图" },
+                meta: {title: "头图"},
                 component: () => import('@/components/user/HeadImg.vue'),
             },
             {
                 path: '/user/postedComments',
                 name: 'postedComments',
-                meta: { title: "已发布评论" },
+                meta: {title: "已发布评论"},
                 component: () => import('@/components/user/PostedComments.vue'),
             },
             {
                 path: '/user/about',
                 name: 'about',
-                meta: { title: "关于该用户" },
+                meta: {title: "关于该用户"},
                 component: () => import('@/components/user/About.vue'),
             },
         ],
@@ -75,7 +81,7 @@ const routes = [
             {
                 path: '/edit/vMdEditor',
                 name: 'vMdEditor',
-                meta: { title: "编辑文章-v-md-editor" },
+                meta: {title: "编辑文章-v-md-editor"},
                 component: () => import('@/components/edit/Vedit.vue')
             },
         ],
@@ -83,37 +89,37 @@ const routes = [
     {
         path: '/noteList',
         name: 'noteList',
-        meta: { title: "笔记列表" },
+        meta: {title: "笔记列表"},
         component: () => import('@/components/note/NoteList.vue')
     },
     {
         path: '/myselfHistory',
         name: 'myselfHistory',
-        meta: { title: "历史阅读记录" },
+        meta: {title: "历史阅读记录"},
         component: () => import('@/components/user/MyselfHistory.vue')
     },
     {
         path: '/searchHistory',
         name: 'searchHistory',
-        meta: { title: "历史搜索记录" },
+        meta: {title: "历史搜索记录"},
         component: () => import('@/components/user/SearchHistory.vue')
     },
     {
         path: '/userDetail',
         name: 'userDetail',
-        meta: { title: "用户详情" },
+        meta: {title: "用户详情"},
         component: () => import('@/components/user/UserDetail.vue')
     },
     {
         path: '/editUser',
         name: 'editUser',
-        meta: { title: "编辑信息" },
+        meta: {title: "编辑信息"},
         component: () => import('@/components/user/EditUser.vue')
     },
     {
         path: '/codeClips',
         name: 'codeClips',
-        meta: { title: "代码片段" },
+        meta: {title: "代码片段"},
         component: () => import('@/components/code/CodeIndex.vue')
     },
     {
@@ -122,7 +128,7 @@ const routes = [
             {
                 path: '/new/',
                 name: "Index",
-                meta: { title: "新建" },
+                meta: {title: "新建"},
                 component: () => import('@/components/new/Index.vue')
             },
             {
@@ -133,7 +139,7 @@ const routes = [
             {
                 path: '/new/blog',
                 name: "markdown",
-                meta: { title: "编辑文章" },
+                meta: {title: "编辑文章"},
                 component: () => import('@/components/edit/Vedit.vue')
             }
         ],
@@ -150,7 +156,7 @@ const routes = [
             {
                 path: '/code/detail',
                 name: "Detail",
-                meta: { title: "code detail" },
+                meta: {title: "code detail"},
                 component: () => import('@/components/code/Detail.vue')
             }
         ],
@@ -173,19 +179,19 @@ const routes = [
             {
                 path: '/admin/',
                 name: "adminIndex",
-                meta: { title: "admin" },
+                meta: {title: "admin"},
                 component: () => import('@/views/Admin.vue')
             },
             {
                 path: '/admin/log',
                 name: "Log",
-                meta: { title: "log" },
+                meta: {title: "log"},
                 component: () => import('@/components/admin/Log.vue')
             },
             {
                 path: '/admin/allMarkdown',
                 name: "AllMarkdown",
-                meta: { title: "操作所有文章" },
+                meta: {title: "操作所有文章"},
                 component: () => import('@/components/admin/AllMarkdown.vue')
             },
         ],
@@ -197,7 +203,7 @@ const routes = [
             {
                 path: '/bonus/',
                 name: "bonusIndex",
-                meta: { title: "bonusIndex" },
+                meta: {title: "bonusIndex"},
                 component: () => import('@/views/bonus/index/index.vue')
             }
         ]

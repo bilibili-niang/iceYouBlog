@@ -26,15 +26,15 @@ const {
 const {
     userLoginError, userUpdateError, TokenRefreshError, userParamsError
 } = require('../constant/err.type')
-const { getShowInIndexAdminUser } = require('../services/admin.service')
+const {getShowInIndexAdminUser} = require('../services/admin.service')
 const errType = require('../constant/err.type')
 const axios = require('axios')
 
 class UserController {
-    async register (ctx) {
+    async register(ctx) {
         // 1.获取数据
         // console.log(ctx.request.body)
-        const { username, password, email } = ctx.request.body || ''
+        const {username, password, email} = ctx.request.body || ''
         // 2.操作数据库
         let result = await createUser(username, password, email, ctx.request.body.oldPwd)
         // 失败即为undefined,因为用户名或密码重复
@@ -61,11 +61,11 @@ class UserController {
      * @date 2023/5/8
      * 登录逻辑
     */
-    async login (ctx) {
+    async login(ctx) {
         console.log("---login---")
-        const { username } = ctx.request.body || ''
+        const {username} = ctx.request.body || ''
         try {
-            const { password, ...result } = await getUserInfo({ username })
+            const {password, ...result} = await getUserInfo({username})
             const token = result.token
             // 验证token是否过期
             jwt.verify(token, salt, async function (err, data) {
@@ -77,12 +77,12 @@ class UserController {
                 if (err) {
                     console.log('token过期')
                     // 创建新的token:
-                    let newToken = jwt.sign(userInf, salt, { expiresIn: 60 * 60 * 24 })
+                    let newToken = jwt.sign(userInf, salt, {expiresIn: 60 * 60 * 24})
                     const resUserInf = await updateUserToken(result.email, newToken)
                     // 成功返回1
                     if (resUserInf == 1) {
                         // 再次查询
-                        const { password, ...result } = await getUserInfo({ username })
+                        const {password, ...result} = await getUserInfo({username})
                         ctx.body = {
                             code: 0,
                             message: '用户登录成功',
@@ -113,7 +113,7 @@ class UserController {
     }
 
     // 返回用户信息和用户文章
-    async returnUserInfAndMarkdown (ctx) {
+    async returnUserInfAndMarkdown(ctx) {
         // 通过email获取user表中用户信息
         const resUser = await getUserBaseInfo(ctx.state.user.email)
         const resMarkdown = await getUserMarkdownData(ctx.state.user.email)
@@ -129,7 +129,7 @@ class UserController {
     }
 
     // 通过token返回用户信息
-    async returnUserInf (ctx) {
+    async returnUserInf(ctx) {
         // 通过email获取user表中用户信息
         const resUser = await getUserBaseInfo(ctx.state.user.email)
         ctx.body = {
@@ -143,7 +143,7 @@ class UserController {
     }
 
     // 返回用户信息和token
-    async returnUserInfAndToken (ctx) {
+    async returnUserInfAndToken(ctx) {
         // 通过email获取user表中用户信息
         const resUser = await getUserBaseInfoAndToken(ctx.state.user.email)
         ctx.body = {
@@ -157,7 +157,7 @@ class UserController {
     }
 
     // 通过用户id修改用户信息:
-    async updateUserById (ctx) {
+    async updateUserById(ctx) {
         const res = await updateUserInfo(ctx.state.user.id, ctx.request.body)
         const flag = res[0] || ''
         if (flag == 1) {
@@ -176,7 +176,7 @@ class UserController {
     }
 
     // 更新用户头像
-    async updateUserAvatar (ctx) {
+    async updateUserAvatar(ctx) {
         console.log('updateUserAvatar')
         //ctx.request.files.file中的file需要与前端使用的名称保持一致
         const file = ctx.request.files.file
@@ -196,7 +196,7 @@ class UserController {
     }
 
     // 查询用户是否为admin
-    async returnUserIsAdmin (ctx) {
+    async returnUserIsAdmin(ctx) {
         console.log('---returnUserIsAdmin---')
         const result = await getUserisAdminByEmail(ctx.state.user.email)
         ctx.body = {
@@ -211,9 +211,9 @@ class UserController {
      * @date 2023/5/11
      *
     */
-    async returnUserInfoByEmail (ctx) {
+    async returnUserInfoByEmail(ctx) {
         console.log('---returnUserInfoByEmail---')
-        const { email = null, type = null } = ctx.request.body
+        const {email = null, type = null} = ctx.request.body
         if (email == null) {
             // @date 2023/5/11 , @author icestone
             // 传参错误
@@ -249,7 +249,7 @@ class UserController {
     }
 
     // 返回用户头图
-    async returnUserHeadImg (ctx) {
+    async returnUserHeadImg(ctx) {
         console.log("ctx.state:")
         console.log(ctx.state)
         const result = await getUserHeadImg(ctx.state.user.email)
@@ -265,7 +265,7 @@ class UserController {
      * @date 2023/6/4
      * 返回该用户的评论
     */
-    async returnUserAllPostedCommented (ctx) {
+    async returnUserAllPostedCommented(ctx) {
         const result = await getUserAllComments(ctx.state.user.email, 'blog')
         ctx.body = {
             code: 200,
@@ -279,37 +279,45 @@ class UserController {
     /**
      * 微信用户登录
      */
-    async miniLogin (ctx) {
-        const { code = null } = ctx.request.body
-
+    async miniLogin(ctx) {
+        const {code = null} = ctx.request.body
+        console.log(ctx.body)
         if (!code) {
             ctx.body = errType.userParamsError
         } else {
-            // 通过微信服务器获取用户openId
-            const res = await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
-                params: {
+
+            /*const token=await axios({
+                method: 'get',
+                url:'https://api.weixin.qq.com/cgi-bin/token',
+                data: {
                     appid: 'wxe8c43d9db3e1333a',
+                    appSecret: 'ea9f32f40f8e0697e7762372cdad328c',
                     js_code: 'js_code',
                     grant_typ: code
                 }
             })
-                .then(res => {
-                    console.log("res:")
-                    console.log(res.data)
-                })
-                .catch(e => {
-                    console.log("e:")
-                    console.log(e)
-                })
+            console.log('token.body',token)
+            console.log('token',token.data)*/
 
+            // 通过微信服务器获取用户openId
+            const result = await axios({
+                method: 'get',
+                url: 'https://api.weixin.qq.com/sns/jscode2session?access_token=wxe8c43d9db3e1333a',
+                data: {
+                    appid: 'wxe8c43d9db3e1333a',
+                    appSecret: 'ea9f32f40f8e0697e7762372cdad328c',
+                    js_code: 'js_code',
+                    grant_typ: code
+                }
+            })
+            console.log('result.data', result.data)
             ctx.body = {
                 code: 200,
-                message: '用户登录~~~~~~~~~~~~~'
+                message: '用户登录~~~~~~~~~~~~~',
+                result: result ? result : null
             }
         }
-
     }
-
 }
 
 module.exports = new UserController()

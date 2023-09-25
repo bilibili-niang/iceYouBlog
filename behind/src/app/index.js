@@ -11,6 +11,7 @@ const static = require('koa-static')
 // const views = require('koa-views')
 const app = new koa()
 const path = require('path')
+const logS = require("../services/log.service");
 
 // 跨域
 app.use(async (ctx, next) => {
@@ -67,6 +68,7 @@ app.use(router.routes())
 //统一的错误处理:
 app.on('error', (ctx) => {
     console.log('错误统一处理')
+    console.log(ctx)
 })
 
 // 导出:

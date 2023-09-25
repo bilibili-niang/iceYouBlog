@@ -21,8 +21,8 @@
         <ice-link href="#/friend/links" target="_self">友链</ice-link>
       </li>
       <li class="list-item">
-        <ice-link disabled></ice-link>
-        <Search></Search>
+        <ice-link href="#/search">搜索</ice-link>
+        <Search v-if="false"></Search>
       </li>
       <li class="list-item">
         <ice-link :disabled="true" :class="{ dark: dark==true }"
@@ -66,9 +66,9 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex"
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import {useStore} from "vuex"
+import {onMounted, ref} from 'vue'
+import {useRouter} from 'vue-router'
 import Search from '@/components/common/Search.vue'
 
 const userInf = ref()
@@ -76,7 +76,7 @@ const loginState = ref()
 const router = useRouter()
 const store = useStore()
 let dark = ref(true)
-const { userInfo } = store.state.user || false
+const {userInfo} = store.state.user || false
 
 const out = () => {
   localStorage.removeItem('userInfo')
@@ -176,7 +176,7 @@ changeDark()
 
   @media (min-width: 1200px) {
     max-width: 70vw;
-    margin-bottom: 5rem;
+    margin-bottom: 1rem;
   }
 }
 
