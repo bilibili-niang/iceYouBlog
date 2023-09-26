@@ -285,36 +285,23 @@ class UserController {
         if (!code) {
             ctx.body = errType.userParamsError
         } else {
+            console.log('code', code)
 
-            /*const token=await axios({
-                method: 'get',
-                url:'https://api.weixin.qq.com/cgi-bin/token',
-                data: {
-                    appid: 'wxe8c43d9db3e1333a',
-                    appSecret: 'ea9f32f40f8e0697e7762372cdad328c',
-                    js_code: 'js_code',
-                    grant_typ: code
-                }
-            })
-            console.log('token.body',token)
-            console.log('token',token.data)*/
+            const url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxe8c43d9db3e1333a&secret=ea9f32f40f8e0697e7762372cdad328c' + '&js_code=' + code + '&grant_type=authorization_code';
 
-            // 通过微信服务器获取用户openId
+            // 通过微信服务器获取用户openId1
             const result = await axios({
                 method: 'get',
-                url: 'https://api.weixin.qq.com/sns/jscode2session?access_token=wxe8c43d9db3e1333a',
-                data: {
-                    appid: 'wxe8c43d9db3e1333a',
-                    appSecret: 'ea9f32f40f8e0697e7762372cdad328c',
-                    js_code: 'js_code',
-                    grant_typ: code
-                }
+                url: url
             })
-            console.log('result.data', result.data)
+            // TOOD 这里可以获取到openid
+            console.log("result.data.openId:")
+            console.log(result.data.openid)
             ctx.body = {
                 code: 200,
-                message: '用户登录~~~~~~~~~~~~~',
-                result: result ? result : null
+                message: '微信用户登录',
+                success: true,
+                result: result.data ? result.data : null
             }
         }
     }

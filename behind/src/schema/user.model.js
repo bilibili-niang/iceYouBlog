@@ -69,10 +69,16 @@ const User = seq.define('markdown_user', {
         allowNull: true,
         comment: '该用户有机会成为金句的话',
     },
-    showInIndex:{
+    showInIndex: {
         type: DataTypes.STRING(10),
         allowNull: true,
         comment: '是否展示在index页面',
+        defaultValueValue: 'null'
+    },
+    openid: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        comment: '用户的微信小程序openid',
         defaultValueValue: 'null'
     }
 })

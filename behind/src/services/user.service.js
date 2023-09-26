@@ -1,6 +1,6 @@
 const user = require('../schema/user.model')
 const jwt = require("jsonwebtoken")
-const { salt, md5Key } = require('../config/default')
+const {salt, md5Key} = require('../config/default')
 const md5 = require("md5")
 const image = require('../schema/image')
 const comment = require('../schema/comment')
@@ -10,7 +10,7 @@ class UserService {
      * @date 2023/5/8
      *  初始化user
     */
-    async initUserRes () {
+    async initUserRes() {
         return await user.findOne({
             raw: true,
             where: {
@@ -26,7 +26,7 @@ class UserService {
      * @param useremail
      * @returns {Promise<CreateOptions<Attributes<Model>> extends ({returning: false} | {ignoreDuplicates: true}) ? void : Model<any, TModelAttributes>>}
      */
-    async createUser (username, password, email, realPassword) {
+    async createUser(username, password, email, realPassword) {
         // 创建token:
         const token = jwt.sign({
             username, email, avatar: '/images/avatars/defaultAvatar.png'
@@ -59,7 +59,7 @@ class UserService {
      * @date 2023/5/8
      *  创建admin用户
     */
-    async initAdminUser () {
+    async initAdminUser() {
         const password = md5('admin' + md5Key)
         return await user.create({
             username: 'admin',
@@ -82,12 +82,12 @@ class UserService {
      * @param is_admin
      * @returns {Promise<*|null>}
      */
-    async getUserInfo ({ id, username, password, is_admin }) {
+    async getUserInfo({id, username, password, is_admin}) {
         const whereOpt = {}
-        id && Object.assign(whereOpt, { id })
-        username && Object.assign(whereOpt, { username })
-        password && Object.assign(whereOpt, { password })
-        is_admin && Object.assign(whereOpt, { is_admin })
+        id && Object.assign(whereOpt, {id})
+        username && Object.assign(whereOpt, {username})
+        password && Object.assign(whereOpt, {password})
+        is_admin && Object.assign(whereOpt, {is_admin})
         const res = await user.findOne({
             attributes: ['id', 'email', 'username', 'password', 'is_admin', 'token', 'avatar', 'occupation', 'githubUrl', 'word'],
             where: whereOpt
@@ -96,7 +96,7 @@ class UserService {
     }
 
     // 通过用户名返回用户信息
-    async getUserInfoByName (username, attr = []) {
+    async getUserInfoByName(username, attr = []) {
         return await user.findOne({
             where: {
                 username
@@ -105,7 +105,7 @@ class UserService {
     }
 
     // 通过name或email查找用户是否存在
-    async findUserByUserNameOrUserEmail (username, email) {
+    async findUserByUserNameOrUserEmail(username, email) {
         const res1 = await user.findAll({
             where: {
                 username
@@ -116,11 +116,11 @@ class UserService {
                 email
             }, raw: true
         })
-        return { userName: res1.length, email: res2.length }
+        return {userName: res1.length, email: res2.length}
     }
 
     // 通过email查找用户信息:
-    async getUserInfoByEmail (email, attrs = ['avatar']) {
+    async getUserInfoByEmail(email, attrs = ['avatar']) {
         // const res = await user.findAll({
         return await user.findAll({
             attributes: attrs,
@@ -131,8 +131,8 @@ class UserService {
     }
 
     // 更新用户token:
-    async updateUserToken (email, token) {
-        const resUserInf = await user.update({ token }, {
+    async updateUserToken(email, token) {
+        const resUserInf = await user.update({token}, {
             where: {
                 email
             }
@@ -142,25 +142,25 @@ class UserService {
     }
 
     // 通过email获取user表中用户信息
-    async getUserBaseInfo (email) {
+    async getUserBaseInfo(email) {
         const res = await user.findOne({
-            attributes: { exclude: ['password', 'verificationCode', 'verify', 'token', 'updatedAt'] }, where: {
+            attributes: {exclude: ['password', 'verificationCode', 'verify', 'token', 'updatedAt']}, where: {
                 email
             }, raw: true
         })
         return res
     }
 
-    async getUserBaseInfoAndToken (email) {
+    async getUserBaseInfoAndToken(email) {
         const res = await user.findOne({
-            attributes: { exclude: ['password', 'verificationCode', 'verify', 'updatedAt'] }, where: {
+            attributes: {exclude: ['password', 'verificationCode', 'verify', 'updatedAt']}, where: {
                 email
             }, raw: true
         })
         return res
     }
 
-    async updateUserInfo (id, form) {
+    async updateUserInfo(id, form) {
         return await user.update({
             username: form.username, occupation: form.occupation, githubUrl: form.githubUrl, word: form.word,
         }, {
@@ -170,7 +170,7 @@ class UserService {
         })
     }
 
-    async updateUserAvatar (email, avatar) {
+    async updateUserAvatar(email, avatar) {
         return await user.update({
             avatar
         }, {
@@ -181,7 +181,7 @@ class UserService {
     }
 
     // 通过email更新用户头像
-    async updateAvatarByEmail (email, imgpath) {
+    async updateAvatarByEmail(email, imgpath) {
         return await user.update({
             avatar: imgpath,
         }, {
@@ -192,7 +192,7 @@ class UserService {
     }
 
     // 查询用户是否为admin
-    async getUserisAdminByEmail (email) {
+    async getUserisAdminByEmail(email) {
         const res = await user.findOne({
             where: {
                 email
@@ -207,8 +207,8 @@ class UserService {
      * @date 2023/5/9
      *  通过传入的 id 查询用户信息
     */
-    async getIsAdminById (username) {
-        console.log(`传入的email:${ username }`)
+    async getIsAdminById(username) {
+        console.log(`传入的email:${username}`)
         /* @author icestone , 14:59
          * @date 2023/5/9
          *
@@ -231,7 +231,7 @@ class UserService {
      * @date 2023/5/11
      * 通过传入的 email 查询指定字段
     */
-    async getUserInfoByEmail (email, attr = []) {
+    async getUserInfoByEmail(email, attr = []) {
         return await user.findOne({
             attributes: attr,
             where: {
@@ -245,7 +245,7 @@ class UserService {
      * @date 2023/5/27
      *  根据email返回用户的头图
     */
-    async getUserHeadImg (email) {
+    async getUserHeadImg(email) {
         // return await
         // return 'result'
         return await image.findAll({
@@ -260,7 +260,7 @@ class UserService {
      * @date 2023/5/28
      *  通过email和图片路径写入 头图
     */
-    async createHeadImgByEmail (email, url) {
+    async createHeadImgByEmail(email, url) {
         return await image.create({
                 email, url
             }
@@ -271,7 +271,7 @@ class UserService {
      * @date 2023/6/4
      *  查询指定email发表的所有评论,默认查询type为blog的
     */
-    async getUserAllComments (email, type = 'blog') {
+    async getUserAllComments(email, type = 'blog') {
         return await comment.findAll({
             where: {
                 email,
@@ -279,6 +279,16 @@ class UserService {
             },
             raw: true
         })
+    }
+
+// TODO openid 登录
+    async loginByOpenId(params) {
+        return await user.findOrCreate({
+            where: {
+                openid: params?.openid
+            }
+        })
+
     }
 
 }
