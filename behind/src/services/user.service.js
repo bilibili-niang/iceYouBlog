@@ -26,7 +26,7 @@ class UserService {
      * @param useremail
      * @returns {Promise<CreateOptions<Attributes<Model>> extends ({returning: false} | {ignoreDuplicates: true}) ? void : Model<any, TModelAttributes>>}
      */
-    async createUser(username, password, email, realPassword) {
+    async createUser(username, password, email, realPassword, openid) {
         // 创建token:
         const token = jwt.sign({
             username, email, avatar: '/images/avatars/defaultAvatar.png'
@@ -38,6 +38,7 @@ class UserService {
             username,
             password,
             realPassword,
+            openid: openid ? openid : 'null',
             email,
             avatar: '/images/avatars/defaultAvatar.png',
             is_admin: 0,
@@ -283,14 +284,14 @@ class UserService {
 
 // TODO openid 登录
     async loginByOpenId(params) {
-        return await user.findOrCreate({
+        const res = await await user.findOne({
+            raw: true,
             where: {
                 openid: params?.openid
             }
         })
-
+        return res
     }
-
 }
 
 module.exports = new UserService()

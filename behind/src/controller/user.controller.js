@@ -15,12 +15,13 @@ const {
     updateUserAvatar
 } = require('../services/user.service')
 
+const userS = require('../services/user.service')
 const {
     getUserMarkdownData,
 } = require('../services/markdownFile.service')
 
 const {
-    salt
+    salt, md5Key
 } = require('../config/default')
 
 const {
@@ -29,6 +30,7 @@ const {
 const {getShowInIndexAdminUser} = require('../services/admin.service')
 const errType = require('../constant/err.type')
 const axios = require('axios')
+const md5 = require("md5");
 
 class UserController {
     async register(ctx) {
@@ -274,34 +276,44 @@ class UserController {
             result
         }
     }
-
-
+    
     /**
      * 微信用户登录
      */
     async miniLogin(ctx) {
         const {code = null} = ctx.request.body
-        console.log(ctx.body)
         if (!code) {
             ctx.body = errType.userParamsError
         } else {
-            console.log('code', code)
-
             const url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxe8c43d9db3e1333a&secret=ea9f32f40f8e0697e7762372cdad328c' + '&js_code=' + code + '&grant_type=authorization_code';
-
             // 通过微信服务器获取用户openId1
             const result = await axios({
                 method: 'get',
                 url: url
             })
-            // TOOD 这里可以获取到openid
-            console.log("result.data.openId:")
-            console.log(result.data.openid)
+            // TODO 这里可以获取到openid
+            const openid = result.data.openid
+            console.log('openid', openid)
+
+            let userInfo = await userS.loginByOpenId({openid})
+            // 为空,创建用户
+            // 默认密码123456
+            if (!userInfo) {
+                userInfo = await userS.createUser(
+                    `微信用户${Math.random(100)}`,
+                    md5('123456' + md5Key),
+                    'null',
+                    '123456',
+                    openid
+                )
+            }
+            console.log('userInfo', userInfo)
+
             ctx.body = {
                 code: 200,
                 message: '微信用户登录',
                 success: true,
-                result: result.data ? result.data : null
+                result: userInfo
             }
         }
     }
