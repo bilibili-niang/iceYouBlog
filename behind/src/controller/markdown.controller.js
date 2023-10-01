@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = require('../config/config.default')
+const {JWT_SECRET} = require('../config/config.default')
 const cheerio = require('cheerio')
 const TurndownService = require('turndown')
 let turndownService = new TurndownService()
@@ -41,10 +41,10 @@ const {
     checkImgType
 } = require('../services/tool.service')
 
-const { saveImageInfo } = require('../services/image.service')
+const {saveImageInfo} = require('../services/image.service')
 const markdownFile = require('../schema/markdownFile')
 const https = require('https')
-const { salt } = require('../config/default')
+const {salt} = require('../config/default')
 const {
     userDontHaveArticle,
     notExistFile, searchKeyWordNotExist, articleOperateError
@@ -56,16 +56,16 @@ const {
     logHistoryByEmail
 } = require('../services/history.service')
 const path = require("path")
-const { paramsVerify } = require("../middleware/admin.middleware")
+const {paramsVerify} = require("../middleware/admin.middleware")
 const fs = require('fs')
 
 
 class MarkdownController {
-    async newFile (ctx) {
-        const { authorization } = ctx.request.header
+    async newFile(ctx) {
+        const {authorization} = ctx.request.header
         const token = authorization.replace('Bearer ', '')
         //解析token
-        const { username, userEmail } = jwt.verify(token, JWT_SECRET)
+        const {username, userEmail} = jwt.verify(token, JWT_SECRET)
         const requestData = ctx.request.body
         console.log("requestData:")
         console.log(requestData)
@@ -76,8 +76,8 @@ class MarkdownController {
     }
 
     //返回首页的二十条数据
-    async returnHomeList (ctx) {
-        const { pageNum = 1, pageSize = 20 } = ctx.request.query
+    async returnHomeList(ctx) {
+        const {pageNum = 1, pageSize = 20} = ctx.request.query
         const result = await getHomeIndexList(pageNum, pageSize)
         ctx.body = {
             code: 200,
@@ -140,9 +140,9 @@ class MarkdownController {
                         })
                     })
                     const res2 = await markdownFile.findAll({
-                        attributes: { exclude: ['createdAt', 'source', 'states', 'headImg'] },
+                        attributes: {exclude: ['createdAt', 'source', 'states', 'headImg']},
                         raw: true,
-                        where: { id }
+                        where: {id}
                     })
                     ctx.body = {
                         code: 200,
@@ -174,7 +174,7 @@ class MarkdownController {
     }
 
     // 通过用户信息返回该用户的文章:
-    async returnUserArticle (ctx) {
+    async returnUserArticle(ctx) {
         const token = ctx.request.header.token || 'notExist'
         // 如果token不存在或者token太短,直接返回
         if (token.length < 10) {
@@ -220,13 +220,14 @@ class MarkdownController {
     }
 
     // 返回用户文章分页接口
-    async returnUserAllArticle (ctx) {
+    async returnUserAllArticle(ctx) {
+        console.log('returnUserAllArticle--->')
         const {
             limit = 20,
             id = 0
         } = ctx.request.body
         const result = await getAllUserMarkdownFiles(ctx.state.user.email, limit, id)
-        if (( await result ).length == 0) {
+        if ((await result).length == 0) {
             // @date 2023/5/10 , @author icestone
             // 为空,用户没有文章
             ctx.body = userDontHaveArticle
@@ -242,8 +243,8 @@ class MarkdownController {
     }
 
     // 通过前端传来的id,返回文章数据,无法指定数据条数,每次返回20条
-    async returnHomeListById (ctx) {
-        let { id = - 1, limit = 20 } = ctx.request.body
+    async returnHomeListById(ctx) {
+        let {id = -1, limit = 20} = ctx.request.body
         id = parseInt(id) - 1
         id = id > 0 ? id : 0
         // @date 2023/5/5 , @author icestone
@@ -258,7 +259,7 @@ class MarkdownController {
     }
 
     // 通过挂载在 ctx.form 上的文章信息和挂载在 ctx.state.user 上面的用户信息新建文章
-    async newMarkdown (ctx) {
+    async newMarkdown(ctx) {
         // token
         const token = ctx.request.header.token || ""
         ctx.state.user = jwt.decode(token)
@@ -311,8 +312,8 @@ class MarkdownController {
     }
 
     // 更新文章
-    async getUpdateResult (ctx) {
-        const { markdownData = null } = ctx.request.body
+    async getUpdateResult(ctx) {
+        const {markdownData = null} = ctx.request.body
         if (markdownData == null) {
             return
         } else {
@@ -339,11 +340,11 @@ class MarkdownController {
     }
 
     // 搜索
-    async returnSearchResult (ctx) {
+    async returnSearchResult(ctx) {
         const key = ctx.request.body.key || 'null'
         const token = ctx.request.header.token || null
         if (token && key != 'null') {
-            const { email = null } = jwt.decode(token, salt)
+            const {email = null} = jwt.decode(token, salt)
 
             if (email) {
 
@@ -365,9 +366,9 @@ class MarkdownController {
     }
 
     // 点赞
-    async returnSupportResult (ctx) {
+    async returnSupportResult(ctx) {
 
-        const { id = 0 } = ctx.request.body
+        const {id = 0} = ctx.request.body
         if (ctx.state.user != null) {
             // 存在用户
             // 写入记录
@@ -393,9 +394,9 @@ class MarkdownController {
     }
 
     // 对文章进行操作
-    async returnOperateResult (ctx) {
+    async returnOperateResult(ctx) {
 
-        const { email } = ctx.state.user
+        const {email} = ctx.state.user
         // 根据ids查询文章的email信息是否属于该操作用户
         const attr = ['id', 'email']
 
@@ -427,7 +428,7 @@ class MarkdownController {
             ctx.body = {
                 code: 200,
                 success: true,
-                message: `文章${ ctx.state.operate }成功`,
+                message: `文章${ctx.state.operate}成功`,
                 result
             }
         } else if (ctx.state.operate == 'recover') {
@@ -451,7 +452,7 @@ class MarkdownController {
             ctx.body = {
                 code: 200,
                 success: true,
-                message: `文章${ ctx.state.operate }成功`,
+                message: `文章${ctx.state.operate}成功`,
                 result
             }
         } else {
@@ -461,9 +462,9 @@ class MarkdownController {
     }
 
     // 获取用户已删除的文章
-    async returnDeletedFiles (ctx) {
+    async returnDeletedFiles(ctx) {
 
-        const { email } = ctx.state.user
+        const {email} = ctx.state.user
 
         const result = await getDeletedFiles(email)
         ctx.body = {
@@ -480,7 +481,7 @@ class MarkdownController {
      * @date 2023/5/5
      * 返回文章总数,用作分页
      */
-    async returnAllCounts (ctx) {
+    async returnAllCounts(ctx) {
         const result = await getAllCounts()
         // @date 2023/5/5 , @author icestone
         // 分页处理,返回前端的直接是处理好的多少页
@@ -501,7 +502,7 @@ class MarkdownController {
      * @date 2023/5/7
      * 返回该用户的所有文章tag
     */
-    async returnAllTags (ctx) {
+    async returnAllTags(ctx) {
         const result = await getAllTagsByEmail(ctx.state.user.email)
         ctx.body = {
             code: 200,
@@ -515,7 +516,7 @@ class MarkdownController {
      * @date 2023/5/20
      * 将制定type设置为推荐
     */
-    async returnSetRecommend (ctx) {
+    async returnSetRecommend(ctx) {
 
         // const result = await setRecommendByType()
         const paramsRes = paramsVerify({
@@ -551,10 +552,10 @@ class MarkdownController {
      * @date 2023/5/7
      * 根据前端传来的 operate 操作符,更新某些列
     */
-    async getUpdateSomethingResult (ctx) {
+    async getUpdateSomethingResult(ctx) {
         // @date 2023/5/7 , @author icestone
         // 获取需要的 data
-        const { operate = null, id = null, tags = null } = ctx.request.body
+        const {operate = null, id = null, tags = null} = ctx.request.body
         // @date 2023/5/7 , @author icestone
         // 根据不同的operate进行操作
         if (operate == 'updateTags' & tags != null & id != null) {
@@ -575,13 +576,13 @@ class MarkdownController {
      * markdown图片的上传
     */
 
-    async uploadMarkdownImage (ctx) {
+    async uploadMarkdownImage(ctx) {
         const file = ctx.request.files.file
         const filePath = file.path.substring(file.path.lastIndexOf('\\') + 1, file.path.length)
         if (checkImgType(file.path)) {
             // 是图片
             // 文件移动的目标路径
-            const targetPath = path.join(__dirname, `../static/images/markdown/${ filePath }`)
+            const targetPath = path.join(__dirname, `../static/images/markdown/${filePath}`)
             await removeFile(file.path, targetPath)
             // @date 2023/6/30 @time 14:27 , @author 张嘉凯
             // 将图片和用户邮箱写入数据库
@@ -614,7 +615,7 @@ class MarkdownController {
      * @date 2023/5/20
      * 获取推荐文章
     */
-    async returnRecommendMarkdown (ctx) {
+    async returnRecommendMarkdown(ctx) {
 
         const result = await getRecommendMarkdownFile()
 
@@ -630,8 +631,8 @@ class MarkdownController {
      * @date 2023/5/31
      * 通过tag返回与该tag有关的文章
     */
-    async returnRecommendByTags (ctx) {
-        const { tags, id } = ctx.request.body
+    async returnRecommendByTags(ctx) {
+        const {tags, id} = ctx.request.body
         const str = tags.join('')
         if (str.length == 0) {
             const result = await markdownS.getRandomMarkdownFileById(id, 5)
@@ -657,13 +658,13 @@ class MarkdownController {
      * @date 2023/6/8
      * 通过email返回该用户的所有文章
     */
-    async returnAllMarkdownByEmail (ctx) {
-        const { email = 'admin' } = ctx.request.body
+    async returnAllMarkdownByEmail(ctx) {
+        const {email = 'admin'} = ctx.request.body
         const result = await getMarkdownByEmail(email)
         ctx.body = {
             code: 200,
             success: true,
-            message: `获取${ email }的文章`,
+            message: `获取${email}的文章`,
             result
         }
     }
@@ -672,8 +673,8 @@ class MarkdownController {
      * @date 2023/6/19 @time
      *  返回指定用户的置顶文章
     */
-    async returnUserTopArticle (ctx) {
-        const { email = null } = ctx.request.body
+    async returnUserTopArticle(ctx) {
+        const {email = null} = ctx.request.body
         if (email) {
             const result = await getTopArticleByEmail(email, 1)
             ctx.body = {
@@ -695,7 +696,7 @@ class MarkdownController {
      * 计算并返回文章的阅读量
      * 默认返回网站的所有阅读量
     */
-    async returnAllviews (ctx) {
+    async returnAllviews(ctx) {
         const result = await markdownS.getViews()
 
         ctx.body = {
@@ -710,7 +711,7 @@ class MarkdownController {
      * @param ctx
      * @return {Promise<void>}
      */
-    async getAllTags (ctx) {
+    async getAllTags(ctx) {
         const result = await markdownS.getAllTags()
         ctx.body = {
             message: '获取所有tags',
@@ -723,7 +724,7 @@ class MarkdownController {
      * 获取随机的一篇文章数据
      * @return {Promise<void>}
      */
-    async getRandomOne (ctx) {
+    async getRandomOne(ctx) {
         let result = await markdownS.returnRandomOne()
         if (!result.content) {
             // 数据为空,需要爬取
@@ -747,8 +748,8 @@ class MarkdownController {
      * @param ctx
      * @return {Promise<void>}
      */
-    async returnMarkdown (ctx) {
-        const { id = null, data } = ctx.request.body
+    async returnMarkdown(ctx) {
+        const {id = null, data} = ctx.request.body
         let result = ''
         if (id) {
             result = await markdownS.getMarkdownContentById(id)

@@ -24,7 +24,7 @@ const {
     userValidator, auth
 } = require('../middleware/user.middleware')
 
-const router = new Router({ prefix: '/user' })
+const router = new Router({prefix: '/user'})
 
 //用户注册
 router.post('/register', cryptPassword, register)
@@ -57,7 +57,6 @@ router.post('/headImg', auth, returnUserHeadImg)
  *  根据email获取该用户的所有评论
 */
 router.post('/getUserAllPostedComments', auth, returnUserAllPostedCommented)
-
 
 /**
  * 微信用户登录接口

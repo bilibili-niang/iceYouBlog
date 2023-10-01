@@ -1,7 +1,7 @@
 const app = require('./app')
 // 这里只用引入server的配置
-const { server } = require('./config/default')
-const { insertLog } = require('./services/log.service')
+const {server} = require('./config/default')
+const {insertLog} = require('./services/log.service')
 const {
     initMarkdownFile,
     createMarkdownFile
@@ -12,13 +12,13 @@ const {
 } = require('./services/user.service')
 
 const fileNameAndPath = __filename
-let date = new Date(+ new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
 
 /* @author icestone , 16:20
  * @date 2023/5/8
  *  通过数据查询初始化一些数据库
 */
-async function initDataBase () {
+async function initDataBase() {
     // @date 2023/5/8 , @author icestone
     //  获取username为admin的信息,如果没有,说明不存在,需要创建一个,并为其赋值
     const userRes = await initUserRes()
@@ -77,12 +77,10 @@ app.listen(server.port, async () => {
         userId: 'root',
         fileNameAndPath
     })
-    console.log(`server is running at 127.0.0.1:${ server.port }`)
+    console.log(`server is running at 127.0.0.1:${server.port}`)
     console.log('服务器')
     console.log('.')
     console.log('..')
-    setTimeout(() => {
-        console.log('...')
-        console.log('启动')
-    }, 1000)
+    console.log('...')
+    console.log('启动')
 })

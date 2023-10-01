@@ -1,27 +1,20 @@
 <template>
   <div class="readTag container">
-    <ice-divider content-position="left">关于标签: {{ tag.tag1 }}
+    <ice-text content-position="left">关于标签: {{ tag.tag1 }}
       <div v-if="tag.tag2">{{ tag.tag2 }},</div>
       <div v-if="tag.tag3">{{ tag.tag3 }}</div>
       的信息
-    </ice-divider>
+    </ice-text>
     <div class="card" style="width: 100%;" v-for="(item,index) in resultData"
          :key="index">
       <div class="card-body">
-        <ice-text tag="b" size="large">{{ item.title }}</ice-text>
+        <ice-text>{{ item.title }}</ice-text>
         <ice-text>{{ item.createdAt }}</ice-text>
         <ice-text>{{ item.description }}</ice-text>
         <!--goToDetail-->
         <div class="bottomLim">
         <span>
           <ice-button round @click="goToRead(item.id)">read</ice-button>
-        </span>
-          <ice-divider direction="vertical"/>
-          <span>
-          <ice-button round circle>赞</ice-button>
-           <ice-text>
-            {{ item.praise }}
-          </ice-text>
         </span>
           <span>
           <ice-button round>view</ice-button>
@@ -53,19 +46,17 @@
 
 <script>
 import http from '@/common/api/request'
-import { ElMessage } from "element-plus"
-import { h } from "vue"
 import IndexCard from "@/components/index/IndexCard.vue"
 import MarkdownTags from "@/components/common/MarkdownTags.vue"
 import timeFormat from "@/common/filter/time"
 
 export default {
   name: "ReadTag",
-  components: { MarkdownTags, IndexCard },
-  created () {
+  components: {MarkdownTags, IndexCard},
+  created() {
     this.initData()
   },
-  data () {
+  data() {
     return {
       tag: {
         tag1: null,
@@ -78,28 +69,22 @@ export default {
   },
   methods: {
     // 跳转阅读
-    goToRead (id) {
+    goToRead(id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: { id }
+        query: {id}
       })
       window.open(routeUrl.href, '_blank')
     },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
+    alertMessage(title, sub, color) {
+      console.log(title, sub, color)
     },
     /* @author icestone , 18:05
      * @date 2023/5/5
      * 初始化获取查询的tag
     */
-    initData () {
-      const { tag1 = '', tag2 = '', tag3 = '' } = this.$route.query
+    initData() {
+      const {tag1 = '', tag2 = '', tag3 = ''} = this.$route.query
       this.tag.tag1 = tag1
       this.tag.tag2 = tag2
       this.tag.tag3 = tag3

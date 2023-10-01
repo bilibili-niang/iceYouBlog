@@ -11,7 +11,6 @@ const static = require('koa-static')
 // const views = require('koa-views')
 const app = new koa()
 const path = require('path')
-const logS = require("../services/log.service");
 
 // 跨域
 app.use(async (ctx, next) => {

@@ -34,10 +34,10 @@
     <div v-if="loginState" class="avatarLim">
       <ul class="ice-row list">
         <li class="list-item avatar">
-          <!--          <ice-avatar :src="userInf.avatar"></ice-avatar>-->
+          <!--<ice-avatar :src="userInf.avatar"></ice-avatar>-->
         </li>
         <li class="list-item">
-          <ice-link href="#/user" target="_blank">{{ userInf.username }}的个人中心</ice-link>
+          <ice-link href="#/user" target="_blank">{{ userInf.username }}</ice-link>
         </li>
         <li class="list-item">
           <ice-link target="_blank" @click="goToUserInf">{{ userInf.username }}的主页</ice-link>

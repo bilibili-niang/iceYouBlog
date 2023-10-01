@@ -7,7 +7,7 @@ const {
 const {
     auth
 } = require('../middleware/user.middleware')
-const { Validator } = require('../middleware/public.middleware')
+const {Validator} = require('../middleware/public.middleware')
 
 const {
     getMarkdownDataById,
@@ -29,7 +29,7 @@ const {
     hasOperateAdnIds
 } = require('../middleware/markdown.middleware')
 
-const router = new Router({ prefix: '/markdownFile' })
+const router = new Router({prefix: '/markdownFile'})
 
 //文章的新建
 router.post('/new', auth,
@@ -54,7 +54,7 @@ router.post('/update', auth, getUpdateResult)
 router.post('/updateSomething', auth, getUpdateSomethingResult)
 
 // 获取登录用户的文章列表
-router.post('/getUserArticle', auth, returnUserAllArticle)
+router.post('/getUserArticle', returnUserAllArticle)
 
 // 搜索
 router.post('/search', returnSearchResult)
@@ -126,7 +126,7 @@ router.get('/random', markdownC.getRandomOne)
 /**
  * 将指定id/markdown转为html内容
  */
-router.post('/transformToHtml',markdownC.returnMarkdown)
+router.post('/transformToHtml', markdownC.returnMarkdown)
 
 
 module.exports = router

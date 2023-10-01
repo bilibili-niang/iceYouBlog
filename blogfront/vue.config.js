@@ -17,8 +17,8 @@ module.exports = defineConfig({
         proxy: {
             '/': {
                 ws: false,
-                // target: "http://localhost:89",
-                target: "http://118.31.70.94:89/",
+                target: "http://localhost:89",
+                // target: "http://118.31.70.94:89/",
                 changeOrigin: true,
                 pathRewrite: {
                     '^/': '/'
