@@ -1,10 +1,17 @@
-const { defineConfig } = require('@vue/cli-service')
+const {defineConfig} = require('@vue/cli-service')
 // const webpack = require("webpack");
 //打包配置自动忽略console.log等
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path')
 
 module.exports = defineConfig({
+    pluginOptions: { // 第三方插件配置
+        'style-resources-loader': {
+            preProcessor: 'less',
+            // less所在文件路径
+            patterns: [path.resolve(__dirname, './src/assets/css/variables.less')]
+        }
+    },
     productionSourceMap: false,
     transpileDependencies: true,
     publicPath: '/',

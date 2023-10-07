@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-import { reactive } from 'vue'
+import {useStore} from 'vuex'
+import {reactive} from 'vue'
 import markdownApi from '@/common/api/markdownFiles'
 import IndexCard from "@/components/index/IndexCard.vue"
 
@@ -23,9 +23,7 @@ const initData = async () => {
   userInfo = store.state.user.userInfo
   const email = userInfo.email || null
   if (email) {
-    const res = await markdownApi.getTopArticle({ email })
-    console.log("res:")
-    console.log(res)
+    const res = await markdownApi.getTopArticle({email})
     indexList.data = res.result
   }
 }

@@ -7,57 +7,51 @@
       <div class="detail">
         <div class="name">
           <span class="align-middle">
-          <el-text tag="b" size="small">name:</el-text>
-            <p>
-              <el-text>
-            {{ userInfo.username }}
-              </el-text>
-            </p>
+          <ice-text>name:</ice-text>
+              <ice-text nowrap>
+                {{ userInfo.username }}
+              </ice-text>
           </span>
           <div class="buttonGroup">
-            <el-button @click="loginOut()">login out</el-button>
-            <el-button @click="editUser()">编辑个人信息</el-button>
+            <ice-button @click="loginOut">login out</ice-button>
+            <ice-button @click="editUser">编辑个人信息</ice-button>
           </div>
         </div>
 
         <div class="otherInf">
         <span class="align-middle">
-          <el-text tag="b" size="small">email:</el-text>
-          <p>
-            <el-text>
+          <ice-text>email:</ice-text>
+            <ice-text>
             {{ userInfo.email }}
-            </el-text>
-          </p>
+            </ice-text>
           </span>
           <span>
-          <el-text tag="b" size="small">id:</el-text>
-          <p>
-            <el-text>
+          <ice-text>id:</ice-text>
+            <ice-text>
             {{ userInfo.id }}
-            </el-text>
-          </p>
+            </ice-text>
           </span>
         </div>
       </div>
       <div class="icon">
-        <span v-if="Boolean(userInfo.githubUrl)">
-          <el-text tag="b" size="small">github:</el-text>
-          <el-text>
+        <span v-if="Boolean(userInfo.githubUrl)" class="ice-row">
+          <ice-text>github:</ice-text>
+          <ice-text>
             {{ userInfo.githubUrl }}
-          </el-text>
+          </ice-text>
         </span>
 
-        <span v-if="Boolean(userInfo.word)">
-          <el-text tag="b" size="small">word:</el-text>
-          <el-text>
+        <span v-if="Boolean(userInfo.word)" class="ice-row">
+          <ice-text ice-text>word:</ice-text>
+          <ice-text>
             {{ userInfo.word }}
-          </el-text>
+          </ice-text>
         </span>
-        <span v-if="Boolean(userInfo.occupation)">
-          <el-text tag="b" size="small">occupation:</el-text>
-          <el-text>
+        <span v-if="Boolean(userInfo.occupation)" class="ice-row">
+          <ice-text ice-text>occupation:</ice-text>
+          <ice-text>
             {{ userInfo.occupation }}
-          </el-text>
+          </ice-text>
         </span>
       </div>
     </div>
@@ -66,8 +60,8 @@
       <el-tabs class="demo-tabs" v-model="activeName" @tab-click="initHistory">
         <el-tab-pane label="所有文章" name="article">
           <div class="options">
-            <el-button @click="open">删除</el-button>
-            <el-button @click="setAsRecommend">置顶</el-button>
+            <ice-button @click="open">删除</ice-button>
+            <ice-button @click="setAsRecommend">置顶</ice-button>
           </div>
 
           <el-drawer v-model="showRecommendLevel" direction="ttb" title="选择你的推荐等级" :with-header="false">
@@ -79,7 +73,7 @@
                   :value="item.value"
               />
             </el-select>
-            <el-button @click="subMitRecommend">决定这个了</el-button>
+            <ice-button @click="subMitRecommend">决定这个了</ice-button>
           </el-drawer>
 
           <!--bootstrap的card-->
@@ -92,7 +86,7 @@
           <!--展示选择tag的页面-->
           <el-drawer v-model="drawer" direction="ttb" size="75%" title="I am the title" :with-header="false">
             当前文章:
-            <el-text tag="b" size="large">{{ currentInfo.title }}</el-text>
+            <ice-text ice-text size="large">{{ currentInfo.title }}</ice-text>
 
             <div class="tagsLim">
               <!--点击添加进已选中的tag并更改样式-->
@@ -102,11 +96,11 @@
                 </el-tag>
               </div>
             </div>
-            <el-button @click="submitTags()">提交</el-button>
+            <ice-button @click="submitTags()">提交</ice-button>
 
           </el-drawer>
           <div class="btns">
-            <!--<el-button @click="getDataById()">下一页</el-button>-->
+            <!--<ice-button @click="getDataById()">下一页</ice-button>-->
             <el-pagination
                 v-model:current-page="currentPage2"
                 v-model:page-size="pageSize2"
@@ -122,8 +116,8 @@
         </el-tab-pane>
 
         <el-tab-pane label="已置顶文章" name="topArticle">
-          <el-text>已置顶文章</el-text>
-          <el-button @click="getSelect">获取已选</el-button>
+          <ice-text>已置顶文章</ice-text>
+          <ice-button @click="getSelect">获取已选</ice-button>
           <TopArticle operate="selectOperate"></TopArticle>
         </el-tab-pane>
 
@@ -135,7 +129,7 @@
 
         <el-tab-pane label="伪删除的文章" name="DeletedFile">
           <div class="options">
-            <el-button @click="recover()">恢复所选文章</el-button>
+            <ice-button @click="recover()">恢复所选文章</ice-button>
           </div>
           <div class="card" style="width: 100%;" v-for="(item,index) in deletedFile" :key="index">
             <div class="btns">
@@ -147,20 +141,20 @@
         <el-tab-pane label="others" name="others">
           <dvi class="others">
           <span>
-            <el-text>
+            <ice-text>
             查看头图
-            </el-text>
-            <el-text>
+            </ice-text>
+            <ice-text>
               <a href="#/user/headImg">HeadImg</a>
-            </el-text>
+            </ice-text>
           </span>
             <span>
-            <el-text>
+            <ice-text>
             我的评论
-            </el-text>
-            <el-text>
+            </ice-text>
+            <ice-text>
               <a href="#/user/postedComments">已发布的评论</a>
-            </el-text>
+            </ice-text>
           </span>
           </dvi>
         </el-tab-pane>
@@ -174,16 +168,16 @@
 import Avatar from '@/components/common/Avatar.vue'
 import http from '@/common/api/request'
 import router from '@/router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { h } from 'vue'
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {h} from 'vue'
 import IndexCard from "@/components/user/IndexCard.vue"
 import HistoryIndexCard from "@/components/user/HistoryIndexCard.vue"
 import TopArticle from "@/components/user/TopArticle.vue"
 
 export default {
   name: "User",
-  components: { HistoryIndexCard, IndexCard, Avatar, TopArticle },
-  data () {
+  components: {HistoryIndexCard, IndexCard, Avatar, TopArticle},
+  data() {
     return {
       userInfo: {},
       sequence: 0,
@@ -241,14 +235,14 @@ export default {
      * @date 2023/6/19 @time
      *  获取已选item
     */
-    getSelect () {
+    getSelect() {
       this.selectOperate = 'get'
     },
     /* @author icestone , 15:46
      * @date 2023/5/20
      * 设置置顶文章
     */
-    subMitRecommend () {
+    subMitRecommend() {
       http.$axios({
         url: '/markdownFile/setRecommend',
         method: 'POST',
@@ -275,7 +269,7 @@ export default {
      * @date 2023/5/20
      * 显示设置置顶文章的可选等级
     */
-    setAsRecommend () {
+    setAsRecommend() {
       // 获取一下选中
       this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
@@ -290,7 +284,7 @@ export default {
      * @date 2023/5/15
      * 分页按钮
     */
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       let id = this.pageSize2 * val
       // @date 2023/5/15 , @author icestone
       //   请求数据
@@ -326,19 +320,18 @@ export default {
             console.log(e)
           })
 
-
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       // console.log(`${val} items per page`)
     },
     /* @author icestone , 14:19
      * @date 2023/5/7
      * 将传入的id存储到 selectedList 中
     */
-    addChecked (item, id) {
+    addChecked(item, id) {
       // @date 2023/5/7 , @author icestone
       // 如果存在该id,弹出指定id
-      if (this.selectedList.indexOf(id) != - 1) {
+      if (this.selectedList.indexOf(id) != -1) {
         this.selectedList.splice(this.selectedList.indexOf(id))
       } else {
         // @date 2023/5/7 , @author icestone
@@ -384,14 +377,13 @@ export default {
             this.getUserArticle()
           })
           .catch(e => {
-            this.alertMessage(e)
           })
     },
     /* @author icestone , 15:31
      * @date 2023/5/7
      * 接收子组件传给父组件的值
     */
-    getShowAlert (val) {
+    getShowAlert(val) {
       this.currentInfo = val
       this.drawer = val.flag
     },
@@ -401,7 +393,7 @@ export default {
      * @date 2023/5/5
      * 初始化获取用户已删除的文章数据
      */
-    async getDeletedFiles () {
+    async getDeletedFiles() {
       // 发起请求,
       await http.$axios({
         url: '/markdownFile/deletedFile',
@@ -431,7 +423,7 @@ export default {
      * @date 2023/5/4
      * 恢复所选的文章
      */
-    async recover () {
+    async recover() {
       // @date 2023/5/4 , @author icestone
       // 清空一下所选的id数组
       this.selectedItem = []
@@ -478,7 +470,7 @@ export default {
      * @date 2023/5/4
      * 伪删除所选文章
      */
-    open () {
+    open() {
       // 获取一下选中
       this.showSelectedItem()
       // @date 2023/5/20 , @author icestone
@@ -512,7 +504,7 @@ export default {
      * @date 2023/5/5
      * 伪删除文章
      */
-    delSelectedItems () {
+    delSelectedItems() {
       http.$axios({
         url: '/markdownFile/operate',
         method: 'POST',
@@ -552,24 +544,18 @@ export default {
      * @date 2023/5/4
      * 获取选中的item,存储在 selectedItem 中
      */
-    showSelectedItem () {
+    showSelectedItem() {
       this.articleList.forEach((item, index) => {
         if (item.checked) {
           this.selectedItem.push(item.id)
         }
       })
     },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
+    alertMessage(title, sub, color) {
+      console.log('title, sub, color', title, sub, color)
     },
     // 跳转编辑个人信息
-    editUser () {
+    editUser() {
       this.$router.push('/editUser')
     },
     /**
@@ -578,7 +564,7 @@ export default {
      * @date 2023/5/5
      * 点击不同的选项卡
      */
-    async initHistory (tab, event) {
+    async initHistory(tab, event) {
       this.selectedItem = []
 
       if (tab.props.name == 'history') {
@@ -609,15 +595,15 @@ export default {
       }
     },
     // 退出登录
-    loginOut () {
+    loginOut() {
       localStorage.removeItem("userInfo")
       this.$router.push('/')
     },
     // 初始化时判断是否有用户登陆
-    initUser () {
+    initUser() {
       const user = localStorage.getItem("userInfo") || ''
       if (user.length < 10) {
-        router.push({ path: '/' })
+        router.push({path: '/'})
         this.alertMessage('当前没有用户登录')
       } else {
         this.alertMessage('有用户登录')
@@ -625,15 +611,15 @@ export default {
         this.userInfo = JSON.parse(user)
       }
     },
-    goToRead (id) {
+    goToRead(id) {
       const routeUrl = this.$router.resolve({
         path: "/read",
-        query: { id }
+        query: {id}
       })
       window.open(routeUrl.href, '_blank')
     },
     // 获取该用户的文章
-    getUserArticle () {
+    getUserArticle() {
       http.$axios({
         url: '/markdownFile/getUserArticle',
         method: 'POST',
@@ -660,16 +646,15 @@ export default {
             }
           })
           .catch(e => {
-            this.alertMessage(e)
           })
     }
   },
-  created () {
+  created() {
     this.initUser()
     this.getUserArticle()
   },
   watch: {
-    drawer (newVal) {
+    drawer(newVal) {
       // flag更新,获取tag
       if (newVal) {
         http.$axios({
@@ -717,6 +702,8 @@ export default {
   .userCard {
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    padding: @p-normal;
 
     @media screen and (max-width: 800px) {
       & {
@@ -740,6 +727,7 @@ export default {
       display: flex;
       flex-direction: column;
       width: 100%;
+      box-sizing: border-box;
 
       .name {
         display: flex;
@@ -795,8 +783,11 @@ export default {
 }
 
 .active {
-  margin-top: 0; /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
-  box-shadow: 0 0 15px 2px #918f8f; /*盒子阴影*/
-  transition: all 0.2s; /*持续时间*/
+  /*和hover的margin-top有对比，原无30,现在0，相当于上移了,30px*/
+  margin-top: 0;
+  /*盒子阴影*/
+  box-shadow: 0 0 15px 2px @bac-dark-bleak;
+  /*持续时间*/
+  transition: all 0.2s;
 }
 </style>

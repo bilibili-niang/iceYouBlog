@@ -4,7 +4,6 @@
     <template v-for="(item,index) in dataList" :key="index">
       <IndexCard :item="item"></IndexCard>
     </template>
-
   </div>
 </template>
 

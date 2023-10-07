@@ -215,6 +215,7 @@ class UserController {
     */
     async returnUserInfoByEmail(ctx) {
         console.log('---returnUserInfoByEmail---')
+        console.log('ctx.request.body', ctx.request.body)
         const {email = null, type = null} = ctx.request.body
         if (email == null) {
             // @date 2023/5/11 , @author icestone
@@ -276,7 +277,7 @@ class UserController {
             result
         }
     }
-    
+
     /**
      * 微信用户登录
      */

@@ -16,14 +16,17 @@ export default {
       type: Boolean,
       default: true
     },
-    size: String
+    size: {
+      type: String,
+      default: 'normal'
+    }
   },
-  data () {
+  data() {
     return {
       href: '',
     }
   },
-  created () {
+  created() {
     // 允许点击
     this.href = '#/read/readTag?tag1=' + this.tag
   }

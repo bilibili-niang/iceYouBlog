@@ -54,7 +54,7 @@ router.post('/update', auth, getUpdateResult)
 router.post('/updateSomething', auth, getUpdateSomethingResult)
 
 // 获取登录用户的文章列表
-router.post('/getUserArticle', returnUserAllArticle)
+router.post('/getUserArticle', auth, returnUserAllArticle)
 
 // 搜索
 router.post('/search', returnSearchResult)

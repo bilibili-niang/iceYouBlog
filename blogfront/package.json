@@ -38,9 +38,11 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "vue": "^3.3.4",
+    "style-resources-loader": "^1.5.0",
     "unplugin-auto-import": "^0.15.1",
-    "unplugin-vue-components": "^0.24.1"
+    "unplugin-vue-components": "^0.24.1",
+    "vue": "^3.3.4",
+    "vue-cli-plugin-style-resources-loader": "^0.1.5"
   },
   "browserslist": [
     "> 1%",
