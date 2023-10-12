@@ -1,7 +1,7 @@
 <template>
   <IndexHeader></IndexHeader>
   <router-view :key="$route.fullPath"/>
-  <div class="footer animation-time" v-if="false">
+  <div class="footer animation-time">
     <el-link href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</el-link>
     <div>
       powered by:
@@ -12,12 +12,12 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       day: true
     }
   },
-  created () {
+  created() {
     // 获取session中的user信息
     this.$store.commit("getUserInfo")
     // 获取深色/浅色模式的flag
@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    isDaylight () {
+    isDaylight() {
       const currdate = new Date()
       if (currdate.getHours() >= 20 || currdate.getHours() < 7) {
         return true
@@ -60,16 +60,14 @@ export default {
 
 .footer {
   position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 10px;
+  left: 10px;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: fit-content;
   justify-content: center;
   align-items: center;
   font-size: 0.7rem;
-  opacity: 0.1;
 
   &:hover {
     opacity: 0.8;
@@ -81,5 +79,4 @@ export default {
     padding-top: 3rem;
   }
 }
-
 </style>

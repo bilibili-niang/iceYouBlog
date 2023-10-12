@@ -41,9 +41,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import timeFormat from '@/common/filter/time'
-import { useRouter } from 'vue-router'
+import {useRouter} from 'vue-router'
 
 const props = defineProps({
   item: {},
@@ -68,7 +68,7 @@ const DateDiffer = (Date_end) => {
   date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
   date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
   const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
-  const diffDate = diff / ( 24 * 60 * 60 * 1000 )  //计算当前时间与结束时间之间相差天数
+  const diffDate = diff / (24 * 60 * 60 * 1000)  //计算当前时间与结束时间之间相差天数
   oldData.value = diffDate
 }
 
@@ -78,7 +78,7 @@ const router = useRouter()
 const goToRead = (id) => {
   const routeUrl = router.resolve({
     path: "/read",
-    query: { id }
+    query: {id}
   })
   window.open(routeUrl.href, '_blank')
 }
@@ -89,7 +89,6 @@ const init = () => {
 }
 init()
 </script>
-
 <style scoped lang="less">
 .indexCard {
   overflow: hidden;

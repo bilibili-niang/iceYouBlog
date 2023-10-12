@@ -71,27 +71,27 @@ import fun from '@/hook/function'
 export default {
   name: "Read",
   methods: {
-    refresh (val) {
+    refresh(val) {
       // 评论发表成功
       if (val) {
         this.refreshFlag = !this.refreshFlag
       }
     },
-    handleCopyCodeSuccess (code) {
+    handleCopyCodeSuccess(code) {
       fun.alert("复制成功")
     },
     /* @author icestone , 16:02
      * @date 2023/5/6
      * 前往实验性功能的编辑
     */
-    gotoEditExperiment (id) {
+    gotoEditExperiment(id) {
       const routeUrl = this.$router.resolve({
         path: "/edit/vMdEditor",
-        query: { id }
+        query: {id}
       })
       window.open(routeUrl.href, '_blank')
     },
-    showEdit () {
+    showEdit() {
       const email = JSON.parse(localStorage.getItem('userInfo')) || ""
       if (!Boolean(email)) {
         // 没有email时
@@ -101,11 +101,11 @@ export default {
         }
       }
     },
-    timeFormat (data) {
+    timeFormat(data) {
       this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
     },
     // 通过id获取初始化数据
-    initMarkdownData () {
+    initMarkdownData() {
       this.id = this.$route.query.id || '0'
       http.$axios({
         url: '/markdownFile/getData',
@@ -161,7 +161,7 @@ export default {
     MarkdownTags,
     comment
   },
-  data () {
+  data() {
     return {
       markdownData: {},
       userInf: {},
@@ -188,15 +188,9 @@ export default {
       wordCount: ''
     }
   },
-  created () {
+  created() {
     this.initMarkdownData()
   },
-  mounted () {
-    /*    console.log("document.getElementsByTagName('h4'):")
-        console.log(document.getElementsByTagName('h4'))
-        console.log("document.getElementsByTagName('h5'):")
-        console.log(document.getElementsByTagName('h5'))*/
-  }
 }
 </script>
 

@@ -1,10 +1,10 @@
 const markdownFile = require('../schema/markdownFile')
-const { insertLog } = require('./log.service')
+const {insertLog} = require('./log.service')
 const fileNameAndPath = __filename
 const history = require('../schema/history')
-const { salt } = require('../config/default')
+const {salt} = require('../config/default')
 const jwt = require('jsonwebtoken')
-const { Op, Sequelize } = require('sequelize')
+const {Op, Sequelize} = require('sequelize')
 const tool = require('../services/tool.service')
 const https = require('https')
 const cheerio = require('cheerio')
@@ -42,7 +42,7 @@ class MarkdownFileService {
      * @date 2023/5/8
      * 初始化 markdownFile 用的,用于返回第一条文章数据
     */
-    async initMarkdownFile () {
+    async initMarkdownFile() {
         return await markdownFile.findOne({
             attributes: ['id'],
             raw: true
@@ -50,7 +50,7 @@ class MarkdownFileService {
     }
 
     //新建文章
-    async createMarkdownFile (userEmail, requestData) {
+    async createMarkdownFile(userEmail, requestData) {
         const {
             title = ' ',
             description = ' ',
@@ -67,8 +67,8 @@ class MarkdownFileService {
     }
 
     // 获取首页数据/分页数据
-    async getHomeIndexList (pageNum, pageSize) {
-        const offset = ( pageNum - 1 ) * pageSize
+    async getHomeIndexList(pageNum, pageSize) {
+        const offset = (pageNum - 1) * pageSize
         return await markdownFile.findAndCountAll({
             attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'updatedAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             offset: offset,
@@ -90,24 +90,25 @@ class MarkdownFileService {
     }
 
     // 传入id,浏览量自增1
-    async viewIncreaseById (id) {
+    async viewIncreaseById(id) {
         markdownFile.increment(['view'], {
                 where: {
                     id
-                }
-            }, {
+                },
                 // view 自增 不更新 updatedAt 字段
                 silent: true
+            }, {
+                // silent: true
             }
         )
             .then(res => {
-                // console.log('成功')
-                // console.log(res)
+                /*console.log('成功')
+                console.log(res)*/
             })
             .catch(e => {
                 // console.log('失败')
                 // console.log(e)
-                let date = new Date(+ new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                let date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
                 insertLog({
                     time: date,
                     ip: 'localhost',
@@ -120,7 +121,7 @@ class MarkdownFileService {
     }
 
     // 通过文章数据和token记录用户的浏览记录
-    async historyByToken (res, token) {
+    async historyByToken(res, token) {
         console.error('--------historyByToken--------')
         let verifyToken = jwt.decode(token, salt)
         console.log("Boolean(verifyToken):")
@@ -147,7 +148,7 @@ class MarkdownFileService {
     }
 
     // 通过用户邮箱返回用户的文章:
-    async getMarkdownByEmail (email) {
+    async getMarkdownByEmail(email) {
         return await markdownFile.findAll({
             attributes: ['id', 'email', 'description', 'updatedAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title'],
             where: {
@@ -165,7 +166,7 @@ class MarkdownFileService {
     }
 
     // 通过传入的id返回首页文章
-    async getHomeIndexListById (id, limit = 20) {
+    async getHomeIndexListById(id, limit = 20) {
         return await markdownFile.findAll({
             attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'updatedAt', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
@@ -188,7 +189,7 @@ class MarkdownFileService {
     }
 
     // 通过email获取用户所有文章
-    async getAllUserArticle (email) {
+    async getAllUserArticle(email) {
         const res = await markdownFile.findAll({
             attributes: ['id', 'type', 'title', 'description', 'postTime', 'view'], where: {
                 email
@@ -200,7 +201,7 @@ class MarkdownFileService {
     }
 
     // 通过用户邮箱新建文章
-    async newMarkdown (email, form) {
+    async newMarkdown(email, form) {
         form.email = email
         form.type = 'blog'
         const date = new Date()
@@ -220,7 +221,7 @@ class MarkdownFileService {
     }
 
     // 通过email获取用户文章总体数据
-    async getUserMarkdownData (email) {
+    async getUserMarkdownData(email) {
         const res = await markdownFile.findAll({
             attributes: ['view', 'diggCount'],
             where: {
@@ -246,7 +247,7 @@ class MarkdownFileService {
     }
 
     // 通过用户email和
-    async updateMarkdownByEmail (data) {
+    async updateMarkdownByEmail(data) {
         return await markdownFile.update({
             title: data.title,
             content: data.content,
@@ -263,7 +264,7 @@ class MarkdownFileService {
     }
 
     // 通过文章id返回该文章的用户邮箱
-    async getUserEmailByMarkdownId (id) {
+    async getUserEmailByMarkdownId(id) {
         return markdownFile.findOne({
             attributes: ['email'],
             where: {
@@ -274,7 +275,7 @@ class MarkdownFileService {
     }
 
     // 通过关键字查找并返回文章信息
-    async getMarkdownByKeyWord (key) {
+    async getMarkdownByKeyWord(key) {
         return await markdownFile.findAll({
             where: {
                 content: {
@@ -294,9 +295,9 @@ class MarkdownFileService {
      *  通过用户邮箱返回用户所有文章分页数据的接口,
      *  邮箱,返回数量,跳过条数
     */
-    async getAllUserMarkdownFiles (email, limit = 20, id = 0) {
+    async getAllUserMarkdownFiles(email, limit = 20, id = 0) {
         // return await markdownFile.findAll({
-        console.log(`limit:${ limit },id:${ id }`)
+        console.log(`limit:${limit},id:${id}`)
         return await markdownFile.findAndCountAll({
             attributes: ['id', 'type', 'title', 'description', 'createdAt', 'view', 'tag1', 'tag2', 'tag3', 'recommendLevel'],
             where: {
@@ -313,7 +314,7 @@ class MarkdownFileService {
     }
 
     // 点赞
-    async supportIncrease (id) {
+    async supportIncrease(id) {
         console.log('---supportIncrease---')
         await markdownFile.increment(['praise'], {
             where: {
@@ -330,7 +331,7 @@ class MarkdownFileService {
     }
 
     // 通过id返回该文章的一些数据,默认这里用于展示在用户的浏览记录,但也可以自定义查询信息
-    async getMarkdownFileDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg', 'updatedAt']) {
+    async getMarkdownFileDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view', 'headImg', 'updatedAt']) {
         return await markdownFile.findAll({
             attributes: attr,
             where: {
@@ -346,10 +347,10 @@ class MarkdownFileService {
      * @date 2023/5/3
      *  伪删除
      */
-    async getDeleteResult (ids, email = 'demo@emaml') {
+    async getDeleteResult(ids, email = 'demo@emaml') {
         await insertLog({
             logType: '伪删除文章',
-            detail: `${ email }伪删除了文章:${ ids }`,
+            detail: `${email}伪删除了文章:${ids}`,
             fileNameAndPath
         })
         return await markdownFile.destroy({
@@ -365,11 +366,11 @@ class MarkdownFileService {
      * @date 2023/5/4
      *  通过email获取用户的已删除文章
      */
-    async getDeletedFiles (email) {
+    async getDeletedFiles(email) {
         return await markdownFile.findAll({
             attributes: ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3', 'view'],
             where: {
-                destroyTime: { [Op.not]: null },
+                destroyTime: {[Op.not]: null},
                 email
             },
             paranoid: false,
@@ -382,10 +383,10 @@ class MarkdownFileService {
      * @date 2023/5/5
      *  通过id恢复指定文章
      */
-    async getRecoverResult (ids, email) {
+    async getRecoverResult(ids, email) {
         await insertLog({
             logType: '恢复文章',
-            detail: `${ email }恢复了文章:${ ids }`,
+            detail: `${email}恢复了文章:${ids}`,
             fileNameAndPath
         })
         return await markdownFile.restore({
@@ -401,7 +402,7 @@ class MarkdownFileService {
      * @date 2023/5/5
      *  通过ids获取已被删除的文章的信息
      */
-    async getAlreadyDetailById (ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3']) {
+    async getAlreadyDetailById(ids, attr = ['id', 'title', 'createdAt', 'description', 'tag1', 'tag2', 'tag3']) {
         return await markdownFile.findAll({
             attributes: attr,
             where: {
@@ -418,7 +419,7 @@ class MarkdownFileService {
      * @date 2023/5/5
      *  获取首页文章总数量,用作
      */
-    async getAllCounts () {
+    async getAllCounts() {
         // @date 2023/5/5 , @author icestone
         //  查询 states 大于0的数据
         return await markdownFile.findAndCountAll({
@@ -436,7 +437,7 @@ class MarkdownFileService {
      * @date 2023/5/5
      *  查询与传入的tag相关的数据
     */
-    async getAboutMarkdown (tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
+    async getAboutMarkdown(tags, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         const processedTags = []
         console.log('查询的tag:')
         console.log(tags)
@@ -477,18 +478,18 @@ class MarkdownFileService {
      * @date 2023/5/7
      *  通过email返回该用户的所有文章tag
     */
-    async getAllTagsByEmail (email) {
+    async getAllTagsByEmail(email) {
         let result = await markdownFile.findAll({
             attributes: ['tag1', 'tag2', 'tag3'],
             where: {
                 [Op.and]: [
-                    { email },
+                    {email},
                     {
-                        tag1: { [Op.not]: null }
+                        tag1: {[Op.not]: null}
                     }, {
-                        tag2: { [Op.not]: null }
+                        tag2: {[Op.not]: null}
                     }, {
-                        tag3: { [Op.not]: null }
+                        tag3: {[Op.not]: null}
                     },
                 ]
             },
@@ -499,20 +500,20 @@ class MarkdownFileService {
         let resultList = []
         result.forEach((item, index) => {
             Object.values(item).map(it => {
-                if (resultList.indexOf(it) == - 1) {
+                if (resultList.indexOf(it) == -1) {
                     // 不存在
                     resultList.push(it)
                 }
             })
         })
-        return { ...resultList }
+        return {...resultList}
     }
 
     /* @author icestone , 15:50
      * @date 2023/5/7
      *  更新操作,这里的 data 传入的应该是对象
     */
-    async UpdateSomething (operate, data, id) {
+    async UpdateSomething(operate, data, id) {
         return await markdownFile.update(
             data,
             {
@@ -528,7 +529,7 @@ class MarkdownFileService {
      *  根据传入的不同类型将其设置为推荐
      *  传入 ids,需要置顶的文章id,数组,level 置顶等级
     */
-    async setRecommendByType (ids, level) {
+    async setRecommendByType(ids, level) {
         return await markdownFile.update({
             recommendLevel: level
         }, {
@@ -543,7 +544,7 @@ class MarkdownFileService {
      * @date 2023/5/20
      *  返回推荐文章
     */
-    async getRecommendMarkdownFile () {
+    async getRecommendMarkdownFile() {
         return await markdownFile.findAll({
             attributes: ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'recommendLevel', 'updatedAt'],
             where: {
@@ -560,7 +561,7 @@ class MarkdownFileService {
         })
     }
 
-    async getRecommendMarkdownFileByTags (tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
+    async getRecommendMarkdownFileByTags(tags, id, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         const processedTags = []
         tags.forEach((item) => {
             if (item.length > 0) {
@@ -597,7 +598,7 @@ class MarkdownFileService {
      * @date 2023/7/6 @time 15:06
      * 根据id随机获取文章
     */
-    async getRandomMarkdownFileById (id, limit = 5, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
+    async getRandomMarkdownFileById(id, limit = 5, attr = ['id', 'title', 'email', 'description', 'view', 'praise', 'headImg', 'createdAt', 'tag1', 'tag2', 'tag3', 'updatedAt']) {
         let idList = await markdownFile.findAll({
             attributes: ['id'],
             where: {
@@ -617,7 +618,7 @@ class MarkdownFileService {
             attributes: attr,
             where: {
                 [Op.or]: [
-                    { id: idList }
+                    {id: idList}
                 ]
             },
             limit
@@ -628,7 +629,7 @@ class MarkdownFileService {
      * @date 2023/6/19 @time
      * 获取置顶文章
     */
-    async getTopArticleByEmail (email, level) {
+    async getTopArticleByEmail(email, level) {
         return await markdownFile.findAll({
             attributes: ['id', 'email', 'description', 'updatedAt', 'view', 'praise', 'headImg', 'states', 'tag1', 'tag2', 'tag3', 'title', 'recommendLevel'],
             where: {
@@ -652,7 +653,7 @@ class MarkdownFileService {
      * @date 2023/7/31 @time 9:39
      * 获取浏览量
     */
-    async getViews () {
+    async getViews() {
         let count = 0
         const result = await markdownFile.findAndCountAll({
             attributes: ['view'],
@@ -669,17 +670,17 @@ class MarkdownFileService {
      * @param email
      * @return {promise}
      * */
-    async getAllTags () {
+    async getAllTags() {
         let result = await markdownFile.findAll({
             attributes: ['tag1', 'tag2', 'tag3'],
             where: {
                 [Op.and]: [
                     {
-                        tag1: { [Op.not]: null }
+                        tag1: {[Op.not]: null}
                     }, {
-                        tag2: { [Op.not]: null }
+                        tag2: {[Op.not]: null}
                     }, {
-                        tag3: { [Op.not]: null }
+                        tag3: {[Op.not]: null}
                     },
                 ]
             },
@@ -690,7 +691,7 @@ class MarkdownFileService {
         let resultList = []
         result.forEach((item, index) => {
             Object.values(item).map(it => {
-                if (resultList.indexOf(it) === - 1) {
+                if (resultList.indexOf(it) === -1) {
                     // 不存在
                     resultList.push(it)
                 }
@@ -703,7 +704,7 @@ class MarkdownFileService {
      * 返回随机一条数据
      * @return {Promise<void>}
      */
-    async returnRandomOne () {
+    async returnRandomOne() {
         // 这里已经限定 states 大于0
         return await markdownFile.findOne({
             where: {
@@ -720,7 +721,7 @@ class MarkdownFileService {
      * @param url{string} 需要爬取的url
      * @param id{number} 需要写入的id
      */
-    getDataByUrl (url, id) {
+    getDataByUrl(url, id) {
         return new Promise((resolve, reject) => {
             let config = {
                 html: '',
@@ -740,7 +741,7 @@ class MarkdownFileService {
                     } catch (e) {
                         console.log(e)
                     }
-                    await markdownFile.update({ content: config.html }, { where: { id } })
+                    await markdownFile.update({content: config.html}, {where: {id}})
                         .then(async res => {
                             let result
                             result = await markdownFile.findAll({
@@ -765,7 +766,7 @@ class MarkdownFileService {
      * 通过id获取文章的markdown并转为html
      * @param id
      */
-    async getMarkdownContentById (id) {
+    async getMarkdownContentById(id) {
         const data = await markdownFile.findOne({
             where: {
                 id

@@ -43,6 +43,18 @@ const routes = [
             }
         ],
     },
+    // ikun语录
+    {
+        path: '/words',
+        name: 'words',
+        children: [
+            {
+                path: '/words/',
+                name: 'wordsIndex',
+                component: () => import('@/views/words/index/index.vue')
+            }
+        ],
+    },
     {
         path: '/user',
         name: 'user',

@@ -1,7 +1,7 @@
 <template>
   <div class="links container">
     <div class="btns">
-      <el-button @click="drawer = true">add</el-button>
+      <ice-button @click="drawer = true">add</ice-button>
     </div>
 
     <el-drawer v-model="drawer" size="90%" direction="ttb" title="I am the title" :with-header="false">
@@ -12,23 +12,25 @@
       </div>
 
       <div class="btns">
-        <el-button @click="drawer = false">close</el-button>
-        <el-button @click="subMitForm()">submit</el-button>
-
+        <ice-button @click="drawer = false">close</ice-button>
+        <ice-button @click="subMitForm()">submit</ice-button>
       </div>
     </el-drawer>
 
     <div class="cardLim">
-      <div class="card hover-around-shadow animation-time" v-for="(item,index) in linkList" :key="index">
+      <div class="card" v-for="(item,index) in linkList" :key="index">
         <img :src="item.img" class="card-img-top" alt="">
+
         <div class="card-body">
-          <el-text class="mx-1">{{ item.title }}</el-text>
+          <ice-text class="mx-1">{{ item.title }}</ice-text>
           <br>
-          <el-link :href="item.url" target="_blank">前往</el-link>
+          <ice-link :href="item.url" target="_blank">前往</ice-link>
         </div>
       </div>
     </div>
-    评论区:
+    <ice-text>
+      评论区:
+    </ice-text>
     <comment :user="commentUser" title="添加友链" :id="-1" type="friendLink"></comment>
     <CommentArea id="-1"></CommentArea>
 
@@ -130,6 +132,13 @@ export default {
     padding: 1rem 1.3rem;
 
     .card {
+      transition: @time-n;
+      border: rgba(0, 0, 0, 0) 1px solid;
+
+      &:hover {
+        border: @themeActiveColor 1px solid;
+      }
+
       display: flex;
       flex-direction: column;
       width: 28%;

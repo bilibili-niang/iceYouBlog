@@ -1,6 +1,25 @@
 <template>
   <div class="lim outLim">
 
+    <!-- <shrinkBar direction="top">
+          <template v-slot:show>
+            <ice-text>
+              披金成王,伴坤远航
+            </ice-text>
+          </template>
+
+          <template v-slot:body>
+            <div class="ice-column">
+              <ice-title>
+                水调歌头-崔与之
+              </ice-title>
+              <ice-text>万里云间戍，立马剑门关。</ice-text>
+              <ice-text>乱山极目无际，直北是长安。</ice-text>
+              <ice-text>人苦百年涂炭，鬼哭三边锋镝，天道久应还。</ice-text>
+              <ice-text>手写留屯奏，炯炯寸心丹。</ice-text>
+            </div>
+          </template>
+        </shrinkBar>-->
 
     <!--基础菜单-->
     <ul class="ice-row list">
@@ -11,7 +30,7 @@
         <ice-link href="#/login" target="_blank">login</ice-link>
       </li>
       <!--配置为1才开启注册-->
-      <li v-if="!loginState&&store.state.config.registerFlag=='1'" class="list-item">
+      <li v-if="!loginState && store.state.config.registerFlag == '1'" class="list-item">
         <ice-link href="#/register" target="_blank">register</ice-link>
       </li>
       <li class="list-item">
@@ -21,12 +40,14 @@
         <ice-link href="#/friend/links" target="_self">友链</ice-link>
       </li>
       <li class="list-item">
+        <ice-link href="#/words/index" target="_self">iKun</ice-link>
+      </li>
+      <li class="list-item">
         <ice-link href="#/search">搜索</ice-link>
         <Search v-if="false"></Search>
       </li>
       <li class="list-item">
-        <ice-link :disabled="true" :class="{ dark: dark==true }"
-                  @click="changeDark"> {{ dark ? 'light' : 'dark' }}
+        <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{ dark ? 'light' : 'dark' }}
         </ice-link>
       </li>
     </ul>
@@ -164,11 +185,11 @@ changeDark()
 }
 
 @media (min-width: 1200px) {
-
 }
 
 
 .outLim {
+
   // 小屏
   @media (max-width: 1200px) {
     max-width: 100vw;
@@ -187,5 +208,4 @@ ul.list {
     margin: 0 !important;
   }
 }
-
 </style>
