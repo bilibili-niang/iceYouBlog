@@ -299,7 +299,7 @@ class MarkdownFileService {
     // return await markdownFile.findAll({
     console.log(`limit:${limit},id:${id}`);
     return await markdownFile.findAndCountAll({
-      attributes: ["id", "type", "title", "description", "createdAt", "view", "tag1", "tag2", "tag3", "recommendLevel"],
+      attributes: ["id", "type", "title", "description", "createdAt", "view", "tag1", "tag2", "tag3", "recommendLevel", "updatedAt"],
       where: {
         email: email
       },
@@ -368,7 +368,7 @@ class MarkdownFileService {
    */
   async getDeletedFiles(email) {
     return await markdownFile.findAll({
-      attributes: ["id", "title", "createdAt", "description", "tag1", "tag2", "tag3", "view"],
+      attributes: ["id", "title", "createdAt", "description", "tag1", "tag2", "tag3", "view","updatedAt"],
       where: {
         destroyTime: {[Op.not]: null},
         email

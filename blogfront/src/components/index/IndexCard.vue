@@ -12,7 +12,9 @@
           <ice-text>
             <div v-if="item.description" class="ice-column">
               <ice-tag>描述</ice-tag>
-              {{ item.description }}
+              <code>
+                {{ item.description }}
+              </code>
             </div>
           </ice-text>
           <ice-text v-if="item.view">
@@ -21,6 +23,7 @@
           </ice-text>
           <ice-text>
             <ice-tag>更新时间</ice-tag>
+            <!--{{ item.updatedAt?.replace("T", " ").split(".")[0] }} - 最后修改于{{ oldData }}天之前-->
             {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
           </ice-text>
           <ice-text>
@@ -41,9 +44,9 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import timeFormat from '@/common/filter/time'
-import {useRouter} from 'vue-router'
+import {ref} from "vue";
+import timeFormat from "@/common/filter/time";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
   item: {},
@@ -54,51 +57,57 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 
-const oldData = ref('')
+const oldData = ref("");
 
-const randomRef = Math.random() * 1000
+const randomRef = Math.random() * 1000;
 
 const DateDiffer = (Date_end) => {
   //date1结束时间
-  let date1 = new Date(Date_end)
+  let date1 = new Date(Date_end);
   //date2当前时间
-  let date2 = new Date()
-  date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
-  date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
-  const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
-  const diffDate = diff / (24 * 60 * 60 * 1000)  //计算当前时间与结束时间之间相差天数
-  oldData.value = diffDate
-}
+  let date2 = new Date();
+  date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+  const diff = date1.getTime() - date2.getTime(); //目标时间减去当前时间
+  const diffDate = diff / (24 * 60 * 60 * 1000);  //计算当前时间与结束时间之间相差天数
+  oldData.value = diffDate;
+};
 
 
-const router = useRouter()
+const router = useRouter();
 // 跳转阅读
 const goToRead = (id) => {
   const routeUrl = router.resolve({
     path: "/read",
     query: {id}
-  })
-  window.open(routeUrl.href, '_blank')
-}
+  });
+  window.open(routeUrl.href, "_blank");
+};
 const init = () => {
-  DateDiffer(props.item.updatedAt)
+  DateDiffer(props.item.updatedAt);
   // 第一次创建子组件并接收到值时需要格式化下时间
-  props.item.updatedAt = timeFormat.timeFormat(props.item.updatedAt) || ''
-}
-init()
+  props.item.updatedAt = timeFormat.timeFormat(props.item.updatedAt) || "";
+};
+init();
 </script>
+
 <style scoped lang="less">
+@import "../../assets/css/variables.less";
 .indexCard {
   overflow: hidden;
+  background: @bac-dark-bleak;
+  margin-bottom: @m-normal;
+  border-radius: @radio-n;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // 小屏
 @media (max-width: 1200px) {
   .indexCard {
     max-width: 100%;
-
   }
 }
 

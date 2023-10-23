@@ -21,6 +21,7 @@
     "element-ui": "^2.15.13",
     "highlight.js": "^11.7.0",
     "hover.css": "^2.3.2",
+    "icepro": "^1.1.14",
     "jquery": "^3.6.3",
     "less": "^3.9.0",
     "less-loader": "^4.0.1",

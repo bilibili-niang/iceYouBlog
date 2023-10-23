@@ -1,12 +1,14 @@
 <template>
   <IndexHeader></IndexHeader>
   <router-view :key="$route.fullPath"/>
-  <div class="footer animation-time">
-    <el-link href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</el-link>
-    <div>
+  <div class="footer ice-row">
+    <ice-link size="s" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号
+    </ice-link>
+    <ice-text size="s">
       powered by:
-      <el-link href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">iceYouBlog</el-link>
-    </div>
+    </ice-text>
+    <ice-link size="s" href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">iceYouBlog</ice-link>
+    <ice-link size="s" href="https://github.com/bilibili-niang/icePro" target="_blank">icePro</ice-link>
   </div>
 </template>
 
@@ -15,41 +17,41 @@ export default {
   data() {
     return {
       day: true
-    }
+    };
   },
   created() {
     // 获取session中的user信息
-    this.$store.commit("getUserInfo")
+    this.$store.commit("getUserInfo");
     // 获取深色/浅色模式的flag
-    const dark = localStorage.getItem('mode') || null
+    const dark = localStorage.getItem("mode") || null;
     if (dark != null) {
-      if (dark == 'true') {
-        document.querySelector('html').classList.add('dark')
+      if (dark == "true") {
+        document.querySelector("html").classList.add("dark");
       } else {
-        document.querySelector('html').classList.remove('dark')
+        document.querySelector("html").classList.remove("dark");
       }
     } else {
       if (!this.isDaylight()) {
         //这里是白天
-        document.querySelector('html').classList.remove('dark')
+        document.querySelector("html").classList.remove("dark");
       } else {
         //这里是夜间
-        this.day = false
-        document.querySelector('html').classList.add('dark')
+        this.day = false;
+        document.querySelector("html").classList.add("dark");
       }
     }
   },
   methods: {
     isDaylight() {
-      const currdate = new Date()
+      const currdate = new Date();
       if (currdate.getHours() >= 20 || currdate.getHours() < 7) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   }
-}
+};
 </script>
 <style scoped lang="less">
 #app {
@@ -62,16 +64,6 @@ export default {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.7rem;
-
-  &:hover {
-    opacity: 0.8;
-  }
 }
 
 @media (max-width: 1200px) {

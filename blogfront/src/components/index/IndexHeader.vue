@@ -1,28 +1,82 @@
 <template>
   <div class="lim outLim">
 
-    <!-- <shrinkBar direction="top">
-          <template v-slot:show>
-            <ice-text>
-              披金成王,伴坤远航
-            </ice-text>
-          </template>
 
-          <template v-slot:body>
-            <div class="ice-column">
-              <ice-title>
-                水调歌头-崔与之
-              </ice-title>
-              <ice-text>万里云间戍，立马剑门关。</ice-text>
-              <ice-text>乱山极目无际，直北是长安。</ice-text>
-              <ice-text>人苦百年涂炭，鬼哭三边锋镝，天道久应还。</ice-text>
-              <ice-text>手写留屯奏，炯炯寸心丹。</ice-text>
-            </div>
-          </template>
-        </shrinkBar>-->
+    <shrinkBar bac-color="#ffffff" direction="left">
+
+      <template v-slot:show>
+        <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
+        <ice-button v-else>hover一下</ice-button>
+      </template>
+
+      <template v-slot:body>
+        <div class="ice-column">
+          <ul class="ice-column">
+            <li class="list-item">
+              <ice-link href="/" target="_self">index</ice-link>
+            </li>
+            <li v-if="!loginState" class="list-item">
+              <ice-link href="#/login" target="_blank">login</ice-link>
+            </li>
+            <!--配置为1才开启注册-->
+            <li v-if="!loginState && store.state.config.registerFlag == '1'" class="list-item">
+              <ice-link href="#/register" target="_blank">register</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/code/codeClips" target="_self">code clips</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/friend/links" target="_self">友链</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/words/index" target="_self">iKun</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/searchHistory">搜索</ice-link>
+              <Search v-if="false"></Search>
+            </li>
+            <li class="list-item">
+              <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{
+                  dark ? "light" : "dark"
+                }}
+              </ice-link>
+            </li>
+          </ul>
+        </div>
+        <div v-if="loginState" class="ice-column">
+          <ul class="ice-column">
+            <li class="list-item">
+              <ice-link href="#/user" target="_blank">{{ userInf.username }}</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link @click="goToUserInf">{{ userInf.username }}的主页</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/noteList" target="_blank">我的笔记列表</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/new/blog" target="_blank">新建blog</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/myselfHistory">历史记录</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/searchHistory">搜索记录</ice-link>
+            </li>
+            <li v-if="userInfo.is_admin" class="list-item">
+              <ice-link href="#/admin" target="_self">admin</ice-link>
+            </li>
+            <li v-if="userInfo" class="list-item">
+              <ice-button @clic="out" disabled>out</ice-button>
+            </li>
+          </ul>
+        </div>
+      </template>
+    </shrinkBar>
+
 
     <!--基础菜单-->
-    <ul class="ice-row list">
+    <ul class="ice-row list" v-if="false">
       <li class="list-item">
         <ice-link href="/" target="_self">index</ice-link>
       </li>
@@ -47,12 +101,13 @@
         <Search v-if="false"></Search>
       </li>
       <li class="list-item">
-        <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{ dark ? 'light' : 'dark' }}
+        <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{ dark ? "light" : "dark" }}
         </ice-link>
       </li>
     </ul>
 
-    <div v-if="loginState" class="avatarLim">
+    <!--    <div v-if="loginState" class="avatarLim" v-if="false">-->
+    <div class="avatarLim" v-if="false">
       <ul class="ice-row list">
         <li class="list-item avatar">
           <!--<ice-avatar :src="userInf.avatar"></ice-avatar>-->
@@ -87,78 +142,78 @@
 </template>
 
 <script setup>
-import {useStore} from "vuex"
-import {onMounted, ref} from 'vue'
-import {useRouter} from 'vue-router'
-import Search from '@/components/common/Search.vue'
+import {useStore} from "vuex";
+import {onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+import Search from "@/components/common/Search.vue";
 
-const userInf = ref()
-const loginState = ref()
-const router = useRouter()
-const store = useStore()
-let dark = ref(true)
-const {userInfo} = store.state.user || false
+const userInf = ref();
+const loginState = ref();
+const router = useRouter();
+const store = useStore();
+let dark = ref(true);
+const {userInfo} = store.state.user || false;
 
 const out = () => {
-  localStorage.removeItem('userInfo')
-}
+  localStorage.removeItem("userInfo");
+};
 
 // 深色模式
 const changeDark = () => {
   if (dark.value) {
-    document.querySelector('html').classList.add('dark')
-    document.querySelector('html').classList.remove('light')
+    document.querySelector("html").classList.add("dark");
+    document.querySelector("html").classList.remove("light");
   } else {
-    document.querySelector('html').classList.add('light')
-    document.querySelector('html').classList.remove('dark')
+    document.querySelector("html").classList.add("light");
+    document.querySelector("html").classList.remove("dark");
   }
-  localStorage.setItem('mode', dark.value)
-  dark.value = !dark.value
-}
+  localStorage.setItem("mode", dark.value);
+  dark.value = !dark.value;
+};
 const init = () => {
-  const inf = JSON.parse(localStorage.getItem('userInfo'))
-  const mode = JSON.parse(localStorage.getItem('mode'))
-  dark.value = Boolean(mode)
+  const inf = JSON.parse(localStorage.getItem("userInfo"));
+  const mode = JSON.parse(localStorage.getItem("mode"));
+  dark.value = Boolean(mode);
   if (JSON.stringify(inf).length > 10) {
-    const token = inf.token || ''
-    userInf.value = inf
+    const token = inf.token || "";
+    userInf.value = inf;
     if (token.length > 10) {
-      loginState.value = true
+      loginState.value = true;
     }
   }
   // 获取配置
-  store.commit('initConfig')
-}
+  store.commit("initConfig");
+};
 const goToUserInf = () => {
   const routeUrl = router.resolve({
     path: "/userDetail",
     query: {
       email: userInf.value.email
     }
-  })
-  window.open(routeUrl.href, '_blank')
-}
+  });
+  window.open(routeUrl.href, "_blank");
+};
 const goToUserHistory = () => {
   const routeUrl = router.resolve({
     path: "/myselfHistory",
-  })
-  window.open(routeUrl.href, '_blank')
-}
+  });
+  window.open(routeUrl.href, "_blank");
+};
 const goToUserSearchHistory = () => {
   const routeUrl = router.resolve({
     path: "/searchHistory",
-  })
-  window.open(routeUrl.href, '_blank')
-}
+  });
+  window.open(routeUrl.href, "_blank");
+};
 onMounted(() => {
 
-})
+});
 
-init()
-changeDark()
+init();
+changeDark();
 </script>
 <style lang="less" scoped>
-@import "../../assets/css/variables.less";
+/*@import "../../assets/css/variables.less";
 
 .lim {
   z-index: 10;
@@ -207,5 +262,5 @@ ul.list {
   li {
     margin: 0 !important;
   }
-}
+}*/
 </style>

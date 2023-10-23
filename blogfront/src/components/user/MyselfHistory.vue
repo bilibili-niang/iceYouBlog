@@ -1,6 +1,6 @@
 <template>
   <div class="myselfHistory container">
-    <div class="card  hover-around-shadow animation-time" style="width: 100%;" v-for="(item,index) in historyList"
+    <div class="card" v-for="(item,index) in historyList"
          :key="index">
       <indexCard :item="item"></indexCard>
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import http from '@/common/api/request';
+import http from "@/common/api/request";
 import IndexCard from "@/components/index/IndexCard.vue";
 
 export default {
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       historyList: [],
-    }
+    };
   },
   methods: {
     goToRead(id) {
@@ -25,39 +25,37 @@ export default {
         path: "/read",
         query: {id}
       });
-      window.open(routeUrl.href, '_blank');
+      window.open(routeUrl.href, "_blank");
     },
     // 获取用户历史留言记录
     async initHistory(tab, event) {
       if (JSON.stringify(this.historyList).length > 10) {
-        return
+        return;
       }
       // 发起请求,
       await http.$axios({
-        url: '/history/userAllHistory',
-        method: 'POST',
+        url: "/history/userAllHistory",
+        method: "POST",
         headers: {
           token: true
         }
       }).then(res => {
-        console.log("res:")
-        console.log(res)
         if (res.success) {
           this.historyList = res.result;
         } else {
-          console.log('error')
+          console.log("error");
         }
       })
           .catch(e => {
-            console.log("e:")
-            console.log(e)
-          })
+            console.log("e:");
+            console.log(e);
+          });
     },
   },
   created() {
     this.initHistory();
   }
-}
+};
 </script>
 
 <style scoped lang="less">

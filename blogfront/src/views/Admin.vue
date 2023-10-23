@@ -16,7 +16,7 @@
         <FriendLinks :links="friendLinks" v-if="activeName === 'friendLinks'"></FriendLinks>
       </el-tab-pane>
       <el-tab-pane label="Config" name="config">
-        <Config v-if="activeName === 'config'" />
+        <Config v-if="activeName === 'config'"/>
       </el-tab-pane>
       <el-tab-pane label="Role" name="third">Role</el-tab-pane>
       <el-tab-pane label="others" name="fourth">
@@ -91,27 +91,27 @@
 </template>
 
 <script setup>
-import fun from '@/hook/function'
-import Avatar from '@/components/common/Avatar.vue'
-import { computed, h, reactive, ref } from 'vue'
-import FriendLinks from '@/components/admin/FriendLinks.vue'
-import http from "@/common/api/request"
-import Config from '@/components/admin/Config.vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import fun from "@/hook/function";
+import Avatar from "@/components/common/Avatar.vue";
+import {computed, reactive, ref} from "vue";
+import FriendLinks from "@/components/admin/FriendLinks.vue";
+import http from "@/common/api/request";
+import Config from "@/components/admin/Config.vue";
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 
 
-let friendLinks = ref()
-let activeName = ref('friendLinks')
+let friendLinks = ref();
+let activeName = ref("friendLinks");
 
 // 存放所有的admin用户信息
-let allAdminList = reactive({})
-const store = useStore()
-const router = useRouter()
+let allAdminList = reactive({});
+const store = useStore();
+const router = useRouter();
 
 const userInfoStore = computed(() => {
-  return store.state.user
-})
+  return store.state.user;
+});
 
 
 /* @author icestone , 18:15
@@ -120,8 +120,8 @@ const userInfoStore = computed(() => {
 */
 const operateAdminUser = (email, operate) => {
   http.$axios({
-    url: '/admin/operateUser',
-    method: 'POST',
+    url: "/admin/operateUser",
+    method: "POST",
     headers: {
       token: true
     },
@@ -130,14 +130,14 @@ const operateAdminUser = (email, operate) => {
       operate
     }
   })
-    .then(res => {
-      fun.alert(res.message)
-    })
-    .catch(e => {
-      console.log("e:")
-      console.log(e)
-    })
-}
+      .then(res => {
+        fun.alert(res.message);
+      })
+      .catch(e => {
+        console.log("e:");
+        console.log(e);
+      });
+};
 
 /* @author icestone , 17:56
  * @date 2023/5/17
@@ -145,95 +145,96 @@ const operateAdminUser = (email, operate) => {
 */
 const getAllAdminUserInfo = () => {
   http.$axios({
-    url: '/admin/getAllAdminInfo',
-    method: 'POST',
+    url: "/admin/getAllAdminInfo",
+    method: "POST",
     headers: {
       token: true
     }
   })
-    .then(res => {
-      allAdminList = res.result
-    })
-    .catch(e => {
-      console.log("e:")
-      console.log(e)
-    })
-}
+      .then(res => {
+        allAdminList = res.result;
+      })
+      .catch(e => {
+        console.log("e:");
+        console.log(e);
+      });
+};
 const initLinks = () => {
   // 请求友链信息
   http.$axios({
-    url: '/admin/friendLinks',
-    method: 'POST',
+    url: "/admin/friendLinks",
+    method: "POST",
     headers: {
       token: true
     }
   })
-    .then(res => {
-      fun.alert(res.message)
-      if (res.success) {
-        friendLinks.value = res.result
-      } else {
-        console.log('error')
-      }
-    })
-    .catch(e => {
-      console.log("e:")
-      console.log(e)
-    })
-}
+      .then(res => {
+        fun.alert(res.message);
+        if (res.success) {
+          friendLinks.value = res.result;
+        } else {
+          console.log("error");
+        }
+      })
+      .catch(e => {
+        console.log("e:");
+        console.log(e);
+      });
+};
 const handleClick =
-  (tab, event) => {
-    console.log(tab.props.name)
-    if (tab.props.name == 'friendLinks') {
-      initFriendLinks()
-    }
-  }
+    (tab, event) => {
+      console.log(tab.props.name);
+      if (tab.props.name == "friendLinks") {
+        initFriendLinks();
+      }
+    };
 
 const initFriendLinks = () => {
   if (JSON.stringify(friendLinks).length > 10) {
-    return
+    return;
   } else {
-    initLinks()
+    initLinks();
   }
-}
+};
+let isAdmin = ref('');
 const initData = () => {
-  console.log('store中的数据:')
-  console.log(store.state)
-  const tokenStr = JSON.parse(localStorage.getItem('userInfo'))
+  console.log("store中的数据:");
+  console.log(store.state);
+  const tokenStr = JSON.parse(localStorage.getItem("userInfo"));
   if (tokenStr.email.length > 0) {
     // 有用户登录
     // 查询用户是否为admin用户
     http.$axios({
-      url: '/user/isAdmin',
-      method: 'POST',
+      url: "/user/isAdmin",
+      method: "POST",
       headers: {
         token: true
       }
     })
-      .then(res => {
-        fun.alert(res.message)
-        isAdmin = res.result
-        if (!res.result) {
-          // 非admin用户
-          // 重定向
-          router.push('/login')
-        } else {
-        }
-      })
-      .catch(e => {
-        console.log("e:")
-        console.log(e)
-      })
+        .then(res => {
+          fun.alert(res.message);
+          isAdmin.value = res.result;
+          if (!res.result) {
+            // 非admin用户
+            // 重定向
+            router.push("/login");
+          } else {
+          }
+        })
+        .catch(e => {
+          console.log("e:");
+          console.log(e);
+        });
 
   } else {
     // 重定向
-    router.push('/login')
+    router.push("/login");
   }
-}
+};
 
-initLinks()
-initData()
-getAllAdminUserInfo()
+initLinks();
+initData();
+getAllAdminUserInfo();
 
 </script>
 
