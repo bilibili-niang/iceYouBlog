@@ -94,14 +94,17 @@ init();
 </script>
 
 <style scoped lang="less">
+.indexCard {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 @import "../../assets/css/variables.less";
 .indexCard {
   overflow: hidden;
   background: @bac-dark-bleak;
   margin-bottom: @m-normal;
   border-radius: @radio-n;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 // 小屏

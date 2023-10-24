@@ -1,9 +1,9 @@
 <template>
   <div class="commentArea">
     <div class="havComment" v-if="commentFlag">
-      <el-text>
+      <ice-text>
         暂无评论
-      </el-text>
+      </ice-text>
     </div>
     <div class="commentList" v-if="!commentFlag">
       <div v-for="(item,index) in commentList" :key="index">

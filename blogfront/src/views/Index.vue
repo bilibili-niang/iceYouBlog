@@ -1,7 +1,6 @@
 <template>
   <div class="index container">
     <div class="right">
-      <!-- <AdminCard></AdminCard>-->
       <Recommend></Recommend>
     </div>
     <div class="left m-r ice-row">

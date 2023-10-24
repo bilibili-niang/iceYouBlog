@@ -7,32 +7,6 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@element-plus/icons": "^0.0.11",
-    "@element-plus/icons-vue": "^2.1.0",
-    "@kangc/v-md-editor": "next",
-    "@popperjs/core": "^2.11.7",
-    "@vueuse/core": "^10.1.2",
-    "animate.css": "^4.1.1",
-    "axios": "^0.21.1",
-    "babel-plugin-prismjs": "^2.1.0",
-    "better-scroll": "^2.5.0",
-    "core-js": "^3.8.3",
-    "element-plus": "^2.2.35",
-    "element-ui": "^2.15.13",
-    "highlight.js": "^11.7.0",
-    "hover.css": "^2.3.2",
-    "icepro": "^1.1.14",
-    "jquery": "^3.6.3",
-    "less": "^3.9.0",
-    "less-loader": "^4.0.1",
-    "moment": "^2.29.4",
-    "popper.js": "^1.16.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue-meta": "^2.4.0",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0",
-    "webpack": "^5.75.0",
-    "wow.js": "^1.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -43,12 +17,27 @@
     "unplugin-auto-import": "^0.15.1",
     "unplugin-vue-components": "^0.24.1",
     "vue": "^3.3.4",
-    "vue-cli-plugin-style-resources-loader": "^0.1.5"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ]
+    "vue-cli-plugin-style-resources-loader": "^0.1.5",
+    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@kangc/v-md-editor": "next",
+    "@popperjs/core": "^2.11.7",
+    "@vueuse/core": "^10.1.2",
+    "axios": "^0.21.1",
+    "babel-plugin-prismjs": "^2.1.0",
+    "better-scroll": "^2.5.0",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.2.35",
+    "element-ui": "^2.15.13",
+    "highlight.js": "^11.7.0",
+    "hover.css": "^2.3.2",
+    "less-loader": "^4.0.1",
+    "moment": "^2.29.4",
+    "popper.js": "^1.16.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0",
+    "webpack": "^5.75.0"
+  }
 }

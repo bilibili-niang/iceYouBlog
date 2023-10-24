@@ -34,3 +34,15 @@ html.dark {
     max-width: 75vw;
   }
 }
+
+.border-n {
+  transition-duration: @time-n;
+  border-radius: @radio-n;
+  border: @fontColor-light 1px solid;
+
+  &:hover {
+    border: @themeActiveColor solid 1px;
+  }
+}
+
+@fontSize-n: 1.1rem !important;

@@ -1,6 +1,6 @@
 <template>
   <div class="friendLinks">
-    <div class="card hvr-glow" v-for="(item, index) in links" :key="index">
+    <div class="card" v-for="(item, index) in links" :key="index">
       <el-text tag="b" size="large">{{ item.title }}</el-text>
       <div class="lim">
         <span>
@@ -58,6 +58,7 @@ export default {
     margin: .3rem;
     box-sizing: border-box;
     justify-content: space-between;
+    background: rgba(0,0,0,.1);
 
     .lim {
       display: flex;

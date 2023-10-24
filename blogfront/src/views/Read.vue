@@ -1,72 +1,57 @@
 <template>
-  <div class="read container">
+  <ice-column class="read container">
     <ice-text v-if="!dataExist">
       文章不存在或已被删除
     </ice-text>
     <!--文章存在-->
-    <div class="contentLim" v-if="dataExist">
-      <el-row>
-        <el-col :span="19" class="dataContainerLim">
-          <div class="dataContainer">
-            <!--<div class="imgLim animation-time" :style="{ 'background': 'url(' + markdownData.headImg + ')' }"></div>-->
-            <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
-                       :userInf="userInf">
-              <el-text tag="b" size="small">当前字数:</el-text>
-              <el-text tag="b" size="small">{{ wordCount }}</el-text>
-            </indexCard>
-            <div class="articleCon">
-              <v-md-editor :include-level="[3, 4]" v-model="markdownData.content" mode="preview"
-                           @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
-            </div>
-          </div>
-          <el-collapse v-model="activeName" accordion class="m-t">
-            <div class="commentUserInf m-b f-c">
-              <el-row>
-                <el-col :span="4">
-                  <el-tag class="ml-2" type="info" cal>你的名字</el-tag>
-                </el-col>
-                <el-col :span="20">
-                  <el-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
-                  <el-input v-model="userInf.username" placeholder="Please input name" v-else/>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="4">
-                  <el-tag class="ml-2" type="info">你的url</el-tag>
-                </el-col>
-                <el-col :span="20">
-                  <el-input v-model="commentUser.url" placeholder="Please input url"/>
-                </el-col>
-              </el-row>
-            </div>
-            <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
-                     type="blog"></comment>
-            <ice-text>评论区</ice-text>
-            <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
-          </el-collapse>
-        </el-col>
+    <ice-row v-if="dataExist">
+      <ice-column width="70%">
+        <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
+                   :userInf="userInf">
+          <ice-text>当前字数:{{ wordCount }}</ice-text>
+        </indexCard>
+        <div class="articleCon">
+          <v-md-editor :include-level="[3, 4]" v-model="markdownData.content" mode="preview"
+                       @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
+        </div>
+
+        <ice-row class="m-t-l">
+          <ice-row class="align-items-center" width="fit-content">
+            <ice-text>你的名字</ice-text>
+            <ice-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
+            <ice-input v-model="userInf.username" placeholder="Please input name" v-else/>
+          </ice-row>
+          <ice-row class="align-items-center" width="fit-content">
+            <ice-text>你的url</ice-text>
+            <ice-input v-model="commentUser.url" placeholder="Please input url"/>
+          </ice-row>
+        </ice-row>
+
+        <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
+                 type="blog"></comment>
+        <ice-text>评论区</ice-text>
+        <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
+      </ice-column>
+
+      <ice-column width="30%">
         <!--推荐-->
-        <el-col :span="5" class="right">
-          <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]">
-          </Recommend>
-          <div class="otherOperates">
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-  </div>
+        <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]"/>
+      </ice-column>
+
+    </ice-row>
+  </ice-column>
 </template>
 
 <script>
-import http from '../common/api/request'
-import filters from '../common/filter/time'
-import MarkdownTags from "@/components/common/MarkdownTags.vue"
-import IndexCard from "@/components/read/IndexCard.vue"
-import comment from "@/components/read/Comment.vue"
-import CommentArea from "@/components/read/CommentArea.vue"
-import Recommend from '@/components/read/Recommend.vue'
-import filter from '@/common/filter/filter'
-import fun from '@/hook/function'
+import http from "../common/api/request";
+import filters from "../common/filter/time";
+import MarkdownTags from "@/components/common/MarkdownTags.vue";
+import IndexCard from "@/components/read/IndexCard.vue";
+import comment from "@/components/read/Comment.vue";
+import CommentArea from "@/components/read/CommentArea.vue";
+import Recommend from "@/components/read/Recommend.vue";
+import filter from "@/common/filter/filter";
+import fun from "@/hook/function";
 
 export default {
   name: "Read",
@@ -74,11 +59,11 @@ export default {
     refresh(val) {
       // 评论发表成功
       if (val) {
-        this.refreshFlag = !this.refreshFlag
+        this.refreshFlag = !this.refreshFlag;
       }
     },
     handleCopyCodeSuccess(code) {
-      fun.alert("复制成功")
+      fun.alert("复制成功");
     },
     /* @author icestone , 16:02
      * @date 2023/5/6
@@ -88,28 +73,28 @@ export default {
       const routeUrl = this.$router.resolve({
         path: "/edit/vMdEditor",
         query: {id}
-      })
-      window.open(routeUrl.href, '_blank')
+      });
+      window.open(routeUrl.href, "_blank");
     },
     showEdit() {
-      const email = JSON.parse(localStorage.getItem('userInfo')) || ""
+      const email = JSON.parse(localStorage.getItem("userInfo")) || "";
       if (!Boolean(email)) {
         // 没有email时
       } else {
         if (email.email == this.userInf.email) {
-          this.showEditBtn = true
+          this.showEditBtn = true;
         }
       }
     },
     timeFormat(data) {
-      this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt)
+      this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt);
     },
     // 通过id获取初始化数据
     initMarkdownData() {
-      this.id = this.$route.query.id || '0'
+      this.id = this.$route.query.id || "0";
       http.$axios({
-        url: '/markdownFile/getData',
-        method: 'POST',
+        url: "/markdownFile/getData",
+        method: "POST",
         headers: {
           token: true
         },
@@ -121,37 +106,37 @@ export default {
               res => {
                 // 不成功
                 if (!res.success) {
-                  this.dataExist = !this.dataExist
-                  fun.alert('加载不出来了', '你达到了不存在的领域')
+                  this.dataExist = !this.dataExist;
+                  fun.alert("加载不出来了", "你达到了不存在的领域");
                 } else {
-                  this.dataExist = true
-                  const flag = JSON.stringify(res.result).length < 3 ? false : true
+                  this.dataExist = true;
+                  const flag = JSON.stringify(res.result).length < 3 ? false : true;
                   if (flag) {
                     // 即将渲染的文章数据
-                    this.markdownData = res.result
-                    this.timeFormat()
-                    const content = res.result.content || 'null'
+                    this.markdownData = res.result;
+                    this.timeFormat();
+                    const content = res.result.content || "null";
                     if (content.length > 10) {
                       // 文章数据存在时渲染
-                      this.article = res.result.content
+                      this.article = res.result.content;
                     }
-                    this.userInf = res.userInf
-                    this.timeFormat()
-                    fun.alert('load success', 'success', '#a1c4fd')
-                    this.showEdit()
+                    this.userInf = res.userInf;
+                    this.timeFormat();
+                    fun.alert("load success", "success", "#a1c4fd");
+                    this.showEdit();
                   } else {
                     // 失败
-                    this.dataExist = false
-                    fun.alert('加载不出来了', '文章不存在或需要从原来的博客网站爬取,可以试试刷新')
+                    this.dataExist = false;
+                    fun.alert("加载不出来了", "文章不存在或需要从原来的博客网站爬取,可以试试刷新");
                   }
                   // 统计字数
-                  this.wordCount = filter.wordCount(this.markdownData.content)
+                  this.wordCount = filter.wordCount(this.markdownData.content);
                 }
               }
           )
           .catch(e => {
-            fun.alert(e)
-          })
+            fun.alert(e);
+          });
     },
   },
   components: {
@@ -166,32 +151,32 @@ export default {
       markdownData: {},
       userInf: {},
       dataExist: true,
-      article: '',
-      showArticle: '',
-      loginEdEmail: '',
+      article: "",
+      showArticle: "",
+      loginEdEmail: "",
       showEditBtn: false,
-      id: '',
+      id: "",
       commentUser: {
-        name: '',
-        url: '',
+        name: "",
+        url: "",
       },
       refreshFlag: true,
-      activeName: '2',
+      activeName: "2",
       editForm: {
         uuid: null,
-        parName: '',
-        phoneNum: '',
-        idNum: '',
-        parAddress: '',
+        parName: "",
+        phoneNum: "",
+        idNum: "",
+        parAddress: "",
         parCategory: 0
       },
-      wordCount: ''
-    }
+      wordCount: ""
+    };
   },
   created() {
-    this.initMarkdownData()
+    this.initMarkdownData();
   },
-}
+};
 </script>
 
 <style scoped lang="less">
@@ -284,9 +269,8 @@ export default {
   // 大屏
   @media screen and (min-width: 1200px) {
     .contentLim {
-      flex-direction: row;
 
-      .el-row {
+      .ice-row {
         width: 100%;
       }
     }
@@ -317,21 +301,21 @@ export default {
     overflow: hidden;
   }
 
-  .el-collapse {
+  .ice-collapse {
     width: 100%;
     border-radius: .3rem;
     overflow: hidden;
 
-    /deep/ .el-collapse-item__header,
-    .el-collapse-item__wrap {
+    /deep/ .ice-collapse-item__header,
+    .ice-collapse-item__wrap {
       padding-left: .5rem;
 
-      .el-collapse-item__content {
+      .ice-collapse-item__content {
         padding: .3rem;
       }
     }
 
-    .el-row {
+    .ice-row {
       align-items: center;
       margin-bottom: .3rem;
     }

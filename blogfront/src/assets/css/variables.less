@@ -7,7 +7,9 @@
 // 主题颜色
 @themeColor: @btn-skyblue;
 // 檀紫
-@themeActiveColor: rgba(56, 25, 36, 1);
+@themeActiveColor: var(--activeColor);
+// 二级主题色
+@themeColor-se: rgba(56, 25, 36, .6);
 @themeColor-bleak: @btn-skyblue-bleak;
 @themeColor-bleak-bleak: @fontColor-bleak-bleak;
 // 主题色翻转
@@ -73,6 +75,7 @@
 // 主题字体颜色,锌灰
 html.light {
   --color: rgba(122, 115, 116, 1);
+  --activeColor: rgba(56, 25, 36, 1);
   --color-bleak: rgba(122, 115, 116, 1);
   --bac: rgb(255, 255, 255);
   --bac-bleak: rgba(0, 0, 0, .1) !important;
@@ -80,6 +83,7 @@ html.light {
 
 // 深色模式
 html.dark {
+  --activeColor: rgba(237, 90, 101, 1);
   --color: rgba(218, 212, 203, 1);
   --color-bleak: rgba(218, 212, 203, .6);
   --bac: rgb(31, 32, 36);
@@ -117,5 +121,4 @@ html.dark {
 // light/dark
 @bac: var(--bac);
 @bac-dark: var(--bac);
-//@bac-dark-bleak: rgba(255, 255, 255, .1);
 @bac-dark-bleak: var(--bac-bleak);

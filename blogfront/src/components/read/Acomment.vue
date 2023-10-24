@@ -1,137 +1,95 @@
 <template>
   <!--单个用户的评论-->
-  <el-divider content-position="left"></el-divider>
-  <div class="aComment hvr-glow p-l p-l">
+  <ice-row>
     <div class="avatar m-r">
       <Avatar :imgUrl="avatar"></Avatar>
     </div>
-    <div class="detail">
-      <div class="f-r">
-        <div class="m-r m-b">
-          <el-tag class="ml-2 m-r" type="info">nickName</el-tag>
-          <el-text>
+    <ice-column>
+      <div class="ice-row">
+        <ice-row>
+          <ice-tag>nickName</ice-tag>
+          <ice-text>
             {{ item.nickName }}
-          </el-text>
-        </div>
+          </ice-text>
+        </ice-row>
         <div v-if="item.email">
-          <el-tag class="ml-2 m-r" type="info">email</el-tag>
-          <el-text>
+          <ice-tag>email</ice-tag>
+          <ice-text>
             {{ item.email }}
-          </el-text>
+          </ice-text>
         </div>
         <div v-if="item.webSite">
-          <el-tag class="ml-2 m-r" type="info">webSite</el-tag>
-          <el-text>
+          <ice-tag ice->webSite</ice-tag>
+          <ice-text>
             {{ item.webSite }}
-          </el-text>
+          </ice-text>
         </div>
       </div>
       <v-md-editor
-          left-toolbar=""
           :include-level="[3,4]"
           :mode="editMod"
           v-model="copyItem.content"></v-md-editor>
       <div v-if="email===item.email" class="m-b m-t options">
-        <el-button @click="editMod=editMod==='editable'?'preview':'editable'">
+        <ice-button @click="editMod=editMod==='editable'?'preview':'editable'">
           编辑
-        </el-button>
-        <el-button @click="save" v-if="editMod=='editable'">save</el-button>
+        </ice-button>
+        <ice-button @click="save" v-if="editMod=='editable'">save</ice-button>
       </div>
-
-    </div>
-  </div>
+    </ice-column>
+  </ice-row>
 </template>
 
 <script>
-import Avatar from "@/components/common/Avatar.vue"
-import markdown from '@/common/api/markdownFiles'
+import Avatar from "@/components/common/Avatar.vue";
+import markdown from "@/common/api/markdownFiles";
 
-const fun = require('@/hook/function')
+const fun = require("@/hook/function");
 
 export default {
   name: "Acomment",
-  components: { Avatar },
+  components: {Avatar},
   props: {
     item: {},
-    email: ''
+    email: ""
   },
-  data () {
+  data() {
     return {
-      avatar: '/images/avatars/defaultAvatar.png',
-      editMod: 'preview',
-      copyItem: ''
-    }
+      avatar: "/images/avatars/defaultAvatar.png",
+      editMod: "preview",
+      copyItem: ""
+    };
   },
   methods: {
-    async save () {
-      const res = await markdown.updateComment({ data: this.copyItem })
+    async save() {
+      const res = await markdown.updateComment({data: this.copyItem});
       if (res.success) {
-        this.$emit('refresh', true)
-        this.editMod = 'preview'
-        fun.alert(res.message,'成功辣')
+        this.$emit("refresh", true);
+        this.editMod = "preview";
+        fun.alert(res.message, "成功辣");
       } else {
-        fun.alert(res.message,'失败辣')
+        fun.alert(res.message, "失败辣");
       }
     }
   },
-  created () {
-    const email = this.item.email || null
+  created() {
+    const email = this.item.email || null;
     if (email) {
-      markdown.getUserInfo({ email })
+      markdown.getUserInfo({email})
           .then(res => {
-            this.avatar = res.result.avatar
-          })
+            this.avatar = res.result.avatar;
+          });
 
     } else {
     }
-    this.copyItem = this.item
+    this.copyItem = this.item;
   },
 
-}
+};
 </script>
 
 <style scoped lang="less">
-.dark {
-  .aComment {
-    background: rgba(0, 0, 0, .3);
-  }
+.ice-row, .ice-column {
+  width: 100%;
 }
 
-.aComment {
-  display: flex;
-  flex-direction: row;
-  border-radius: .5rem;
-  padding: .3rem;
-  margin: .3rem;
-
-  &:hover {
-    .options {
-      opacity: 1;
-    }
-  }
-
-  .avatar {
-    display: flex;
-    align-items: center;
-  }
-
-  .detail {
-    flex: 1;
-  }
-
-  .options {
-    opacity: 0;
-    transition-duration: .3s;
-  }
-}
-
-.v-md-editor {
-  display: flex;
-  min-height: 0;
-  font-size: .9rem;
-
-  :deep .github-markdown-body {
-    padding: .3rem;
-  }
-}
 </style>

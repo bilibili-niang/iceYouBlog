@@ -8,14 +8,14 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'hover.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+// 导入less
+import "icepro/src/assets/common.less"
+import icepro from 'icepro'
 /*引入公共样式*/
 import '@/assets/css/reset.less'
 import '@/assets/css/common.less'
 import '@/assets/css/variables.less'
-// 导入less
-import "icepro/src/assets/common.less"
 
-import icepro from 'icepro'
 // markdown预览组件以及样式
 import VueMarkdownEditor from '@kangc/v-md-editor'
 import '@kangc/v-md-editor/lib/style/base-editor.css'
