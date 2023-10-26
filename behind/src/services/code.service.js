@@ -3,10 +3,6 @@ const { Op } = require('sequelize')
 
 class CodeService {
     async newCodeClips (email, options) {
-        console.log("email:")
-        console.log(email)
-        console.log("options:")
-        console.log(options)
         options.state = '1'
         options.email = email
         return code.create(options, {
