@@ -9,17 +9,23 @@
     </ice-text>
     <ice-link size="s" href="https://github.com/bilibili-niang/iceYouBlog" target="_blank">iceYouBlog</ice-link>
     <ice-link size="s" href="https://github.com/bilibili-niang/icePro" target="_blank">icePro</ice-link>
+    <ice-text>
+      浏览量: {{ viewCount }}
+    </ice-text>
   </div>
 </template>
 
 <script>
+import api from "@/common/api";
+
 export default {
   data() {
     return {
-      day: true
+      day: true,
+      viewCount: 0
     };
   },
-  created() {
+  async created() {
     // 获取session中的user信息
     this.$store.commit("getUserInfo");
     // 获取深色/浅色模式的flag
@@ -40,6 +46,12 @@ export default {
         document.querySelector("html").classList.add("dark");
       }
     }
+    await api.getViews()
+        .then(res => {
+          this.viewCount = res.result;
+        })
+        .catch(e => {
+        });
   },
   methods: {
     isDaylight() {

@@ -18,42 +18,42 @@
 </template>
 
 <script setup>
-import filters from '@/common/filter/time'
-import fun from '@/hook/function'
-import IndexCard from "@/components/index/IndexCard.vue"
-import Recommend from "@/components/index/Recommend.vue"
-import { reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import markdownApi from '@/common/api/markdownFiles'
-import api from '@/common/api/index'
+import filters from "@/common/filter/time";
+import fun from "@/hook/function";
+import IndexCard from "@/components/index/IndexCard.vue";
+import Recommend from "@/components/index/Recommend.vue";
+import {reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import markdownApi from "@/common/api/markdownFiles";
+import api from "@/common/api/index";
 // import * as THREE from 'three'
 
-let indexList = reactive([])
-let allCount = ref(0)
-let disabled = ref(false)
-let small = ref(false)
-let background = ref(false)
-let value = ref(true)
-let pageSize2 = ref(10)
-let currentPage2 = ref(1)
+let indexList = reactive([]);
+let allCount = ref(0);
+let disabled = ref(false);
+let small = ref(false);
+let background = ref(false);
+let value = ref(true);
+let pageSize2 = ref(10);
+let currentPage2 = ref(1);
 
-const router = useRouter()
+const router = useRouter();
 // 跳转阅读
 const goToRead = (id) => {
   const routeUrl = router.resolve({
     path: "/read",
-    query: { id }
-  })
-  window.open(routeUrl.href, '_blank')
-}
+    query: {id}
+  });
+  window.open(routeUrl.href, "_blank");
+};
 
 // 分页按钮
 const handleCurrentChange = (val) => {
-  let id = pageSize2.value * val
+  let id = pageSize2.value * val;
   if (val === 1) {
     // @date 2023/5/5 , @author icestone
     // 第一页,跳过为0
-    id = 0
+    id = 0;
   } else {
   }
   // @date 2023/5/5 , @author icestone
@@ -64,48 +64,48 @@ const handleCurrentChange = (val) => {
   })
       .then(res => {
         if (res.result.length > 0) {
-          indexList = res.result
-          fun.alert(res.message)
+          indexList = res.result;
+          fun.alert(res.message);
         } else {
-          fun.alert("你到达了未知领域")
-          indexList = []
+          fun.alert("你到达了未知领域");
+          indexList = [];
         }
       })
       .catch(e => {
-        fun.alert(e)
-      })
-}
+        fun.alert(e);
+      });
+};
 /*
  * 获取首页所有文章的统计
 */
 
 const initCount = async () => {
-  const res = await markdownApi.initCount()
-  allCount.value = parseInt(res.result)
-}
+  const res = await markdownApi.initCount();
+  allCount.value = parseInt(res.result);
+};
 
 const timeFormat = (data) => {
-  return filters.timeFormat(data)
-}
+  return filters.timeFormat(data);
+};
 const initData = () => {
   api.getHomeData()
       .then(res => {
-        // fun.alert(res.message, 'success')
-        indexList = res.result.rows || []
+        indexList = res.result.rows || [];
       })
       .catch(e => {
-        fun.alert(e)
-      })
-}
+        fun.alert(e);
+      });
+};
 // 查询分页数据
-initData()
+initData();
 // 获取首页所有文章 count
-initCount()
+initCount();
 watch(indexList, (newVal, oldVal) => {
   if (!newVal) {
-    initData()
+    initData();
+    initData();
   }
-})
+});
 
 
 </script>

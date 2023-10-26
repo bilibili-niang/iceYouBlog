@@ -1,27 +1,24 @@
 <template>
-  <div class="recommend">
+  <ice-column>
     <!--推荐-->
-    <div class="markdown" v-if="markdownList">
-      <ice-card :border="false">
-        <template v-slot:header>
-          <ice-tag>文章推荐↓点击下面展开</ice-tag>
-        </template>
-        <template v-slot:bottom>
-          <!--推荐文章-->
-          <div class="markdownLim">
-            <template v-for="(item,index) in markdownList"
-                      :key="index">
-              <IndexCard :item="item"></IndexCard>
-            </template>
-            <div class="indexCard"></div>
-            <div class="indexCard"></div>
-            <div class="indexCard"></div>
-          </div>
-        </template>
-      </ice-card>
-
-    </div>
-  </div>
+    <ice-card :border="false" v-if="markdownList">
+      <template v-slot:header>
+        <ice-tag>文章推荐↓点击下面展开</ice-tag>
+      </template>
+      <template v-slot:bottom>
+        <!--推荐文章-->
+        <ice-column width="98%">
+          <template v-for="(item,index) in markdownList"
+                    :key="index">
+            <IndexCard :item="item"></IndexCard>
+          </template>
+          <div class="indexCard"></div>
+          <div class="indexCard"></div>
+          <div class="indexCard"></div>
+        </ice-column>
+      </template>
+    </ice-card>
+  </ice-column>
 </template>
 
 <script>
@@ -95,20 +92,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="less">
-.recommend {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-
-  .markdownLim {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    box-sizing: border-box;
-  }
-}
-</style>

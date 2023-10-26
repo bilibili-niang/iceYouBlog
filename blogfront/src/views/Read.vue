@@ -17,13 +17,12 @@
 
         <ice-row class="m-t-l">
           <ice-row class="align-items-center" width="fit-content">
-            <ice-text>你的名字</ice-text>
-            <ice-input v-model="commentUser.name" placeholder="Please input name" v-if="!userInf.email"/>
-            <ice-input v-model="userInf.username" placeholder="Please input name" v-else/>
+            <ice-input v-model="commentUser.name" :disabled="commentUser.name" placeholder="Please input name"
+                       v-if="!userInf.email"/>
+            <ice-input v-model="userInf.username" placeholder="名字" disabled v-else/>
           </ice-row>
           <ice-row class="align-items-center" width="fit-content">
-            <ice-text>你的url</ice-text>
-            <ice-input v-model="commentUser.url" placeholder="Please input url"/>
+            <ice-input v-model="commentUser.url" placeholder="你的url"/>
           </ice-row>
         </ice-row>
 

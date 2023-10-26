@@ -72,6 +72,7 @@ export default {
     }
   },
   created() {
+
     const email = this.item.email || null;
     if (email) {
       markdown.getUserInfo({email})
@@ -83,13 +84,5 @@ export default {
     }
     this.copyItem = this.item;
   },
-
 };
 </script>
-
-<style scoped lang="less">
-.ice-row, .ice-column {
-  width: 100%;
-}
-
-</style>

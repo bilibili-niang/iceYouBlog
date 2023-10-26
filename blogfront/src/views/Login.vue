@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login container">
     <div class="form">
       <div class="ice-column">
         <ice-text>
@@ -26,81 +26,81 @@
 </template>
 
 <script>
-import http from '../common/api/request'
-import router from '@/router'
-import Alert from '@/components/common/Alert.vue'
+import http from "../common/api/request";
+import router from "@/router";
+import Alert from "@/components/common/Alert.vue";
 
 export default {
   name: "Login",
-  data () {
+  data() {
     return {
       login: {
-        username: '',
-        password: ''
+        username: "",
+        password: ""
       },
       warning: false,
-      alertInf: '暂无消息',
+      alertInf: "暂无消息",
       showAlert: false,
-    }
+    };
   },
   methods: {
-    async submit () {
+    async submit() {
       if (this.login.username.length < 1 || this.login.password.length < 1) {
-        console.log('data error')
+        console.log("data error");
       }
       const res = await http.$axios({
-        url: '/user/login',
-        method: 'POST',
+        url: "/user/login",
+        method: "POST",
         data: this.login,
-      })
+      });
       if (!res.success) {
         // 登录失败
-        this.alertInf = res.message
-        this.showAlert = true
+        this.alertInf = res.message;
+        this.showAlert = true;
       } else {
         // 登陆成功
 
-        const userInfo = res.result || ''
+        const userInfo = res.result || "";
 
-        console.log(JSON.stringify(userInfo))
+        console.log(JSON.stringify(userInfo));
         // 写入token
-        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
         // 跳转user页面
-        router.push({ path: '/user' })
+        router.push({path: "/user"});
       }
     },
-    getToken () {
-      const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    getToken() {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if (JSON.stringify(userInfo) > 10) {
-        console.log(userInfo)
-        console.log(userInfo.id)
+        console.log(userInfo);
+        console.log(userInfo.id);
       } else {
-        console.log('token is null')
+        console.log("token is null");
       }
     },
     // 验证用户是否登录,如果登录,跳转个人页面
-    verifyLogin () {
-      const user = localStorage.getItem("userInfo")
-      console.log('localStorage:')
-      console.log(user)
+    verifyLogin() {
+      const user = localStorage.getItem("userInfo");
+      console.log("localStorage:");
+      console.log(user);
       // 没有用户登录
       if (JSON.stringify(user).length < 10) {
-        localStorage.removeItem('userInfo')
-        return
+        localStorage.removeItem("userInfo");
+        return;
       } else {
         // 有用户登录,跳转user页面
-        router.push({ path: '/user' })
+        router.push({path: "/user"});
       }
     }
   },
-  created () {
-    this.verifyLogin()
+  created() {
+    this.verifyLogin();
   },
   components: {
     Alert
   }
-}
+};
 </script>
 
 <style scoped lang="less">

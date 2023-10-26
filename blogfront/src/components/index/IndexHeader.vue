@@ -67,7 +67,7 @@
               <ice-link href="#/admin" target="_self">admin</ice-link>
             </li>
             <li v-if="userInfo" class="list-item">
-              <ice-button @clic="out" disabled>out</ice-button>
+              <ice-button @click="out" disabled>out</ice-button>
             </li>
           </ul>
         </div>
@@ -156,6 +156,8 @@ const {userInfo} = store.state.user || false;
 
 const out = () => {
   localStorage.removeItem("userInfo");
+  // 刷新
+  window.location.reload();
 };
 
 // 深色模式
@@ -212,55 +214,3 @@ onMounted(() => {
 init();
 changeDark();
 </script>
-<style lang="less" scoped>
-/*@import "../../assets/css/variables.less";
-
-.lim {
-  z-index: 10;
-  margin: 0 auto;
-
-  .list-item {
-    margin: 0 1rem;
-  }
-}
-
-.avatarLim {
-  .ice-row {
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 1200px) {
-  .lim {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background: @bac;
-  }
-}
-
-@media (min-width: 1200px) {
-}
-
-
-.outLim {
-
-  // 小屏
-  @media (max-width: 1200px) {
-    max-width: 100vw;
-  }
-
-  @media (min-width: 1200px) {
-    max-width: 70vw;
-    margin-bottom: 1rem;
-  }
-}
-
-ul.list {
-  flex-wrap: wrap;
-
-  li {
-    margin: 0 !important;
-  }
-}*/
-</style>
