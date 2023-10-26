@@ -1,7 +1,7 @@
 <template>
   <div class="markdownTags">
     <ice-link :href="href" target="_blank" :underline="false" v-if="click">
-      <el-tag :size="size">{{ tag }}</el-tag>
+      <ice-tag :size="size">{{ tag }}</ice-tag>
     </ice-link>
     <ice-tag v-if="!click">{{ tag }}</ice-tag>
   </div>
@@ -11,24 +11,24 @@
 export default {
   name: "markdownTags",
   props: {
-    tag: '',
+    tag: "",
     click: {
       type: Boolean,
       default: true
     },
     size: {
       type: String,
-      default: 'normal'
+      default: "normal"
     }
   },
   data() {
     return {
-      href: '',
-    }
+      href: "",
+    };
   },
   created() {
     // 允许点击
-    this.href = '#/read/readTag?tag1=' + this.tag
+    this.href = "#/read/readTag?tag1=" + this.tag;
   }
-}
+};
 </script>

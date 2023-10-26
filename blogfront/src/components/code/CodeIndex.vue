@@ -4,10 +4,10 @@
     <InputCard v-if="userInfoStore.loginStatus"></InputCard>
     <div class="cardsLim">
       <div class="codeZoomCard" v-if="showZoomCard">
-        <el-button @click="showZoomCard = false">close</el-button>
+        <ice-button @click="showZoomCard = false">close</ice-button>
         <ZoomCard :item="nowItem[0]"></ZoomCard>
       </div>
-      <ul v-else class="list-group list-group-flush">
+      <ul v-else>
         <div class="lim" v-for="(item, index) in codeList" :key="index">
           <IndexCard :item="item" :zoomFun="zoom"></IndexCard>
         </div>
@@ -101,7 +101,6 @@ export default {
         margin-bottom: 1rem;
 
         .text {
-          //background-image: linear-gradient(to right bottom, #a8edea 0%, #fed6e3 100%);
           background-image: linear-gradient(to right bottom, #f5f7fa 0%, #c3cfe2 100%);
           padding: 0.5rem;
           border-radius: 0.3rem;

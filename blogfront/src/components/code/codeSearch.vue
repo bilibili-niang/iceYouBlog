@@ -1,6 +1,6 @@
 <template>
   <div class="codeSearch">
-    <el-input v-model="key" placeholder="Please input"/>
+    <ice-input v-model="key" placeholder="Please input"/>
     <el-divider content-position="left" v-if="searchResult.length">搜索结果</el-divider>
     <ul class="list-group list-group-flush">
       <li class="list-group-item hover-around-shadow animation-time" v-for="(item,index) in searchResult"
