@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {defineEmits, ref, watch} from "vue";
 import api from "@/common/api";
 import MarkdownCard from "@/components/read/MarkdownCard.vue";
 
@@ -24,10 +24,16 @@ const props = defineProps({
 const data = ref({});
 const markdowns = ref([]);
 
+const emits = defineEmits(["recommendDataChange"]);
+
 watch(props, (nweProps) => {
   api.getRecommendByTags({tags: nweProps.tags, id: nweProps.id})
       .then(res => {
         markdowns.value = res.result;
+        console.log("res.result.length", res.result.length);
+        if (res.result.length === 0) {
+          emits("recommendDataChange", true);
+        }
       })
       .catch(e => {
         console.log("e:");
@@ -37,11 +43,11 @@ watch(props, (nweProps) => {
 </script>
 
 <style scoped lang="less">
-.recommend {
+.recommend{
   overflow: hidden;
   border-radius: .3rem;
 
-  .markdown {
+  .markdown{
     display: flex;
     max-height: 70vh;
     overflow-y: auto;

@@ -5,7 +5,7 @@
     </ice-text>
     <!--文章存在-->
     <ice-row v-if="dataExist">
-      <ice-column width="70%">
+      <ice-column :width="hideRecommend ? '100%':'70%' ">
         <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
                    :userInf="userInf">
           <ice-text>当前字数:{{ wordCount }}</ice-text>
@@ -32,9 +32,10 @@
         <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
       </ice-column>
 
-      <ice-column width="30%">
+      <ice-column width="30%" v-if="!hideRecommend">
         <!--推荐-->
-        <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]"/>
+        <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]"
+                   @recommendDataChange="dataChangeHandler"/>
       </ice-column>
 
     </ice-row>
@@ -55,6 +56,10 @@ import fun from "@/hook/function";
 export default {
   name: "Read",
   methods: {
+    dataChangeHandler(flag) {
+      console.log("flag", flag);
+      this.hideRecommend = flag;
+    },
     refresh(val) {
       // 评论发表成功
       if (val) {
@@ -169,7 +174,9 @@ export default {
         parAddress: "",
         parCategory: 0
       },
-      wordCount: ""
+      wordCount: "",
+      //是否隐藏
+      hideRecommend: false
     };
   },
   created() {
@@ -181,7 +188,7 @@ export default {
 <style scoped lang="less">
 @marginTop: 1rem;
 
-.read {
+.read{
   padding-bottom: 10rem;
   display: flex;
   justify-content: flex-start;
@@ -191,7 +198,7 @@ export default {
   min-height: 90vh;
   align-items: center;
 
-  .imgLim {
+  .imgLim{
     z-index: -10;
     height: 100vh;
     overflow: hidden;
@@ -207,12 +214,12 @@ export default {
     filter: blur(1.5rem);
   }
 
-  .contentLim {
+  .contentLim{
     display: flex;
     max-width: 100%;
     width: 100%;
 
-    .otherOperates {
+    .otherOperates{
       display: flex;
       width: 25%;
       margin-top: @marginTop;
@@ -220,45 +227,45 @@ export default {
   }
 
   // 小屏
-  @media screen and (max-width: 1200px) {
-    .contentLim {
+  @media screen and (max-width: 1200px){
+    .contentLim{
       flex-direction: column;
     }
 
-    .dataContainerLim {
+    .dataContainerLim{
       width: 100% !important;
       max-width: 100% !important;
       flex: 1 !important;
     }
 
-    .right {
+    .right{
       display: none;
     }
 
-    & {
+    &{
       padding-left: 0.3rem;
       padding-right: 0.3rem;
       box-sizing: border-box;
 
-      .card-body {
+      .card-body{
         padding: 0;
 
-        .ownerDes {
+        .ownerDes{
           margin-left: 0 !important;
         }
       }
 
-      .card {
-        .card-body {
-          .ownerDes {
-            .dataAndViews {
+      .card{
+        .card-body{
+          .ownerDes{
+            .dataAndViews{
               flex-direction: column !important;
 
             }
           }
         }
 
-        .ownerDes {
+        .ownerDes{
           width: 100%;
         }
       }
@@ -266,22 +273,22 @@ export default {
   }
 
   // 大屏
-  @media screen and (min-width: 1200px) {
-    .contentLim {
+  @media screen and (min-width: 1200px){
+    .contentLim{
 
-      .ice-row {
+      .ice-row{
         width: 100%;
       }
     }
   }
 
-  .dataContainer {
+  .dataContainer{
     margin-top: @marginTop;
     display: flex;
     width: 100%;
     flex-direction: column;
 
-    .articleCon {
+    .articleCon{
       display: flex;
       width: 100%;
       flex-direction: column;
@@ -289,32 +296,32 @@ export default {
       z-index: 3;
       border-radius: 0.5rem;
 
-      :deep .github-markdown-body {
+      :deep .github-markdown-body{
         padding: 0.3rem;
       }
     }
   }
 
-  .right {
+  .right{
     margin-top: @marginTop;
     overflow: hidden;
   }
 
-  .ice-collapse {
+  .ice-collapse{
     width: 100%;
     border-radius: .3rem;
     overflow: hidden;
 
     /deep/ .ice-collapse-item__header,
-    .ice-collapse-item__wrap {
+    .ice-collapse-item__wrap{
       padding-left: .5rem;
 
-      .ice-collapse-item__content {
+      .ice-collapse-item__content{
         padding: .3rem;
       }
     }
 
-    .ice-row {
+    .ice-row{
       align-items: center;
       margin-bottom: .3rem;
     }

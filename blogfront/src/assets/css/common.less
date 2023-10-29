@@ -1,48 +1,52 @@
 @import "../../../node_modules/icepro/src/assets/variables.less";
 
-html.light {
+html.light{
 
 }
 
-html.dark {
+html.dark{
   background-color: rgb(31, 32, 36) !important;
 }
 
-.light {
-  .v-md-editor__main, .github-markdown-body div, .line-numbers-mode:after {
+.light{
+  .v-md-editor__main, .github-markdown-body div, .line-numbers-mode:after{
     background: @bac !important;
   }
 }
 
-.dark {
+.dark{
 
-  .v-md-editor__main, .github-markdown-body div {
+  .v-md-editor__main, .github-markdown-body div{
     //background: rgba(255,255,255,.5) !important;
   }
 
-  .v-md-textarea-editor textarea {
+  .v-md-textarea-editor textarea{
     color: rgba(255, 255, 255, 1) !important;
   }
 }
 
-.outLimL {
-  @media (max-width: 1200px) {
+.outLimL{
+  @media (max-width: 1200px){
     max-width: 95vw;
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1200px){
     max-width: 75vw;
   }
 }
 
-.border-n {
+.border-n{
   transition-duration: @time-n;
   border-radius: @radio-n;
   border: @fontColor-light 1px solid;
 
-  &:hover {
+  &:hover{
     border: @themeActiveColor solid 1px;
   }
 }
 
 @fontSize-n: 1.1rem !important;
+
+.width100Imp{
+  width: 100% !important;
+}

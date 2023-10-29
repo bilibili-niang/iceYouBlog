@@ -5,26 +5,27 @@
       <Avatar :imgUrl="avatar"></Avatar>
     </div>
     <ice-column>
-      <div class="ice-row">
+      <ice-column>
         <ice-row>
-          <ice-tag>nickName</ice-tag>
+          <ice-text>nickName</ice-text>
           <ice-text>
             {{ item.nickName }}
           </ice-text>
         </ice-row>
-        <div v-if="item.email">
-          <ice-tag>email</ice-tag>
+        <ice-row v-if="item.email">
+          <ice-text>email</ice-text>
           <ice-text>
             {{ item.email }}
           </ice-text>
-        </div>
-        <div v-if="item.webSite">
-          <ice-tag ice->webSite</ice-tag>
+        </ice-row>
+        <ice-row v-if="item.webSite">
+          <ice-text>webSite</ice-text>
           <ice-text>
             {{ item.webSite }}
           </ice-text>
-        </div>
-      </div>
+        </ice-row>
+      </ice-column>
+
       <v-md-editor
           :include-level="[3,4]"
           :mode="editMod"
