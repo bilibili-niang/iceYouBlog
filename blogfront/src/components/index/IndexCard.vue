@@ -94,13 +94,13 @@ init();
 </script>
 
 <style scoped lang="less">
-.indexCard {
+.indexCard{
   width: 100%;
   box-sizing: border-box;
 }
 
 @import "../../assets/css/variables.less";
-.indexCard {
+.indexCard{
   overflow: hidden;
   background: @bac-dark-bleak;
   margin-bottom: @m-normal;
@@ -108,14 +108,14 @@ init();
 }
 
 // 小屏
-@media (max-width: 1200px) {
-  .indexCard {
+@media (max-width: 1200px){
+  .indexCard{
     max-width: 100%;
   }
 }
 
-@media (min-width: 1200px) {
-  .indexCard {
+@media (min-width: 1200px){
+  .indexCard{
   }
 }
 

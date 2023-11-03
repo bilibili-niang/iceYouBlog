@@ -81,7 +81,7 @@
         <ice-link href="/" target="_self">index</ice-link>
       </li>
       <li v-if="!loginState" class="list-item">
-        <ice-link href="#/login" target="_blank">login</ice-link>
+        <ice-link href="#/login" target="_self">login</ice-link>
       </li>
       <!--配置为1才开启注册-->
       <li v-if="!loginState && store.state.config.registerFlag == '1'" class="list-item">

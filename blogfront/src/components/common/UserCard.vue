@@ -1,35 +1,35 @@
 <template>
   <div class="lim">
-    <div class="card hvr-glow">
+    <ice-column>
       <Avatar :imgUrl="user.avatar" :allowClick=false></Avatar>
       <div class="card-body">
-        <div>
-          <el-tag class="ml-2" type="user">username</el-tag>
-          <el-text class="mx-1">{{ user.username }}</el-text>
-        </div>
-        <div>
-          <el-tag class="ml-2" type="user">email</el-tag>
-          <el-text class="mx-1">{{ user.email }}</el-text>
-        </div>
-        <div>
-          <el-tag class="ml-2" type="user">word</el-tag>
-          <el-text class="mx-1">{{ user.word }}</el-text>
-        </div>
-        <div>
-          <el-tag class="ml-2" type="user">githubUrl</el-tag>
-          <el-text class="mx-1">{{ user.githubUrl }}</el-text>
-        </div>
-        <div>
-          <el-tag class="ml-2" type="user">occupation</el-tag>
-          <el-text class="mx-1">{{ user.occupation }}</el-text>
-        </div>
+        <ice-row>
+          <ice-tag>username</ice-tag>
+          <ice-text>{{ user.username }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <ice-tag>email</ice-tag>
+          <ice-text>{{ user.email }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <ice-tag>word</ice-tag>
+          <ice-text>{{ user.word }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <ice-tag>githubUrl</ice-tag>
+          <ice-text>{{ user.githubUrl }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <ice-tag>occupation</ice-tag>
+          <ice-text>{{ user.occupation }}</ice-text>
+        </ice-row>
       </div>
-    </div>
+    </ice-column>
   </div>
 </template>
 
 <script setup>
-import Avatar from '@/components/common/Avatar.vue'
+import Avatar from "@/components/common/Avatar.vue";
 
 const props = defineProps({
   user: {
@@ -40,8 +40,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-})
-console.log('UserCard组件')
+});
 </script>
 
 <style scoped>

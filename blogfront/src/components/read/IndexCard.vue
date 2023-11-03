@@ -1,33 +1,23 @@
 <template>
   <div class="indexCard">
-    <div class="card">
-      <div class="card-body">
+    <ice-row>
+      <ice-column>
         <ice-title size="l">{{ markdownData.title }}</ice-title>
-        <div class="userInfoDetail">
-          <div class="imgLLim" v-if="userInf.avatar">
-            <Avatar :imgUrl="userInf.avatar" :email="userInf.email"></Avatar>
-          </div>
-          <div class="info">
-            <ice-row>
-              <ice-text>发布者:</ice-text>
-              <ice-text>{{ userInf.username }}</ice-text>
-            </ice-row>
-            <ice-row>
-              <ice-text>邮箱:</ice-text>
-              <ice-text>{{ userInf.email }}</ice-text>
-            </ice-row>
-            <ice-row>
-              <ice-text>发布时间:</ice-text>
-              <ice-text>{{ markdownData.createdAt }}</ice-text>
-            </ice-row>
-            <ice-row>
-              <ice-text>浏览量:</ice-text>
-              <ice-text>{{ markdownData.view }}</ice-text>
-            </ice-row>
-            <ice-row>
-              <slot></slot>
-            </ice-row>
-          </div>
+        <ice-row>
+          <ice-text>发布时间:</ice-text>
+          <ice-text>{{ markdownData.createdAt }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <ice-text>浏览量:</ice-text>
+          <ice-text>{{ markdownData.view }}</ice-text>
+        </ice-row>
+        <ice-row>
+          <slot></slot>
+        </ice-row>
+
+        <div class="ice-row" v-if="markdownData.description">
+          <el-tag class="ml-2" type="info">description</el-tag>
+          <ice-text>{{ markdownData.description }}</ice-text>
         </div>
         <ice-row v-if="markdownData.tag1 || markdownData.tag2 || markdownData.tag3">
           <ice-button>tags</ice-button>
@@ -45,15 +35,28 @@
             {{ markdownData.tag3 }}
           </ice-link>
         </ice-row>
-        <div class="ice-row" v-if="markdownData.description">
-          <el-tag class="ml-2" type="info">description</el-tag>
-          <ice-text>{{ markdownData.description }}</ice-text>
-        </div>
+
+      </ice-column>
+      <ice-column>
+        <ice-row>
+          <Avatar :imgUrl="userInf.avatar" v-if="userInf.avatar" :email="userInf.email"></Avatar>
+          <ice-column>
+            <ice-row>
+              <ice-text>发布者:</ice-text>
+              <ice-text>{{ userInf.username }}</ice-text>
+            </ice-row>
+            <ice-row>
+              <ice-text>邮箱:</ice-text>
+              <ice-text>{{ userInf.email }}</ice-text>
+            </ice-row>
+          </ice-column>
+        </ice-row>
+
         <div class="ice-row" v-if="showEditBtn">
           <ice-button @click="gotoEditExperiment(markdownData.id)">前往编辑</ice-button>
         </div>
-      </div>
-    </div>
+      </ice-column>
+    </ice-row>
   </div>
 </template>
 
@@ -90,15 +93,15 @@ export default {
 </script>
 
 <style scoped lang="less">
-@media (min-width: 1200px) {
-  .userInfoDetail {
+@media (min-width: 1200px){
+  .userInfoDetail{
     display: flex;
     flex-direction: row;
   }
 }
 
-@media (max-width: 1200px) {
-  .userInfoDetail {
+@media (max-width: 1200px){
+  .userInfoDetail{
     display: flex;
     flex-direction: column;
   }
