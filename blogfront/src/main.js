@@ -32,9 +32,7 @@ import "@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css";
 
 
 // @date 2023/5/7 , @author icestone
-// 引入所有语言包,管他妈的直接全部引入
 // 引入全局组件:
-import IndexHeader from "@/components/index/IndexHeader.vue";
 import hljs from "highlight.js";
 
 // @date 2023/5/6 , @author icestone
@@ -57,15 +55,19 @@ app.use(VueMarkdownEditor);
 app.use(store);
 app.use(ElementPlus);
 
-// app.use(icepro)
 icepro.install(app);
-
+/*const keys = Object.keys(icepro.components);
+keys.map(item => {
+  app.component(item, icepro.components[item]);
+});*/
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
 
-app.component("IndexHeader", IndexHeader);
+// 补充
+app.component("icePagination", icepro.components.icePagination);
+
 app
   .use(router)
   .mount("#app");

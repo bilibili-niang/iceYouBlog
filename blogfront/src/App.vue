@@ -17,8 +17,10 @@
 
 <script>
 import api from "@/common/api";
+import IndexHeader from "@/components/index/IndexHeader.vue";
 
 export default {
+  components: {IndexHeader},
   data() {
     return {
       day: true,

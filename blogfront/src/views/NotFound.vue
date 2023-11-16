@@ -13,9 +13,7 @@
       >
       </audio>
       <ice-row>
-        src:{{ src }}playIndex:{{ playIndex }}
-        <br/>
-        audioSrc:{{ audioSrc }}
+        src:{{ src }}
         <ice-selector v-model="playIndex" :list="audioSrc"></ice-selector>
       </ice-row>
 
@@ -46,12 +44,12 @@ let audioSrc = reactive([
   {
     label: "桃子",
     value: "3",
-    src: "/406.mp4"
+    src: "/feiyangyang.mp4"
   },
   {
     label: "猕猴桃",
     value: "4",
-    src: "/407.mp4"
+    src: "/feiyangyang.mp4"
   }
 ]);
 const src = computed(() => {
@@ -75,7 +73,7 @@ const audioEnd = () => {
 </script>
 
 <style scoped lang="less">
-audio {
+audio{
   width: 100%;
 }
 </style>

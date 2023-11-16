@@ -5,8 +5,8 @@
     <shrinkBar bac-color="#ffffff" direction="left">
 
       <template v-slot:show>
-        <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
-        <ice-button v-else>hover一下</ice-button>
+        <!-- <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
+                <ice-button v-else>hover一下</ice-button>-->
       </template>
 
       <template v-slot:body>
@@ -29,7 +29,7 @@
               <ice-link href="#/friend/links" target="_self">友链</ice-link>
             </li>
             <li class="list-item">
-              <ice-link href="#/words/index" target="_self">iKun</ice-link>
+              <ice-link href="#/collectible" target="_self">collectible</ice-link>
             </li>
             <li class="list-item">
               <ice-link href="#/searchHistory">搜索</ice-link>

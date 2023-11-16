@@ -14,6 +14,12 @@ const routes = [
         component: () => import('@/views/Login.vue')
     },
     {
+        path: '/collectible',
+        name: 'collectible',
+        meta: {title: "collectibles"},
+        component: () => import('@/views/collectible.vue')
+    },
+    {
         path: '/register',
         name: 'register',
         meta: {title: "注册"},

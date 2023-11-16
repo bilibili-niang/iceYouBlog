@@ -1,6 +1,6 @@
 <template>
   <div class="indexCard">
-    <ice-row>
+    <ice-column>
       <ice-column>
         <ice-title size="l">{{ markdownData.title }}</ice-title>
         <ice-row>
@@ -56,7 +56,7 @@
           <ice-button @click="gotoEditExperiment(markdownData.id)">前往编辑</ice-button>
         </div>
       </ice-column>
-    </ice-row>
+    </ice-column>
   </div>
 </template>
 

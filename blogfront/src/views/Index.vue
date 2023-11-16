@@ -8,10 +8,19 @@
            :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
+
       <div class="btns m-b" v-if="indexList">
-        <el-pagination v-model:current-page="currentPage2" v-model:page-size="pageSize2" :page-sizes="[10, 20, 30, 40]"
-                       :small="small" :disabled="disabled" :background="background" layout="sizes, prev, pager, next"
-                       :total="allCount" @current-change="handleCurrentChange"/>
+        <ice-column>
+          <ice-text>
+            pageSize2:{{ pageSize2 }}
+          </ice-text>
+          <ice-text>
+            allCount:{{ allCount }}
+          </ice-text>
+        </ice-column>
+        <ice-pagination v-model="pageSize2" :total="allCount" :step="20"></ice-pagination>
+
+        <br><br><br>
       </div>
     </div>
   </div>
@@ -20,23 +29,19 @@
 <script setup>
 import filters from "@/common/filter/time";
 import fun from "@/hook/function";
-import IndexCard from "@/components/index/IndexCard.vue";
-import Recommend from "@/components/index/Recommend.vue";
-import {reactive, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import markdownApi from "@/common/api/markdownFiles";
 import api from "@/common/api/index";
+import IndexCard from "@/components/code/IndexCard.vue";
+import Recommend from "@/components/index/Recommend.vue";
 // import * as THREE from 'three'
 
-let indexList = reactive([]);
+let indexList = ref([]);
 let allCount = ref(0);
-let disabled = ref(false);
-let small = ref(false);
 let background = ref(false);
 let value = ref(true);
 let pageSize2 = ref(10);
-let currentPage2 = ref(1);
-
 const router = useRouter();
 // 跳转阅读
 const goToRead = (id) => {
@@ -60,15 +65,15 @@ const handleCurrentChange = (val) => {
   // 请求分页数据
   api.postHomeData({
     id,
-    limit: pageSize2.value
+    limit: 5
   })
       .then(res => {
         if (res.result.length > 0) {
-          indexList = res.result;
+          indexList.value = res.result;
           fun.alert(res.message);
         } else {
           fun.alert("你到达了未知领域");
-          indexList = [];
+          indexList.value = [];
         }
       })
       .catch(e => {
@@ -90,7 +95,7 @@ const timeFormat = (data) => {
 const initData = () => {
   api.getHomeData()
       .then(res => {
-        indexList = res.result.rows || [];
+        indexList.value = res.result.rows || [];
       })
       .catch(e => {
         fun.alert(e);
@@ -103,7 +108,28 @@ initCount();
 watch(indexList, (newVal, oldVal) => {
   if (!newVal) {
     initData();
-    initData();
+  }
+});
+watch(pageSize2, (newVal) => {
+  if (newVal) {
+    console.log(newVal);
+    console.log("indexList.value[newVal]", indexList.value[newVal]);
+    api.postHomeData({
+      id: indexList.value[newVal].id,
+      limit: 20
+    })
+        .then(res => {
+          if (res.result.length > 0) {
+            indexList.value = res.result;
+            fun.alert(res.message);
+          } else {
+            fun.alert("你到达了未知领域");
+            indexList.value = [];
+          }
+        })
+        .catch(e => {
+          fun.alert(e);
+        });
   }
 });
 
@@ -111,7 +137,7 @@ watch(indexList, (newVal, oldVal) => {
 </script>
 
 <style scoped lang="less">
-.index {
+.index{
   display: flex;
   flex-direction: column;
   min-height: 90vh;
@@ -120,35 +146,35 @@ watch(indexList, (newVal, oldVal) => {
   flex-wrap: wrap;
 
   // 小屏
-  @media (max-width: 1200px) {
-    .left {
+  @media (max-width: 1200px){
+    .left{
       overflow: hidden;
       margin: 0 !important;
 
-      .indexCard {
+      .indexCard{
         max-width: 100% !important;
         box-sizing: border-box;
 
-        /deep/ .ice-card, .ice-row {
+        /deep/ .ice-card, .ice-row{
           margin: 0;
           padding: 0;
         }
       }
     }
 
-    .right {
+    .right{
       display: none !important;
     }
 
-    .recommend {
+    .recommend{
       display: none;
     }
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 1200px){
 
   }
 
-  .left {
+  .left{
     min-height: 70vh;
     display: flex;
     flex-direction: row;
@@ -158,12 +184,12 @@ watch(indexList, (newVal, oldVal) => {
     justify-content: space-between;
     box-sizing: border-box;
 
-    .card {
+    .card{
       width: 100%;
     }
   }
 
-  .right {
+  .right{
     flex: 1;
     box-sizing: border-box;
     display: flex;
