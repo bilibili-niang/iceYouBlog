@@ -249,7 +249,10 @@ class MarkdownController {
     id = id > 0 ? id : 0;
     // @date 2023/5/5 , @author icestone
     // id 为跳过的数量,limit 为查询数量
+    console.log("id, limit", id, limit);
     const result = await getHomeIndexListById(id, limit);
+    console.log("result");
+    console.log(result);
     ctx.body = {
       code: 200,
       success: true,

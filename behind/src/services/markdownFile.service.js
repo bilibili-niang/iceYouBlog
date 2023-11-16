@@ -185,7 +185,15 @@ class MarkdownFileService {
         // 我们从要排序的模型开始排序数组
         ["id", "DESC"]
       ]
-    });
+    })
+      .then(res => {
+        console.log("res:");
+        console.log(res);
+      })
+      .catch(e => {
+        console.log("e:");
+        console.log(e);
+      });
   }
 
   // 通过email获取用户所有文章
@@ -368,7 +376,7 @@ class MarkdownFileService {
    */
   async getDeletedFiles(email) {
     return await markdownFile.findAll({
-      attributes: ["id", "title", "createdAt", "description", "tag1", "tag2", "tag3", "view","updatedAt"],
+      attributes: ["id", "title", "createdAt", "description", "tag1", "tag2", "tag3", "view", "updatedAt"],
       where: {
         destroyTime: {[Op.not]: null},
         email
