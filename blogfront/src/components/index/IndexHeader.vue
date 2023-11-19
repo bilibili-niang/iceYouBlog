@@ -13,23 +13,23 @@
         <div class="ice-column">
           <ul class="ice-column">
             <li class="list-item">
-              <ice-link href="/" target="_self">index</ice-link>
+              <ice-link href="/" target="_self">首页</ice-link>
             </li>
             <li v-if="!loginState" class="list-item">
-              <ice-link href="#/login" target="_blank">login</ice-link>
+              <ice-link href="#/login" target="_blank">登录</ice-link>
             </li>
             <!--配置为1才开启注册-->
             <li v-if="!loginState && store.state.config.registerFlag == '1'" class="list-item">
-              <ice-link href="#/register" target="_blank">register</ice-link>
+              <ice-link href="#/register" target="_blank">注册</ice-link>
             </li>
             <li class="list-item">
-              <ice-link href="#/code/codeClips" target="_self">code clips</ice-link>
+              <ice-link href="#/code/codeClips" target="_self">代码片段</ice-link>
             </li>
             <li class="list-item">
               <ice-link href="#/friend/links" target="_self">友链</ice-link>
             </li>
             <li class="list-item">
-              <ice-link href="#/collectible" target="_self">collectible</ice-link>
+              <ice-link href="#/collectible" target="_self">收藏品</ice-link>
             </li>
             <li class="list-item">
               <ice-link href="#/searchHistory">搜索</ice-link>
@@ -37,7 +37,7 @@
             </li>
             <li class="list-item">
               <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{
-                  dark ? "light" : "dark"
+                  dark ? "深色" : "明亮"
                 }}
               </ice-link>
             </li>

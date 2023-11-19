@@ -54,7 +54,11 @@ watch(() => elementX.value, () => {
     rotateX.value = 0;
     return false;
   } else {
-    rotateX.value = limitValue(mouseOffsetX.value, 50);
+    if (mouseOffsetX.value < imgRef.value.width / 2) {
+      rotateX.value = limitValue(mouseOffsetX.value, 70);
+    } else {
+      rotateX.value = -limitValue(mouseOffsetX.value, 70);
+    }
   }
 });
 // 图片y
@@ -65,7 +69,11 @@ watch(() => elementY.value, () => {
     rotateY.value = 0;
     return false;
   } else {
-    rotateY.value = limitValue(mouseOffsetY.value, 50);
+    if (mouseOffsetY.value < imgRef.value.height / 2) {
+      rotateY.value = limitValue(mouseOffsetY.value, 70);
+    } else {
+      rotateY.value = -limitValue(mouseOffsetY.value, 70);
+    }
   }
 });
 
@@ -116,6 +124,12 @@ export default {
         </ice-text>
         <ice-text>
           mouseOffsetX:{{ mouseOffsetX }}
+        </ice-text>
+        <ice-text>
+          rotateY:{{ rotateY }}
+        </ice-text>
+        <ice-text>
+          rotateX:{{ rotateX }}
         </ice-text>
       </ice-column>
     </div>
