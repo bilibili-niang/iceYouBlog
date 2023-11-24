@@ -12,7 +12,7 @@ let calculateX = computed(() => {
     return x.value - elementX.value;
   }
 });
-// 鼠标放在img上面偏移的px
+// 鼠标横向偏移
 let mouseOffsetX = computed(() => {
   if (isOutside.value) {
     return 0;
@@ -24,8 +24,10 @@ let mouseOffsetX = computed(() => {
     }
   }
 });
-
+// 鼠标纵向偏移
 let mouseOffsetY = computed(() => {
+  if (!isOutside.value) {
+  }
   if (isOutside.value) {
     return 0;
   } else {
@@ -48,16 +50,21 @@ const props = defineProps({
 let imgRef = ref();
 // 图片x
 let rotateX = ref(0);
+let rightFlag = ref(false);
 // 设置y的偏移量
 watch(() => elementX.value, () => {
   if (isOutside.value) {
     rotateX.value = 0;
     return false;
   } else {
+    // 在左边
     if (mouseOffsetX.value < imgRef.value.width / 2) {
-      rotateX.value = limitValue(mouseOffsetX.value, 70);
+      rightFlag.value = false;
+      rotateX.value = limitValue(mouseOffsetX.value, 50);
     } else {
-      rotateX.value = -limitValue(mouseOffsetX.value, 70);
+      rightFlag.value = true;
+      // 在右边
+      rotateX.value = -(limitValue(mouseOffsetX.value, 50));
     }
   }
 });
@@ -90,6 +97,14 @@ const limitValue = (value, target) => {
   }
 };
 
+const emit = defineEmits(["clickTrigger"]);
+/**
+ * 点击传递给父组件放大查看
+ */
+const clickRotate = (item) => {
+  emit("clickTrigger", item);
+};
+
 </script>
 <script>
 export default {
@@ -98,58 +113,23 @@ export default {
 </script>
 
 <template>
-  <div class="collectibleCard" ref="cardContainer">
-    <img :src="item.img" alt="" :style="{ transform: `rotateY(-${rotateX}deg) rotateX(-${rotateY}deg)` }" ref="imgRef"
+  <div class="collectibleCard" ref="cardContainer" @click="clickRotate(item)">
+    <img :src="item.url" alt=""
+         :style="{ transform: `rotateY(${rightFlag?-rotateX:rotateX}deg) rotateX(${rotateY}deg)` }" ref="imgRef"
          class="collectibleImg">
-
-    <div class="fixed">
-      <ice-column>
-        <ice-text>
-          x: {{ x }}
-        </ice-text>
-        <ice-text>
-          y: {{ y }}
-        </ice-text>
-        <ice-text>
-          isOutside: {{ isOutside }}
-        </ice-text>
-        <ice-text>
-          elementX:{{ elementX }}
-        </ice-text>
-        <ice-text>
-          elementY:{{ elementY }}
-        </ice-text>
-        <ice-text>
-          calculateX:{{ calculateX }}
-        </ice-text>
-        <ice-text>
-          mouseOffsetX:{{ mouseOffsetX }}
-        </ice-text>
-        <ice-text>
-          rotateY:{{ rotateY }}
-        </ice-text>
-        <ice-text>
-          rotateX:{{ rotateX }}
-        </ice-text>
-      </ice-column>
-    </div>
   </div>
 
 </template>
 
 <style scoped lang="less">
-.fixed{
-  position: fixed;
-  top: 100px;
-  right: 100px;
-}
 .collectibleCard{
   position: relative;
   box-sizing: border-box;
   display: flex;
   max-height: 75vh;
   width: fit-content;
-  margin: 2rem;
+  margin-left: .5rem;
+  margin-right: .5rem;
   background: rgba(255, 255, 255, .4);
 
 
@@ -171,5 +151,4 @@ export default {
     }
   }
 }
-
 </style>

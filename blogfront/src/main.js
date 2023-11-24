@@ -12,6 +12,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "icepro/src/assets/common.less";
 import icepro from "icepro";
 /*引入公共样式*/
+import "@/assets/css/audio.css";
 import "@/assets/css/reset.less";
 import "@/assets/css/common.less";
 import "@/assets/css/variables.less";
@@ -58,7 +59,8 @@ app.use(ElementPlus);
 icepro.install(app);
 /*const keys = Object.keys(icepro.components);
 keys.map(item => {
-  app.component(item, icepro.components[item]);
+  console.log(icepro.components[item].name);
+  console.log(icepro.components[item]);
 });*/
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
