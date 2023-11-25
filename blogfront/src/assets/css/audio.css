@@ -1,3 +1,4 @@
+/*
 
 audio::-webkit-media-controls-play-button {
     display: none;
@@ -7,7 +8,7 @@ audio::-webkit-media-controls-volume-control-container {
     display: none;
 }
 
-/* 设置audio标签的背景色为透明 */
+!* 设置audio标签的背景色为透明 *!
 audio {
     background-color: transparent;
-}
+}*/

@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from "vue";
 import CollectibleCard from "@/components/collectible/card/index.vue";
-import collectibleMusic from "@/components/collectible/music/index.vue";
+import CollectibleMusic from "@/components/collectible/music/index.vue";
 
 
 let imgList = [
@@ -19,6 +19,7 @@ let imgList = [
     title: "I Got Smoke",
     author: "V在燃烧",
     authorUrl: "/",
+    coverImg:'collectible/1.png',
     descriptions: "你拿什么和我丁真拼?"
   },
 ];
