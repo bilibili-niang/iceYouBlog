@@ -167,6 +167,8 @@ class MarkdownFileService {
 
   // 通过传入的id返回首页文章
   async getHomeIndexListById(id, limit = 20) {
+    console.log(id, limit);
+
     return await markdownFile.findAll({
       attributes: ["id", "title", "email", "description", "view", "praise", "headImg", "updatedAt", "tag1", "tag2", "tag3", "recommendLevel"],
       where: {
@@ -182,18 +184,10 @@ class MarkdownFileService {
       limit,
       offset: id,
       order: [
-        // 我们从要排序的模型开始排序数组
         ["id", "DESC"]
       ]
-    })
-      .then(res => {
-        console.log("res:");
-        console.log(res);
-      })
-      .catch(e => {
-        console.log("e:");
-        console.log(e);
-      });
+    });
+
   }
 
   // 通过email获取用户所有文章

@@ -245,14 +245,11 @@ class MarkdownController {
   // 通过前端传来的id,返回文章数据,无法指定数据条数,每次返回20条
   async returnHomeListById(ctx) {
     let {id = -1, limit = 20} = ctx.request.body;
-    id = parseInt(id) - 1;
+    id = parseInt(id);
     id = id > 0 ? id : 0;
     // @date 2023/5/5 , @author icestone
     // id 为跳过的数量,limit 为查询数量
-    console.log("id, limit", id, limit);
-    const result = await getHomeIndexListById(id, limit);
-    console.log("result");
-    console.log(result);
+    const result = await getHomeIndexListById(id, parseInt(limit));
     ctx.body = {
       code: 200,
       success: true,
