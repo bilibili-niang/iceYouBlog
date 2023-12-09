@@ -630,7 +630,12 @@ class MarkdownController {
   */
   async returnRecommendByTags(ctx) {
     const {tags, id} = ctx.request.body;
-    const str = tags.join("");
+    console.log("tags");
+    console.log(tags);
+    let str = "";
+    if (tags) {
+      str = tags.join("");
+    }
     if (str.length == 0) {
       const result = await markdownS.getRandomMarkdownFileById(id, 5);
       ctx.body = {
