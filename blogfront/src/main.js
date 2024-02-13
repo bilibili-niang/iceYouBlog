@@ -57,11 +57,7 @@ app.use(store);
 app.use(ElementPlus);
 
 icepro.install(app);
-/*const keys = Object.keys(icepro.components);
-keys.map(item => {
-  console.log(icepro.components[item].name);
-  console.log(icepro.components[item]);
-});*/
+
 // element icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);

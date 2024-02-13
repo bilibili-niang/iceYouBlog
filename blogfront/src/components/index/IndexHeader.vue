@@ -2,19 +2,26 @@
   <div class="lim outLim">
 
 
-    <shrinkBar bac-color="#ffffff" direction="left">
-
+    <shrinkBar bac-color="#ffffff" direction="top">
       <template v-slot:show>
-        <!-- <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
-                <ice-button v-else>hover一下</ice-button>-->
+        <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
+        <ice-text>
+          切换颜色:
+          <ice-button :class="{ dark: dark == true }" @click="changeDark"> {{
+              dark ? "深色" : "明亮"
+            }}
+          </ice-button>
+        </ice-text>
+        <ice-text>
+          回到首页:
+
+              <ice-link href="/" target="_self">首页</ice-link>
+        </ice-text>
       </template>
 
       <template v-slot:body>
         <div class="ice-column">
           <ul class="ice-column">
-            <li class="list-item">
-              <ice-link href="/" target="_self">首页</ice-link>
-            </li>
             <li v-if="!loginState" class="list-item">
               <ice-link href="#/login" target="_blank">登录</ice-link>
             </li>
@@ -34,12 +41,6 @@
             <li class="list-item">
               <ice-link href="#/searchHistory">搜索</ice-link>
               <Search v-if="false"></Search>
-            </li>
-            <li class="list-item">
-              <ice-link :disabled="true" :class="{ dark: dark == true }" @click="changeDark"> {{
-                  dark ? "深色" : "明亮"
-                }}
-              </ice-link>
             </li>
           </ul>
         </div>

@@ -8,18 +8,8 @@
            :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
-
       <div class="btns m-b" v-if="indexList">
-        <ice-column>
-          <ice-text>
-            pageSize2:{{ pageSize2 }}
-          </ice-text>
-          <ice-text>
-            allCount:{{ allCount }}
-          </ice-text>
-        </ice-column>
         <ice-pagination v-model="pageSize2" :total="allCount" :step="20"></ice-pagination>
-
         <br><br><br>
       </div>
     </div>
@@ -33,15 +23,14 @@ import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import markdownApi from "@/common/api/markdownFiles";
 import api from "@/common/api/index";
-import IndexCard from "@/components/code/IndexCard.vue";
+import IndexCard from "@/components/index/IndexCard.vue";
 import Recommend from "@/components/index/Recommend.vue";
-// import * as THREE from 'three'
 
 let indexList = ref([]);
 let allCount = ref(0);
 let background = ref(false);
 let value = ref(true);
-let pageSize2 = ref(10);
+let pageSize2 = ref(0);
 const router = useRouter();
 // 跳转阅读
 const goToRead = (id) => {
@@ -65,7 +54,7 @@ const handleCurrentChange = (val) => {
   // 请求分页数据
   api.postHomeData({
     id,
-    limit: 5
+    limit: 20
   })
       .then(res => {
         if (res.result.length > 0) {
@@ -86,16 +75,26 @@ const handleCurrentChange = (val) => {
 
 const initCount = async () => {
   const res = await markdownApi.initCount();
-  allCount.value = parseInt(res.result);
+  allCount.value = parseInt(res.result / 20) + 1;
 };
 
 const timeFormat = (data) => {
   return filters.timeFormat(data);
 };
-const initData = () => {
-  api.getHomeData()
+const initData = async (val = 1) => {
+  let id = pageSize2.value * val;
+  await api.postHomeData({
+    id,
+    limit: 20
+  })
       .then(res => {
-        indexList.value = res.result.rows || [];
+        if (res.result.length > 0) {
+          indexList.value = res.result;
+          fun.alert(res.message);
+        } else {
+          fun.alert("前方是未知领域");
+          // indexList.value = [];
+        }
       })
       .catch(e => {
         fun.alert(e);
@@ -112,24 +111,7 @@ watch(indexList, (newVal, oldVal) => {
 });
 watch(pageSize2, (newVal) => {
   if (newVal) {
-    console.log(newVal);
-    console.log("indexList.value[newVal]", indexList.value[newVal]);
-    api.postHomeData({
-      id: indexList.value[newVal].id,
-      limit: 20
-    })
-        .then(res => {
-          if (res.result.length > 0) {
-            indexList.value = res.result;
-            fun.alert(res.message);
-          } else {
-            fun.alert("你到达了未知领域");
-            indexList.value = [];
-          }
-        })
-        .catch(e => {
-          fun.alert(e);
-        });
+    initData(20);
   }
 });
 

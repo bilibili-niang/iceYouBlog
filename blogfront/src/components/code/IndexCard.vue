@@ -22,7 +22,7 @@
           <markdownTags :tag="item.tag1" :click="true" v-if="item.tag1"></markdownTags>
           <markdownTags :tag="item.tag2" :click="true" v-if="item.tag2"></markdownTags>
           <markdownTags :tag="item.tag3" :click="true" v-if="item.tag3"></markdownTags>
-          <span class="m-t"><ice-button round>time</ice-button> <ice-text>{{ item.createdAt }}</ice-text></span>
+          <ice-text>time:{{ item.createdAt }}</ice-text>
         </ice-row>
       </ice-column>
     </template>

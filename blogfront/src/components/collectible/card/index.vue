@@ -130,8 +130,7 @@ export default {
   width: fit-content;
   margin-left: .5rem;
   margin-right: .5rem;
-  background: rgba(255, 255, 255, .4);
-
+  //background: rgba(255, 255, 255, .4);
 
   .collectibleImg{
     display: flex;
