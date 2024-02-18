@@ -74,7 +74,7 @@ const userValidator = async (ctx, next) => {
 //验证用户传来的token是否有用,以及获取其存储的用户信息
 const auth = async (ctx, next) => {
   //authorization是需要前端在传输时设置的
-  const token = ctx.request.header.token || null;
+  const token = ctx.request.header.token || ctx.request.body.token||null;
   if (token != null) {
     ctx.state.user = jwt.decode(token, salt);
     if (!ctx.state.user) {

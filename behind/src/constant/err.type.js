@@ -75,7 +75,7 @@ module.exports = {
     },
     tokenNotExist: {
         code: '10102',
-        message: 'token不存在',
+        message: 'token不存在或过期',
         success: false,
         result: ''
     },

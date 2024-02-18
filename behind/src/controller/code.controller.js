@@ -14,8 +14,6 @@ class CodeController {
   async returnNewCOde(ctx) {
     const {title, tag1, tag2, tag3, content, description} = ctx.request.body;
     const result = await newCodeClips(ctx.state.user.email, {title, tag1, tag2, tag3, content, description});
-    console.log("result");
-    console.log(result);
     ctx.body = {
       code: 200,
       success: true,
