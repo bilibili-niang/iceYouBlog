@@ -227,7 +227,7 @@ class MarkdownController {
       id = 0
     } = ctx.request.body;
     const result = await getAllUserMarkdownFiles(ctx.state.user.email, limit, id);
-    if ((await result).length == 0) {
+    if (result.length == 0) {
       // @date 2023/5/10 , @author icestone
       // 为空,用户没有文章
       ctx.body = userDontHaveArticle;
