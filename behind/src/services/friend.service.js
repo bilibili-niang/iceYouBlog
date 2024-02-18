@@ -10,8 +10,6 @@ class FriendService {
 
 // 增
     async getAddResult(form) {
-        console.log("form:")
-        console.log(form)
         form.img = form.url + `/favicon.ico`;
         return await friendLinks.create(form, {
             raw: true
