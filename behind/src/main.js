@@ -7,8 +7,7 @@ const {
   createMarkdownFile
 } = require("./services/markdownFile.service");
 const {
-  initUserRes,
-  initAdminUser
+  initUserRes
 } = require("./services/user.service");
 
 const fileNameAndPath = __filename;
