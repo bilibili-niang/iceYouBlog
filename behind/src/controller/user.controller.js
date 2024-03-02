@@ -287,7 +287,15 @@ class UserController {
       const result = await axios({
         method: "get",
         url: url
-      });
+      })
+        .then(res => {
+          console.log("res:");
+          console.log(res);
+        })
+        .catch(e => {
+          console.log("e:");
+          console.log(e);
+        });
       // TODO 这里可以获取到openid
       const openid = result.data.openid;
       console.log("openid", openid);

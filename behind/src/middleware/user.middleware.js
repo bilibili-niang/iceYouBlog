@@ -5,7 +5,7 @@ const md5 = require("md5");
 //报错类型
 const {
   userFormateError, userDoesNotExist, userLoginError, TokenExpiredError, JsonWebTokenError,
-  informationNotAllow, tokenNotExist
+  informationNotAllow, tokenNotExist, openidNotExist
 } = require("../constant/err.type");
 const {
   findUserByUserNameOrUserEmail,
@@ -74,7 +74,7 @@ const userValidator = async (ctx, next) => {
 //验证用户传来的token是否有用,以及获取其存储的用户信息
 const auth = async (ctx, next) => {
   //authorization是需要前端在传输时设置的
-  const token = ctx.request.header.token || ctx.request.body.token||null;
+  const token = ctx.request.header.token || ctx.request.body.token || null;
   if (token != null) {
     ctx.state.user = jwt.decode(token, salt);
     if (!ctx.state.user) {
@@ -146,6 +146,20 @@ const hasToken = async (ctx, next) => {
   await next();
 };
 
+/**
+ 中间件,判断用户的openid是否存在
+ @param ctx
+ @param next
+ @return {Promise<void>}
+ */
+const openidAuth = async (ctx, next) => {
+  const openid = ctx.request.body?.code || "";
+  if (!openid) {
+    ctx.body = openidNotExist;
+  }
+  await next();
+};
+
 module.exports = {
   verifyLogin,
   cryptPassword,
@@ -154,5 +168,6 @@ module.exports = {
   userExist,
   hasToken,
   authBybody,
-  ifAuth
+  ifAuth,
+  openidAuth
 };
