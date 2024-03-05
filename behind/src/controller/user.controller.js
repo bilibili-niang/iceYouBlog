@@ -288,17 +288,8 @@ class UserController {
         method: "get",
         url: url
       })
-        .then(res => {
-          console.log("res:");
-          console.log(res);
-        })
-        .catch(e => {
-          console.log("e:");
-          console.log(e);
-        });
       // TODO 这里可以获取到openid
       const openid = result.data.openid;
-      console.log("openid", openid);
 
       let userInfo = await userS.loginByOpenId({openid});
       // 为空,创建用户
@@ -312,7 +303,6 @@ class UserController {
           openid
         );
       }
-      console.log("userInfo", userInfo);
 
       ctx.body = {
         code: 200,
