@@ -5,7 +5,7 @@ const router = new Router({ prefix: '/events' })
 
 const eventC = require('../controller/events.controller.js')
 
-// 新增今日
+// 新增今日事件
 router.post('/addTodayEvent', userM.auth, eventC.addEvent)
 
 router.post('/list',userM.auth,eventC.getList)

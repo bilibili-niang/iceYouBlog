@@ -144,21 +144,19 @@ class UserService {
 
   // 通过email获取user表中用户信息
   async getUserBaseInfo(email) {
-    const res = await user.findOne({
+    return await user.findOne({
       attributes: {exclude: ["password", "verificationCode", "verify", "token", "updatedAt"]}, where: {
         email
       }, raw: true
     });
-    return res;
   }
 
   async getUserBaseInfoAndToken(email) {
-    const res = await user.findOne({
-      attributes: {exclude: ["password", "verificationCode", "verify", "updatedAt"]}, where: {
+    return await user.findOne({
+      attributes: {exclude: ["password", "verificationCode", "verify", "updatedAt", "realPassword"]}, where: {
         email
       }, raw: true
     });
-    return res;
   }
 
   async updateUserInfo(id, form) {
@@ -285,7 +283,7 @@ class UserService {
 // TODO openid 登录
   async loginByOpenId(params) {
     return await user.findOne({
-      attributes: {exclude: ["password", "verificationCode", "verify", "updatedAt", "realPassword"]},
+      attributes: {exclude: ["password", "verificationCode", "verify", "updatedAt", "realPassword","token","openid"]},
       raw: true,
       where: {
         openid: params?.openid

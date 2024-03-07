@@ -287,7 +287,7 @@ class UserController {
       const result = await axios({
         method: "get",
         url: url
-      })
+      });
       // TODO 这里可以获取到openid
       const openid = result.data.openid;
 
@@ -303,6 +303,7 @@ class UserController {
           openid
         );
       }
+      userInfo.token = jwt.sign(userInfo, salt, {expiresIn: 60 * 60 * 24});
 
       ctx.body = {
         code: 200,
