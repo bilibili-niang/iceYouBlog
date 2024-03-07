@@ -1,5 +1,6 @@
 const errType = require("../constant/err.type");
 const eventsS = require("../services/events.service");
+const {getHomeIndexList} = require("../services/markdownFile.service");
 
 class EventsController {
   /**
@@ -40,10 +41,20 @@ class EventsController {
     }
   }
 
-// 分页查询
-  async getList(ctx) {
-
-
+  /**
+   * 获取事件
+   * @param ctx
+   * @return {Promise<void>}
+   */
+  async getEvents(ctx) {
+    const {pageNum = 1, pageSize = 20} = ctx.request.query;
+    const result = await eventsS.getEvents(pageNum, pageSize);
+    ctx.body = {
+      code: 200,
+      success: true,
+      message: "查询events数据",
+      result
+    };
   }
 
 }

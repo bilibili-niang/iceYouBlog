@@ -8,7 +8,8 @@ const eventC = require('../controller/events.controller.js')
 // 新增今日事件
 router.post('/addTodayEvent', userM.auth, eventC.addEvent)
 
-router.post('/list',userM.auth,eventC.getList)
+// 获取事件列表
+router.post('/getTodayEvent', userM.auth, eventC.getEvents)
 
 router.post('/test', (ctx) => {
     ctx.body = {
