@@ -289,7 +289,8 @@ class UserController {
         url: url
       });
       // TODO 这里可以获取到openid
-      const openid = result.data.openid;
+      // const openid = result.data.openid;
+      const openid = "o6WgI5HYxWF66F0YlI5QzP89GMK8";
 
       let userInfo = await userS.loginByOpenId({openid});
       // 为空,创建用户
