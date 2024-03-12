@@ -1,6 +1,5 @@
 const errType = require("../constant/err.type");
 const eventsS = require("../services/events.service");
-const {getHomeIndexList} = require("../services/markdownFile.service");
 
 class EventsController {
   /**

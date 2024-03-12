@@ -1,6 +1,5 @@
 const event = require("../schema/events");
 const {insertLog} = require("./log.service");
-const markdownFile = require("../schema/markdownFile");
 const fileNameAndPath = __filename;
 
 class EventsService {

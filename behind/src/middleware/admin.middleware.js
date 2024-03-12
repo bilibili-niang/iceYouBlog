@@ -12,20 +12,17 @@ class AdminMiddleware {
    *  用户是否为admin用户的中间件
   */
   async isAdmin(ctx, next) {
-    const token = ctx.request.header.token || null;
-    if (token.length <= 10) {
-      ctx.body = JsonWebTokenError;
 
+    const {username = null} = ctx.state.user;
+    const isAdminFlag = await getIsAdminById(username);
+    console.log("isAdminFlag:");
+    console.log(isAdminFlag);
+    if (isAdminFlag) {
+      // admin用户
+      await next();
     } else {
-      const {username = null} = jwt.decode(token, salt);
-      const isAdminFlag = await getIsAdminById(username);
-      if (isAdminFlag) {
-        // admin用户
-        await next();
-      } else {
-        ctx.body = adminError;
+      ctx.body = adminError;
 
-      }
     }
   }
 
