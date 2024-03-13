@@ -62,6 +62,12 @@ router.post("/headImg", auth, returnUserHeadImg);
 router.post("/getUserAllPostedComments", auth, returnUserAllPostedCommented);
 
 /**
+ * 将发起请求的用户设为admin
+ */
+router.post("/becomeAdmin", auth);
+router.post("/becomeAdmin", );
+
+/**
  * 微信用户登录接口
  */
 router.post("/miniLogin", openidAuth, userC.miniLogin);
