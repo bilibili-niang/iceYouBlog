@@ -65,13 +65,14 @@ class MarkdownController {
     const {authorization} = ctx.request.header;
     const token = authorization.replace("Bearer ", "");
     //解析token
-    const {username, userEmail} = jwt.verify(token, JWT_SECRET);
+    const {userEmail} = jwt.verify(token, JWT_SECRET);
     const requestData = ctx.request.body;
-    console.log("requestData:");
-    console.log(requestData);
     const res = await createMarkdownFile(userEmail, requestData);
     ctx.body = {
-      code: 0, message: "用户创建文章成功", result: res,
+      code: 0,
+      success: true,
+      message: "用户创建文章成功",
+      result: res,
     };
   }
 

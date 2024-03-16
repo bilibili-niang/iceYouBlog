@@ -1,7 +1,6 @@
 //公共数据验证的中间件,传入规则,进行匹配判断
 const {FormatError, tokenNotExist} = require('../constant/err.type')
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('../config/config.default');
 const {salt} = require('../config/default');
 const Validator = (rules) => {
     return async (ctx, next) => {

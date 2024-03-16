@@ -15,6 +15,5 @@ module.exports = {
     salt: 'fuckyou',
     AVATAR_PATH: 'upload',
     PICTURE_PATH: 'upload',
-
 }
 

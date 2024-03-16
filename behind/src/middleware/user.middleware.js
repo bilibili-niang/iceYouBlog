@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 //用户权限的中间件
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
