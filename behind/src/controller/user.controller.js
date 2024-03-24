@@ -159,6 +159,8 @@ class UserController {
 
   // 通过用户id修改用户信息:
   async updateUserById(ctx) {
+    console.log("ctx.state.user:");
+    console.log(ctx.state.user);
     const res = await updateUserInfo(ctx.state.user.id, ctx.request.body);
     const flag = res[0] || "";
     if (flag == 1) {
@@ -304,7 +306,14 @@ class UserController {
           openid
         );
       }
+      console.log("写入的用户信息:");
+      console.log(userInfo);
+      
+
       userInfo.token = jwt.sign(userInfo, salt, {expiresIn: 60 * 60 * 24});
+
+      console.log("颁发的token:");
+      console.log(userInfo.token);
 
       ctx.body = {
         code: 200,
