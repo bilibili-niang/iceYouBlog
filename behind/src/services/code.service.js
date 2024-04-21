@@ -14,7 +14,6 @@ class CodeService {
     async getCodeClips () {
         return await code.findAll({
             attributes: {
-                exclude: ['updatedAt'],
                 where: {
                     state: {
                         [Op.ne]: '-1'
