@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {JWT_SECRET} = require("../config/config.default");
+const {JWT_SECRET} = require("../config/default");
 const cheerio = require("cheerio");
 const TurndownService = require("turndown");
 let turndownService = new TurndownService();
