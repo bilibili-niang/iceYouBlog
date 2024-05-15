@@ -11,6 +11,9 @@ router.post('/addTodayEvent', userM.auth, eventC.addEvent)
 // 获取事件列表
 router.post('/getTodayEvent', userM.auth, eventC.getEvents)
 
+// 获取事件详情
+router.post('/getEventDetail', userM.auth, eventC.getEventDetailById)
+
 router.post('/test', (ctx) => {
     ctx.body = {
         code: 200,
@@ -19,6 +22,9 @@ router.post('/test', (ctx) => {
         result: {}
     }
 })
+
+// 获取今天的事件
+router.post('/getDayEvent', userM.auth, eventC.getToDayEvents)
 
 
 module.exports = router
