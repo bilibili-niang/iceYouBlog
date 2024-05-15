@@ -23,6 +23,7 @@
     "better-scroll": "^2.5.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.35",
+    "element-ui": "^2.15.13",
     "highlight.js": "^11.7.0",
     "hover.css": "^2.3.2",
     "less": "^3.9.0",
