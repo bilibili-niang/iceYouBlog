@@ -1,12 +1,12 @@
 {
-  "name": "api",
+  "name": "blogApi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/main.js"
   },
-  "keywords": [],
+  "keywords": ["blog"],
   "author": "",
   "license": "ISC",
   "dependencies": {

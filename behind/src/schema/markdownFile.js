@@ -115,8 +115,8 @@ const markdownFile = seq.define('markdownFile', {
 //同步并创建表,创建完之后可以注释掉了
 //自动创建之后会在该表的后面加上s
 //如果数据库中存在该数据表,则会删除并建立
-/*markdownFile.sync({
+markdownFile.sync({
     // force: 'true'
-})*/
+})
 module.exports = markdownFile
 
