@@ -1,6 +1,4 @@
 const {defineConfig} = require("@vue/cli-service");
-// const webpack = require("webpack");
-//打包配置自动忽略console.log等
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 
@@ -8,10 +6,9 @@ console.log("process.env.NODE_ENV:");
 console.log(process.env.NODE_ENV);
 const env = process.env.NODE_ENV;
 const plugins = env === "development" ? [] : [
-  // 线上环境才会使用的插件
-  //打包环境去掉console.log等
-  /* @author icestone , 17:22
-   * @date 2023/5/15
+  /*
+   * 线上环境才会使用的插件
+   * 打包环境去掉console.log等
    * 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
   */
   new UglifyJsPlugin({
@@ -47,8 +44,8 @@ module.exports = defineConfig({
     proxy: {
       "/": {
         ws: false,
-        target: "http://localhost:89",
-        // target: "http://118.31.70.94:89/",
+        // target: "http://localhost:89",
+        target: "http://118.31.70.94:89/",
         changeOrigin: true,
         pathRewrite: {
           "^/": "/"
