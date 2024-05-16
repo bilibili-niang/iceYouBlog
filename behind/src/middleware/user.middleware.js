@@ -75,9 +75,9 @@ const auth = async (ctx, next) => {
     //authorization是需要前端在传输时设置的
     const token = ctx.request.header.token || ctx.request.header.authorization || ctx.request.body.token || null;
     if (token != null) {
-        ctx.state.user = jwt.decode(token, salt);
+        ctx.state.user = jwt.decode(token, salt)
         if (!ctx.state.user) {
-            ctx.body = tokenNotExist;
+            ctx.body = JsonWebTokenError;
         } else {
             await next();
         }

@@ -69,11 +69,9 @@ class EventsController {
     }
 
     async getToDayEvents(ctx) {
-        const {day} = ctx.request.body;
-        console.log('day')
-        console.log(day)
+        const {day = '2024-05-16'} = ctx.request.body;
 
-        const result = await eventsS.getEventsByDay(day);
+        const result = await eventsS.getEventsByDayAndId(day, ctx.state.user.id);
         if (!result) {
             ctx.body = {
                 code: 200,

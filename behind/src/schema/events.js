@@ -47,10 +47,8 @@ const events = seq.define('markdown_event', {
     deletedAt: 'destroyTime'
 })
 
-/*
 events.sync({
     // force: 'true'
 })
-*/
 
 module.exports = events

@@ -65,7 +65,8 @@ class EventsService {
         });
     }
 
-    async getEventsByDay(dateString) {
+    // 通过日期和用户id获取当天事件
+    async getEventsByDayAndId(dateString, userId = 1) {
         const date = new Date(dateString);
         // 设置日期时间为当天的开始和结束时间
         const startDate = new Date(date.setHours(0, 0, 0, 0)); // 开始时间为当天00:00:00
@@ -78,6 +79,7 @@ class EventsService {
                     updatedAt: {
                         [Op.between]: [startDate, endDate], // Op是Sequelize的操作符，用于构建查询条件
                     },
+                    userId
                 },
             });
 
