@@ -1,0 +1,21 @@
+{
+  "name": "iceyoublog",
+  "version": "1.0.0",
+  "description": "我写着玩的blog项目,基于nodejs和vue3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git",
+      "useEmoji": true
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cz-git": "^1.9.1"
+  }
+}

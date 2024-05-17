@@ -1,0 +1,17 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  cz-git:
+    specifier: ^1.9.1
+    version: 1.9.1
+
+packages:
+
+  /cz-git@1.9.1:
+    resolution: {integrity: sha512-GK3EI5R7GApS8u+g9QPvy/50z0NiG7ijc1NASxZaDnQn0ARzr73MjZb3Lt4cZQvKJBd8GrfvOWqHgwMQQ/OlaA==}
+    engines: {node: '>=v12.20.0'}
+    dev: false
