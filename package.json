@@ -1,11 +1,9 @@
 {
   "name": "iceyoublog",
   "version": "1.0.0",
-  "description": "我写着玩的blog项目,基于nodejs和vue3",
+  "description": "基于nodejs和vue3的博客开发",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "config": {
     "commitizen": {
       "path": "node_modules/cz-git",
