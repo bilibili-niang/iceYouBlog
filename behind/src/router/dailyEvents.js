@@ -26,5 +26,7 @@ router.post('/test', (ctx) => {
 // 获取今天的事件
 router.post('/getDayEvent', userM.auth, eventC.getToDayEvents)
 
+// 删除
+router.post('/deleteEvent', userM.auth, eventC.deleteEvent)
 
 module.exports = router

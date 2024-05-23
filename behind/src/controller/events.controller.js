@@ -15,11 +15,11 @@ class EventsController {
             id
         } = ctx.request.body;
 
-        if (!content || !op) {
-            errType.userParamsError.message = "缺少 content / op 参数";
+        if (!content) {
+            errType.userParamsError.message = "缺少 content  参数";
             ctx.body = errType.userParamsError;
         } else {
-            const result = await eventsS.addEvents(op, {
+            const result = await eventsS.addEvents(id ? 'update' : 'add', {
                 name,
                 description,
                 content,
@@ -47,7 +47,7 @@ class EventsController {
      */
     async getEvents(ctx) {
         const {pageNum = 1, pageSize = 20} = ctx.request.query;
-        const result = await eventsS.getEvents(pageNum, pageSize);
+        const result = await eventsS.getEvents(pageNum, pageSize, ctx.state.user.id);
         ctx.body = {
             code: 200,
             success: true,
@@ -84,6 +84,26 @@ class EventsController {
                 code: 200,
                 success: true,
                 message: "查询events数据",
+                result
+            };
+        }
+    }
+
+    async deleteEvent(ctx) {
+        const {id = '0'} = ctx.request.body;
+        const result = await eventsS.deleteEventsById(id, ctx.state.user.id);
+        if (result === 1) {
+            ctx.body = {
+                code: 200,
+                success: true,
+                message: "删除成功",
+                result
+            };
+        } else {
+            ctx.body = {
+                code: 200,
+                success: false,
+                message: "删除失败",
                 result
             };
         }

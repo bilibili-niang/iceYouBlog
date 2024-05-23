@@ -15,7 +15,7 @@ class EventsService {
             if (!params.id) {
                 return null;
             } else {
-                return await event.update(params, params.id);
+                return await event.update(params, {where: {id: params.id}});
             }
         } else if (op === "delete") {
             if (!params.id) {
@@ -44,12 +44,14 @@ class EventsService {
         }
     }
 
-    async getEvents(pageNum, pageSize) {
+    async getEvents(pageNum, pageSize, userId) {
         const offset = (pageNum - 1) * pageSize;
         return await event.findAndCountAll({
             offset: offset,
             limit: pageSize * 1,
-            where: {},
+            where: {
+                userId
+            },
             order: [
                 // 我们从要排序的模型开始排序数组
                 ["id", "DESC"]
@@ -88,6 +90,16 @@ class EventsService {
             console.error('Error fetching events by day:', error);
             throw error; // 重新抛出错误以便上层可以处理
         }
+    }
+
+    // 通过id和userId删除
+    async deleteEventsById(id, userId) {
+        return await event.destroy({
+            where: {
+                id,
+                userId
+            }
+        });
     }
 }
 

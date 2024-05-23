@@ -1,7 +1,7 @@
 const {defineConfig} = require("@vue/cli-service");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
-const {onlineEnvironment, devBaseUrl} = require("@/config");
+const {onlineEnvironment, devBaseUrl} = require("./src/config");
 
 console.log("process.env.NODE_ENV:");
 console.log(process.env.NODE_ENV);

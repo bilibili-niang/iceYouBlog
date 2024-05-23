@@ -122,10 +122,7 @@ class MarkdownFileService {
 
   // 通过文章数据和token记录用户的浏览记录
   async historyByToken(res, token) {
-    console.error("--------historyByToken--------");
     let verifyToken = jwt.decode(token, salt);
-    console.log("Boolean(verifyToken):");
-    console.log(Boolean(verifyToken));
     if (verifyToken) {
       console.log("写入记录");
       const email = verifyToken.email || null;
