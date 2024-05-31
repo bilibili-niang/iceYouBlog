@@ -51,8 +51,7 @@ module.exports = defineConfig({
                     "^/": "/"
                 }
             }
-        },
-        // proxy: 'http://localhost:8090'
+        }
     },
     configureWebpack: {
         resolve: {
