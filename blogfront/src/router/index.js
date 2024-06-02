@@ -275,9 +275,6 @@ router.beforeEach((to, from, next) => {
         document.title = to.meta.title
     }
 
-    console.log('store._mutations', store._mutations)
-    console.log('to.meta?.showHeader', to.meta?.showHeader)
-
     const config = store.state.styleConfig
     config.showHeader = to.meta?.showHeader === undefined ? true : to.meta?.showHeader
     store._mutations.updateStyleConfig[0](store.state.styleConfig, config)

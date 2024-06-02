@@ -4,11 +4,6 @@
       <template v-slot:show v-if="showHeader">
         <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
         <ice-text>
-          切换颜色:
-          <ice-button :class="{ dark: dark == true }" @click="changeDark"> {{ dark ? "深色" : "明亮" }}
-          </ice-button>
-        </ice-text>
-        <ice-text>
           回到首页:
           <ice-link href="/" target="_self">首页</ice-link>
         </ice-text>

@@ -41,7 +41,6 @@ const store = createStore({
             state.metaInfo = metaInfo
         },
         updateStyleConfig(state, styleConfig) {
-            console.log('修改配置', styleConfig)
             state.styleConfig = styleConfig
         }
     }
