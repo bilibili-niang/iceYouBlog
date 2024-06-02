@@ -1,4 +1,5 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
+import store from "@/store";
 
 const routes = [
     {
@@ -142,6 +143,10 @@ const routes = [
     },
     {
         path: '/new',
+        meta: {
+            title: "新建",
+            showHeader: false
+        },
         children: [
             {
                 path: '/new/',
@@ -265,11 +270,18 @@ const router = createRouter({
  * 设置导航守卫
  */
 router.beforeEach((to, from, next) => {
-    // @date 2023/5/5 , @author icestone
     // 判断是否有标题
     if (to.meta.title) {
         document.title = to.meta.title
     }
+
+    console.log('store._mutations', store._mutations)
+    console.log('to.meta?.showHeader', to.meta?.showHeader)
+
+    const config = store.state.styleConfig
+    config.showHeader = to.meta?.showHeader === undefined ? true : to.meta?.showHeader
+    store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+
     let nextRoute = ['editUser', 'user', 'markdown', 'editMarkdown', 'adminIndex', 'test']
     // 是否是登录中
     let userInfo = JSON.stringify(localStorage.getItem('userInfo'))
