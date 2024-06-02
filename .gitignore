@@ -41,9 +41,7 @@ build/Release
 node_modules/
 jspm_packages/
 # dist/
-upload/
 .idea/
-static/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
