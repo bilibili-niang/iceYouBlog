@@ -124,24 +124,19 @@ class MarkdownFileService {
   async historyByToken(res, token) {
     let verifyToken = jwt.decode(token, salt);
     if (verifyToken) {
-      console.log("写入记录");
       const email = verifyToken.email || null;
       await history.create({
         fileId: res[0].id, email, type: "blog", fileName: res[0].title, description: res[0].description
       })
         .then(res => {
-          // console.log(res)
           console.log("history 写入成功");
         })
         .catch(e => {
-          console.log(e);
           console.log("history 写入失败");
         });
     } else {
       console.log("不写入记录");
-
     }
-
   }
 
   // 通过用户邮箱返回用户的文章:

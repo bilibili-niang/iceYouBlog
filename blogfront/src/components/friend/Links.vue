@@ -38,8 +38,8 @@
 import http from "@/common/api/request";
 import {ElMessage} from "element-plus";
 import {h} from "vue";
-import comment from "@/components/read/Comment.vue";
-import CommentArea from "@/components/read/CommentArea.vue";
+import comment from "@/components/read/Comment/index.vue";
+import CommentArea from "@/components/read/CommentArea/index.vue";
 
 export default {
   name: "links",

@@ -30,7 +30,6 @@ watch(props, (nweProps) => {
   api.getRecommendByTags({tags: nweProps.tags, id: nweProps.id})
       .then(res => {
         markdowns.value = res.result;
-        console.log("res.result.length", res.result.length);
         if (res.result.length === 0) {
           emits("recommendDataChange", true);
         }
@@ -45,7 +44,6 @@ watch(props, (nweProps) => {
 <style scoped lang="less">
 .recommend{
   overflow: hidden;
-  border-radius: .3rem;
 
   .markdown{
     display: flex;
@@ -53,8 +51,6 @@ watch(props, (nweProps) => {
     overflow-y: auto;
     border-radius: .3rem;
     overflow-x: hidden;
-
-
   }
 }
 </style>

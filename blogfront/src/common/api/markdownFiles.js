@@ -62,6 +62,14 @@ export default {
     },
     async getUserAllArticle(params) {
         return post('/markdownFile/getUserArticle', params)
+    },
+    // 新建
+    async createMarkdown(params) {
+        return post('/markdownFile/new', params)
+    },
+    // 获取文章数据
+    async getMarkdown(params) {
+        return post('/markdownFile/getData', params)
     }
 
 }

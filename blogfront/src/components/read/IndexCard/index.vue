@@ -39,7 +39,7 @@
       </ice-column>
       <ice-column>
         <ice-row>
-          <Avatar :imgUrl="userInf.avatar" v-if="userInf.avatar" :email="userInf.email"></Avatar>
+          <Avatar :imgUrl="userInf?.avatar" v-if="userInf?.avatar" :email="userInf.email"></Avatar>
           <ice-column>
             <ice-row>
               <ice-text>发布者:</ice-text>
@@ -60,48 +60,35 @@
   </div>
 </template>
 
-<script>
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
+<script setup>
 import Avatar from "@/components/common/Avatar.vue";
 
-export default {
-  name: "indexCard",
-  components: {
-    MarkdownTags,
-    Avatar
-  },
-  props: {
-    title: {},
-    userInf: {},
-    markdownData: {},
-    showEditBtn: "",
-  },
-  methods: {
-    /* @author icestone , 16:02
-     * @date 2023/5/6
-     * 前往实验性功能的编辑
-    */
-    gotoEditExperiment(id) {
-      const routeUrl = this.$router.resolve({
-        path: "/edit/vMdEditor",
-        query: {id}
-      });
-      window.open(routeUrl.href, "_blank");
-    },
-  }
-};
+const props = defineProps({
+  title: {},
+  userInf: {},
+  markdownData: {},
+  showEditBtn: "",
+})
+const gotoEditExperiment = (id) => {
+  const routeUrl = this.$router.resolve({
+    path: "/edit/vMdEditor",
+    query: {id}
+  });
+  window.open(routeUrl.href, "_blank");
+}
+
 </script>
 
 <style scoped lang="less">
-@media (min-width: 1200px){
-  .userInfoDetail{
+@media (min-width: 1200px) {
+  .userInfoDetail {
     display: flex;
     flex-direction: row;
   }
 }
 
-@media (max-width: 1200px){
-  .userInfoDetail{
+@media (max-width: 1200px) {
+  .userInfoDetail {
     display: flex;
     flex-direction: column;
   }

@@ -18,7 +18,7 @@
 
 <script setup>
 import filters from "@/common/filter/time";
-import fun from "@/hook/function";
+import {fun} from "@/hook/function";
 import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import markdownApi from "@/common/api/markdownFiles";
@@ -28,8 +28,6 @@ import Recommend from "@/components/index/Recommend.vue";
 
 let indexList = ref([]);
 let allCount = ref(0);
-let background = ref(false);
-let value = ref(true);
 let pageSize2 = ref(0);
 const router = useRouter();
 // 跳转阅读

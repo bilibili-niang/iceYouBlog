@@ -28,7 +28,7 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
-import fun from "@/hook/function";
+import {fun} from "@/hook/function";
 
 const props = defineProps(["item"]);
 const router = useRouter();
@@ -47,9 +47,5 @@ let des = ref("");
 onMounted(() => {
   des.value = fun.splice(props.item.description);
 });
-
 </script>
-<style scoped lang="less">
-.header {
-}
-</style>
+

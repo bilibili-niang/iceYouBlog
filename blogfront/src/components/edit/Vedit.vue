@@ -1,5 +1,5 @@
 <template>
-  <div class="vEdit">
+  <div class="vEdit" v-if="closeAble">
     <upload :action="actionUrl" :data="data" @result="getResult"></upload>
     <v-md-editor
         :include-level="[3,4,5]"
@@ -55,6 +55,11 @@
       </div>
     </el-drawer>
   </div>
+  <div v-else>
+    <ice-text>
+      已经创建成功了,请回到首页查看
+    </ice-text>
+  </div>
 </template>
 
 <script setup>
@@ -63,6 +68,7 @@ import {onMounted, ref} from 'vue'
 import upload from '@/components/common/imgUpload.vue'
 import {iceMessage} from 'icepro'
 import http from "@/common/api/request"
+import api from "@/common/api";
 
 const id = ref(0)
 
@@ -81,28 +87,9 @@ const drawer = ref(false);
 const headImgDrawer = ref(false)
 const headImgList = ref([])
 const previewImgList = ref([])
-
-/*
-const toolbar = ref({
-  customToolbar1: {
-    title: '基础工具栏',
-    icon: 'v-md-icon-tip',
-    action(editor) {
-      editor.insert((selected) => {
-        const prefix = '(((';
-        const suffix = ')))';
-        const placeholder = '请输入文本';
-        const content = selected || placeholder;
-
-        return {
-          text: `${prefix}${content}${suffix}`,
-          selected: content,
-        };
-      });
-    },
-  },
-})
-*/
+const data = ref()
+// 是否关闭当前新建页面
+const closeAble = ref(true)
 
 const actionUrl = '/file/markdownImages'
 
@@ -130,8 +117,6 @@ async function selectHeadImg() {
         token: true
       },
     });
-    console.log("res:");
-    console.log(res);
     if (res.success) {
       headImgList.value = res.result;
       previewImgList.value = headImgList.value.map(item => item.url);
@@ -143,8 +128,6 @@ async function selectHeadImg() {
 }
 
 function handleUploadImage(event, insertImage, files) {
-  console.log("files");
-  console.log(files);
   const form = new FormData();
   form.append('file', files);
   insertImage({
@@ -155,71 +138,47 @@ function handleUploadImage(event, insertImage, files) {
 
 const route = useRoute();
 
-async function initMarkdownData() {
-  id.value = route.params?.id || '0';
-  if (id.value !== '0') {
-    try {
-      const res = await http.$axios({
-        url: '/markdownFile/getData',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-        data: {
-          id: id.value
-        }
-      });
-      markdownData.value = res.result;
-    } catch (e) {
-      alertMessage(e);
-    }
+const initMarkdownData = async () => {
+  id.value = Number(route.params?.id) || 0;
+  if (id.value !== 0) {
+    await api.getMarkdown({id: id.value})
+        .then(res => {
+          markdownData.value = res.result;
+        })
   }
 }
 
 async function submit() {
   if (id.value === 0) {
-    try {
-      const res = await http.$axios({
-        url: '/new/markdown',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-        data: markdownData.value
-      });
-      drawer.value = false;
-      if (res.success) {
-        alertMessage(res.message);
-      }
-    } catch (e) {
-      alertMessage(e);
-    }
+    alertMessage('创建文章');
+    api.createMarkdown(markdownData.value)
+        .then(res => {
+          if (res.success) {
+            alertMessage(res.message);
+            drawer.value = false;
+            setTimeout(() => {
+              closeAble.value = !closeAble.value;
+            }, 1500)
+          }
+        })
   } else {
-    try {
-      const res = await http.$axios({
-        url: '/markdownFile/update',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-        data: {
-          markdownData: markdownData.value,
-        }
-      });
-      drawer.value = false;
-      if (res.success) {
-        alertMessage('数据更新', 'success', '#a1c4fd');
-        initMarkdownData(); // 成功后重新加载数据
-      }
-    } catch (e) {
-      alertMessage('保存失败', e);
-    }
+    alertMessage('更新文章');
+    await api.createMarkdown(markdownData.value)
+        .then(res => {
+          if (res.success) {
+            alertMessage('数据更新', 'success', '#a1c4fd');
+            initMarkdownData();
+            drawer.value = false;
+          } else {
+            alertMessage(res.msg)
+          }
+        })
   }
 }
 
 function alertMessage(title, sub) {
   iceMessage({
-    message: title + sub,
+    message: title + (sub ? sub : ''),
     color: 'yinzhu'
   })
 }
