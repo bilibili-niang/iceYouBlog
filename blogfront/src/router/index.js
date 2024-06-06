@@ -263,6 +263,11 @@ const router = createRouter({
     routes
 })
 
+// 隐藏侧边栏的routers
+const hideScrollRouters=[
+    '/edit/vMdEditor'
+]
+
 /**
  * @Description:
  * @author icestone
@@ -274,10 +279,15 @@ router.beforeEach((to, from, next) => {
     if (to.meta.title) {
         document.title = to.meta.title
     }
-
-    const config = store.state.styleConfig
-    config.showHeader = to.meta?.showHeader === undefined ? true : to.meta?.showHeader
-    store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+    if (hideScrollRouters.indexOf(to.path) >= 0) {
+        const config = store.state.styleConfig
+        config.showHeader = false
+        store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+    } else {
+        const config = store.state.styleConfig
+        config.showHeader = true
+        store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+    }
 
     let nextRoute = ['editUser', 'user', 'markdown', 'editMarkdown', 'adminIndex', 'test']
     // 是否是登录中

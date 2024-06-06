@@ -12,15 +12,13 @@
         :before-remove="beforeRemove"
     >
       <el-button>upload</el-button>
-      <template #tip>
-      </template>
     </el-upload>
   </div>
 </template>
 
 <script setup>
-import { ElMessageBox } from 'element-plus'
-import { reactive } from 'vue'
+import {reactive} from 'vue'
+import {fun} from "@/hook/function";
 
 const emit = defineEmits(["result"])
 const success = (res) => {
@@ -32,7 +30,7 @@ const success = (res) => {
 const token = reactive({
   token: JSON.parse(localStorage.getItem('userInfo')) == null ? '' : JSON.parse(localStorage.getItem('userInfo')).token
 })
-const fileList = ( [] )
+const fileList = ([])
 const props = defineProps({
   data: {
     type: Object,
@@ -53,19 +51,14 @@ const handlePreview = (uploadFile) => {
 }
 
 const beforeRemove = (uploadFile, uploadFiles) => {
-  return ElMessageBox.confirm(
-      `Cancel the transfer of ${ uploadFile.name } ?`
-  ).then(
-      () => true,
-      () => false
-  )
+  fun.alert(`Cancel the transfer of ${uploadFile.name} ?`)
 }
 </script>
 
 <style scoped lang="less">
 .upload {
   position: fixed;
-  top: 10px;
+  bottom: 25px;
   left: 10px;
   border-radius: .5rem;
   z-index: 99;

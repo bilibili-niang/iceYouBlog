@@ -36,7 +36,6 @@ import "@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css";
 // 引入全局组件:
 import hljs from "highlight.js";
 
-// @date 2023/5/6 , @author icestone
 // 编辑的组件
 // 第一种:
 VueMarkdownEditor.use(githubTheme, {
@@ -50,7 +49,6 @@ VueMarkdownEditor.use(createLineNumbertPlugin());
 VueMarkdownEditor.use(createCopyCodePlugin());
 
 const app = createApp(App);
-// @date 2023/5/6 , @author icestone
 // 引入v-md-editor编辑组件
 app.use(VueMarkdownEditor);
 app.use(store);

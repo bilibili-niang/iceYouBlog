@@ -2,7 +2,8 @@
   <div class="lim outLim">
     <shrinkBar bac-color="#ffffff" direction="top">
       <template v-slot:show v-if="showHeader">
-        <ice-button>
+        <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
+        <ice-button v-else>
           hover
         </ice-button>
       </template>

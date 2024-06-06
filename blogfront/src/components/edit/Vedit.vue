@@ -2,11 +2,13 @@
   <div class="vEdit" v-if="closeAble">
     <upload :action="actionUrl" :data="data" @result="getResult"></upload>
     <v-md-editor
-        :include-level="[3,4,5]"
+        :include-level="[1,2,3,4,5]"
         @save="drawer = true"
         v-model="markdownData.content"
         :disabled-menus="[]"
         @upload-image="handleUploadImage"
+        :autofocus="true"
+        :toolbar="customToolBar"
     ></v-md-editor>
     <el-drawer v-model="drawer" title="填写关于该文章的其他信息" size="70%" direction="ttb" :with-header="false">
       <ice-row flexWrap>
@@ -82,6 +84,16 @@ const markdownData = ref({
   headImg: ''
 })
 const drawer = ref(false);
+
+const customToolBar = ref({
+  customToolbar: {
+    icon: 'save',
+    title: 'hover时显示的标题',
+    action(editor) {
+      console.log(editor)
+    },
+  },
+})
 
 
 const headImgDrawer = ref(false)
@@ -197,13 +209,13 @@ function alertMessage(title, sub) {
 }
 
 .v-md-editor {
-  min-height: 90vh;
+  min-height: 99vh;
   flex: 1;
 }
 
 //头图
 .demo-image__lazy {
-  height: 90vh;
+  height: 100vh;
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
