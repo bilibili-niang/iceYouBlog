@@ -62,23 +62,23 @@
 
 <script setup>
 import Avatar from "@/components/common/Avatar.vue";
+import { useRouter } from 'vue-router';
 
 const props = defineProps({
-  title: {},
-  userInf: {},
-  markdownData: {},
-  showEditBtn: "",
-})
+  markdownData: Object,
+  showEditBtn: Boolean,
+  userInf: Object,
+});
+
+const router = useRouter();
+
 const gotoEditExperiment = (id) => {
-  const routeUrl = this.$router.resolve({
+  router.push({
     path: "/edit/vMdEditor",
-    query: {id}
+    query: { id },
   });
-  window.open(routeUrl.href, "_blank");
-}
-
+};
 </script>
-
 <style scoped lang="less">
 @media (min-width: 1200px) {
   .userInfoDetail {

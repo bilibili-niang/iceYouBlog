@@ -8,18 +8,8 @@ const verifyParams = (ctx, rules) => {
         if (!value && rules[key].required) {
             return new Error(`缺少必要参数: ${key}`);
         }
-        if (value !== undefined) { // 只有当参数存在时才进行类型检查或其他验证
-            if (rules[key].type === 'string') {
-                if (typeof value !== 'string') {
-                    return new Error(`参数${key}应为string类型`);
-                }
-            } else if (rules[key].type === 'number') {
-                if (typeof value !== 'number') {
-                    return new Error(`参数${key}应为number类型`);
-                }
-            } else {
-                return new Error(`未知的类型检查: ${rules[key].type}`);
-            }
+        if (!value) {
+            return new Error(`参数不存在: ${rules[key].type}`);
         }
     }
 };

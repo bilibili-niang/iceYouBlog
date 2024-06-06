@@ -227,7 +227,7 @@ class UserService {
             },
             raw: true
         });
-        return Boolean(res[0].is_admin);
+        return Boolean(res[0]?.is_admin);
     }
 
     /* @author icestone , 16:50

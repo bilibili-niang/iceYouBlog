@@ -139,11 +139,13 @@ function handleUploadImage(event, insertImage, files) {
 const route = useRoute();
 
 const initMarkdownData = async () => {
-  id.value = Number(route.params?.id) || 0;
+  id.value = Number(route.query?.id) || 0;
   if (id.value !== 0) {
+    alertMessage('获取文章信息')
     await api.getMarkdown({id: id.value})
         .then(res => {
           markdownData.value = res.result;
+          alertMessage('信息加载成功')
         })
   }
 }
@@ -163,10 +165,10 @@ async function submit() {
         })
   } else {
     alertMessage('更新文章');
-    await api.createMarkdown(markdownData.value)
+    await api.updateMarkdown({markdownData: markdownData.value})
         .then(res => {
           if (res.success) {
-            alertMessage('数据更新', 'success', '#a1c4fd');
+            alertMessage('数据更新');
             initMarkdownData();
             drawer.value = false;
           } else {

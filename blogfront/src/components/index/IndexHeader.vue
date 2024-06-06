@@ -2,16 +2,17 @@
   <div class="lim outLim">
     <shrinkBar bac-color="#ffffff" direction="top">
       <template v-slot:show v-if="showHeader">
-        <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
-        <ice-text>
-          回到首页:
-          <ice-link href="/" target="_self">首页</ice-link>
-        </ice-text>
+        <ice-button>
+          hover
+        </ice-button>
       </template>
 
       <template v-slot:body>
         <div class="ice-column">
           <ul class="ice-column">
+            <li class="list-item">
+              <ice-link href="/" target="_self">首页</ice-link>
+            </li>
             <li class="list-item">
               <ice-text>
                 切换颜色:

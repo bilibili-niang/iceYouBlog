@@ -67,6 +67,10 @@ export default {
     async createMarkdown(params) {
         return post('/markdownFile/new', params)
     },
+    // 更新
+    async updateMarkdown(params) {
+        return post('/markdownFile/update', params)
+    },
     // 获取文章数据
     async getMarkdown(params) {
         return post('/markdownFile/getData', params)

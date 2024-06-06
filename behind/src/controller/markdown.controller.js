@@ -62,9 +62,9 @@ const fs = require("fs");
 
 class MarkdownController {
     async newFile(ctx) {
-        const {userEmail} = ctx.state.user
+        const {email} = ctx.state.user
         const requestData = ctx.request.body;
-        const res = await createMarkdownFile(userEmail, requestData);
+        const res = await createMarkdownFile(email, requestData);
         ctx.body = {
             code: 0,
             success: true,

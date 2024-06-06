@@ -48,7 +48,7 @@ router.post('/new', auth,
 //文章的查询
 router.post('/getData', Validator({
     id: {
-        type: 'string',
+        type: 'number',
         required: true
     }
 }), getMarkdownDataById)

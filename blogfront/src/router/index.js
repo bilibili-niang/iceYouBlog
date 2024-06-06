@@ -100,7 +100,7 @@ const routes = [
             {
                 path: '/edit/vMdEditor',
                 name: 'vMdEditor',
-                meta: {title: "编辑文章-v-md-editor"},
+                meta: {title: "编辑文章"},
                 component: () => import('@/components/edit/Vedit.vue')
             },
         ],
