@@ -66,6 +66,9 @@
             <li v-if="userInfo.is_admin" class="list-item">
               <ice-link href="#/admin" target="_self">admin</ice-link>
             </li>
+            <li class="list-item">
+              <ice-link href="#/tools" target="_self">tools!</ice-link>
+            </li>
             <li v-if="userInfo" class="list-item">
               <ice-button @click="out" disabled>out</ice-button>
             </li>

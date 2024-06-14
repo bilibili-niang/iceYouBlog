@@ -232,6 +232,14 @@ const routes = [
         ]
     },
     {
+        path: "/tools",
+        name: 'tools',
+        meta: {
+            title: '工具!',
+        },
+        component: () => import('@/views/tools/index.vue')
+    },
+    {
         path: "/test",
         name: 'test',
         meta: {
