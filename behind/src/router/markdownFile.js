@@ -35,14 +35,23 @@ const router = new Router({prefix: '/markdownFile'})
 router.post('/new', auth,
     //验证信息,是否传入文章名称,文章名称是必填的
     Validator({
-        filename: {
+        title: {
+            type: 'string',
+            required: true
+        },
+        content: {
             type: 'string',
             required: true
         }
     }), newFile)
 
-//文章的新查询
-router.post('/getData', getMarkdownDataById)
+//文章的查询
+router.post('/getData', Validator({
+    id: {
+        type: 'number',
+        required: true
+    }
+}), getMarkdownDataById)
 
 // 文章更新
 router.post('/update', auth, getUpdateResult)

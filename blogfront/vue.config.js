@@ -6,12 +6,8 @@ const {onlineEnvironment, devBaseUrl} = require("./src/config");
 console.log("process.env.NODE_ENV:");
 console.log(process.env.NODE_ENV);
 const env = process.env.NODE_ENV;
+// 正式环境插件
 const plugins = env === "development" ? [] : [
-    /*
-     * 线上环境才会使用的插件
-     * 打包环境去掉console.log等
-     * 下面这个应该在打包时才打开,开发时不要打开,编译消耗很多时间
-    */
     new UglifyJsPlugin({
         uglifyOptions: {
             compress: {
@@ -45,14 +41,14 @@ module.exports = defineConfig({
         proxy: {
             "/": {
                 ws: false,
+                // TEST 开发测试
                 target: env === "development" ? devBaseUrl : onlineEnvironment,
                 changeOrigin: true,
                 pathRewrite: {
                     "^/": "/"
                 }
             }
-        },
-        // proxy: 'http://localhost:8090'
+        }
     },
     configureWebpack: {
         resolve: {

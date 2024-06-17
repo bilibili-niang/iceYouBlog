@@ -1,16 +1,11 @@
-const { ElNotification } = require('element-plus')
-const { h } = require('vue')
+import {iceMessage} from 'icepro'
 
 class Function {
     alert = (msg, title = 'info') => {
-        // iceMessage(msg)
-        ElNotification({
-            title: `${ title }`,
-            message: h('i', { style: 'color: #7a7374' }, `${ msg }`),
-        })
+        iceMessage(msg)
     }
 
-    splice (str, length = 30) {
+    splice(str, length = 30) {
         if (!str) {
             return null
         }
@@ -21,7 +16,7 @@ class Function {
         }
     }
 
-    goTag (tag) {
+    goTag(tag) {
         if (tag) {
             const url = '#/read/readTag?tag1=' + tag
             console.log(url)
@@ -30,4 +25,20 @@ class Function {
 
 }
 
-module.exports = new Function()
+export const alert = (msg, title = 'info') => {
+    iceMessage(msg)
+}
+
+export const fun = {
+    splice(str, length = 30) {
+        if (!str) {
+            return null
+        }
+        if (str.length > length) {
+            return str.substring(0, length) + '...'
+        } else {
+            return str
+        }
+    },
+    alert,
+}

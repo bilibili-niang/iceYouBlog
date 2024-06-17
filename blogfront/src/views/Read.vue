@@ -4,15 +4,15 @@
       文章不存在或已被删除
     </ice-text>
     <!--文章存在-->
-    <ice-row v-if="dataExist">
-      <ice-column :width="hideRecommend ? '100%':'70%' ">
-        <indexCard :showEditBtn="showEditBtn" :title="markdownData.title" :markdownData="markdownData"
+    <ice-column v-if="dataExist">
+      <ice-column width="100%">
+        <IndexCard :showEditBtn="showEditBtn" :title="markdownData?.title||'title'" :markdownData="markdownData"
                    :userInf="userInf">
           <ice-text>当前字数:{{ wordCount }}</ice-text>
-        </indexCard>
+        </IndexCard>
         <div class="articleCon">
           <v-md-editor :include-level="[3, 4]" v-model="markdownData.content" mode="preview"
-                       @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
+                       @copy-code-success="handleCopyCodeSuccess"/>
         </div>
 
         <ice-row class="m-t-l">
@@ -26,169 +26,120 @@
           </ice-row>
         </ice-row>
 
-        <comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
-                 type="blog"></comment>
+        <Comment @refreshComments="refresh" :user="commentUser" :id="markdownData.id" :title="markdownData.title"
+                 type="blog"></Comment>
         <ice-text>评论区</ice-text>
-        <CommentArea :id="markdownData.id" :refresh="refreshFlag"></CommentArea>
+        <CommentArea :id="markdownData.id" :refresh="refreshFlag"/>
       </ice-column>
-
-      <ice-column width="30%" v-if="!hideRecommend">
+      <ice-column width="100%" v-if="!hideRecommend">
         <!--推荐-->
-        <Recommend v-if="dataExist" :id="id" :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]"
-                   @recommendDataChange="dataChangeHandler"/>
+        <Recommend
+            v-if="dataExist"
+            :id="id"
+            :tags="[markdownData.tag1, markdownData.tag2, markdownData.tag3]"
+            @recommendDataChange="dataChangeHandler"/>
       </ice-column>
-
-    </ice-row>
+    </ice-column>
   </ice-column>
 </template>
 
-<script>
-import http from "../common/api/request";
-import filters from "../common/filter/time";
-import MarkdownTags from "@/components/common/MarkdownTags.vue";
-import IndexCard from "@/components/read/IndexCard.vue";
-import comment from "@/components/read/Comment.vue";
-import CommentArea from "@/components/read/CommentArea.vue";
-import Recommend from "@/components/read/Recommend.vue";
-import filter from "@/common/filter/filter";
-import fun from "@/hook/function";
+<script setup>
+import {ref} from "vue";
+import {useRoute} from "vue-router";
+import api from "@/common/api";
+import {alert} from "@/hook/function";
+import filters from "@/common/filter/time";
+import IndexCard from "@/components/read/IndexCard";
+import Comment from '@/components/read/Comment'
+import Recommend from '@/components/read/Recommend.vue'
 
-export default {
-  name: "Read",
-  methods: {
-    dataChangeHandler(flag) {
-      console.log("flag", flag);
-      this.hideRecommend = flag;
-    },
-    refresh(val) {
-      // 评论发表成功
-      if (val) {
-        this.refreshFlag = !this.refreshFlag;
-      }
-    },
-    handleCopyCodeSuccess(code) {
-      fun.alert("复制成功");
-    },
-    /* @author icestone , 16:02
-     * @date 2023/5/6
-     * 前往实验性功能的编辑
-    */
-    gotoEditExperiment(id) {
-      const routeUrl = this.$router.resolve({
-        path: "/edit/vMdEditor",
-        query: {id}
-      });
-      window.open(routeUrl.href, "_blank");
-    },
-    showEdit() {
-      const email = JSON.parse(localStorage.getItem("userInfo")) || "";
-      if (!Boolean(email)) {
-        // 没有email时
-      } else {
-        if (email.email == this.userInf.email) {
-          this.showEditBtn = true;
-        }
-      }
-    },
-    timeFormat(data) {
-      this.markdownData.createdAt = filters.timeFormat(this.markdownData.createdAt);
-    },
-    // 通过id获取初始化数据
-    initMarkdownData() {
-      this.id = this.$route.query.id || "0";
-      http.$axios({
-        url: "/markdownFile/getData",
-        method: "POST",
-        headers: {
-          token: true
-        },
-        data: {
-          id: this.id,
+const markdownData = ref({})
+const userInf = ref({})
+const dataExist = ref(true)
+const article = ref('')
+const showEditBtn = ref(false)
+const id = ref('')
+const commentUser = ref({
+  name: "",
+  url: "",
+})
+const refreshFlag = ref(true)
+const wordCount = ref('')
+const hideRecommend = ref(false)
+const route = useRoute();
+
+const timeFormat = () => {
+  markdownData.value.createdAt = filters.timeFormat(markdownData.value.createdAt);
+}
+
+const init = () => {
+  id.value = route.query.id || 0;
+  if (id.value === 0) {
+    return void 0;
+  }
+  api.getMarkdown({id: id.value})
+      .then(res => {
+        if (res.success) {
+          dataExist.value = true;
+          const flag = JSON.stringify(res.result).length < 3 ? false : true;
+
+          if (flag) {
+            // 即将渲染的文章数据
+            markdownData.value = res.result;
+            timeFormat();
+            const content = res.result.content || "null";
+            if (content.length > 10) {
+              // 文章数据存在时渲染
+              article.value = res.result.content;
+            }
+            userInf.value = res.userInf;
+            timeFormat();
+            alert("load success");
+            showEdit();
+          } else {
+            // 失败
+            dataExist.value = false;
+            alert("加载不出来了", "文章不存在或需要从原来的博客网站爬取,可以试试刷新");
+          }
         }
       })
-          .then(
-              res => {
-                // 不成功
-                if (!res.success) {
-                  this.dataExist = !this.dataExist;
-                  fun.alert("加载不出来了", "你达到了不存在的领域");
-                } else {
-                  this.dataExist = true;
-                  const flag = JSON.stringify(res.result).length < 3 ? false : true;
-                  if (flag) {
-                    // 即将渲染的文章数据
-                    this.markdownData = res.result;
-                    this.timeFormat();
-                    const content = res.result.content || "null";
-                    if (content.length > 10) {
-                      // 文章数据存在时渲染
-                      this.article = res.result.content;
-                    }
-                    this.userInf = res.userInf;
-                    this.timeFormat();
-                    fun.alert("load success", "success", "#a1c4fd");
-                    this.showEdit();
-                  } else {
-                    // 失败
-                    this.dataExist = false;
-                    fun.alert("加载不出来了", "文章不存在或需要从原来的博客网站爬取,可以试试刷新");
-                  }
-                  // 统计字数
-                  this.wordCount = filter.wordCount(this.markdownData.content);
-                }
-              }
-          )
-          .catch(e => {
-            fun.alert(e);
-          });
-    },
-  },
-  components: {
-    Recommend,
-    CommentArea,
-    IndexCard,
-    MarkdownTags,
-    comment
-  },
-  data() {
-    return {
-      markdownData: {},
-      userInf: {},
-      dataExist: true,
-      article: "",
-      showArticle: "",
-      loginEdEmail: "",
-      showEditBtn: false,
-      id: "",
-      commentUser: {
-        name: "",
-        url: "",
-      },
-      refreshFlag: true,
-      activeName: "2",
-      editForm: {
-        uuid: null,
-        parName: "",
-        phoneNum: "",
-        idNum: "",
-        parAddress: "",
-        parCategory: 0
-      },
-      wordCount: "",
-      //是否隐藏
-      hideRecommend: false
-    };
-  },
-  created() {
-    this.initMarkdownData();
-  },
-};
+}
+
+const handleCopyCodeSuccess = (code) => {
+  alert("复制成功");
+}
+const dataChangeHandler = (flag) => {
+  hideRecommend.value = flag;
+}
+
+function refresh(val) {
+  // 评论发表成功
+  if (val) {
+    refreshFlag.value = !refreshFlag.value;
+  }
+}
+
+function showEdit() {
+  const email = JSON.parse(localStorage.getItem("userInfo")) || "";
+  if (!Boolean(email)) {
+    // 没有email时
+  } else {
+    console.log('email.email',email.email)
+    console.log('userInf.value.email',userInf.value.email)
+    if (email.email == userInf.value.email) {
+      showEditBtn.value = true;
+    }
+  }
+}
+
+
+init()
 </script>
 
 <style scoped lang="less">
 @marginTop: 1rem;
 
-.read{
+.read {
   padding-bottom: 10rem;
   display: flex;
   justify-content: flex-start;
@@ -198,7 +149,7 @@ export default {
   min-height: 90vh;
   align-items: center;
 
-  .imgLim{
+  .imgLim {
     z-index: -10;
     height: 100vh;
     overflow: hidden;
@@ -214,12 +165,12 @@ export default {
     filter: blur(1.5rem);
   }
 
-  .contentLim{
+  .contentLim {
     display: flex;
     max-width: 100%;
     width: 100%;
 
-    .otherOperates{
+    .otherOperates {
       display: flex;
       width: 25%;
       margin-top: @marginTop;
@@ -227,45 +178,45 @@ export default {
   }
 
   // 小屏
-  @media screen and (max-width: 1200px){
-    .contentLim{
+  @media screen and (max-width: 1200px) {
+    .contentLim {
       flex-direction: column;
     }
 
-    .dataContainerLim{
+    .dataContainerLim {
       width: 100% !important;
       max-width: 100% !important;
       flex: 1 !important;
     }
 
-    .right{
+    .right {
       display: none;
     }
 
-    &{
+    & {
       padding-left: 0.3rem;
       padding-right: 0.3rem;
       box-sizing: border-box;
 
-      .card-body{
+      .card-body {
         padding: 0;
 
-        .ownerDes{
+        .ownerDes {
           margin-left: 0 !important;
         }
       }
 
-      .card{
-        .card-body{
-          .ownerDes{
-            .dataAndViews{
+      .card {
+        .card-body {
+          .ownerDes {
+            .dataAndViews {
               flex-direction: column !important;
 
             }
           }
         }
 
-        .ownerDes{
+        .ownerDes {
           width: 100%;
         }
       }
@@ -273,55 +224,51 @@ export default {
   }
 
   // 大屏
-  @media screen and (min-width: 1200px){
-    .contentLim{
+  @media screen and (min-width: 1200px) {
+    .contentLim {
 
-      .ice-row{
+      .ice-row {
         width: 100%;
       }
     }
   }
 
-  .dataContainer{
+  .dataContainer {
     margin-top: @marginTop;
     display: flex;
     width: 100%;
     flex-direction: column;
 
-    .articleCon{
+    .articleCon {
       display: flex;
       width: 100%;
       flex-direction: column;
       margin-top: .3rem;
       z-index: 3;
       border-radius: 0.5rem;
-
-      :deep .github-markdown-body{
-        padding: 0.3rem;
-      }
     }
   }
 
-  .right{
+  .right {
     margin-top: @marginTop;
     overflow: hidden;
   }
 
-  .ice-collapse{
+  .ice-collapse {
     width: 100%;
     border-radius: .3rem;
     overflow: hidden;
 
     /deep/ .ice-collapse-item__header,
-    .ice-collapse-item__wrap{
+    .ice-collapse-item__wrap {
       padding-left: .5rem;
 
-      .ice-collapse-item__content{
+      .ice-collapse-item__content {
         padding: .3rem;
       }
     }
 
-    .ice-row{
+    .ice-row {
       align-items: center;
       margin-bottom: .3rem;
     }

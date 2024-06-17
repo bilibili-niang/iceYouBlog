@@ -62,12 +62,9 @@ const fs = require("fs");
 
 class MarkdownController {
     async newFile(ctx) {
-        const {authorization} = ctx.request.header;
-        const token = authorization.replace("Bearer ", "");
-        //解析token
-        const {userEmail} = jwt.verify(token, JWT_SECRET);
+        const {email} = ctx.state.user
         const requestData = ctx.request.body;
-        const res = await createMarkdownFile(userEmail, requestData);
+        const res = await createMarkdownFile(email, requestData);
         ctx.body = {
             code: 0,
             success: true,
@@ -105,10 +102,8 @@ class MarkdownController {
             // token存在,写入历史记录
             if (token) {
                 historyByToken(res, token);
-            } else {
             }
             const ownerEmail = res[0].email || "";
-            const userInf = await getUserInfoByEmail(ownerEmail, ["email", "username", "is_admin", "avatar", "occupation", "githubUrl", "word", "updatedAt"]);
             if (res[0].url) {
                 if (!res[0].content) {
                     let config = {
@@ -145,31 +140,39 @@ class MarkdownController {
                         raw: true,
                         where: {id}
                     });
-                    ctx.body = {
-                        code: 200,
-                        message: "查询首页数据",
-                        success: true,
-                        result: res2[0],
-                        userInf: userInf
-                    };
+                    await getUserInfoByEmail(ownerEmail, ["email", "username", "is_admin", "avatar", "occupation", "githubUrl", "word", "updatedAt"])
+                        .then(userInf => {
+                            ctx.body = {
+                                code: 200,
+                                message: "查询首页数据",
+                                success: true,
+                                result: res2[0],
+                                userInf
+                            }
+                        })
                 } else {
-                    // 获取文章创建者的avatar,occupation(职业)
-                    ctx.body = {
-                        code: 200,
-                        message: "查询首页数据",
-                        success: true,
-                        result: res[0],
-                        userInf
-                    };
+                    await getUserInfoByEmail(ownerEmail, ["email", "username", "is_admin", "avatar", "occupation", "githubUrl", "word", "updatedAt"])
+                        .then(userInf => {
+                            ctx.body = {
+                                code: 200,
+                                message: "查询首页数据",
+                                success: true,
+                                result: res[0],
+                                userInf
+                            }
+                        })
                 }
             } else {
-                ctx.body = {
-                    code: 200,
-                    message: "查询单个文章数据",
-                    success: true,
-                    result: res[0],
-                    userInf
-                };
+                await getUserInfoByEmail(ownerEmail, ["email", "username", "is_admin", "avatar", "occupation", "githubUrl", "word", "updatedAt"])
+                    .then(userInf => {
+                        ctx.body = {
+                            code: 200,
+                            message: "查询单个文章数据",
+                            success: true,
+                            result: res[0],
+                            userInf
+                        }
+                    })
             }
         }
     };

@@ -1,27 +1,26 @@
 <template>
   <div class="lim outLim">
-
-
     <shrinkBar bac-color="#ffffff" direction="top">
-      <template v-slot:show>
+      <template v-slot:show v-if="showHeader">
         <ice-avatar :src="userInf?.avatar" v-if="userInf?.avatar"></ice-avatar>
-        <ice-text>
-          切换颜色:
-          <ice-button :class="{ dark: dark == true }" @click="changeDark"> {{
-              dark ? "深色" : "明亮"
-            }}
-          </ice-button>
-        </ice-text>
-        <ice-text>
-          回到首页:
-
-              <ice-link href="/" target="_self">首页</ice-link>
-        </ice-text>
+        <ice-button v-else>
+          hover
+        </ice-button>
       </template>
 
       <template v-slot:body>
         <div class="ice-column">
           <ul class="ice-column">
+            <li class="list-item">
+              <ice-link href="/" target="_self">首页</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-text>
+                切换颜色:
+                <ice-button :class="{ dark: dark == true }" @click="changeDark"> {{ dark ? "深色" : "明亮" }}
+                </ice-button>
+              </ice-text>
+            </li>
             <li v-if="!loginState" class="list-item">
               <ice-link href="#/login" target="_blank">登录</ice-link>
             </li>
@@ -66,6 +65,9 @@
             </li>
             <li v-if="userInfo.is_admin" class="list-item">
               <ice-link href="#/admin" target="_self">admin</ice-link>
+            </li>
+            <li class="list-item">
+              <ice-link href="#/tools" target="_self">tools!</ice-link>
             </li>
             <li v-if="userInfo" class="list-item">
               <ice-button @click="out" disabled>out</ice-button>
@@ -144,7 +146,7 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import Search from "@/components/common/Search.vue";
 
@@ -160,6 +162,11 @@ const out = () => {
   // 刷新
   window.location.reload();
 };
+
+// 是否展示侧边栏
+const showHeader = computed(() => {
+  return store.state.styleConfig.showHeader
+})
 
 // 深色模式
 const changeDark = () => {

@@ -34,8 +34,8 @@ const history = seq.define('markdown_history', {
     }
 })
 
-/*history.sync({
+history.sync({
     // force: 'true'
-})*/
+})
 
 module.exports = history

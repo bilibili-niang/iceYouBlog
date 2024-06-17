@@ -1,37 +1,42 @@
 <template>
-  <div class="vEdit">
-    <upload :action="action" :data="data" @result="getResult"></upload>
+  <div class="vEdit" v-if="closeAble">
+    <upload :action="actionUrl" :data="data" @result="getResult"></upload>
     <v-md-editor
-        :include-level="[3,4,5]"
+        :include-level="[1,2,3,4,5]"
         @save="drawer = true"
         v-model="markdownData.content"
         :disabled-menus="[]"
         @upload-image="handleUploadImage"
+        :autofocus="true"
+        :toolbar="customToolBar"
     ></v-md-editor>
     <el-drawer v-model="drawer" title="填写关于该文章的其他信息" size="70%" direction="ttb" :with-header="false">
-      <el-form>
-        <el-form-item label="文章标题" label-width="100px">
-          <el-input v-model="markdownData.title" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="文章描述" label-width="100px">
-          <el-input v-model="markdownData.description" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="文章tag1" label-width="100px">
-          <el-input v-model="markdownData.tag1" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="文章tag2" label-width="100px">
-          <el-input v-model="markdownData.tag2" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="文章tag3" label-width="100px">
-          <el-input v-model="markdownData.tag3" autocomplete="off"/>
-        </el-form-item>
-        <el-form-item label="headImg" label-width="100px">
-          <el-input v-model="markdownData.headImg" autocomplete="off"/>
-          <el-button @click="selectHeadImg">选择图片</el-button>
-        </el-form-item>
-      </el-form>
-      <el-button @click="drawer = false">再想想</el-button>
-      <el-button @click="submit">提交</el-button>
+      <ice-row flexWrap>
+        <ice-row width="fit-content">
+          <ice-text>
+            文章标题
+          </ice-text>
+          <ice-input v-model="markdownData.title"/>
+        </ice-row>
+        <ice-row width="fit-content">
+          <ice-text>文章描述</ice-text>
+          <ice-input v-model="markdownData.description"/>
+        </ice-row>
+        <ice-row width="fit-content">
+          <ice-text>文章tag1</ice-text>
+          <ice-input v-model="markdownData.tag1"/>
+        </ice-row>
+        <ice-row width="fit-content">
+          <ice-text>文章tag2</ice-text>
+          <ice-input v-model="markdownData.tag2"/>
+        </ice-row>
+        <ice-row width="fit-content">
+          <ice-text>文章tag3</ice-text>
+          <ice-input v-model="markdownData.tag3"/>
+        </ice-row>
+      </ice-row>
+      <ice-button @click="drawer = false">再想想</ice-button>
+      <ice-button @click="submit">提交</ice-button>
     </el-drawer>
 
     <el-drawer v-model="headImgDrawer" title="选择你的头图" size="90%" direction="ttb" :with-header="false">
@@ -52,214 +57,144 @@
       </div>
     </el-drawer>
   </div>
+  <div v-else>
+    <ice-text>
+      已经创建成功了,请回到首页查看
+    </ice-text>
+  </div>
 </template>
 
-<script>
-import http from "@/common/api/request"
-import { ElMessage } from "element-plus"
-import { h } from "vue"
+<script setup>
+import {useRoute} from "vue-router";
+import {onMounted, ref} from 'vue'
 import upload from '@/components/common/imgUpload.vue'
+import {iceMessage} from 'icepro'
+import http from "@/common/api/request"
+import api from "@/common/api";
 
-export default {
-  name: "Vedit",
-  created () {
-    this.initMarkdownData()
+const id = ref(0)
+
+const markdownData = ref({
+  content: `> hello world!\ntype you first line code\n`,
+  title: '请输入你的标题',
+  description: '这是我新建的文章',
+  tag1: '',
+  tag2: '',
+  tag3: '',
+  headImg: ''
+})
+const drawer = ref(false);
+
+const customToolBar = ref({
+  customToolbar: {
+    icon: 'save',
+    title: 'hover时显示的标题',
+    action(editor) {
+      console.log(editor)
+    },
   },
-  components: { upload },
-  data () {
-    return {
-      id: 0,
-      markdownData: {
-        content: `> hello world!
-          type you first line code
-          `,
-        title: '请输入你的标题',
-        description: '这是我新建的文章',
-        tag1: '',
-        tag2: '',
-        tag3: '',
-        headImg: ''
-      },
-      drawer: false,
-      // 头图的框
-      headImgDrawer: false,
-      headImgList: [],
-      previewImgList: [],
-      toolbar: {
-        customToolbar1: {
-          title: '基础工具栏',
-          icon: 'v-md-icon-tip',
-          action (editor) {
-            editor.insert(function (selected) {
-              const prefix = '((('
-              const suffix = ')))'
-              const placeholder = '请输入文本'
-              const content = selected || placeholder
-
-              return {
-                text: `${ prefix }${ content }${ suffix }`,
-                selected: content,
-              }
-            })
-          },
-        },
-      },
-      action: '/file/markdownImages',
-      data: {
-        markdownId: this.id
-      }
-    }
-  },
-  methods: {
-    // 监听图片上传返回数据
-    getResult (res) {
-      console.log('成功返回的值:')
-      console.log(res)
-      if (res) {
-        this.markdownData.content = this.markdownData.content + `![](/${ res.filePath })`
-      }
-    },
-    // 监听图片的点击
-    setHeadImg (url) {
-      this.markdownData.headImg = url
-    },
-    selectHeadImg () {
-      this.headImgDrawer = true
-      //   获取头图
-      http.$axios({
-        url: '/user/headImg',
-        method: 'POST',
-        headers: {
-          token: true
-        },
-      })
-          .then(res => {
-            console.log("res:")
-            console.log(res)
-            if (res.success) {
-              this.headImgList = res.result
-              this.previewImgList = this.headImgList.map(item => {
-                return item.url
-              })
-
-            } else {
-            }
-          })
-          .catch(e => {
-            console.log("e:")
-            console.log(e)
-          })
+})
 
 
-    },
-    /* @author icestone , 14:49
-    * @date 2023/5/11
-    * 上传图片
-   */
-    handleUploadImage (event, insertImage, files) {
-      // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
-      console.log("files")
-      console.log(files)
-      let form = new FormData()
-      form.append('file', files)
-      // 回显
-      insertImage({
-        url: '/images/2.png',
-        desc: '回显图片名称',
-        // width: 'auto',
-        // height: 'auto',
-      })
-    },
-    /* @author icestone , 16:05
-     * @date 2023/5/6
-     * 通过id获取初始化数据
-    */
-    initMarkdownData () {
-      this.id = this.$route.query.id || '0'
-      // @date 2023/5/8 , @author icestone
-      // 没有传入id,为新建文章
-      if (this.id === 0) {
+const headImgDrawer = ref(false)
+const headImgList = ref([])
+const previewImgList = ref([])
+const data = ref()
+// 是否关闭当前新建页面
+const closeAble = ref(true)
 
-      } else {
-        // @date 2023/5/8 , @author icestone
-        // 修改,则请求文章数据
-        http.$axios({
-          url: '/markdownFile/getData',
-          method: 'POST',
-          headers: {
-            token: true
-          },
-          data: {
-            id: this.id
-          }
-        })
-            .then(res => {
-              this.markdownData = res.result
-            })
-            .catch(e => {
-              this.alertMessage(e)
-            })
-      }
+const actionUrl = '/file/markdownImages'
 
-    },
-    // @date 2023/5/6 , @author icestone
-    // 点击确认提交后执行
-    submit () {
-      if (this.id == 0) {
-        // @date 2023/5/8 , @author icestone
-        // 新建文章
-        http.$axios({
-          url: '/new/markdown',
-          method: 'POST',
-          headers: {
-            token: true
-          },
-          data: this.markdownData
-        })
-            .then(res => {
-              this.drawer = false
-              if (res.success) {
-                this.alertMessage(res.message)
-              }
-            })
-            .catch(e => {
-              this.alertMessage(e)
-            })
+onMounted(() => {
+  initMarkdownData();
+});
 
-      } else {
-        http.$axios({
-          url: '/markdownFile/update',
-          method: 'POST',
-          headers: {
-            token: true
-          },
-          data: {
-            markdownData: this.markdownData,
-          }
-        })
-            .then(res => {
-              this.drawer = false
-              if (res.success) {
-                this.alertMessage('数据更新', 'success', '#a1c4fd')
-                // 成功,再次请求下数据
-                this.initMarkdownData()
-              }
-            })
-            .catch(e => {
-              this.alertMessage('保存失败', e)
-            })
-      }
-    },
-    alertMessage (title, sub, color) {
-      const useColor = color || 'red'
-      ElMessage({
-        message: h('p', null, [
-          h('span', null, title),
-          h('i', { style: `color: ${ useColor }` }, sub),
-        ]),
-      })
-    },
+function getResult(res) {
+  if (res) {
+    markdownData.value.content += `[](/${res.filePath})`;
   }
+}
+
+function setHeadImg(url) {
+  markdownData.value.headImg = url;
+}
+
+async function selectHeadImg() {
+  headImgDrawer.value = true;
+  try {
+    const res = await http.$axios({
+      url: '/user/headImg',
+      method: 'POST',
+      headers: {
+        token: true
+      },
+    });
+    if (res.success) {
+      headImgList.value = res.result;
+      previewImgList.value = headImgList.value.map(item => item.url);
+    }
+  } catch (e) {
+    console.error("e:");
+    console.error(e);
+  }
+}
+
+function handleUploadImage(event, insertImage, files) {
+  const form = new FormData();
+  form.append('file', files);
+  insertImage({
+    url: '/images/2.png',
+    desc: '回显图片名称',
+  });
+}
+
+const route = useRoute();
+
+const initMarkdownData = async () => {
+  id.value = Number(route.query?.id) || 0;
+  if (id.value !== 0) {
+    alertMessage('获取文章信息')
+    await api.getMarkdown({id: id.value})
+        .then(res => {
+          markdownData.value = res.result;
+          alertMessage('信息加载成功')
+        })
+  }
+}
+
+async function submit() {
+  if (id.value === 0) {
+    alertMessage('创建文章');
+    api.createMarkdown(markdownData.value)
+        .then(res => {
+          if (res.success) {
+            alertMessage(res.message);
+            drawer.value = false;
+            setTimeout(() => {
+              closeAble.value = !closeAble.value;
+            }, 1500)
+          }
+        })
+  } else {
+    alertMessage('更新文章');
+    await api.updateMarkdown({markdownData: markdownData.value})
+        .then(res => {
+          if (res.success) {
+            alertMessage('数据更新');
+            initMarkdownData();
+            drawer.value = false;
+          } else {
+            alertMessage(res.msg)
+          }
+        })
+  }
+}
+
+function alertMessage(title, sub) {
+  iceMessage({
+    message: title + (sub ? sub : ''),
+    color: 'yinzhu'
+  })
 }
 </script>
 
@@ -274,13 +209,13 @@ export default {
 }
 
 .v-md-editor {
-  min-height: 90vh;
+  min-height: 99vh;
   flex: 1;
 }
 
 //头图
 .demo-image__lazy {
-  height: 90vh;
+  height: 100vh;
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;

@@ -1,4 +1,5 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
+import store from "@/store";
 
 const routes = [
     {
@@ -99,7 +100,7 @@ const routes = [
             {
                 path: '/edit/vMdEditor',
                 name: 'vMdEditor',
-                meta: {title: "编辑文章-v-md-editor"},
+                meta: {title: "编辑文章"},
                 component: () => import('@/components/edit/Vedit.vue')
             },
         ],
@@ -142,6 +143,10 @@ const routes = [
     },
     {
         path: '/new',
+        meta: {
+            title: "新建",
+            showHeader: false
+        },
         children: [
             {
                 path: '/new/',
@@ -227,6 +232,14 @@ const routes = [
         ]
     },
     {
+        path: "/tools",
+        name: 'tools',
+        meta: {
+            title: '工具!',
+        },
+        component: () => import('@/views/tools/index.vue')
+    },
+    {
         path: "/test",
         name: 'test',
         meta: {
@@ -258,6 +271,11 @@ const router = createRouter({
     routes
 })
 
+// 隐藏侧边栏的routers
+const hideScrollRouters=[
+    '/edit/vMdEditor'
+]
+
 /**
  * @Description:
  * @author icestone
@@ -265,11 +283,20 @@ const router = createRouter({
  * 设置导航守卫
  */
 router.beforeEach((to, from, next) => {
-    // @date 2023/5/5 , @author icestone
     // 判断是否有标题
     if (to.meta.title) {
         document.title = to.meta.title
     }
+    if (hideScrollRouters.indexOf(to.path) >= 0) {
+        const config = store.state.styleConfig
+        config.showHeader = false
+        store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+    } else {
+        const config = store.state.styleConfig
+        config.showHeader = true
+        store._mutations.updateStyleConfig[0](store.state.styleConfig, config)
+    }
+
     let nextRoute = ['editUser', 'user', 'markdown', 'editMarkdown', 'adminIndex', 'test']
     // 是否是登录中
     let userInfo = JSON.stringify(localStorage.getItem('userInfo'))

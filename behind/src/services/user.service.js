@@ -122,13 +122,15 @@ class UserService {
 
     // 通过email查找用户信息:
     async getUserInfoByEmail(email, attrs = ["avatar"]) {
-        // const res = await user.findAll({
-        return await user.findAll({
+        const res = await user.findAll({
             attributes: attrs,
             where: {
                 email
             }, raw: true
         });
+        console.log('作者信息:', email)
+        console.log(res)
+        return res
     }
 
     // 更新用户token:
@@ -225,7 +227,7 @@ class UserService {
             },
             raw: true
         });
-        return Boolean(res[0].is_admin);
+        return Boolean(res[0]?.is_admin);
     }
 
     /* @author icestone , 16:50

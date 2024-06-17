@@ -53,28 +53,19 @@ export default {
     },
     // 点击后跳转详情
     goToRead(id) {
-      const routeUrl = this.$router.resolve({
-        path: "/code/detail",
-        query: {id}
-      });
-      window.open(routeUrl.href, "_blank");
+      this.$router.push({path: "/code/detail", query: {id}});
     },
   },
   watch: {
     item(newVal) {
-      // @date 2023/5/5 , @author icestone
-      // 分页数据更改时数据会更改,再次格式化时间
       this.item.createdAt = timeFormat.timeFormat(newVal.createdAt) || "";
     }
   },
   created() {
-    // @date 2023/5/5 , @author icestone
-    // 第一次创建子组件并接收到值时需要格式化下时间
     this.item.createdAt = timeFormat.timeFormat(this.item.createdAt) || "";
   }
 };
 </script>
 
-<style scoped lang="less">
-
-</style>
+<!--<script setup>
+</script>-->
