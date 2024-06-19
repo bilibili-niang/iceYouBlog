@@ -57,10 +57,6 @@ const beforeRemove = (uploadFile, uploadFiles) => {
 
 <style scoped lang="less">
 .upload {
-  position: fixed;
-  bottom: 25px;
-  left: 10px;
   border-radius: .5rem;
-  z-index: 99;
 }
 </style>

@@ -1,6 +1,33 @@
 <template>
-  <div class="vEdit" v-if="closeAble">
-    <upload :action="actionUrl" :data="data" @result="getResult"></upload>
+  <div class="articleEdit" v-if="closeAble">
+    <ice-row flexWrap class="article-info-container">
+      <ice-row width="fit-content">
+        <ice-text>
+          文章标题
+        </ice-text>
+        <ice-input v-model="markdownData.title"/>
+      </ice-row>
+      <ice-row width="fit-content">
+        <ice-text>文章描述</ice-text>
+        <ice-input v-model="markdownData.description"/>
+      </ice-row>
+      <ice-row width="fit-content">
+        <ice-text>文章tag1</ice-text>
+        <ice-input v-model="markdownData.tag1"/>
+      </ice-row>
+      <ice-row width="fit-content">
+        <ice-text>文章tag2</ice-text>
+        <ice-input v-model="markdownData.tag2"/>
+      </ice-row>
+      <ice-row width="fit-content">
+        <ice-text>文章tag3</ice-text>
+        <ice-input v-model="markdownData.tag3"/>
+      </ice-row>
+      <ice-button @click="drawer = false">再想想</ice-button>
+      <ice-button @click="submit">提交</ice-button>
+      <ice-button @click="selectHeadImg">选择头图</ice-button>
+      <upload :action="actionUrl" :data="data" @result="getResult"></upload>
+    </ice-row>
     <v-md-editor
         :include-level="[1,2,3,4,5]"
         @save="drawer = true"
@@ -199,7 +226,13 @@ function alertMessage(title, sub) {
 </script>
 
 <style scoped lang="less">
-.vEdit {
+.article-info-container {
+  margin: @m-large 0;
+}
+
+.articleEdit {
+  width: 65vw;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 

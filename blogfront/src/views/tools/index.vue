@@ -9,8 +9,15 @@
     <ice-row class="textContainer">
       <textarea class="textarea" v-model="data"></textarea>
       <div class="result">
-        <!--        <pre v-if="parsedData">{{ // tsInterface }}</pre>-->
-        <pre v-if="parsedData">{{ parsedData }}</pre>
+        <!--<pre v-if="parsedData">{{ // tsInterface }}</pre>-->
+        <!--<pre v-if="parsedData">{{ parsedData }}</pre>-->
+
+        <v-md-editor
+            v-if="parsedData"
+            :include-level="[1,2,3,4,5]"
+            v-model="parsedData"
+            mode="preview"
+            @copy-code-success="handleCopyCodeSuccess"/>
         <div v-else>请解析数据以查看TypeScript接口</div>
       </div>
     </ice-row>
@@ -19,7 +26,8 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue'
+import {ref} from 'vue'
+import {alert} from "@/hook/function";
 
 const data = ref(`{
   "id": "1801526079629627393",
@@ -111,6 +119,9 @@ function jsonToTs(object, name = 'JsonType', namespace) {
   return namespace ? `namespace ${namespace} { \r\n ${declaration} \r\n}` : declaration;
 }
 
+const handleCopyCodeSuccess = (code) => {
+  alert("复制成功");
+}
 
 </script>
 
