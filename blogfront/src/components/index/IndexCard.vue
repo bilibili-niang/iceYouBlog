@@ -23,8 +23,7 @@
           </ice-text>
           <ice-text>
             <ice-tag>更新时间</ice-tag>
-            <!--{{ item.updatedAt?.replace("T", " ").split(".")[0] }} - 最后修改于{{ oldData }}天之前-->
-            {{ item.updatedAt }} - 最后修改于{{ oldData }}天之前
+            {{ item.updatedAt }} - 最后修改于{{ oldData }}天
           </ice-text>
           <ice-text>
             <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1">
@@ -71,8 +70,9 @@ const DateDiffer = (Date_end) => {
   date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
   date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
   const diff = date1.getTime() - date2.getTime(); //目标时间减去当前时间
-  const diffDate = diff / (24 * 60 * 60 * 1000);  //计算当前时间与结束时间之间相差天数
-  oldData.value = diffDate;
+  //计算当前时间与结束时间之间相差天数
+  const diffDate = diff / (24 * 60 * 60 * 1000)
+  oldData.value = diffDate
 };
 
 
@@ -94,13 +94,13 @@ init();
 </script>
 
 <style scoped lang="less">
-.indexCard{
+.indexCard {
   width: 100%;
   box-sizing: border-box;
 }
 
 @import "../../assets/css/variables.less";
-.indexCard{
+.indexCard {
   overflow: hidden;
   background: @bac-dark-bleak;
   margin-bottom: @m-normal;
@@ -108,14 +108,14 @@ init();
 }
 
 // 小屏
-@media (max-width: 1200px){
-  .indexCard{
+@media (max-width: 1200px) {
+  .indexCard {
     max-width: 100%;
   }
 }
 
-@media (min-width: 1200px){
-  .indexCard{
+@media (min-width: 1200px) {
+  .indexCard {
   }
 }
 

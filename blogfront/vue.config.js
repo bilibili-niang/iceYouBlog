@@ -3,8 +3,6 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const path = require("path");
 const {onlineEnvironment, devBaseUrl} = require("./src/config");
 
-console.log("process.env.NODE_ENV:");
-console.log(process.env.NODE_ENV);
 const env = process.env.NODE_ENV;
 // 正式环境插件
 const plugins = env === "development" ? [] : [
@@ -22,6 +20,7 @@ const plugins = env === "development" ? [] : [
 
 
 module.exports = defineConfig({
+    lintOnSave: true,
     pluginOptions: { // 第三方插件配置
         "style-resources-loader": {
             preProcessor: "less",
@@ -60,6 +59,6 @@ module.exports = defineConfig({
         plugins: plugins,
         output: {
             libraryExport: "../behind/src/static"
-        },
+        }
     },
-});
+})
