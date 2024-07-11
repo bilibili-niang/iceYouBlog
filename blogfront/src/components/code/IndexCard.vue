@@ -33,7 +33,7 @@
 <script>
 import MarkdownTags from "@/components/common/MarkdownTags.vue";
 import timeFormat from "@/common/filter/time";
-import fun from "@/hook/function";
+import {fun} from "@/hook/function";
 
 export default {
   name: "IndexCard",

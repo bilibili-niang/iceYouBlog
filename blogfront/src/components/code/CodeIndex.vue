@@ -21,7 +21,7 @@ import InputCard from '@/components/code/InputCard.vue'
 import IndexCard from '@/components/code/IndexCard.vue'
 import ZoomCard from "@/components/code/ZoomCard.vue"
 import CodeSearch from '@/components/code/codeSearch.vue'
-import fun from '@/hook/function'
+import {fun} from '@/hook/function'
 import markdownFiles from '@/common/api/markdownFiles'
 
 export default {

@@ -3,7 +3,7 @@
     <div class="btns">
       <div class="selection">
         <el-select v-model="registerValue" placeholder="Select">
-          <el-option v-for="item in registerFlag" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in registerFlag" :key="item.value" :label="item.label" :value="item.value"/>
         </el-select>
       </div>
       <el-text>
@@ -11,7 +11,7 @@
       </el-text>
       <div class="selection">
         <el-select v-model="tableValue" placeholder="Select">
-          <el-option v-for="item in table" :key="item" :label="item" :value="item" />
+          <el-option v-for="item in table" :key="item" :label="item" :value="item"/>
         </el-select>
       </div>
       <div class="btns" v-if="tableValue">
@@ -42,8 +42,8 @@
 
         <div class="others" v-else>
           <code v-if="databaseDetail.totalData">
-                                        {{ databaseDetail.totalData[0] }}
-                                      </code>
+            {{ databaseDetail.totalData[0] }}
+          </code>
           <!-- <template v-for="(item) in databaseDetail.totalData[0]">
             <el-text>
               {{ item }}
@@ -56,13 +56,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import {ref, watch} from 'vue'
 import admin from '@/common/api/admin'
-import { useStore } from 'vuex'
-import { reactive } from 'vue';
+import {useStore} from 'vuex'
+import {reactive} from 'vue'
 import historyIndexCard from '@/components/user/HistoryIndexCard.vue'
 import markdownCard from '@/components/admin/config/markdownCard.vue'
-import fun from '@/hook/function';
+import {fun} from '../../hook/function'
 
 const registerValue = ref('')
 const registerFlag = [

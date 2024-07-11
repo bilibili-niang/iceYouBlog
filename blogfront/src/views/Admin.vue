@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import fun from "@/hook/function";
+import {fun} from "@/hook/function";
 import Avatar from "@/components/common/Avatar.vue";
 import {computed, reactive, ref} from "vue";
 import FriendLinks from "@/components/admin/FriendLinks.vue";
