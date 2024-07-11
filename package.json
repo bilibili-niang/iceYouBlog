@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cz-git": "^1.9.1"
+    "cz-git": "^1.9.1",
+    "js-beautify": "^1.15.1"
   }
 }

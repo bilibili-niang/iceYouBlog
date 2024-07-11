@@ -21,29 +21,27 @@
     <!--下面是头图的预览-->
     <div class="demo-image__lazy">
       <div v-for="(item,index) in imgList" :key="index" class="demo-image__preview">
-        <el-image
-            :src="item.url"
-            lazy
-            fit="cover"
-            :preview-src-list="previewImgList"
-            :initial-index="index"
-            :hide-on-click-modal="true"
-            :close-on-press-escape="true"
-        />
+        <img :src="item.url" alt="" class="image" @click="showPreview">
         <el-button text @click="open(item.url)">删除</el-button>
       </div>
     </div>
+    <iceImgPreview ref="imgPreviewRef" :imgUrls="previewImgList" closeIconRight/>
 
   </div>
 </template>
 
 <script setup>
-import { useStore } from "vuex"
-import { onMounted, ref, } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import {useStore} from "vuex"
+import {onMounted, ref,} from 'vue'
+import {ElMessage, ElMessageBox} from 'element-plus'
 import http from '@/common/api/request'
+import api from '@/common/api'
 
-const api = require('@/common/api')
+let imgPreviewRef = ref()
+
+const showPreview = () => {
+  imgPreviewRef.value.show(previewImgList.value)
+}
 
 const store = useStore()
 const open = (e) => {
@@ -72,7 +70,6 @@ const open = (e) => {
       })
 }
 
-// @date 2023/5/28 , @author icestone
 // 存放头图的list
 const imgList = ref([])
 const token = store.state.user.userInfo.token
@@ -92,15 +89,11 @@ const getUserAllHeadImg = () => {
     },
   })
       .then(res => {
-        console.log("res:")
-        console.log(res)
         if (res.success) {
           imgList.value = res.result
           previewImgList.value = imgList.value.map(item => {
             return item.url
           })
-        } else {
-
         }
       })
       .catch(e => {
@@ -109,7 +102,7 @@ const getUserAllHeadImg = () => {
       })
 }
 
-/* @author icestone , 17:44
+/*
  * @date 2023/5/28
  * 图片上传
 */
@@ -125,7 +118,7 @@ const uploadSuccess = async () => {
   })
   getUserAllHeadImg()
 }
-/* @author icestone , 17:45
+/*
  * @date 2023/5/28
  * 图片上传之前的回调
 */
@@ -152,6 +145,12 @@ const beforeAvatarUpload = (rawFile) => {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+
+  .image {
+    display: flex;
+    width: 200px;
+    height: 200px;
+  }
 
   .demo-image__preview {
     display: flex;

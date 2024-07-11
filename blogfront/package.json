@@ -9,6 +9,7 @@
   "devDependencies": {
     "@element-plus/icons": "^0.0.11",
     "@element-plus/icons-vue": "^2.3.1",
+    "@eslint/js": "^9.5.0",
     "@kangc/v-md-editor": "next",
     "@popperjs/core": "^2.11.8",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -22,6 +23,9 @@
     "core-js": "^3.37.0",
     "element-plus": "^2.7.2",
     "element-ui": "^2.15.14",
+    "eslint": "9.x",
+    "eslint-plugin-vue": "^9.26.0",
+    "globals": "^15.6.0",
     "highlight.js": "^11.9.0",
     "hover.css": "^2.3.2",
     "less": "^3.13.1",
@@ -29,6 +33,7 @@
     "moment": "^2.30.1",
     "popper.js": "^1.16.1",
     "style-resources-loader": "^1.5.0",
+    "typescript-eslint": "^7.13.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "unplugin-auto-import": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
@@ -36,8 +41,7 @@
     "vue-cli-plugin-style-resources-loader": "^0.1.5",
     "vue-meta": "^2.4.0",
     "vue-router": "^4.3.2",
-    "vuex": "^4.1.0",
-    "webpack": "^5.91.0"
+    "vuex": "^4.1.0"
   },
   "browserslist": [
     "> 1%",
