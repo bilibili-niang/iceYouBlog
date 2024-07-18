@@ -2,7 +2,7 @@
   <div class="indexCard">
     <ice-column>
       <ice-column>
-        <ice-title size="l">{{ markdownData.title }}</ice-title>
+        <ice-title size="l"><h1>{{ markdownData.title }}</h1></ice-title>
         <ice-row>
           <ice-text>发布时间:</ice-text>
           <ice-text>{{ markdownData.createdAt }}</ice-text>
@@ -62,7 +62,7 @@
 
 <script setup>
 import Avatar from "@/components/common/Avatar.vue";
-import { useRouter } from 'vue-router';
+import {useRouter} from 'vue-router';
 
 const props = defineProps({
   markdownData: Object,
@@ -75,7 +75,7 @@ const router = useRouter();
 const gotoEditExperiment = (id) => {
   router.push({
     path: "/edit/vMdEditor",
-    query: { id },
+    query: {id},
   });
 };
 </script>

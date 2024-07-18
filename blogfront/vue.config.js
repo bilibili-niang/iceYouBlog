@@ -6,16 +6,16 @@ const {onlineEnvironment, devBaseUrl} = require("./src/config");
 const env = process.env.NODE_ENV;
 // 正式环境插件
 const plugins = env === "development" ? [] : [
-    new UglifyJsPlugin({
-        uglifyOptions: {
-            compress: {
-                //warnings: false, 注释不然打包会报错如图下图
-                drop_console: true,  //注释console
-                drop_debugger: true, //注释debugger
-                pure_funcs: ["console.log"], //移除console.log
-            },
-        },
-    })
+  new UglifyJsPlugin({
+    uglifyOptions: {
+      compress: {
+        //warnings: false, 注释不然打包会报错如图下图
+        drop_console: true,  //注释console
+        drop_debugger: true, //注释debugger
+        pure_funcs: ["console.log"], //移除console.log
+      },
+    },
+  })
 ];
 
 
