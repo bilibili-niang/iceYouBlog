@@ -7,15 +7,20 @@
     "build": "vue-cli-service build"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-methods": "^7.24.7",
     "@element-plus/icons": "^0.0.11",
     "@element-plus/icons-vue": "^2.3.1",
     "@eslint/js": "^9.5.0",
     "@kangc/v-md-editor": "next",
     "@popperjs/core": "^2.11.8",
+    "@vue/babel-plugin-jsx": "^1.2.2",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",
     "@vue/cli-plugin-vuex": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/tsconfig": "^0.5.0",
     "@vueuse/core": "^10.9.0",
     "axios": "^0.21.4",
     "babel-plugin-prismjs": "^2.1.0",
@@ -33,6 +38,7 @@
     "moment": "^2.30.1",
     "popper.js": "^1.16.1",
     "style-resources-loader": "^1.5.0",
+    "typescript": "^5.5.3",
     "typescript-eslint": "^7.13.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "unplugin-auto-import": "^0.15.3",
@@ -48,5 +54,12 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "dependencies": {
+    "@types/vue": "^2.0.0",
+    "@vavt/cm-extension": "^1.4.4",
+    "@vavt/v3-extension": "^1.2.4",
+    "@vue/cli-plugin-typescript": "^5.0.8",
+    "md-editor-v3": "^4.17.4"
+  }
 }

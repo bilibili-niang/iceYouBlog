@@ -3,7 +3,7 @@ const Router = require('koa-router')
 const router = new Router()
 const template = require('koa-html-template')
 
-router.get('/demoIndex', index)
+router.get('/index.html', index)
 
 async function index(ctx) {
     console.log('index router')

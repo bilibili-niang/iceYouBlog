@@ -2,7 +2,8 @@
   <IndexHeader/>
   <router-view :key="$route.fullPath"/>
   <div class="footer ice-row">
-    <ice-link size="s" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</ice-link>
+    <ice-link size="s" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号
+    </ice-link>
     <ice-text size="s">
       powered by:
     </ice-text>

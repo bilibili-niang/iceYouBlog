@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "ESNext",
+    "module": "commonjs",
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "lib",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    /*"baseUrl": ".",*/
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": false,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "compileOnSave": false,
+  "include": [
+    "src/types/*.ts",
+    "*.vue",
+    "*.ts",
+    "*.js",
+    "src/**/*"
+  ],
+  "extends": [
+    "@vue/tsconfig/tsconfig.json",
+    "@vue/tsconfig/tsconfig.dom.json",
+    "@vue/tsconfig/tsconfig.lib.json"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

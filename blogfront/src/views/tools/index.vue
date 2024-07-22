@@ -1,73 +1,50 @@
 <template>
   <div class="tools">
 
-    <ice-row>
-      <ice-button size="l" @click="parseData">解析</ice-button>
-      <ice-button size="l" @click="saveToLocal">保存至本地</ice-button>
-    </ice-row>
+    <ice-tabs v-model="activeName">
 
-    <ice-row class="textContainer">
-      <textarea class="textarea" v-model="data"></textarea>
-      <div class="result">
-        <!--<pre v-if="parsedData">{{ // tsInterface }}</pre>-->
-        <!--<pre v-if="parsedData">{{ parsedData }}</pre>-->
+      <ice-tab-item label="interfaceParse" name="interfaceParse解析">
+        <ice-row>
+          <ice-button size="l" @click="parseData">解析</ice-button>
+          <ice-button size="l" @click="saveToLocal">保存至本地</ice-button>
+        </ice-row>
 
-        <v-md-editor
-            v-if="parsedData"
-            :include-level="[1,2,3,4,5]"
-            v-model="parsedData"
-            mode="preview"
-            @copy-code-success="handleCopyCodeSuccess"/>
-        <div v-else>请解析数据以查看TypeScript接口</div>
-      </div>
-    </ice-row>
+        <ice-row class="textContainer">
+          <textarea class="textarea" v-model="data"></textarea>
+          <div class="result">
+            <MdRender
+                :content='parsedData'
+                mode="preview"
+                v-if="parsedData"
+            />
+            <div v-else>请解析数据以查看TypeScript接口</div>
+          </div>
+        </ice-row>
+      </ice-tab-item>
+
+
+    </ice-tabs>
+
 
   </div>
 </template>
 
-<script setup>
-import {ref} from 'vue'
-import {alert} from "@/hook/function";
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { alert } from '@/hook/function'
+import MdRender from '@/components/MdRener/index.vue'
 
-const data = ref(`{
-  "id": "1801526079629627393",
-  "merchantId": "1717732945099657218",
-  "tenantId": "247970",
-  "name": "ikun文化传媒",
-  "images": [
-    "https://dev-cdn.kacat.cn/upload/20240612/183dec07fdf5099182a875c227c534e1.webp"
-  ],
-  "description": "ikun之家,,,,哒哒哒哒哒哒",
-  "type": "户外探险",
-  "province": "厦门市",
-  "address": {
-    "address": "福建省厦门市集美区石鼓路153号",
-    "longitude": "118.099454",
-    "latitude": "24.576935"
-  },
-  "administrativeDivisionCode": "350211",
-  "longitude": "118.099454",
-  "latitude": "24.576935",
-  "location": {
-    "lng": "118.099454",
-    "lat": "24.576935"
-  },
-  "openingAt": null,
-  "closingAt": null,
-  "sort": 0,
-  "readings": 0,
-  "status": true,
-  "createUser": "1774630575618764802",
-  "createTime": "2024-06-14 16:04:23",
-  "updateUser": "1774630575618764802",
-  "updateTime": "2024-06-14 16:36:16",
-  "isDeleted": 0
-}`)
+const activeName = ref('interfaceParse')
+
+// 初始化data值，尝试从localStorage读取
+const data = ref(localStorage.getItem('data') || `{"id": "18015260796293"}`)
 const parsedData = ref(null)
 
 const parseData = () => {
   try {
     parsedData.value = jsonToTs(JSON.parse(data.value))
+    // 解析数据后，同时保存到localStorage
+    saveToLocal()
   } catch (error) {
     alert('输入数据不是有效的 JSON 格式')
   }
@@ -86,42 +63,47 @@ const saveToLocal = () => {
  */
 function jsonToTs(object, name = 'JsonType', namespace) {
   const getType = value => {
-    let typeRes = ``;
+    let typeRes = ``
     if (Array.isArray(value)) {
       value.forEach(item => {
 
-        let subType = getType(item);
+        let subType = getType(item)
         if (typeRes.split('|').indexOf(subType) < 0) {
           typeRes += subType
-          typeRes += "|"
+          typeRes += '|'
         }
       })
       typeRes = typeRes.substring(0, typeRes.length - 1)
       if (typeRes.split('|').length > 1) {
-        return `(${typeRes})[]`;
+        return `(${typeRes})[]`
       } else {
-        return `${typeRes}[]`;
+        return `${typeRes}[]`
       }
     }
     if (typeof value === 'object' && value !== null) {
       const props = Object.entries(value)
           .map(([key, val]) => `${key}: ${getType(val)}`)
-          .join('; ');
-      return `{ ${props} }`;
+          .join('; ')
+      return `{ ${props} }`
     }
-    return typeof value;
-  };
+    return typeof value
+  }
 
-  const type = getType(object);
+  const type = getType(object)
 
-  const declaration = `interface ${name} ${type}`;
+  const declaration = `interface ${name} ${type}`
 
-  return namespace ? `namespace ${namespace} { \r\n ${declaration} \r\n}` : declaration;
+  return namespace ? `namespace ${namespace} { \r\n ${declaration} \r\n}` : declaration
 }
 
-const handleCopyCodeSuccess = (code) => {
-  alert("复制成功");
+
+const init = () => {
+  const storedData = localStorage.getItem('data')
+  if (storedData) {
+    data.value = storedData
+  }
 }
+onMounted(init)
 
 </script>
 

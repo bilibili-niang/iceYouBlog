@@ -1,51 +1,12 @@
-@import "./variables.less";
-
 // 编辑器style
-.v-md-editor__main {
-  border-radius: @radio-n;
-  background: gray !important;
-  border: 1px solid @bac-dark-bleak;
-  box-sizing: border-box;
+.md-editor-code-action {
+  //background: @themeActiveColor;
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
 
-
-  .github-markdown-body {
-    display: flex;
-    flex-direction: column;
-    padding: .1rem;
-
-    .line-numbers-mode {
-      height: fit-content !important;
-    }
-
-    p {
-      font-size: .9rem;
-      line-height: .95rem;
-    }
-
-    pre {
-      padding: 0;
-      padding-left: 3.5rem !important;
-    }
-
-    blockquote {
-      display: flex;
-      margin-top: 0.3rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .line-numbers-mode:after {
-      width: 3rem !important;
-    }
-
-    ul {
-      display: flex;
-      flex-direction: column;
-      height: auto;
-    }
+  .md-editor-collapse-tips {
+    margin: 0 10px;
   }
-}
-
-.v-md-editor, .v-md-editor--preview {
-  //background: none !important;
 
 }

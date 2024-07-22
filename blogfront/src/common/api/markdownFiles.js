@@ -21,14 +21,12 @@ export default {
         return get('/markdownFile/allCounts')
     },
     /**
-     * Created At: 2023-07-21 16:12
      * Description: 获取codeclips列表
      */
     async getCodeClipsList() {
         return get('/code/getCodeClips')
     },
-    /* @author 张嘉凯
-     * @date 2023/7/31 @time 13:39
+    /*
      * 获取浏览量
     */
     async getViews() {
