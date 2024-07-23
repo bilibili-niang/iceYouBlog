@@ -11,8 +11,6 @@
                    :userInf="userInf">
           <ice-text>当前字数:{{ wordCount }}</ice-text>
         </IndexCard>
-        <div class="articleCon">
-        </div>
 
         <MdRender
             :content="markdownData.content"
