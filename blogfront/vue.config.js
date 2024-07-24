@@ -50,7 +50,6 @@ module.exports = defineConfig({
       alias: {
         vue: path.resolve("./node_modules/vue"),
         '@': path.resolve(__dirname, './src'),
-        // '@': path.resolve('src')
       },
       extensions: ['.js', '.json', '.vue', '.ts', '.tsx'], // 自动扩展文件后缀名
     },
@@ -70,6 +69,7 @@ module.exports = defineConfig({
               loader: 'ts-loader',
               options: {
                 appendTsSuffixTo: [/\.vue$/],
+                happyPackMode: true
               }
             }
           ],

@@ -39,6 +39,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+static/
 jspm_packages/
 # dist/
 .idea/
@@ -116,3 +117,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+/behind/src/static/

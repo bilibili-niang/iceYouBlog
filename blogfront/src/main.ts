@@ -12,7 +12,6 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'icepro/src/assets/common.less'
 import icepro from 'icepro'
 /*引入公共样式*/
-import '@/assets/css/audio.css'
 import '@/assets/css/reset.less'
 import '@/assets/css/common.less'
 import '@/assets/css/variables.less'

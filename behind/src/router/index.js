@@ -1,4 +1,4 @@
-// 首页
+// 所有的路由
 const fs = require('fs')
 const Router = require('koa-router')
 // 这里可以设置总路由的前缀
@@ -11,18 +11,5 @@ fs.readdirSync(__dirname).forEach(file => {
         router.use(r.routes())
     }
 })
-
-/*
-router.get('/', (ctx) => {
-    // 返回数据
-    ctx.body = {
-        code: 200,
-        success: 'true',
-        msg: '这是首页借口',
-        data: {}
-    }
-})
-*/
-
 
 module.exports = router;
