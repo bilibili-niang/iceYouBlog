@@ -60,7 +60,6 @@
     "@vavt/cm-extension": "^1.4.4",
     "@vavt/v3-extension": "^1.2.4",
     "@vue/cli-plugin-typescript": "^5.0.8",
-    "icepro": "^1.1.22",
     "md-editor-v3": "^4.17.4"
   }
 }
