@@ -88,7 +88,6 @@ verifyLogin();
 </script>
 
 <style scoped lang="less">
-@import "../assets/css/variables";
 
 .login{
   padding-top: @p-large-su;

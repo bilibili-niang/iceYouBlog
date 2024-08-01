@@ -12,9 +12,9 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'icepro/src/assets/common.less'
 import icepro from 'icepro'
 /*引入公共样式*/
-import '@/assets/css/reset.less'
-import '@/assets/css/common.less'
-import '@/assets/css/variables.less'
+import '@/style/reset.less'
+import '@/style/common.less'
+import '@/style/variables.less'
 
 const app = createApp(App)
 // 引入v-md-editor编辑组件

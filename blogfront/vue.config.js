@@ -22,7 +22,7 @@ module.exports = defineConfig({
   pluginOptions: {
     "style-resources-loader": {
       preProcessor: "less",
-      patterns: [path.resolve(__dirname, "./src/assets/css/variables.less")]
+      patterns: [path.resolve(__dirname, "./src/style/variables.less")]
     }
   },
   productionSourceMap: false,

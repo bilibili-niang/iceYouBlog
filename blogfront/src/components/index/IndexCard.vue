@@ -100,7 +100,6 @@ init()
   box-sizing: border-box;
 }
 
-@import "../../assets/css/variables.less";
 .indexCard {
   overflow: hidden;
   background: @bac-dark-bleak;
