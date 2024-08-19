@@ -21,10 +21,10 @@
 
 <script setup>
 import {ref,} from "vue";
-import http from "@/common/api/request";
+import http from "@/api/request";
 import IndexCard from "@/components/index/IndexCard.vue";
 import store from "@/store";
-import api from "@/common/api";
+import api from "@/api";
 import Empty from "@/components/common/empty.vue";
 
 let searchList = ref([]);

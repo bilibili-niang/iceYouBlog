@@ -50,7 +50,7 @@
 import('./index.less')
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import api from '@/common/api'
+import api from '../../api'
 import { alert } from '@/hook/function'
 import filters from '@/common/filter/time'
 import IndexCard from '@/components/read/IndexCard/index.vue'

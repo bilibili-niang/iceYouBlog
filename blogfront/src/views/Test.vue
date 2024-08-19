@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import http from '@/common/api/request'
+import http from '@/api/request'
 import axios from 'axios'
 import { reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'

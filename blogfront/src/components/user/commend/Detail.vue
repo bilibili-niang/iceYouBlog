@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import http from '@/common/api/request'
+import http from '@/api/request'
 import { ref } from 'vue'
 import MarkdownTags from '@/components/common/MarkdownTags.vue'
 

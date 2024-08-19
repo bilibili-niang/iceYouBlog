@@ -14,7 +14,7 @@
 
 <script setup>
 import {defineEmits, ref, watch} from "vue";
-import api from "@/common/api";
+import api from "@/api";
 import MarkdownCard from "@/components/read/MarkdownCard.vue";
 
 const props = defineProps({

@@ -8,7 +8,7 @@
 import {marked} from 'marked';
 import 'highlight.js/styles/foundation.css'
 import alert from '@/components/markdown/Alert.vue'
-import http from '@/common/api/request'
+import http from '@/api/request'
 
 export default {
   name: "markdown",

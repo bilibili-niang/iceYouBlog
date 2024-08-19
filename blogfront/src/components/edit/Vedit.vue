@@ -96,8 +96,8 @@ import {useRoute} from "vue-router";
 import {onMounted, ref} from 'vue'
 import upload from '@/components/common/imgUpload.vue'
 import {iceMessage} from 'icepro'
-import http from "@/common/api/request"
-import api from "@/common/api";
+import http from "@/api/request"
+import api from "@/api";
 
 const id = ref(0)
 

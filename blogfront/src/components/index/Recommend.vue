@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
+import http from "@/api/request";
 import MarkdownTags from "@/components/common/MarkdownTags.vue";
 import timeFormat from "@/common/filter/time";
 import IndexCard from "@/components/index/IndexCard.vue";

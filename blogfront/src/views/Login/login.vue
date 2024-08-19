@@ -30,7 +30,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import http from "@/common/api/request";
+import http from "@/api/request";
 
 let showAlert = ref(false);
 let message = ref("");
@@ -89,16 +89,15 @@ verifyLogin();
 
 <style scoped lang="less">
 
-.login{
+.login {
   padding-top: @p-large-su;
   align-items: center;
 
-  .form{
+  .form {
     padding: @p-normal;
     border-radius: @radio-n;
     width: 100%;
     box-sizing: border-box;
-
   }
 }
 </style>

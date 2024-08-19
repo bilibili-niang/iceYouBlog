@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import http from "@/common/api/request"
+import http from "@/api/request"
 import Acomment from "@/components/read/Acomment.vue"
 import {reactive, ref, watch} from 'vue'
 import {useStore} from 'vuex'

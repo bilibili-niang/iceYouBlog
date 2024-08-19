@@ -19,7 +19,7 @@
 import {onMounted, ref} from 'vue';
 import {useStore} from 'vuex';
 import IndexHeader from '@/components/index/IndexHeader.vue';
-import api from '@/common/api';
+import api from '@/api';
 
 const store = useStore();
 const viewCount = ref(0);

@@ -29,6 +29,9 @@
               <ice-link href="#/register" target="_blank">注册</ice-link>
             </li>
             <li class="list-item">
+              <ice-link href="#/register" target="_blank">注册</ice-link>
+            </li>
+            <li class="list-item">
               <ice-link href="#/code/codeClips" target="_self">代码片段</ice-link>
             </li>
             <li class="list-item">

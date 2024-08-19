@@ -1,4 +1,4 @@
-import { get } from '@/common/api/request'
+import { get } from '@/api/request'
 
 export default {
     async getRandom () {

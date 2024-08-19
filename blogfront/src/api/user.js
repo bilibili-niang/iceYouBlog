@@ -1,4 +1,4 @@
-import {post} from '@/common/api/request'
+import {post} from '@/api/request'
 
 export default {
     // @date 2023/6/7 , @author icestone
@@ -12,5 +12,9 @@ export default {
     */
     async getUserAllMarkdownByEmail(data) {
         return await post('/markdownFile/getUserAllMarkdown', data)
-    }
+    },
+  // 注册
+  async register(data) {
+    return await post('/user/register', data)
+  },
 }

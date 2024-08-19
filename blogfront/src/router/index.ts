@@ -6,13 +6,13 @@ const routes = [
     path: '/',
     name: 'index',
     meta: { title: '首页' },
-    component: () => import('@/views/Index.vue')
+    component: () => import('@/views/index/Index.vue')
   },
   {
     path: '/login',
     name: 'login',
     meta: { title: '登录' },
-    component: () => import('@/views/Login.vue')
+    component: () => import('@/views/Login/login.vue')
   },
   {
     path: '/collectible',
@@ -24,7 +24,7 @@ const routes = [
     path: '/register',
     name: 'register',
     meta: { title: '注册' },
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/Register/index.vue')
   },
   {
     path: '/search',

@@ -9,7 +9,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import api from '@/common/api'
+import api from '@/api'
 import IndexCard from "@/components/index/IndexCard.vue";
 import {useRoute} from "vue-router";
 

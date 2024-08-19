@@ -36,7 +36,7 @@ module.exports = defineConfig({
       "/": {
         ws: false,
         // target: env === "development" ? devBaseUrl : onlineEnvironment,
-        target: onlineEnvironment,
+        target: devBaseUrl,
         changeOrigin: true,
         pathRewrite: {
           "^/": "/"

@@ -42,7 +42,7 @@
 
 <script>
 import Avatar from "@/components/common/Avatar.vue";
-import markdown from "@/common/api/markdownFiles";
+import markdown from "@/api/markdownFiles";
 import {fun} from '@/hook/function'
 
 export default {

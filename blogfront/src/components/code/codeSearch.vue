@@ -18,7 +18,7 @@
 
 <script setup>
 import { h, ref, watch } from 'vue'
-import http from '@/common/api/request'
+import http from '@/api/request'
 import { ElMessage } from 'element-plus'
 
 const key = ref('')

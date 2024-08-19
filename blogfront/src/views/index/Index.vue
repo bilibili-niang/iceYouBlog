@@ -8,6 +8,9 @@
            :key="index">
         <IndexCard :item="item"></IndexCard>
       </div>
+      <ice-text v-if="indexList.length===0">
+        当前数据为空
+      </ice-text>
       <div class="btns m-b" v-if="indexList">
         <ice-pagination v-model="pageSize2" :total="allCount" :step="20"></ice-pagination>
         <br><br><br>
@@ -21,8 +24,8 @@ import filters from "@/common/filter/time";
 import {fun} from "@/hook/function";
 import {ref, watch} from "vue";
 import {useRouter} from "vue-router";
-import markdownApi from "@/common/api/markdownFiles";
-import api from "@/common/api/index";
+import markdownApi from "@/api/markdownFiles";
+import api from "@/api";
 import IndexCard from "@/components/index/IndexCard.vue";
 import Recommend from "@/components/index/Recommend.vue";
 
@@ -117,7 +120,7 @@ watch(pageSize2, (newVal) => {
 </script>
 
 <style scoped lang="less">
-.index{
+.index {
   display: flex;
   flex-direction: column;
   min-height: 90vh;
@@ -126,35 +129,35 @@ watch(pageSize2, (newVal) => {
   flex-wrap: wrap;
 
   // 小屏
-  @media (max-width: 1200px){
-    .left{
+  @media (max-width: 1200px) {
+    .left {
       overflow: hidden;
       margin: 0 !important;
 
-      .indexCard{
+      .indexCard {
         max-width: 100% !important;
         box-sizing: border-box;
 
-        /deep/ .ice-card, .ice-row{
+        /deep/ .ice-card, .ice-row {
           margin: 0;
           padding: 0;
         }
       }
     }
 
-    .right{
+    .right {
       display: none !important;
     }
 
-    .recommend{
+    .recommend {
       display: none;
     }
   }
-  @media (min-width: 1200px){
+  @media (min-width: 1200px) {
 
   }
 
-  .left{
+  .left {
     min-height: 70vh;
     display: flex;
     flex-direction: row;
@@ -164,12 +167,12 @@ watch(pageSize2, (newVal) => {
     justify-content: space-between;
     box-sizing: border-box;
 
-    .card{
+    .card {
       width: 100%;
     }
   }
 
-  .right{
+  .right {
     flex: 1;
     box-sizing: border-box;
     display: flex;

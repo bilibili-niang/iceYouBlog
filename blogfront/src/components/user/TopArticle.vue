@@ -10,7 +10,7 @@
 <script setup>
 import {useStore} from 'vuex'
 import {reactive} from 'vue'
-import markdownApi from '@/common/api/markdownFiles'
+import markdownApi from '@/api/markdownFiles'
 import IndexCard from "@/components/index/IndexCard.vue"
 
 const store = useStore()

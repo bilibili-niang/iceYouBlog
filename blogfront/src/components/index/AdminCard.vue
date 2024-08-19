@@ -44,7 +44,7 @@
 <script setup>
 import Avatar from "@/components/common/Avatar.vue"
 import { reactive, ref } from 'vue'
-import api from '@/common/api'
+import api from '@/api'
 
 let info = reactive({})
 

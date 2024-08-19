@@ -1,4 +1,4 @@
-import { post } from '@/common/api/request'
+import { post } from '@/api/request'
 
 
 export default {

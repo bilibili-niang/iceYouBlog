@@ -57,7 +57,7 @@
 
 <script setup>
 import {ref, watch} from 'vue'
-import admin from '@/common/api/admin'
+import admin from '@/api/admin'
 import {useStore} from 'vuex'
 import {reactive} from 'vue'
 import historyIndexCard from '@/components/user/HistoryIndexCard.vue'

@@ -13,7 +13,7 @@
 
 <script setup>
 import {useRoute} from "vue-router";
-import userApi from "@/common/api/user";
+import userApi from "@/api/user";
 import {ref} from "vue";
 import UserCard from "@/components/common/UserCard.vue";
 import IndexCard from "@/components/index/IndexCard.vue";

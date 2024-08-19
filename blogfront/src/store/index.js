@@ -1,5 +1,5 @@
 import {createStore} from 'vuex'
-import admin from '@/common/api/admin'
+import admin from '@/api/admin'
 
 const store = createStore({
   state() {
