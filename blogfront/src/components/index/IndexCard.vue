@@ -42,10 +42,10 @@
   </div>
 </template>
 
-<script setup>
-import {ref} from "vue";
-import timeFormat from "@/common/filter/time";
-import {useRouter} from "vue-router";
+<script setup lang="ts">
+import { ref } from 'vue'
+import timeFormat from '@/common/filter/time'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   item: {},
@@ -56,41 +56,42 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-});
+})
 
-const oldData = ref("");
+const oldData = ref('')
 
-const randomRef = Math.random() * 1000;
+const randomRef = Math.random() * 1000
 
 const DateDiffer = (Date_end) => {
   //date1结束时间
-  let date1 = new Date(Date_end);
+  let date1 = new Date(Date_end)
   //date2当前时间
-  let date2 = new Date();
-  date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-  date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-  const diff = date1.getTime() - date2.getTime(); //目标时间减去当前时间
+  let date2 = new Date()
+  date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
+  date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
+  const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
   //计算当前时间与结束时间之间相差天数
-  const diffDate = diff / (24 * 60 * 60 * 1000)
-  oldData.value = diffDate
-};
+  oldData.value = diff / (24 * 60 * 60 * 1000)
+}
 
 
-const router = useRouter();
+const router = useRouter()
 // 跳转阅读
 const goToRead = (id) => {
-  const routeUrl = router.resolve({
-    path: "/read",
-    query: {id}
-  });
-  window.open(routeUrl.href, "_blank");
-};
+  console.log('id', id)
+  router.push({
+    name: 'markDownRead',
+    query: {
+      id
+    }
+  })
+}
 const init = () => {
-  DateDiffer(props.item.updatedAt);
+  DateDiffer(props.item.updatedAt)
   // 第一次创建子组件并接收到值时需要格式化下时间
-  props.item.updatedAt = timeFormat.timeFormat(props.item.updatedAt) || "";
-};
-init();
+  props.item.updatedAt = timeFormat.timeFormat(props.item.updatedAt) || ''
+}
+init()
 </script>
 
 <style scoped lang="less">
@@ -99,7 +100,6 @@ init();
   box-sizing: border-box;
 }
 
-@import "../../assets/css/variables.less";
 .indexCard {
   overflow: hidden;
   background: @bac-dark-bleak;

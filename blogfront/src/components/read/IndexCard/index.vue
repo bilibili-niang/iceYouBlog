@@ -1,8 +1,28 @@
 <template>
   <div class="indexCard">
     <ice-column>
+
       <ice-column>
-        <ice-title size="l">{{ markdownData.title }}</ice-title>
+        <ice-row clss="flex-align-center">
+          <Avatar :imgUrl="userInf?.avatar" v-if="userInf?.avatar" :email="userInf.email"></Avatar>
+          <ice-column>
+            <ice-row>
+              <ice-text>发布者:</ice-text>
+              <ice-text>{{ userInf.username }}</ice-text>
+            </ice-row>
+            <ice-row>
+              <ice-text>邮箱:</ice-text>
+              <ice-text>{{ userInf.email }}</ice-text>
+            </ice-row>
+          </ice-column>
+        </ice-row>
+        <div class="ice-row" v-if="showEditBtn">
+          <ice-button @click="gotoEditExperiment(markdownData.id)">前往编辑</ice-button>
+        </div>
+      </ice-column>
+
+      <ice-column>
+        <ice-title size="l"><h1>{{ markdownData.title }}</h1></ice-title>
         <ice-row>
           <ice-text>发布时间:</ice-text>
           <ice-text>{{ markdownData.createdAt }}</ice-text>
@@ -35,49 +55,30 @@
             {{ markdownData.tag3 }}
           </ice-link>
         </ice-row>
-
       </ice-column>
-      <ice-column>
-        <ice-row>
-          <Avatar :imgUrl="userInf?.avatar" v-if="userInf?.avatar" :email="userInf.email"></Avatar>
-          <ice-column>
-            <ice-row>
-              <ice-text>发布者:</ice-text>
-              <ice-text>{{ userInf.username }}</ice-text>
-            </ice-row>
-            <ice-row>
-              <ice-text>邮箱:</ice-text>
-              <ice-text>{{ userInf.email }}</ice-text>
-            </ice-row>
-          </ice-column>
-        </ice-row>
 
-        <div class="ice-row" v-if="showEditBtn">
-          <ice-button @click="gotoEditExperiment(markdownData.id)">前往编辑</ice-button>
-        </div>
-      </ice-column>
     </ice-column>
   </div>
 </template>
 
-<script setup>
-import Avatar from "@/components/common/Avatar.vue";
-import { useRouter } from 'vue-router';
+<script setup lang="ts">
+import Avatar from '@/components/common/Avatar.vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   markdownData: Object,
   showEditBtn: Boolean,
   userInf: Object,
-});
+})
 
-const router = useRouter();
+const router = useRouter()
 
-const gotoEditExperiment = (id) => {
+const gotoEditExperiment = (id: string) => {
   router.push({
-    path: "/edit/vMdEditor",
+    path: '/edit/vMdEditor',
     query: { id },
-  });
-};
+  })
+}
 </script>
 <style scoped lang="less">
 @media (min-width: 1200px) {

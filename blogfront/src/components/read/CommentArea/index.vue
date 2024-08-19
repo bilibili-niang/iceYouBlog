@@ -14,15 +14,13 @@
 </template>
 
 <script setup>
-import http from "@/common/api/request"
+import http from "@/api/request"
 import Acomment from "@/components/read/Acomment.vue"
-import { reactive, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import {reactive, ref, watch} from 'vue'
+import {useStore} from 'vuex'
 
 const email = useStore().state.user.userInfo.email
 
-console.log('email')
-console.log(email)
 const props = defineProps({
   id: {
     default: 0
@@ -36,8 +34,7 @@ let commentList = reactive([])
 let commentFlag = ref(true)
 let oldId = ref()
 
-/* @author icestone , 16:09
-* @date 2023/5/11
+/*
 * 获取与该文章有关的评论
 */
 const getAllComment = () => {
@@ -63,8 +60,7 @@ const getAllComment = () => {
       })
 }
 
-/* @author 张嘉凯
- * @date 2023/7/7 @time 14:31
+/*
  *  评论成功,再次获取刷新数据
 */
 const getRefreshFlag = (val) => {
@@ -80,7 +76,3 @@ watch(() => props.refresh, (newVal) => {
 oldId.value = props.id
 getAllComment()
 </script>
-
-<style scoped>
-
-</style>

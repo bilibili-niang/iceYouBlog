@@ -166,7 +166,7 @@
 
 <script>
 import Avatar from "@/components/common/Avatar.vue";
-import http from "@/common/api/request";
+import http from "@/api/request";
 import router from "@/router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import IndexCard from "@/components/user/IndexCard.vue";

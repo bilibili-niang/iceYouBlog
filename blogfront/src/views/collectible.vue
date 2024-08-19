@@ -81,7 +81,6 @@ let imgPreviewRef = ref();
 </template>
 
 <style scoped lang="less">
-@import "../assets/css/variables.less";
 
 .collectible{
   max-width: 75vw;

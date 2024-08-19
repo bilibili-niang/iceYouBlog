@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import http from '../../common/api/request'
+import http from '@/api/request'
 import { h } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import NoteListItem from "@/components/note/NoteListItem.vue"

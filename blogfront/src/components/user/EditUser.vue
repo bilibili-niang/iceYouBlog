@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import http from '../../common/api/request'
+import http from '@/api/request'
 import Avatar from '@/components/common/Avatar.vue'
 import Alert from '@/components/common/Alert.vue'
 

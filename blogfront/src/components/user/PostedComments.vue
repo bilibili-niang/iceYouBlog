@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import http from '@/common/api/request'
+import http from '@/api/request'
 import { useStore } from 'vuex'
 import { ref } from 'vue'
 import router from '@/router'

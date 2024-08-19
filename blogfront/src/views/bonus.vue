@@ -13,7 +13,7 @@
 <script setup>
 
 import { ref } from 'vue'
-import api from '@/common/api'
+import api from '@/api'
 
 const imgsrc = ref('')
 

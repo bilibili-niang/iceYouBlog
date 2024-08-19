@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
+import http from "@/api/request";
 import {ElMessage} from "element-plus";
 import {h} from "vue";
 

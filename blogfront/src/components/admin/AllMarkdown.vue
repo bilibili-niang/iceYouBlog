@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
+import http from "@/api/request";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {h} from "vue";
 import IndexCard from "@/components/user/IndexCard.vue";

@@ -3,7 +3,7 @@ import markdownFileApi from './markdownFiles'
 import user from './user'
 import admin from './admin'
 import bonus from './bonus'
-import search from "@/common/api/search";
+import search from "@/api/search";
 
 export default {
     ...markdownFileApi,

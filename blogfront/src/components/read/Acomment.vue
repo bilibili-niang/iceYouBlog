@@ -42,9 +42,8 @@
 
 <script>
 import Avatar from "@/components/common/Avatar.vue";
-import markdown from "@/common/api/markdownFiles";
-
-const fun = require("@/hook/function");
+import markdown from "@/api/markdownFiles";
+import {fun} from '@/hook/function'
 
 export default {
   name: "Acomment",
@@ -73,6 +72,8 @@ export default {
     }
   },
   created() {
+    console.log('fun')
+    console.log(fun)
 
     const email = this.item.email || null;
     if (email) {

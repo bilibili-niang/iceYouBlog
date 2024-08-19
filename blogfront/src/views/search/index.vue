@@ -16,7 +16,7 @@
 </template>
 <script setup>
 import {ref} from "vue";
-import api from "@/common/api";
+import api from "@/api";
 import {useRouter} from "vue-router";
 import IndexCard from "@/components/index/IndexCard.vue";
 import empty from "@/components/common/empty.vue";
@@ -53,7 +53,6 @@ search();
 
 </script>
 <style lang="less">
-@import "../../assets/css/variables.less";
 
 .searchHeader {
   padding-top: @p-normal;

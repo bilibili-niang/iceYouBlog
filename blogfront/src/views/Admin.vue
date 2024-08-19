@@ -91,11 +91,11 @@
 </template>
 
 <script setup>
-import fun from "@/hook/function";
+import {fun} from "@/hook/function";
 import Avatar from "@/components/common/Avatar.vue";
 import {computed, reactive, ref} from "vue";
 import FriendLinks from "@/components/admin/FriendLinks.vue";
-import http from "@/common/api/request";
+import http from "@/api/request";
 import Config from "@/components/admin/Config.vue";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";

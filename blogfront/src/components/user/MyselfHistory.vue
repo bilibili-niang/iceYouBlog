@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import http from "@/common/api/request";
+import http from "@/api/request";
 import IndexCard from "@/components/index/IndexCard.vue";
 
 export default {

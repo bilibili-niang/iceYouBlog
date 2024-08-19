@@ -1,0 +1,137 @@
+@marginTop: 1rem;
+
+.read {
+  padding-bottom: 10rem;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 auto;
+  flex-direction: column;
+  overflow: visible;
+  min-height: 90vh;
+  align-items: center;
+
+  .imgLim {
+    z-index: -10;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transform: scale(2, 2);
+    filter: blur(1.5rem);
+  }
+
+  .contentLim {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+
+    .otherOperates {
+      display: flex;
+      width: 25%;
+      margin-top: @marginTop;
+    }
+  }
+
+  // 小屏
+  @media screen and (max-width: 1200px) {
+    .contentLim {
+      flex-direction: column;
+    }
+
+    .dataContainerLim {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 1 !important;
+    }
+
+    .right {
+      display: none;
+    }
+
+    & {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+      box-sizing: border-box;
+
+      .card-body {
+        padding: 0;
+
+        .ownerDes {
+          margin-left: 0 !important;
+        }
+      }
+
+      .card {
+        .card-body {
+          .ownerDes {
+            .dataAndViews {
+              flex-direction: column !important;
+
+            }
+          }
+        }
+
+        .ownerDes {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // 大屏
+  @media screen and (min-width: 1200px) {
+    .contentLim {
+
+      .ice-row {
+        width: 100%;
+      }
+    }
+  }
+
+  .dataContainer {
+    margin-top: @marginTop;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    .articleCon {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      margin-top: .3rem;
+      z-index: 3;
+      border-radius: 0.5rem;
+    }
+  }
+
+  .right {
+    margin-top: @marginTop;
+    overflow: hidden;
+  }
+
+  .ice-collapse {
+    width: 100%;
+    border-radius: .3rem;
+    overflow: hidden;
+
+    /deep/ .ice-collapse-item__header,
+    .ice-collapse-item__wrap {
+      padding-left: .5rem;
+
+      .ice-collapse-item__content {
+        padding: .3rem;
+      }
+    }
+
+    .ice-row {
+      align-items: center;
+      margin-bottom: .3rem;
+    }
+  }
+}

@@ -6,59 +6,90 @@ const {onlineEnvironment, devBaseUrl} = require("./src/config");
 const env = process.env.NODE_ENV;
 // 正式环境插件
 const plugins = env === "development" ? [] : [
-    new UglifyJsPlugin({
-        uglifyOptions: {
-            compress: {
-                //warnings: false, 注释不然打包会报错如图下图
-                drop_console: true,  //注释console
-                drop_debugger: true, //注释debugger
-                pure_funcs: ["console.log"], //移除console.log
-            },
-        },
-    })
+  new UglifyJsPlugin({
+    uglifyOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ["console.log"]
+      },
+    },
+  })
 ];
 
-
 module.exports = defineConfig({
-    lintOnSave: true,
-    pluginOptions: { // 第三方插件配置
-        "style-resources-loader": {
-            preProcessor: "less",
-            // less所在文件路径
-            patterns: [path.resolve(__dirname, "./src/assets/css/variables.less")]
+  lintOnSave: false,
+  pluginOptions: {
+    "style-resources-loader": {
+      preProcessor: "less",
+      patterns: [path.resolve(__dirname, "./src/style/variables.less")]
+    }
+  },
+  productionSourceMap: false,
+  transpileDependencies: true,
+  publicPath: "/",
+  devServer: {
+    port: 80,
+    historyApiFallback: true,
+    allowedHosts: "all",
+    proxy: {
+      "/": {
+        ws: false,
+        // target: env === "development" ? devBaseUrl : onlineEnvironment,
+        target: devBaseUrl,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/": "/"
         }
+      }
+    }
+  },
+  configureWebpack: {
+    resolve: {
+      symlinks: false,
+      alias: {
+        vue: path.resolve("./node_modules/vue"),
+        '@': path.resolve(__dirname, './src'),
+      },
+      extensions: ['.js', '.json', '.vue', '.ts', '.tsx'], // 自动扩展文件后缀名
     },
-    productionSourceMap: false,
-    transpileDependencies: true,
-    publicPath: "/",
-    //代理
-    devServer: {
-        // 指定项目启动时的默认端口号
-        port: 80,
-        historyApiFallback: true,
-        allowedHosts: "all",
-        proxy: {
-            "/": {
-                ws: false,
-                // TEST 开发测试
-                target: env === "development" ? devBaseUrl : onlineEnvironment,
-                changeOrigin: true,
-                pathRewrite: {
-                    "^/": "/"
-                }
+    module: {
+      rules: [
+        // 添加 TypeScript 规则
+        {
+          test: /\.tsx?$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@vue/babel-preset-jsx']
+              }
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                appendTsSuffixTo: [/\.vue$/],
+                happyPackMode: true
+              }
             }
-        }
-    },
-    configureWebpack: {
-        resolve: {
-            symlinks: false,
-            alias: {
-                vue: path.resolve("./node_modules/vue")
-            }
+          ],
+          exclude: /node_modules/,
         },
-        plugins: plugins,
-        output: {
-            libraryExport: "../behind/src/static"
-        }
+        {
+          test: /\.m?js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              plugins: ["@babel/plugin-transform-private-methods"],
+            },
+          },
+        },
+      ]
     },
-})
+    plugins: plugins,
+    output: {
+      libraryExport: "../behind/src/static"
+    }
+  },
+});

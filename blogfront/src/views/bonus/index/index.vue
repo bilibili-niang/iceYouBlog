@@ -11,9 +11,8 @@
 </template>
 
 <script setup>
-
 import { ref } from 'vue'
-import api from '@/common/api'
+import api from '@/api'
 
 const imgsrc = ref('')
 
@@ -27,7 +26,6 @@ init()
 </script>
 
 <style scoped lang="less">
-@import '../../../assets/css/variables';
 
 .bonus {
   display: flex;

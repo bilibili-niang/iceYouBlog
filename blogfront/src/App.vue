@@ -2,7 +2,8 @@
   <IndexHeader/>
   <router-view :key="$route.fullPath"/>
   <div class="footer ice-row">
-    <ice-link size="s" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号</ice-link>
+    <ice-link size="s" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鄂ICP备2021010206号
+    </ice-link>
     <ice-text size="s">
       powered by:
     </ice-text>
@@ -18,7 +19,7 @@
 import {onMounted, ref} from 'vue';
 import {useStore} from 'vuex';
 import IndexHeader from '@/components/index/IndexHeader.vue';
-import api from '@/common/api';
+import api from '@/api';
 
 const store = useStore();
 const viewCount = ref(0);

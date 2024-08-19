@@ -34,8 +34,8 @@
 import {useStore} from "vuex"
 import {onMounted, ref,} from 'vue'
 import {ElMessage, ElMessageBox} from 'element-plus'
-import http from '@/common/api/request'
-import api from '@/common/api'
+import http from '@/api/request'
+import api from '@/api'
 
 let imgPreviewRef = ref()
 

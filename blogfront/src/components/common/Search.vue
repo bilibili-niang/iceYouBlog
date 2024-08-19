@@ -26,7 +26,7 @@
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '@/common/api'
+import api from '@/api'
 
 const key = ref('')
 const searchResult = ref('')
