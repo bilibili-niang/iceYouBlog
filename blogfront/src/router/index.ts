@@ -72,7 +72,7 @@ const routes = [
         path: '/user/',
         name: 'user',
         meta: { title: '用户' },
-        component: () => import('../views/User.vue')
+        component: () => import('../views/user/index.vue')
       },
       {
         path: '/user/headImg',
