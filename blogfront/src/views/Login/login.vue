@@ -17,19 +17,19 @@
   </div>
 </template>
 
-<script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import http from '@/api/request'
+<script setup lang="ts">
+import { reactive } from 'vue'
 import { fun } from '@/hook/function'
 import User from '@/api/user'
+import { throwException } from '@/utils'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 let login = reactive({
   username: '',
   password: ''
 })
 
-const router = useRouter()
 const submit = async () => {
   if (login.username.length < 1 || login.password.length < 1) {
     fun.alert('请输入正确账号/密码')
@@ -38,33 +38,30 @@ const submit = async () => {
       .then(res => {
         if (res.success) {
           fun.alert(res.message)
-          // 登陆成功
           const userInfo = res.result || ''
-          // 写入token
           localStorage.setItem('userInfo', JSON.stringify(userInfo))
-          // 跳转user页面
-          router.push({ path: '/user' })
+
+          router.push({
+            name: 'user'
+          })
         } else {
           fun.alert(res.message)
         }
       })
-      .catch(e => {
-        console.log('e:')
-        console.log(e)
-      })
+      .catch(throwException)
   }
 }
 
 // 验证用户是否登录,如果登录,跳转个人页面
 const verifyLogin = () => {
   const user = localStorage.getItem('userInfo')
-  // 没有用户登录
   if (JSON.stringify(user).length < 10) {
     localStorage.removeItem('userInfo')
-    return
+    return void 0
   } else {
-    // 有用户登录,跳转user页面
-    router.push({ path: '/user' })
+    router.push({
+      name: 'user'
+    })
   }
 }
 
