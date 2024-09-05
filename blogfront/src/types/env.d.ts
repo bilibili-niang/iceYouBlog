@@ -7,5 +7,4 @@ declare module 'vue' {
 }
 */
 
-import Vue from 'vue';
-declare var require: any;
+declare var require: any
