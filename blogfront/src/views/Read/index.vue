@@ -68,9 +68,6 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
-console.log('store')
-console.log(store.state)
-
 interface markdownDataType {
   url: object
   email: string
@@ -167,7 +164,7 @@ function showEdit() {
   }
 }
 
-onMounted(() => init())
+onMounted(init)
 </script>
 <style lang="less" scoped>
 @import './index';
