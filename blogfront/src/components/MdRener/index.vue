@@ -3,7 +3,6 @@
 import { MdCatalog, MdEditor, MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
 import { PropType, ref } from 'vue'
-import { getTheme } from 'icepro'
 import 'md-editor-v3/lib/style.css'
 
 const id = 'preview-only'
@@ -51,10 +50,10 @@ init()
       :mode="props.mode"
       :modelValue="content"
       v-if="!!content && props.mode === 'preview'"
-      :theme="getTheme()"
+      theme="dark"
       :previewTheme="previewTheme"
     />
-    <MdEditor v-if="props.mode === 'edit'" v-model="props.value" :theme="getTheme()" />
+    <MdEditor v-if="props.mode === 'edit'" v-model="props.value" theme="dark" />
     <!-- 使用 ref 获取元素 -->
     <div ref="scrollElementRef"></div>
     <MdCatalog :editorId="id" :scrollElement="scrollElementRef" />
