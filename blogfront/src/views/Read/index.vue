@@ -13,9 +13,8 @@
         >
           <ice-text>当前字数:{{ wordCount }}</ice-text>
         </IndexCard>
-
-        <MdRender :content="markdownData.content" mode="preview" v-if="markdownData.content" />
-
+        <MdRender :content="markdownData.content" :previewTheme="isDark ? 'smart-blue' :'github' " mode="preview"
+                  v-if="markdownData.content" />
         <ice-row class="m-t-l">
           <ice-row class="align-items-center" width="fit-content">
             <ice-input
@@ -55,6 +54,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLocalStorage, useMouse, usePreferredDark } from '@vueuse/core'
+
+const isDark = usePreferredDark()
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '../../api'

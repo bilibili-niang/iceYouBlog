@@ -3,7 +3,7 @@
     <!--评论区-->
     <ice-text> 评论区</ice-text>
     <MdRender @save="save()" mode="edit" v-model:value="content"></MdRender>
-    <ice-text> /评论区</ice-text>
+    <ice-text> 评论区</ice-text>
 
     <ice-column v-show="dialogFormVisible" title="留言一下">
       <ice-text>为 {{ title }} 留言</ice-text>
@@ -63,10 +63,6 @@ export default {
         .then(res => {
           this.open2(res.message)
           this.$emit('refreshComments', true)
-        })
-        .catch(e => {
-          console.log('e:')
-          console.log(e)
         })
       this.dialogFormVisible = false
     },
