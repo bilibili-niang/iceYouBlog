@@ -22,8 +22,8 @@ const friendLinks = seq.define('markdownFile_friendLinks', {
     }
 });
 
-/*friendLinks.sync({
+friendLinks.sync({
     // force: 'true'
-});*/
+});
 
 module.exports = friendLinks;

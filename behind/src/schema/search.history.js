@@ -14,8 +14,8 @@ const searchHistory = seq.define('markdown_searchHistory', {
     }
 });
 
-/*searchHistory.sync({
+searchHistory.sync({
     // force: 'true'
-})*/
+})
 
 module.exports = searchHistory
