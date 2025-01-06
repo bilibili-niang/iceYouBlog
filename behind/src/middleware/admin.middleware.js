@@ -1,9 +1,9 @@
-const {JsonWebTokenError, adminError} = require("../constant/err.type");
-const jwt = require("jsonwebtoken");
-const {salt} = require("../config/default");
+const { JsonWebTokenError, adminError } = require('../constant/err.type')
+const jwt = require('jsonwebtoken')
+const { salt } = require('../config/default')
 const {
   getIsAdminById
-} = require("../services/user.service");
+} = require('../services/user.service')
 
 
 class AdminMiddleware {
@@ -12,17 +12,15 @@ class AdminMiddleware {
    *  用户是否为admin用户的中间件
   */
   async isAdmin(ctx, next) {
-
-    const {username = null} = ctx.state.user;
-    const isAdminFlag = await getIsAdminById(username);
-    console.log("isAdminFlag:");
-    console.log(isAdminFlag);
+    const { username = null } = ctx.state.user
+    const isAdminFlag = await getIsAdminById(username)
+    console.log('isAdminFlag:')
+    console.log(isAdminFlag)
     if (isAdminFlag) {
       // admin用户
-      await next();
+      await next()
     } else {
-      ctx.body = adminError;
-
+      ctx.body = adminError
     }
   }
 
@@ -32,15 +30,15 @@ class AdminMiddleware {
    * 验证成功返回0,反之不成功
   */
   paramsVerify(verify, ctx) {
-    const keys = Object.keys(verify);
-    let flag = 0;
+    const keys = Object.keys(verify)
+    let flag = 0
     keys.map(item => {
-      const type = verify[item].type || null;
+      const type = verify[item].type || null
       // @date 2023/5/18 , @author icestone
       //  动态获取
       // user 从 ctx.state.user 上获取
-      if (type == "user") {
-        const nowVal = ctx.state.user[item];
+      if (type == 'user') {
+        const nowVal = ctx.state.user[item]
         if (!nowVal) {
           // @date 2023/5/18 , @author icestone
           //  如果目标不存在
@@ -52,14 +50,14 @@ class AdminMiddleware {
             //  如果不允许不存在,报错
             flag = {
               code: 300,
-              message: "传参参数错误",
+              message: '传参参数错误',
               success: false,
-              result: "传参错误"
-            };
+              result: '传参错误'
+            }
           }
         }
       } else {
-        const nowVal = ctx.request.body[item] || null;
+        const nowVal = ctx.request.body[item] || null
         if (!nowVal) {
           // @date 2023/5/18 , @author icestone
           //  如果目标不存在
@@ -69,10 +67,10 @@ class AdminMiddleware {
             if (nowVal == null) {
               flag = {
                 code: 300,
-                message: "传参参数错误",
+                message: '传参参数错误',
                 success: false,
-                result: "传参错误"
-              };
+                result: '传参错误'
+              }
             } else {
             }
           } else {
@@ -80,17 +78,17 @@ class AdminMiddleware {
             //  如果不允许不存在,报错
             flag = {
               code: 300,
-              message: "传参参数错误",
+              message: '传参参数错误',
               success: false,
-              result: "传参错误"
-            };
+              result: '传参错误'
+            }
           }
         } else {
         }
       }
-    });
-    return flag;
+    })
+    return flag
   }
 }
 
-module.exports = new AdminMiddleware();
+module.exports = new AdminMiddleware()

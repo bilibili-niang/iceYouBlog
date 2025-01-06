@@ -1,25 +1,35 @@
+// tsconfig.json
 {
   "compilerOptions": {
-    // 目标语言版本
-    "target": "esnext",
-    // 指定生成代码的模板标准
-    "module": "commonjs",
-    // 指定编译目录（要编译哪个目录）
-    "rootDir": "./src",
-    // 严格模式
-    "strict": true,
-    //  tsc编译后存放目录
-    "outDir": "./dist/src",
-    // 没有默认导出时, 编译器会创建一个默认导出
-    "allowSyntheticDefaultImports": true,
-    // 允许export= 导出, 由import from导入
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "target": "ES2015",
+    // 目标js版本
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "./dist",
     "esModuleInterop": true,
-    // 禁止对同一个文件的不一致的引用
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    // 装饰器配置
+    //    "target": "es6",
+    //    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom"
+    ]
+    //    "experimentalDecorators": true,
+    //    "emitDecoratorMetadata": true
   },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  }
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
