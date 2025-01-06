@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/main.js"
+    "dev": "nodemon src/main.ts"
   },
   "config": {
     "commitizen": {
@@ -46,8 +46,21 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
+    "@types/log4js": "^2.3.5",
+    "@types/mysql": "^2.15.26",
+    "@types/node": "^22.10.5",
+    "@types/qs": "^6.9.17",
+    "@types/request": "^2.48.12",
+    "@types/sequelize": "^4.28.20",
     "cz-git": "^1.9.1",
+    "eslint": "^9.17.0",
     "jimp": "^0.22.7",
-    "nodemon": "^2.0.15"
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }

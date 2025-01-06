@@ -11,13 +11,14 @@ const static = require('koa-static')
 // const views = require('koa-views')
 const app = new koa()
 const path = require('path')
+const { logger } = require('../log/log')
 
 // 跨域
 app.use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin', '*')
-    ctx.set('Access-Control-Allow-Headers', 'Content-Type')
-    ctx.set('Access-Control-Allow-Methods', 'POST')
-    await next()
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type')
+  ctx.set('Access-Control-Allow-Methods', 'POST')
+  await next()
 })
 
 //开放html模板的静态目录
@@ -48,14 +49,16 @@ app.use(template())
 }))*/
 
 app.use(koabody({
-    multipart: true, //支持图片文件
-    formidable: {
-        uploadDir: path.join(__dirname, '../upload'), //设置上传目录
-        keepExtensions: true, //保留拓展名
-    }
+  multipart: true, //支持图片文件
+  formidable: {
+    uploadDir: path.join(__dirname, '../upload'), //设置上传目录
+    keepExtensions: true //保留拓展名
+  }
 }))
 
 app.use(parameter(app))
+
+// app.use(logger)
 
 //开放静态资源路径
 app.use(koaStatic(path.join(__dirname, '../upload')))
@@ -65,8 +68,12 @@ app.use(router.routes())
 
 //统一的错误处理:
 app.on('error', (ctx) => {
-    console.log('错误统一处理')
-    console.log(ctx)
+  console.log('错误统一处理')
+  console.log(ctx)
+  ctx.body = {
+    code: 500,
+    msg: '你遇到了一个错误'
+  }
 })
 
 // 导出:

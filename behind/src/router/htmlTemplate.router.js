@@ -6,7 +6,7 @@ const template = require('koa-html-template')
 router.get('/', index)
 
 async function index(ctx) {
-    console.log('index router')
+
     await ctx.template('index.html', {
     // await ctx.render('index.html', {
         demo: "run demo"
