@@ -55,7 +55,6 @@ app.use(koabody({
     }
 }))
 
-
 app.use(parameter(app))
 
 //开放静态资源路径
