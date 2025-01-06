@@ -1,6 +1,7 @@
 //用户模块
 const Router = require("koa-router")
 
+const UserControllerEle=require("../controller/user.controller")
 //controller
 const {
     register,
@@ -11,11 +12,9 @@ const {
     returnUserIsAdmin,
     returnUserInfoByEmail,
     returnUserHeadImg,
-    returnUserAllPostedCommented
-} = require("../controller/user.controller")
-
-
-const userC = require("../controller/user.controller")
+    returnUserAllPostedCommented,
+  miniLogin
+} = new UserControllerEle()
 
 const {
     //验证用户是否存在
@@ -69,6 +68,6 @@ router.post("/becomeAdmin",)
 /**
  * 微信用户登录接口
  */
-router.post("/miniLogin", openidAuth, userC.miniLogin)
+router.post("/miniLogin", openidAuth, miniLogin)
 
 module.exports = router

@@ -4,14 +4,13 @@ const koabody = require('koa-body')
 const koaStatic = require('koa-static')
 //参数校验
 const parameter = require('koa-parameter')
-// 引入 koa-html-template
 const template = require('koa-html-template')
-// const Static = require('static-resource-plugin')
 const static = require('koa-static')
-// const views = require('koa-views')
 const app = new koa()
 const path = require('path')
 const { logger } = require('../log/log')
+const { router: swaggerDec } = require('../config/swagger')
+require('babel-register')
 
 // 跨域
 app.use(async (ctx, next) => {
@@ -20,16 +19,31 @@ app.use(async (ctx, next) => {
   ctx.set('Access-Control-Allow-Methods', 'POST')
   await next()
 })
-
-//开放html模板的静态目录
-app.use(static(path.join(__dirname, '../static/views/'), { extension: 'html' }))
-app.use(static(path.join(__dirname, '../static')))
-/* @author 张嘉凯
- * @date 2023/6/21 @time 15:21
- * 存放文章图片
-*/
-app.use(static(path.join(__dirname, '../static/images/markdown')))
-app.use(template())
+  //开放html模板的静态目录
+  .use(static(path.join(__dirname, '../static/views/'), { extension: 'html' }))
+  .use(static(path.join(__dirname, '../static')))
+  .use(static(path.join(__dirname, '../static/images/markdown')))
+  .use(template())
+  .use(koabody({
+    multipart: true, //支持图片文件
+    formidable: {
+      uploadDir: path.join(__dirname, '../upload'), //设置上传目录
+      keepExtensions: true //保留拓展名
+    }
+  }))
+  .use(parameter(app))
+  .use(koaStatic(path.join(__dirname, '../upload')))
+  .use(koaStatic(path.join(__dirname, '../bonus')))
+  .use(router.routes())
+  .use(swaggerDec.routes(), swaggerDec.allowedMethods())
+  .on('error', (ctx) => {
+    console.log('错误统一处理')
+    console.log(ctx)
+    ctx.body = {
+      code: 500,
+      msg: '你遇到了一个错误'
+    }
+  })
 // 接受文件
 /*app.use(koaBody({
     multipart: true,
@@ -47,34 +61,5 @@ app.use(template())
     },
     parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
 }))*/
-
-app.use(koabody({
-  multipart: true, //支持图片文件
-  formidable: {
-    uploadDir: path.join(__dirname, '../upload'), //设置上传目录
-    keepExtensions: true //保留拓展名
-  }
-}))
-
-app.use(parameter(app))
-
-// app.use(logger)
-
-//开放静态资源路径
-app.use(koaStatic(path.join(__dirname, '../upload')))
-app.use(koaStatic(path.join(__dirname, '../bonus')))
-//挂载
-app.use(router.routes())
-
-//统一的错误处理:
-app.on('error', (ctx) => {
-  console.log('错误统一处理')
-  console.log(ctx)
-  ctx.body = {
-    code: 500,
-    msg: '你遇到了一个错误'
-  }
-})
-
 // 导出:
 module.exports = app
