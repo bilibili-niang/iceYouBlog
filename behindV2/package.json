@@ -1,0 +1,55 @@
+{
+  "name": "koa-typescript-sequlize-swagger",
+  "version": "1.0.5",
+  "main": "index.js",
+  "repository": "https://github.com/bilibili-niang/koa-typeScript-sequlize-swagger.git",
+  "scripts": {
+    "devLocal": "dotenv -e .env.development nodemon ./src/main.ts",
+    "dev": "dotenv -e .env nodemon ./src/main.ts",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "keywords": [
+    "koa",
+    "sequlize",
+    "template"
+  ],
+  "author": "iceStone",
+  "license": "MIT",
+  "description": "nodejs的后端模板,使用了koa,typescript,koa-swagger-decorator,zod等",
+  "dependencies": {
+    "@types/koa-static": "^4.0.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^16.4.7",
+    "dotenv-cli": "^8.0.0",
+    "koa": "^2.13.1",
+    "koa-body": "^6.0.1",
+    "koa-bodyparser": "^4.4.1",
+    "koa-onerror": "^4.2.0",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.21",
+    "log4js": "^6.9.1",
+    "module-alias": "^2.2.3",
+    "mysql2": "^3.12.0",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.5",
+    "sequelize-typescript": "^2.1.6",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@koa/router": "^12.0.0",
+    "@types/koa__router": "^12.0.0",
+    "@types/koa": "^2.15.0",
+    "@types/koa-bodyparser": "^4.3.12",
+    "@types/lodash": "^4.17.14",
+    "koa-swagger-decorator": "^2.2.1",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
