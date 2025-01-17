@@ -1,0 +1,64 @@
+// tsconfig.json
+{
+  "noImplicitAny": true,
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "target": "es6",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+      "src/*": [
+        "./src/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+      "@constant/*": [
+        "./src/constant/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    //    "target": "ES2015",
+    // 目标js版本
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "skipLibCheck": true,
+    // 装饰器配置
+    //    "target": "es6",
+    //    "module": "commonjs",
+    "lib": [
+      "es6",
+      "dom"
+    ]
+    //    "experimentalDecorators": true,
+    //    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

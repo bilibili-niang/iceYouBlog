@@ -1,3 +1,4 @@
+// export {};
 const app = require("./app");
 // 这里只用引入server的配置
 const {server} = require("./config/default");
@@ -77,4 +78,5 @@ app.listen(server.port, async () => {
     fileNameAndPath
   });
   console.log(`server is running at 127.0.0.1:${server.port}`);
+  console.log(`swagger is running at 127.0.0.1:${server.port}/swagger-html`);
 });

@@ -5,7 +5,7 @@
         <ice-title>
           {{ item.title }}
         </ice-title>
-        <ice-button @click="goToRead(item.id)">read</ice-button>
+        <ice-button @click="goToRead(item.id)">阅读</ice-button>
       </template>
       <template v-slot:body>
         <div class="ice-column">
@@ -26,13 +26,13 @@
             {{ item.updatedAt }} - 最后修改于{{ oldData }}天
           </ice-text>
           <ice-text>
-            <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1='+item.tag1">
+            <ice-link :tag="item.tag1" v-if="item.tag1" :href="'#/read/readTag?tag1=' + item.tag1">
               {{ item.tag1 }}
             </ice-link>
-            <ice-link :tag="item.tag2" v-if="item.tag2" :href="'#/read/readTag?tag1='+item.tag2">
+            <ice-link :tag="item.tag2" v-if="item.tag2" :href="'#/read/readTag?tag1=' + item.tag2">
               {{ item.tag2 }}
             </ice-link>
-            <ice-link :tag="item.tag3" v-if="item.tag3" :href="'#/read/readTag?tag1='+item.tag3">
+            <ice-link :tag="item.tag3" v-if="item.tag3" :href="'#/read/readTag?tag1=' + item.tag3">
               {{ item.tag3 }}
             </ice-link>
           </ice-text>
@@ -62,7 +62,7 @@ const oldData = ref('')
 
 const randomRef = Math.random() * 1000
 
-const DateDiffer = (Date_end) => {
+const DateDiffer = Date_end => {
   //date1结束时间
   let date1 = new Date(Date_end)
   //date2当前时间
@@ -74,10 +74,9 @@ const DateDiffer = (Date_end) => {
   oldData.value = diff / (24 * 60 * 60 * 1000)
 }
 
-
 const router = useRouter()
 // 跳转阅读
-const goToRead = (id) => {
+const goToRead = id => {
   console.log('id', id)
   router.push({
     name: 'markDownRead',
@@ -118,5 +117,4 @@ init()
   .indexCard {
   }
 }
-
 </style>

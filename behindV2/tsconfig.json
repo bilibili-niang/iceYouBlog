@@ -1,0 +1,41 @@
+{
+  "noImplicitAny": true,
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "target": "es6",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/type",
+      "./node_modules/koa-swagger-decorator/dist/types"
+    ],
+    // 启用装饰器
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

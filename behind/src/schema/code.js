@@ -49,8 +49,8 @@ const code = seq.define('markdown_code', {
     }
 })
 
-/*code.sync({
+code.sync({
     // force: 'true'
-})*/
+})
 
 module.exports = code

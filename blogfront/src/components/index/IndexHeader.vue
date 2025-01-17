@@ -208,13 +208,13 @@ const goToUserInf = () => {
 };
 const goToUserHistory = () => {
   const routeUrl = router.resolve({
-    path: "/myselfHistory",
+    path: "/myselfHistory"
   });
   window.open(routeUrl.href, "_blank");
 };
 const goToUserSearchHistory = () => {
   const routeUrl = router.resolve({
-    path: "/searchHistory",
+    path: "/searchHistory"
   });
   window.open(routeUrl.href, "_blank");
 };

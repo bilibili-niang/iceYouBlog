@@ -1,5 +1,9 @@
 <template>
-  <div class="articleEdit" v-if="closeAble">
+  <div class="articleEdit" v-if="closeAble"
+  @click="()=>{
+    initMarkdownData()
+  }"
+  >
     <ice-row flexWrap class="article-info-container">
       <ice-row width="fit-content">
         <ice-text>
@@ -29,13 +33,13 @@
       <upload :action="actionUrl" :data="data" @result="getResult"></upload>
     </ice-row>
     <v-md-editor
-        :include-level="[1,2,3,4,5]"
-        @save="drawer = true"
-        v-model="markdownData.content"
-        :disabled-menus="[]"
-        @upload-image="handleUploadImage"
-        :autofocus="true"
-        :toolbar="customToolBar"
+      :include-level="[1,2,3,4,5]"
+      @save="drawer = true"
+      v-model="markdownData.content"
+      :disabled-menus="[]"
+      @upload-image="handleUploadImage"
+      :autofocus="true"
+      :toolbar="customToolBar"
     ></v-md-editor>
     <el-drawer v-model="drawer" title="填写关于该文章的其他信息" size="70%" direction="ttb" :with-header="false">
       <ice-row flexWrap>
@@ -72,13 +76,13 @@
       <div class="demo-image__lazy">
         <div v-for="(item,index) in headImgList" :key="index" class="demo-image__preview" @click="setHeadImg(item.url)">
           <el-image
-              :src="item.url"
-              lazy
-              fit="cover"
-              :preview-src-list="previewImgList"
-              :initial-index="index"
-              :hide-on-click-modal="true"
-              :close-on-press-escape="true"
+            :src="item.url"
+            lazy
+            fit="cover"
+            :preview-src-list="previewImgList"
+            :initial-index="index"
+            :hide-on-click-modal="true"
+            :close-on-press-escape="true"
           />
         </div>
       </div>
@@ -92,12 +96,14 @@
 </template>
 
 <script setup>
+import './index.less'
 import {useRoute} from "vue-router";
 import {onMounted, ref} from 'vue'
 import upload from '@/components/common/imgUpload.vue'
 import {iceMessage} from 'icepro'
 import http from "@/api/request"
 import api from "@/api";
+const route = useRoute();
 
 const id = ref(0)
 
@@ -118,8 +124,8 @@ const customToolBar = ref({
     title: 'hover时显示的标题',
     action(editor) {
       console.log(editor)
-    },
-  },
+    }
+  }
 })
 
 
@@ -132,9 +138,6 @@ const closeAble = ref(true)
 
 const actionUrl = '/file/markdownImages'
 
-onMounted(() => {
-  initMarkdownData();
-});
 
 function getResult(res) {
   if (res) {
@@ -154,7 +157,7 @@ async function selectHeadImg() {
       method: 'POST',
       headers: {
         token: true
-      },
+      }
     });
     if (res.success) {
       headImgList.value = res.result;
@@ -171,21 +174,20 @@ function handleUploadImage(event, insertImage, files) {
   form.append('file', files);
   insertImage({
     url: '/images/2.png',
-    desc: '回显图片名称',
+    desc: '回显图片名称'
   });
 }
 
-const route = useRoute();
-
-const initMarkdownData = async () => {
-  id.value = Number(route.query?.id) || 0;
+const initMarkdownData = () => {
+  console.log('route', route)
+  id.value = route.query?.id
   if (id.value !== 0) {
     alertMessage('获取文章信息')
-    await api.getMarkdown({id: id.value})
-        .then(res => {
-          markdownData.value = res.result;
-          alertMessage('信息加载成功')
-        })
+    api.getMarkdown({id: id.value})
+      .then(res => {
+        markdownData.value = res.result;
+        alertMessage('信息加载成功')
+      })
   }
 }
 
@@ -193,27 +195,27 @@ async function submit() {
   if (id.value === 0) {
     alertMessage('创建文章');
     api.createMarkdown(markdownData.value)
-        .then(res => {
-          if (res.success) {
-            alertMessage(res.message);
-            drawer.value = false;
-            setTimeout(() => {
-              closeAble.value = !closeAble.value;
-            }, 1500)
-          }
-        })
+      .then(res => {
+        if (res.success) {
+          alertMessage(res.message);
+          drawer.value = false;
+          setTimeout(() => {
+            closeAble.value = !closeAble.value;
+          }, 1500)
+        }
+      })
   } else {
     alertMessage('更新文章');
     await api.updateMarkdown({markdownData: markdownData.value})
-        .then(res => {
-          if (res.success) {
-            alertMessage('数据更新');
-            initMarkdownData();
-            drawer.value = false;
-          } else {
-            alertMessage(res.msg)
-          }
-        })
+      .then(res => {
+        if (res.success) {
+          alertMessage('数据更新');
+          initMarkdownData();
+          drawer.value = false;
+        } else {
+          alertMessage(res.msg)
+        }
+      })
   }
 }
 
@@ -223,49 +225,6 @@ function alertMessage(title, sub) {
     color: 'yinzhu'
   })
 }
+onMounted(initMarkdownData);
+
 </script>
-
-<style scoped lang="less">
-.article-info-container {
-  margin: @m-large 0;
-}
-
-.articleEdit {
-  width: 65vw;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-
-  :deep div.el-drawer__body {
-    padding: .3rem;
-  }
-}
-
-.v-md-editor {
-  min-height: 99vh;
-  flex: 1;
-}
-
-//头图
-.demo-image__lazy {
-  height: 100vh;
-  overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-
-  .demo-image__preview {
-    display: flex;
-    width: 50%;
-  }
-
-  .el-image {
-    padding: .3rem;
-
-    img {
-      display: flex;
-      width: 70%;
-    }
-  }
-}
-</style>

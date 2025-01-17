@@ -12,8 +12,8 @@ const config=seq.define('markdown_config',{
 
 })
 
-/*config.sync({
+config.sync({
     // force: 'true'
-})*/
+})
 
 module.exports = config

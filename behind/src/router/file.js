@@ -1,14 +1,18 @@
-const Router = require('koa-router');
+const Router = require('koa-router')
 const {
-    authBybody,
-    auth
-} = require('../middleware/user.middleware');
-const router = new Router({prefix: '/file'});
+  authBybody,
+  auth
+} = require('../middleware/user.middleware')
+const router = new Router({ prefix: '/file' })
+
+const UserController = require('../controller/user.controller')
+
 const {
-    updateUserAvatar
-} = require('../controller/user.controller');
+  updateUserAvatar
+} = new UserController()
+
 const {
-    uploadMarkdownImage
+  uploadMarkdownImage
 } = require('../controller/markdown.controller')
 
 /* @author icestone , 15:15

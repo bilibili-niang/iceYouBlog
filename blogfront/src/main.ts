@@ -10,7 +10,9 @@ import 'hover.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 导入less
 import 'icepro/src/assets/common.less'
+
 import icepro from 'icepro'
+
 /*引入公共样式*/
 import '@/style/reset.less'
 import '@/style/common.less'
@@ -28,7 +30,8 @@ icepro.install(app)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+// icepro组件
+/*app.component('iceRow', iceRow)
+app.component('iceColumn', iceColumn)*/
 
-app
-  .use(router)
-  .mount('#app')
+app.use(router).mount('#app')

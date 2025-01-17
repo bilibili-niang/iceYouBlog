@@ -95,8 +95,8 @@ timestamps:false
 * */
 
 //同步并创建表,创建完之后可以注释掉了
-/*notes.sync({
+notes.sync({
     // force: 'true'
-})*/
+})
 
 module.exports = notes

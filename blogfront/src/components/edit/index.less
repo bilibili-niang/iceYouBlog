@@ -1,0 +1,42 @@
+.article-info-container {
+  margin: @m-large 0;
+}
+
+.articleEdit {
+  width: 65vw;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  :deep div.el-drawer__body {
+    padding: .3rem;
+  }
+}
+
+.v-md-editor {
+  min-height: 99vh;
+  flex: 1;
+}
+
+//头图
+.demo-image__lazy {
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .demo-image__preview {
+    display: flex;
+    width: 50%;
+  }
+
+  .el-image {
+    padding: .3rem;
+
+    img {
+      display: flex;
+      width: 70%;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
+import { useRouter } from 'vue-router'
 
 const routes = [
   {
@@ -48,7 +49,7 @@ const routes = [
         meta: { title: '关于此标签的数据' },
         component: () => import('@/components/read/ReadTag.vue')
       }
-    ],
+    ]
   },
   // ikun语录
   {
@@ -60,7 +61,7 @@ const routes = [
         name: 'wordsIndex',
         component: () => import('@/views/words/index/index.vue')
       }
-    ],
+    ]
   },
   {
     path: '/user',
@@ -71,27 +72,27 @@ const routes = [
         path: '/user/',
         name: 'user',
         meta: { title: '用户' },
-        component: () => import('../views/User.vue'),
+        component: () => import('../views/user/index.vue')
       },
       {
         path: '/user/headImg',
         name: 'headImg',
         meta: { title: '头图' },
-        component: () => import('@/components/user/HeadImg.vue'),
+        component: () => import('@/components/user/HeadImg.vue')
       },
       {
         path: '/user/postedComments',
         name: 'postedComments',
         meta: { title: '已发布评论' },
-        component: () => import('@/components/user/PostedComments.vue'),
+        component: () => import('@/components/user/PostedComments.vue')
       },
       {
         path: '/user/about',
         name: 'about',
         meta: { title: '关于该用户' },
-        component: () => import('@/components/user/About.vue'),
-      },
-    ],
+        component: () => import('@/components/user/About.vue')
+      }
+    ]
   },
   {
     path: '/edit',
@@ -102,8 +103,8 @@ const routes = [
         name: 'vMdEditor',
         meta: { title: '编辑文章' },
         component: () => import('@/components/edit/Vedit.vue')
-      },
-    ],
+      }
+    ]
   },
   {
     path: '/noteList',
@@ -165,7 +166,7 @@ const routes = [
         meta: { title: '编辑文章' },
         component: () => import('@/components/edit/Vedit.vue')
       }
-    ],
+    ]
   },
   {
     path: '/code',
@@ -182,7 +183,7 @@ const routes = [
         meta: { title: 'code detail' },
         component: () => import('@/components/code/Detail.vue')
       }
-    ],
+    ]
   },
   {
     path: '/friend',
@@ -192,8 +193,8 @@ const routes = [
         path: '/friend/links',
         name: 'links',
         component: () => import('@/components/friend/Links.vue')
-      },
-    ],
+      }
+    ]
   },
   {
     path: '/admin',
@@ -216,8 +217,8 @@ const routes = [
         name: 'AllMarkdown',
         meta: { title: '操作所有文章' },
         component: () => import('@/components/admin/AllMarkdown.vue')
-      },
-    ],
+      }
+    ]
   },
   {
     path: '/bonus',
@@ -235,7 +236,7 @@ const routes = [
     path: '/tools',
     name: 'tools',
     meta: {
-      title: '工具!',
+      title: '工具!'
     },
     component: () => import('@/views/tools/index.vue')
   },
@@ -243,7 +244,7 @@ const routes = [
     path: '/test',
     name: 'test',
     meta: {
-      title: 'test',
+      title: 'test'
     },
     component: () => import('@/views/Test.vue')
   },
@@ -251,7 +252,7 @@ const routes = [
     path: '/404',
     name: 'NotFound',
     meta: {
-      title: 'Page not found',
+      title: 'Page not found'
     },
     component: () => import('@/views/NotFound.vue')
   },
@@ -272,9 +273,7 @@ const router = createRouter({
 })
 
 // 隐藏侧边栏的routers
-const hideScrollRouters = [
-  '/edit/vMdEditor'
-]
+const hideScrollRouters = ['/edit/vMdEditor']
 
 router.beforeEach((to: any, from, next) => {
   // 判断是否有标题
@@ -304,3 +303,18 @@ router.beforeEach((to: any, from, next) => {
 })
 
 export default router
+
+const jumpRouter = useRouter()
+
+// 去首页
+export const toIndex = () => {
+  jumpRouter.push({
+    name: 'index'
+  })
+}
+
+export const toUser = () => {
+  jumpRouter.push({
+    name: 'user'
+  })
+}
