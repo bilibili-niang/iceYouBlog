@@ -1,6 +1,6 @@
 import { SwaggerRouter } from 'koa-swagger-decorator'
-import { UserController } from '@/controller/User'
 import { swaggerSpec } from '@/config/swagger'
+import { MarkdownClass } from '@/controller/Markdown'
 
 const router = new SwaggerRouter({
   spec: swaggerSpec,
@@ -8,6 +8,6 @@ const router = new SwaggerRouter({
 router.swagger()
 
 router
-  .applyRoute(UserController)
+  .applyRoute(MarkdownClass)
 
 module.exports = router

@@ -1,13 +1,14 @@
 import { Sequelize } from 'sequelize-typescript'
 import User from '@/schema/user'
 import * as process from 'node:process'
+import MarkdownFile from '@/schema/markdown'
 
 //实例化对象
 const seq = new Sequelize(process.env.DATABASE_NAME, process.env.USER_NAME, process.env.DATABASE_PASSWORD, {
     dialect: 'mysql',
     port: Number(process.env.DATABASE_PORT),
     logging: false,
-    models: [User]
+    models: [User,MarkdownFile]
   })
 
 ;(async () => {

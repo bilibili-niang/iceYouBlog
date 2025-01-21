@@ -76,6 +76,26 @@ class UserController {
   async deleteUser(ctx: Context, args: ParsedArgs<IDeleteUserQuery>) {
     await deleteByIdMiddleware(ctx, User, '用户')
   }
+
+
+  @routeConfig({
+    method:'post',
+    path:'/user/login',
+    summary:'用户登录',
+    tags:['用户','登录'],
+  })
+  @body(CreateUserReq)
+  async login(ctx:Context,args:ParsedArgs<ICreateUserReq>){
+    await User.findOne({
+      where:{
+        userName:args.body.userName,
+        password:args.body.password
+      }
+    })
+      .then(res=>{
+
+    })
+  }
 }
 
 export { UserController }
