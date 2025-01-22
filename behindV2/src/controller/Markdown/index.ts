@@ -16,7 +16,7 @@ import {
 import { authMiddleware } from '@/middleware/auth'
 import Markdown from '@/schema/markdown'
 import { error } from '@/config/log4j'
-import { ctxBody, deleteByIdMiddleware, paginationMiddleware } from '@/utils'
+import { ctxBody, paginationMiddleware } from '@/utils'
 import { paginationQuery } from '@/controller/common/queryType'
 import User from '@/schema/user'
 

@@ -58,6 +58,7 @@ app
     error('响应错误,' + JSON.stringify(err))
   })
   .use((ctx, next) => {
+    ctx.status = 500
     console.log('最后的ctx')
     trace('未知url' + ctx.request.url)
     ctx.body = ctxBody({

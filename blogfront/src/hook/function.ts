@@ -1,4 +1,4 @@
-import {iceMessage} from 'icepro'
+import { iceMessage } from 'icepro'
 
 class Function {
   alert = (msg, title = 'info') => {
@@ -22,11 +22,13 @@ class Function {
       console.log(url)
     }
   }
-
 }
 
 export const alert = (msg, title = 'info') => {
   iceMessage(msg)
+}
+const catchError = (e: string) => {
+  alert(e)
 }
 
 export const fun = {
@@ -41,4 +43,5 @@ export const fun = {
     }
   },
   alert,
+  catchError
 }

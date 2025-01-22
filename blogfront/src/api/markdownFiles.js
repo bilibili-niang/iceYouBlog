@@ -40,7 +40,7 @@ export default {
         return get('/home')
     },
     async postHomeData(params) {
-        return post('/home', params)
+        return get('/markdown/list', params)
     },
     /* @author 张嘉凯
      * @date 2023/8/2 @time 15:41
