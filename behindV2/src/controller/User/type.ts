@@ -11,31 +11,46 @@ const CreateUserReq = z.object({
 const CreateUserRes = commonResponse({
   data: z.object({
     count: z.number(),
-    rows: z.array(z.object({
-      id: z.number(),
-      userName: z.string(),
-      createdAt: z.string(),
-      updatedAt: z.string()
-    }))
-  })
-})
-
-// 删除用户的query
-export const DeleteUserQuery = z.object({
-  id: z.string().nonempty()
+    rows: z.array(
+      z.object({
+        id: z.number(),
+        userName: z.string(),
+        createdAt: z.string(),
+        updatedAt: z.string(),
+      })
+    ),
+  }),
 })
 
 // 删除用户的响应
-const DeleteUserRes = z.object({
-  id: z.string(),
+export const DeleteUserQuery = commonResponse({
+  data: z.object({
+    id: z.string().nonempty(),
+  }),
 })
 
-export type ICreateUserRes = z.infer<typeof CreateUserRes>;
-export type ICreateUserReq = z.infer<typeof CreateUserReq>;
-export type IDeleteUserQuery = z.infer<typeof DeleteUserQuery>;
+// 删除用户的响应
+const DeleteUserRes = commonResponse({
+  data: z.object({
+    id: z.string(),
+  }),
+})
 
-export {
-  CreateUserRes,
-  CreateUserReq,
-  DeleteUserRes
-}
+// 用户登录的响应
+const UserLoginRes = commonResponse({
+  data: z.object({
+    id: z.string().nonempty(),
+    createdAt: z.string().nonempty(),
+    updatedAt: z.string().nonempty(),
+    deletedAt: z.string().nonempty(),
+    userName: z.string().nonempty(),
+    password: z.string().nonempty(),
+    token: z.string().nonempty(),
+  }),
+})
+
+export type ICreateUserRes = z.infer<typeof CreateUserRes>
+export type ICreateUserReq = z.infer<typeof CreateUserReq>
+export type IDeleteUserQuery = z.infer<typeof DeleteUserQuery>
+
+export { CreateUserRes, CreateUserReq, DeleteUserRes, UserLoginRes }
