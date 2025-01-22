@@ -10,13 +10,25 @@ import { info } from '@/config/log4j'
 
 const env = dotenv.config().parsed
 
-app.listen(Number(env.PORT), () => {
-  // 清除一下控制台
-  // process.stdout.write('\x1Bc')
-  info(`Server is running at http://localhost:${env.PORT}`)
-  console.log(`Server is running at http://localhost:${env.PORT}`)
-  console.log(`swaggerDoc is running at http://localhost:${env.PORT}/swagger-html`)
-})
+// 端口被占用时递归监听新端口
+const startServer = (port: number) => {
+  const server = app.listen(port)
+    .on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        info(`端口 ${port} 已被占用, 尝试端口 ${port + 1}`)
+        server.close()
+        startServer(port + 1)
+      }
+    })
+    .on('listening', () => {
+      info(`服务器运行在 http://localhost:${port}`)
+      console.log(`服务器运行在 http://localhost:${port}`)
+      console.log(`swagger文档运行在 http://localhost:${port}/swagger-html`)
+    })
+}
+
+startServer(Number(env.PORT))
+
 
 export {
   env
