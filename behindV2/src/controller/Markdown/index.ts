@@ -9,9 +9,13 @@ import {
 import {
   CreateMarkdownReq,
   CreateMarkdownRes,
+  GetMarkdownDetailRes,
   GetMarkdownListRes,
   ICreateMarkdownReq,
   IGetMarkdownListReq,
+  UpdateMarkdownReq,
+  UpdateMarkdownRes,
+  IUpdateMarkdownReq,
 } from './type'
 import { authMiddleware } from '@/middleware/auth'
 import Markdown from '@/schema/markdown'
@@ -25,7 +29,7 @@ class MarkdownClass {
     method: 'post',
     path: '/markdown/create',
     summary: '创建',
-    tags: ['markdown'],
+    tags: ['文章'],
     security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
   })
   @body(CreateMarkdownReq)
@@ -37,6 +41,7 @@ class MarkdownClass {
       const markdown = await Markdown.create({
         ...args.body,
         userId: user.id,
+        email: user.email || '', // 使用 token 中的邮箱
       })
       ctx.body = ctxBody({
         success: true,
@@ -59,7 +64,7 @@ class MarkdownClass {
     method: 'get',
     path: '/markdown/list',
     summary: '获取文章列表',
-    tags: ['markdown'],
+    tags: ['文章'],
     security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
     request: {
       query: paginationQuery(),
@@ -89,6 +94,90 @@ class MarkdownClass {
         },
       ],
     })
+  }
+
+  @routeConfig({
+    method: 'get',
+    path: '/markdown/detail/:id',
+    summary: '获取文章详情',
+    tags: ['文章'],
+    security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
+  })
+  @responses(GetMarkdownDetailRes)
+  async getMarkdownDetail(ctx: Context) {
+    try {
+      const { id } = ctx.params
+      const markdown = await Markdown.findByPk(id)
+
+      if (!markdown) {
+        ctx.body = ctxBody({
+          success: false,
+          code: 404,
+          msg: '文章不存在',
+          data: null,
+        })
+        return
+      }
+
+      ctx.body = ctxBody({
+        success: true,
+        code: 200,
+        msg: '获取文章详情成功',
+        data: markdown,
+      })
+    } catch (error) {
+      ctx.body = ctxBody({
+        success: false,
+        code: 500,
+        msg: '获取文章详情失败',
+        data: error,
+      })
+    }
+  }
+
+  @routeConfig({
+    method: 'put',
+    path: '/markdown/update',
+    summary: '更新文章',
+    tags: ['文章'],
+    security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
+  })
+  @body(UpdateMarkdownReq)
+  @responses(UpdateMarkdownRes)
+  @middlewares([authMiddleware])
+  async updateMarkdown(ctx: Context, args: ParsedArgs<IUpdateMarkdownReq>) {
+    try {
+      const { id, ...updateData } = args.body
+
+      const markdown = await Markdown.findByPk(id)
+
+      if (!markdown) {
+        ctx.body = ctxBody({
+          success: false,
+          code: 404,
+          msg: '文章不存在',
+          data: null,
+        })
+        return
+      }
+
+      // 更新文章
+      await markdown.update(updateData)
+
+      ctx.body = ctxBody({
+        success: true,
+        code: 200,
+        msg: '更新文章成功',
+        data: markdown,
+      })
+    } catch (error) {
+      ctx.body = ctxBody({
+        success: false,
+        code: 500,
+        msg: '更新文章失败',
+        data: error,
+      })
+    }
   }
 }
 

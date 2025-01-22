@@ -23,6 +23,15 @@ export const authMiddleware = async (ctx: Context, next: Next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    if (!decoded) {
+      ctx.body = ctxBody({
+        success: false,
+        code: 401,
+        msg: 'token无效',
+        data: null,
+      })
+      return
+    }
     ctx.state.user = decoded
     await next()
   } catch (error) {

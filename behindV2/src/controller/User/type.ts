@@ -5,6 +5,7 @@ import { commonResponse } from '@/controller/common'
 const CreateUserReq = z.object({
   userName: z.string().nonempty(),
   password: z.string().nonempty(),
+  email: z.string().email().optional(),
 })
 
 // 创建用户的响应
@@ -15,6 +16,7 @@ const CreateUserRes = commonResponse({
       z.object({
         id: z.number(),
         userName: z.string(),
+        email: z.string().optional(),
         createdAt: z.string(),
         updatedAt: z.string(),
       })
@@ -44,13 +46,20 @@ const UserLoginRes = commonResponse({
     updatedAt: z.string().nonempty(),
     deletedAt: z.string().nonempty(),
     userName: z.string().nonempty(),
+    email: z.string().optional(),
     password: z.string().nonempty(),
     token: z.string().nonempty(),
   }),
 })
 
-export type ICreateUserRes = z.infer<typeof CreateUserRes>
-export type ICreateUserReq = z.infer<typeof CreateUserReq>
-export type IDeleteUserQuery = z.infer<typeof DeleteUserQuery>
+export interface ICreateUserReq {
+  userName: string
+  password: string
+  email?: string
+}
+
+export interface IDeleteUserQuery {
+  id: string
+}
 
 export { CreateUserRes, CreateUserReq, DeleteUserRes, UserLoginRes }

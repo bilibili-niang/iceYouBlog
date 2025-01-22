@@ -7,7 +7,6 @@ const router = new SwaggerRouter({
 })
 router.swagger()
 
-router
-  .applyRoute(MarkdownClass)
+router.applyRoute(MarkdownClass)
 
 module.exports = router

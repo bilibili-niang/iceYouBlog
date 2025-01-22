@@ -1,12 +1,11 @@
 import { SwaggerRouter } from 'koa-swagger-decorator'
-import { UserController } from '@/controller/User'
+import { SiteConfigClass } from '@/controller/SiteConfig'
 import { swaggerSpec } from '@/config/swagger'
 
 const router = new SwaggerRouter({
   spec: swaggerSpec,
 })
-router.swagger()
 
-router.applyRoute(UserController)
+router.applyRoute(SiteConfigClass)
 
 module.exports = router

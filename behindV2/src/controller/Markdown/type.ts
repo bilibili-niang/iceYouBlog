@@ -1,22 +1,20 @@
 // markdown的请求,响应定义
-
 import { z } from 'koa-swagger-decorator'
 import { commonResponse } from '@/controller/common'
 
-// 创建 Markdown 的请求类型
-export const CreateMarkdownReq = z.object({
-  email: z.string().optional().describe('拥有者邮箱'),
+// 基础 Markdown 字段
+const BaseMarkdownFields = {
   title: z.string().optional().describe('文章名称'),
   content: z
     .string()
     .transform(str => str.replace(/\\n/g, '\n').replace(/\r/g, ''))
     .optional()
     .describe('文章内容'),
-  states: z.number().default(0).describe('文章的状态: 0草稿,1发布,2私密'),
+  states: z.number().optional().describe('文章的状态: 0草稿,1发布,2私密'),
   description: z.string().optional().describe('文章的描述'),
   praise: z.string().optional().describe('文章的点赞数量'),
   view: z.string().optional().describe('文章的浏览量'),
-  audit: z.string().default('1').describe('文章的审核状态: 1通过,0未通过'),
+  audit: z.string().optional().describe('文章的审核状态: 1通过,0未通过'),
   tag1: z.string().optional().describe('文章的标签1'),
   tag2: z.string().optional().describe('文章的标签2'),
   tag3: z.string().optional().describe('文章的标签3'),
@@ -29,6 +27,18 @@ export const CreateMarkdownReq = z.object({
     .string()
     .optional()
     .describe('文章自定义头图,如果没有则会加载默认'),
+  type: z.string().optional().describe('文章类型'),
+  hasOriginal: z.string().optional().describe('是否有源头'),
+  diggCount: z.string().optional().describe('点赞数量'),
+  articleType: z.string().optional().describe('文章类型'),
+  recommendLevel: z.string().optional().describe('文章置顶等级'),
+}
+
+// 创建 Markdown 的请求类型
+export const CreateMarkdownReq = z.object({
+  ...BaseMarkdownFields,
+  states: z.number().default(0).describe('文章的状态: 0草稿,1发布,2私密'),
+  audit: z.string().default('1').describe('文章的审核状态: 1通过,0未通过'),
   type: z.string().default('blog').describe('文章类型'),
   hasOriginal: z.string().default('blog').describe('是否有源头'),
   diggCount: z.string().default('0').describe('点赞数量'),
@@ -51,6 +61,33 @@ export const GetMarkdownListReq = z.object({
   states: z.number().optional().describe('文章状态：0草稿,1发布,2私密'),
 })
 
+export type IGetMarkdownListReq = z.infer<typeof GetMarkdownListReq>
+
+// 获取文章详情的请求参数
+export const GetMarkdownDetailReq = z.object({
+  id: z.string().describe('文章ID'),
+})
+
+export type IGetMarkdownDetailReq = z.infer<typeof GetMarkdownDetailReq>
+
+// 获取文章详情的响应类型
+export const GetMarkdownDetailRes = commonResponse({
+  data: CreateMarkdownReq,
+})
+
+// 更新文章的请求类型
+export const UpdateMarkdownReq = z.object({
+  id: z.string().describe('文章ID'),
+  ...BaseMarkdownFields,
+})
+
+// 更新文章的响应类型
+export const UpdateMarkdownRes = commonResponse({
+  data: UpdateMarkdownReq,
+})
+
+export type IUpdateMarkdownReq = z.infer<typeof UpdateMarkdownReq>
+
 // Markdown列表的响应
 export const GetMarkdownListRes = commonResponse({
   data: z.object({
@@ -60,5 +97,3 @@ export const GetMarkdownListRes = commonResponse({
     pageSize: z.number(),
   }),
 })
-
-export type IGetMarkdownListReq = z.infer<typeof GetMarkdownListReq>

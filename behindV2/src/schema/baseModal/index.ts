@@ -6,7 +6,7 @@ import {
   PrimaryKey,
   CreatedAt,
   UpdatedAt,
-  DeletedAt
+  DeletedAt,
 } from 'sequelize-typescript'
 
 class BaseModel extends Model {
@@ -22,21 +22,21 @@ class BaseModel extends Model {
   @CreatedAt
   @Column({
     type: DataType.DATE,
-    comment: '创建时间'
+    comment: '创建时间',
   })
   declare createdAt: Date | null
 
   @UpdatedAt
   @Column({
     type: DataType.DATE,
-    comment: '修改时间'
+    comment: '修改时间',
   })
   declare updatedAt: Date | null
 
   @DeletedAt
   @Column({
     type: DataType.DATE,
-    comment: '删除时间'
+    comment: '删除时间',
   })
   declare deletedAt: Date | null
 }

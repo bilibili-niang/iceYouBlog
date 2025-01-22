@@ -13,13 +13,37 @@ if (!fs.existsSync(logDirectory)) {
 
 log4js.configure({
   appenders: {
-    traceLog: { type: 'file', filename: path.join(logDirectory, 'trace.log'), level: 'trace' },
-    debugLog: { type: 'file', filename: path.join(logDirectory, 'debug.log'), level: 'debug' },
-    infoLog: { type: 'file', filename: path.join(logDirectory, 'info.log'), level: 'info' },
-    warnLog: { type: 'file', filename: path.join(logDirectory, 'warn.log'), level: 'warn' },
-    errorLog: { type: 'file', filename: path.join(logDirectory, 'error.log'), level: 'error' },
-    fatalLog: { type: 'file', filename: path.join(logDirectory, 'fatal.log'), level: 'fatal' },
-    allLog: { type: 'file', filename: path.join(logDirectory, 'all.log') } // 所有级别的日志都会被记录到这里
+    traceLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'trace.log'),
+      level: 'trace',
+    },
+    debugLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'debug.log'),
+      level: 'debug',
+    },
+    infoLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'info.log'),
+      level: 'info',
+    },
+    warnLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'warn.log'),
+      level: 'warn',
+    },
+    errorLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'error.log'),
+      level: 'error',
+    },
+    fatalLog: {
+      type: 'file',
+      filename: path.join(logDirectory, 'fatal.log'),
+      level: 'fatal',
+    },
+    allLog: { type: 'file', filename: path.join(logDirectory, 'all.log') }, // 所有级别的日志都会被记录到这里
   },
   categories: {
     trace: { appenders: ['traceLog', 'allLog'], level: 'trace' },
@@ -28,8 +52,8 @@ log4js.configure({
     warn: { appenders: ['warnLog', 'allLog'], level: 'warn' },
     error: { appenders: ['errorLog', 'allLog'], level: 'error' },
     fatal: { appenders: ['fatalLog', 'allLog'], level: 'fatal' },
-    default: { appenders: ['allLog'], level: 'all' }
-  }
+    default: { appenders: ['allLog'], level: 'all' },
+  },
 })
 
 // 获取特定类别的 logger 和定义日志函数等保持不变...
@@ -61,11 +85,4 @@ const fatal = (e: string) => {
   fatalLogger.fatal(e)
 }
 
-export {
-  trace,
-  debug,
-  info,
-  warn,
-  error,
-  fatal
-}
+export { trace, debug, info, warn, error, fatal }

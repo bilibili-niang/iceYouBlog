@@ -17,6 +17,7 @@ import {
 import { ParsedArgs, z } from 'koa-swagger-decorator'
 import { ICreateUserReq } from '@/controller/User/type'
 import User from '@/schema/user'
+import UserLevel from '@/schema/userLevel'
 import { ctxBody, deleteByIdMiddleware, paginationMiddleware } from '@/utils'
 import { paginationQuery } from '@/controller/common/queryType'
 
@@ -36,25 +37,70 @@ class UserController {
     },
   ])
   async CreateUser(ctx: Context, args: ParsedArgs<ICreateUserReq>) {
-    // 使用md5为密码加密
-    args.body.password = require('md5')(args.body.password)
-    await User.create(args.body)
-      .then((res: any) => {
-        ctx.body = ctxBody({
-          success: true,
-          code: 200,
-          msg: '创建用户成功',
-          data: res.dataValues,
-        })
+    try {
+      // 查找默认用户等级
+      const defaultUserLevel = await UserLevel.findOne({
+        where: {
+          levelValue: 1,
+          isAdmin: false,
+        },
       })
-      .catch(e => {
+
+      if (!defaultUserLevel) {
         ctx.body = ctxBody({
           success: false,
           code: 500,
-          msg: '创建用户失败',
-          data: e,
+          msg: '系统错误：未找到默认用户等级',
+          data: null,
         })
+        return
+      }
+
+      // 检查用户名是否已存在
+      const existingUser = await User.findOne({
+        where: {
+          userName: args.body.userName,
+        },
       })
+
+      if (existingUser) {
+        ctx.body = ctxBody({
+          success: false,
+          code: 400,
+          msg: '用户名已存在',
+          data: null,
+        })
+        return
+      }
+
+      // 创建用户
+      const user = await User.create({
+        userName: args.body.userName,
+        password: require('md5')(args.body.password),
+        email: args.body.email,
+        userLevelId: defaultUserLevel.id,
+      })
+
+      ctx.body = ctxBody({
+        success: true,
+        code: 200,
+        msg: '创建用户成功',
+        data: {
+          id: user.id,
+          userName: user.userName,
+          email: user.email,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+      })
+    } catch (error) {
+      ctx.body = ctxBody({
+        success: false,
+        code: 500,
+        msg: '创建用户失败：' + (error.message || '未知错误'),
+        data: null,
+      })
+    }
   }
 
   @routeConfig({
@@ -107,6 +153,7 @@ class UserController {
           {
             id: res.dataValues.id,
             userName: res.dataValues.userName,
+            email: res.dataValues.email,
           },
           // 建议将密钥存储在环境变量中
           process.env.JWT_SECRET,
