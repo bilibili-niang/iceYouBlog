@@ -10,20 +10,54 @@ import { ctxBody } from '@/utils'
 
 const app = new koa()
 
+// 处理 Zod 验证错误的辅助函数
+const formatZodError = (err: any) => {
+  if (Array.isArray(err) && err[0]?.code === 'invalid_type') {
+    // Zod 验证错误
+    const errors = err.map(e => ({
+      field: e.path.join('.'),
+      message: `${e.path.join('.')} ${e.message}`
+    }))
+    return {
+      msg: '参数验证失败',
+      errors
+    }
+  }
+  return {
+    msg: err.message || '服务器内部错误',
+    errors: err
+  }
+}
+
 // 监听错误的
 onError(app, {
-  json: function (err, ctx) {
-    ctx.status = 500
-    ctx.body = ctxBody({ msg: err.message })
+  json(err: any, ctx: any) {
+    ctx.status = err.status || 500
+    ctx.type = 'application/json'
+    const errorInfo = formatZodError(err.errors || err)
+    ctx.body = JSON.stringify(ctxBody({
+      success: false,
+      code: err.status || 500,
+      msg: errorInfo.msg,
+      data: errorInfo.errors
+    }))
   },
+  text() { /* 禁用文本错误响应 */ },
+  html() { /* 禁用 HTML 错误响应 */ }
 })
 
 // 跨域
-// @ts-ignore
 app
-  .on('error', async (err, ctx, next) => {
-    ctx.status = 500
-    ctx.body = ctxBody({ data: err.errors?.[0] })
+  .on('error', async (err: any, ctx: any) => {
+    ctx.status = err.status || 500
+    ctx.type = 'application/json'
+    const errorInfo = formatZodError(err.errors || err)
+    ctx.body = JSON.stringify(ctxBody({
+      success: false,
+      code: err.status || 500,
+      msg: errorInfo.msg,
+      data: errorInfo.errors
+    }))
     error('响应错误,' + JSON.stringify(err))
   })
   .use(async (ctx, next) => {
@@ -51,20 +85,33 @@ app
     })
   )
   .use(indexRouter.routes())
-  // .use(validate)
-  .on('error', async (err, ctx, next) => {
-    ctx.status = 500
-    ctx.body = err
-    error('响应错误,' + JSON.stringify(err))
+  .use(async (ctx, next) => {
+    if (ctx.status === 404) {
+      ctx.type = 'application/json'
+      ctx.body = JSON.stringify(ctxBody({
+        success: false,
+        code: 404,
+        msg: '接口不存在',
+      }))
+    } else if (ctx.status >= 500) {
+      ctx.type = 'application/json'
+      ctx.body = JSON.stringify(ctxBody({
+        success: false,
+        code: ctx.status,
+        msg: '服务器内部错误',
+      }))
+    }
+    await next()
   })
   .use((ctx, next) => {
     ctx.status = 500
+    ctx.type = 'application/json'
     console.log('最后的ctx')
     trace('未知url' + ctx.request.url)
-    ctx.body = ctxBody({
+    ctx.body = JSON.stringify(ctxBody({
       code: 500,
       msg: `这里是无人之境`,
-    })
+    }))
   })
 
 export default app

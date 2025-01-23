@@ -13,8 +13,12 @@
         >
           <ice-text>当前字数:{{ wordCount }}</ice-text>
         </IndexCard>
-        <MdRender :content="markdownData.content" :previewTheme="isDark ? 'smart-blue' :'github' " mode="preview"
-                  v-if="markdownData.content" />
+        <MdRender
+          :content="markdownData.content"
+          :previewTheme="isDark ? 'smart-blue' : 'github'"
+          mode="preview"
+          v-if="markdownData.content"
+        />
         <ice-row class="m-t-l">
           <ice-row class="align-items-center" width="fit-content">
             <ice-input
@@ -113,20 +117,21 @@ const init = () => {
   if (!id.value) {
     return void 0
   }
-  api.getMarkdown({ id: id.value }).then(res => {
+  api.getMarkdown(id.value).then(res => {
     if (res.success) {
+      id.value
       dataExist.value = true
-      const flag = JSON.stringify(res.result).length < 3 ? false : true
+      const flag = JSON.stringify(res.data).length < 3 ? false : true
 
       if (flag) {
         // 即将渲染的文章数据
-        markdownData.value = res.result
+        markdownData.value = res.data
 
         timeFormat()
-        const content = res.result.content || 'null'
+        const content = res.data.content || 'null'
         if (content.length > 10) {
           // 文章数据存在时渲染
-          article.value = res.result.content
+          article.value = res.data.content
         }
         userInf.value = res.userInf
         timeFormat()

@@ -9,8 +9,12 @@ import {
 import {
   CreateMarkdownReq,
   CreateMarkdownRes,
+  DeleteMarkdownReq,
+  DeleteMarkdownRes,
   GetMarkdownDetailRes,
   GetMarkdownListRes,
+  GetMarkdownViewsRes,
+  GetMarkdownListReq,
   ICreateMarkdownReq,
   IGetMarkdownListReq,
   UpdateMarkdownReq,
@@ -20,9 +24,10 @@ import {
 import { authMiddleware } from '@/middleware/auth'
 import Markdown from '@/schema/markdown'
 import { error } from '@/config/log4j'
-import { ctxBody, paginationMiddleware } from '@/utils'
+import { ctxBody, paginationMiddleware, deleteByIdMiddleware } from '@/utils'
 import { paginationQuery } from '@/controller/common/queryType'
 import User from '@/schema/user'
+import { Op } from 'sequelize'
 
 class MarkdownClass {
   @routeConfig({
@@ -67,7 +72,7 @@ class MarkdownClass {
     tags: ['文章'],
     security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
     request: {
-      query: paginationQuery(),
+      query: GetMarkdownListReq,
     },
   })
   @responses(GetMarkdownListRes)
@@ -79,8 +84,14 @@ class MarkdownClass {
       where.userId = args.query.userId
     }
 
-    // 如果指定了状态，只查询该状态的文章
-    if (typeof args.query.states === 'number') {
+    // 如果是获取推荐文章
+    if (args.query.getRecommend) {
+      where.states = {
+        [Op.gt]: 1 // states > 1
+      }
+    }
+    // 如果指定了状态且不是获取推荐文章，只查询该状态的文章
+    else if (typeof args.query.states === 'number') {
       where.states = args.query.states
     }
 
@@ -136,6 +147,40 @@ class MarkdownClass {
   }
 
   @routeConfig({
+    method: 'get',
+    path: '/markdown/views',
+    summary: '获取所有文章的浏览量',
+    tags: ['文章'],
+  })
+  @responses(GetMarkdownViewsRes)
+  async getMarkdownViews(ctx: Context) {
+    try {
+      const articles = await Markdown.findAll({
+        attributes: ['id', 'title', 'view'],
+        where: {
+          states: 1 // 只获取已发布的文章
+        },
+        order: [['view', 'DESC']], // 按浏览量降序排序
+      })
+
+      ctx.body = ctxBody({
+        success: true,
+        code: 200,
+        msg: '获取文章浏览量成功',
+        data: articles,
+      })
+    } catch (e) {
+      error(e)
+      ctx.body = ctxBody({
+        success: false,
+        code: 500,
+        msg: '获取文章浏览量失败',
+        data: e,
+      })
+    }
+  }
+
+  @routeConfig({
     method: 'put',
     path: '/markdown/update',
     summary: '更新文章',
@@ -178,6 +223,22 @@ class MarkdownClass {
         data: error,
       })
     }
+  }
+
+  @routeConfig({
+    method: 'delete',
+    path: '/markdown/delete',
+    summary: '删除文章',
+    tags: ['文章'],
+    security: [{ Bearer: [] }, { Auth: [] }, { Token: [] }],
+    request: {
+      query: DeleteMarkdownReq,
+    },
+  })
+  @responses(DeleteMarkdownRes)
+  @middlewares([authMiddleware])
+  async deleteMarkdown(ctx: Context) {
+    await deleteByIdMiddleware(ctx, Markdown, '文章')
   }
 }
 

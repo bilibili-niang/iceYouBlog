@@ -5,7 +5,7 @@ export default {
         return post('/admin/config', params)
     },
     async getConfig () {
-        return post('/admin/getconfig')
+        return get('/admin/siteConfig')
     },
     async getDatabases(){
         return post('/admin/database')

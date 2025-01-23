@@ -20,61 +20,63 @@
   </ice-column>
 </template>
 
-<script>
-import http from '@/api/request'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { getRecommendList } from '@/api/recommend'
 import MarkdownTags from '@/components/common/MarkdownTags.vue'
 import timeFormat from '@/common/filter/time'
 import IndexCard from '@/components/index/IndexCard.vue'
 
-export default {
+interface MarkdownItem {
+  id: string | number
+  title: string
+  content: string
+  updatedAt: string
+  createdAt: string
+  [key: string]: any
+}
+
+export default defineComponent({
   name: 'Recommend',
   components: { IndexCard, MarkdownTags },
   data() {
     return {
-      markdownList: ''
+      markdownList: [] as MarkdownItem[]
     }
   },
   methods: {
-    DateDiffer(Date_end) {
-      //date1结束时间
-      let date1 = new Date(Date_end)
-      //date2当前时间
-      let date2 = new Date()
+    DateDiffer(Date_end: string): number {
+      let date1: Date = new Date(Date_end)
+      let date2: Date = new Date()
       date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate())
       date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate())
-      const diff = date1.getTime() - date2.getTime() //目标时间减去当前时间
-      const diffDate = diff / (24 * 60 * 60 * 1000) //计算当前时间与结束时间之间相差天数
+      const diff: number = date1.getTime() - date2.getTime()
+      const diffDate: number = diff / (24 * 60 * 60 * 1000)
       return diffDate
     },
-    timeFormat(time) {
+    timeFormat(time: string): string {
       return timeFormat.timeFormat(time)
     },
-    //property是你需要排序传入的key,bol为true时是升序，false为降序
-    dateData(property, bol) {
-      return function (a, b) {
-        var value1 = a[property]
-        var value2 = b[property]
+    dateData(property: keyof MarkdownItem, bol: boolean) {
+      return function(a: MarkdownItem, b: MarkdownItem): number {
+        const value1: string = a[property] as string
+        const value2: string = b[property] as string
         if (bol) {
-          // 升序
           return Date.parse(value1) - Date.parse(value2)
         } else {
-          // 降序
           return Date.parse(value2) - Date.parse(value1)
         }
       }
     },
-    getRecommendData() {
-      http
-        .$axios({
-          url: '/markdownFile/getRecommend',
-          method: 'GET'
-        })
-        .then(res => {
-          this.markdownList = res.result
-          this.markdownList.sort(this.dateData('updatedAt', false))
-        })
+    getRecommendData(): void {
+      getRecommendList().then(res => {
+        this.markdownList = res.data.rows
+        console.log('this.markdownList--------------')
+        console.log(this.markdownList)
+        this.markdownList.sort(this.dateData('updatedAt', false))
+      })
     },
-    goToRead(id) {
+    goToRead(id: string | number): void {
       const routeUrl = this.$router.resolve({
         path: '/read',
         query: { id }
@@ -85,5 +87,5 @@ export default {
   created() {
     this.getRecommendData()
   }
-}
+})
 </script>

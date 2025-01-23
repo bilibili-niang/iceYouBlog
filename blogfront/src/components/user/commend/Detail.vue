@@ -38,21 +38,13 @@
 import http from '@/api/request'
 import { ref } from 'vue'
 import MarkdownTags from '@/components/common/MarkdownTags.vue'
+import { getMarkdown } from '@/api'
 
 const props = defineProps(['id', 'type'])
 let resData = ref('')
 let message = ref('')
 const initData = async (id) => {
-  await http.$axios({
-    url: '/markdownFile/getData',
-    method: 'POST',
-    headers: {
-      token: true
-    },
-    data: {
-      id
-    }
-  })
+  await getMarkdown(id)
       .then(res => {
         console.log('请求的数据:')
         console.log(res)

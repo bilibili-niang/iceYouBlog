@@ -1,4 +1,4 @@
-import {get, post} from '@/api/request'
+import { get, post } from '@/api/request'
 
 export default {
     // 通过tag和文章id返回相关文章
@@ -30,7 +30,7 @@ export default {
      * 获取浏览量
     */
     async getViews() {
-        return post('/home/allviews')
+        return get('/markdown/views')
     },
     /* @author 张嘉凯
      * @date 2023/7/31 @time 13:40
@@ -70,8 +70,8 @@ export default {
         return post('/markdownFile/update', params)
     },
     // 获取文章数据
-    async getMarkdown(params) {
-        return post('/markdownFile/getData', params)
+    async getMarkdown(id: string) {
+        return get('/markdown/detail/' + id)
     }
 
 }

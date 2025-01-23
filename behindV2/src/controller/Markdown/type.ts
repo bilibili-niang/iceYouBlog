@@ -31,7 +31,7 @@ const BaseMarkdownFields = {
   hasOriginal: z.string().optional().describe('是否有源头'),
   diggCount: z.string().optional().describe('点赞数量'),
   articleType: z.string().optional().describe('文章类型'),
-  recommendLevel: z.string().optional().describe('文章置顶等级'),
+  recommendLevel: z.number().optional().describe('文章置顶等级'),
 }
 
 // 创建 Markdown 的请求类型
@@ -43,7 +43,7 @@ export const CreateMarkdownReq = z.object({
   hasOriginal: z.string().default('blog').describe('是否有源头'),
   diggCount: z.string().default('0').describe('点赞数量'),
   articleType: z.string().default('blog').describe('文章类型'),
-  recommendLevel: z.string().default('0').describe('文章置顶等级'),
+  recommendLevel: z.number().default(0).describe('文章置顶等级'),
 })
 
 // 创建 Markdown 的响应类型
@@ -59,6 +59,10 @@ export const GetMarkdownListReq = z.object({
   pageSize: z.number().default(10).describe('每页数量'),
   userId: z.string().optional().describe('用户ID，可选'),
   states: z.number().optional().describe('文章状态：0草稿,1发布,2私密'),
+  getRecommend: z.preprocess(
+    (val) => val === 'true',
+    z.boolean().default(false)
+  ).describe('是否获取推荐文章，true时只返回status大于1的文章'),
 })
 
 export type IGetMarkdownListReq = z.infer<typeof GetMarkdownListReq>
@@ -96,4 +100,27 @@ export const GetMarkdownListRes = commonResponse({
     page: z.number(),
     pageSize: z.number(),
   }),
+})
+
+// 删除文章的请求参数
+export const DeleteMarkdownReq = z.object({
+  id: z.string().describe('文章ID'),
+})
+
+export type IDeleteMarkdownReq = z.infer<typeof DeleteMarkdownReq>
+
+// 删除文章的响应类型
+export const DeleteMarkdownRes = commonResponse({
+  data: z.any(),
+})
+
+// 文章浏览量的响应类型
+export const GetMarkdownViewsRes = commonResponse({
+  data: z.array(
+    z.object({
+      id: z.string().describe('文章ID'),
+      title: z.string().describe('文章标题'),
+      view: z.string().describe('浏览量')
+    })
+  ),
 })

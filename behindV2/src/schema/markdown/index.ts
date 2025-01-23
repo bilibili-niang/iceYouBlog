@@ -153,12 +153,12 @@ export default class MarkdownFile extends BaseModel {
   declare articleType: string
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: true,
-    defaultValue: '0',
+    defaultValue: 0,
     comment: '文章置顶等级',
   })
-  declare recommendLevel: string
+  declare recommendLevel: number
 
   @BelongsTo(() => User, 'userId')
   declare user: User

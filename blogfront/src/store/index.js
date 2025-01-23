@@ -1,4 +1,4 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
 import admin from '@/api/admin'
 
 const store = createStore({
@@ -12,7 +12,7 @@ const store = createStore({
       },
       // 配置信息
       config: {
-        registerFlag: "0",
+        registerFlag: '0'
       },
       styleConfig: {
         showHeader: true
@@ -34,7 +34,7 @@ const store = createStore({
     async initConfig(state) {
       const res = await admin.getConfig()
       if (res.success) {
-        state.config = res.result[0]
+        state.config = res.data
       }
     },
     CHANGE_META_INFO(state, metaInfo) {
